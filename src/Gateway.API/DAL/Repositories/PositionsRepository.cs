@@ -9,23 +9,23 @@ namespace EMS.Gateway.API.Repositories
 {
 	public class PositionsRepository: BaseRepository, IPositionsRepository
 	{
-		public PositionsRepository(ApplicationDbContext context): base(context) { }
+		public PositionsRepository(IApplicationDbContext context): base(context) { }
 
 		public async Task<int> AddAsync(Position position)
 		{
-			_context.Entry(position).State = EntityState.Added;
+            _context.Positions.Add(position);
 			return await _context.SaveChangesAsync();
 		}
 
 		public async Task<int> UpdateAsync(Position position)
 		{
-			_context.Entry(position).State = EntityState.Modified;
+            _context.Positions.Update(position);
 			return await _context.SaveChangesAsync();
 		}
 
 		public async Task<int> DeleteAsync(Position position)
 		{
-			_context.Entry(position).State = EntityState.Deleted;
+            _context.Positions.Remove(position);
 			return await _context.SaveChangesAsync();
 		}
 

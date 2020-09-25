@@ -4,8 +4,8 @@ namespace EMS.Gateway.API.Repositories
 {
 	public class BaseRepository
 	{
-		protected readonly ApplicationDbContext _context;
-		public BaseRepository(ApplicationDbContext context)
+		protected readonly IApplicationDbContext _context;
+		public BaseRepository(IApplicationDbContext context)
 		{
 			_context = context;
 		}

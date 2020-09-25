@@ -6,12 +6,12 @@ namespace Gateway.API.Test
 {
 	public class BaseUnitTest
 	{
-		protected Mock<ApplicationDbContext> _dbContextMock;
-		protected ApplicationDbContext _dbContext;
+		protected Mock<IApplicationDbContext> _dbContextMock;
+		protected IApplicationDbContext _dbContext;
 
 		protected void InitializeMocks()
 		{
-			_dbContextMock = DbContextMock.SetupDbContext<ApplicationDbContext>();
+			_dbContextMock = DbContextMock.SetupDbContext<IApplicationDbContext>();
 			_dbContext = _dbContextMock.Object;
 		}
 	}

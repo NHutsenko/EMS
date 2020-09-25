@@ -11,5 +11,5 @@ namespace EMS.Gateway.API.Models
 
 		[IgnoreDataMember]
 		public ICollection<Position> Positions { get; set; }
-	}
+    }
 }

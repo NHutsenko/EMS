@@ -85,9 +85,9 @@ namespace Gateway.API.Test.Mocks
             return entity.GetType().GetProperty("Id").GetValue(entity);
         }
 
-        public static Mock<ApplicationDbContext> SetupDbContext<T>() where T : class
+        public static Mock<IApplicationDbContext> SetupDbContext<T>() where T : class
         {
-            Mock<ApplicationDbContext> dbContext = new Mock<ApplicationDbContext>();
+            Mock<IApplicationDbContext> dbContext = new Mock<IApplicationDbContext>();
 
             dbContext.SetupAllProperties();
 
