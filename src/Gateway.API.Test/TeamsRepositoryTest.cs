@@ -91,7 +91,7 @@ namespace Gateway.API.Test
         public void GetAll_should_retrun_team_enity_by_specified_id()
         {
             // Act
-            Team team = _repository.GetAsync(1).Result;
+            Team team = _repository.Get(1);
 
             // Assert
             Assert.AreEqual(_test1, team, "Should return team entity by specified id");

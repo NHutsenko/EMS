@@ -34,9 +34,9 @@ namespace EMS.Gateway.API.Repositories
 			return await _context.SaveChangesAsync();
 		}
 
-		public async Task<Team> GetAsync(long teamId)
+		public Team Get(long teamId)
 		{
-			return await _context.Teams.FirstOrDefaultAsync(t => t.Id == teamId);
+			return _context.Teams.FirstOrDefault(t => t.Id == teamId);
 		}
 
 		public IQueryable<Team> GetAll()

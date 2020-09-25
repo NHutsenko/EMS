@@ -9,7 +9,7 @@ namespace EMS.Gateway.API.Repositories.Interfaces
 		Task<int> AddAsync(Team team);
 		Task<int> UpdateAsync(Team team);
 		Task<int> DeleteAsync(Team team);
-		Task<Team> GetAsync(long teamId);
+		Team Get(long teamId);
 		IQueryable<Team> GetAll();
 	}
 }
