@@ -11,5 +11,6 @@ namespace EMS.Gateway.API.Repositories.Interfaces
 		Task<int> DeleteAsync(Team team);
 		Team Get(long teamId);
 		IQueryable<Team> GetAll();
+        IQueryable<Position> GetPositionsByTeamId(long teamId);
 	}
 }

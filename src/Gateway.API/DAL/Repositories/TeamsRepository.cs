@@ -24,14 +24,22 @@ namespace EMS.Gateway.API.Repositories
 
 		public async Task<int> UpdateAsync(Team team)
 		{
+            if (string.IsNullOrWhiteSpace(team.Name))
+            {
+                throw new ArgumentNullException(nameof(team.Name), "Team Name cannot be empty");
+            }
             _context.Teams.Update(team);
 			return await _context.SaveChangesAsync();
 		}
 
 		public async Task<int> DeleteAsync(Team team)
 		{
+            if(!(_context.Positions.FirstOrDefault(p => p.TeamId == team.Id) is null) )
+            {
+                throw new DbUpdateException("Team cannot be deleted because of this team has positions");
+            }
             _context.Teams.Remove(team);
-			return await _context.SaveChangesAsync();
+			return await  _context.SaveChangesAsync();
 		}
 
 		public Team Get(long teamId)
@@ -43,5 +51,11 @@ namespace EMS.Gateway.API.Repositories
 		{
             return _context.Teams.Select(e => e);
 		}
-	}
+
+        public IQueryable<Position> GetPositionsByTeamId(long teamId)
+        {
+            return _context.Positions.Where(p => p.TeamId == teamId);
+        }
+
+    }
 }
