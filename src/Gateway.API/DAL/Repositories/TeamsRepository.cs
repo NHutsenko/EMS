@@ -14,6 +14,10 @@ namespace EMS.Gateway.API.Repositories
 
 		public async Task<int> AddAsync(Team team)
 		{
+            if(team is null)
+            {
+                throw new ArgumentNullException(nameof(team), "Team cannot be empty");
+            }
             if (string.IsNullOrWhiteSpace(team.Name))
             {
                 throw new ArgumentNullException(nameof(team.Name), "Team Name cannot be empty");
@@ -22,8 +26,13 @@ namespace EMS.Gateway.API.Repositories
 			return await _context.SaveChangesAsync();
 		}
 
+
 		public async Task<int> UpdateAsync(Team team)
 		{
+            if (team is null)
+            {
+                throw new ArgumentNullException(nameof(team), "Team cannot be empty");
+            }
             if (string.IsNullOrWhiteSpace(team.Name))
             {
                 throw new ArgumentNullException(nameof(team.Name), "Team Name cannot be empty");
@@ -34,7 +43,11 @@ namespace EMS.Gateway.API.Repositories
 
 		public async Task<int> DeleteAsync(Team team)
 		{
-            if(!(_context.Positions.FirstOrDefault(p => p.TeamId == team.Id) is null) )
+            if (team is null)
+            {
+                throw new ArgumentNullException(nameof(team), "Team cannot be empty");
+            }
+            if (!(_context.Positions.FirstOrDefault(p => p.TeamId == team.Id) is null) )
             {
                 throw new DbUpdateException("Team cannot be deleted because of this team has positions");
             }

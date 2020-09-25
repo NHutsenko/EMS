@@ -116,6 +116,13 @@ namespace Gateway.API.Test
         }
 
         [Test]
+        public void AddAsync_should_throw_an_exception_because_team_is_empty()
+        {
+            // Assert
+            Assert.ThrowsAsync<ArgumentNullException>(() => _repository.AddAsync(null), "Team succesfully throws an exception because team name is empty");
+        }
+
+        [Test]
         public void GetAll_should_retrun_all_team_entities()
         {
             // Arrange
@@ -191,6 +198,13 @@ namespace Gateway.API.Test
         }
 
         [Test]
+        public void UpdateAsync_should_throw_an_exception_because_team_is_empty()
+        {
+            // Assert
+            Assert.ThrowsAsync<ArgumentNullException>(() => _repository.UpdateAsync(null), "Succesfullty throwed an exception that team name cannot be null while updating");
+        }
+
+        [Test]
         public void DeleteAsync_should_succesfully_delete_team_from_DB()
         {
             // Arrange
@@ -222,6 +236,13 @@ namespace Gateway.API.Test
 
             // Assert
             Assert.ThrowsAsync<DbUpdateException>(() => _repository.DeleteAsync(team), "Succesfullty throwed an exception that team linked with positions");
+        }
+
+        [Test]
+        public void DeleteAsync_should_throw_an_exception_because_team_is_null()
+        {
+            // Assert
+            Assert.ThrowsAsync<ArgumentNullException>(() => _repository.DeleteAsync(null), "Succesfullty throwed an exception that team is null");
         }
     }
 }
