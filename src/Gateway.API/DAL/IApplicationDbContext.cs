@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using EMS.Gateway.API.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace EMS.Gateway.API.DAL
 {
@@ -13,6 +9,8 @@ namespace EMS.Gateway.API.DAL
     {
         public DbSet<Team> Teams { get; set; }
         public DbSet<Position> Positions { get; set; }
+        public DbSet<Staff> Staff { get; set; }
+        public DbSet <DayOff> DaysOff { get; set; }
         int SaveChanges();
         Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess = true, CancellationToken cancellationToken = default);
     }

@@ -52,7 +52,6 @@ namespace EMS.Gateway.API.Repositories
 
 		public async Task<int> DeleteAsync(Position position)
 		{
-
             _context.Positions.Remove(position);
 			return await _context.SaveChangesAsync();
 		}

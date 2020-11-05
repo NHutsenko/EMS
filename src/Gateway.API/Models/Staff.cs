@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Runtime.Serialization;
 
 namespace EMS.Gateway.API.Models
 {
@@ -13,5 +15,7 @@ namespace EMS.Gateway.API.Models
         public long ManagerId { get; set; }
         [Column("manager")]
         public Person Manager { get; set; }
+        [IgnoreDataMember]
+        public IQueryable<DayOff> DayOff { get; set; }
     }
 }

@@ -7,6 +7,8 @@ namespace EMS.Gateway.API.DAL
 	{
 		public DbSet<Position> Positions { get; set; }
 		public DbSet<Team> Teams { get; set; }
+        public DbSet<Staff> Staff { get; set; }
+        public DbSet<DayOff> DaysOff { get; set; }
 
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
