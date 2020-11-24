@@ -1,14 +1,13 @@
-﻿using EMS.Gateway.API.DAL;
-using EMS.Gateway.API.Models;
+﻿using EMS.Gateway.API.Models;
 using EMS.Gateway.API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EMS.Gateway.API.Repositories
+namespace EMS.Gateway.API.DAL.Repositories
 {
-	public class TeamsRepository: BaseRepository, ITeamsRepository
+    public class TeamsRepository: BaseRepository, ITeamsRepository
 	{
 		public TeamsRepository(IApplicationDbContext context): base(context) { }
 

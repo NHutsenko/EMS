@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Text;
+using EMS.Gateway.API.DAL.Repositories;
 using EMS.Gateway.API.Models;
-using EMS.Gateway.API.Repositories;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 
 namespace Gateway.API.Test
 {
+    [ExcludeFromCodeCoverage]
     public class PositionsRepositoryTest : BaseUnitTest
     {
         public PositionsRepository _repository;
@@ -99,7 +100,7 @@ namespace Gateway.API.Test
             };
 
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => _repository.AddAsync(null), "Succesfuly throwed exception that position name is empty");
+            Assert.ThrowsAsync<ArgumentNullException>(() => _repository.AddAsync(position), "Succesfuly throwed exception that position name is empty");
         }
 
         [Test]
@@ -131,7 +132,7 @@ namespace Gateway.API.Test
             };
 
             // Assert
-            Assert.ThrowsAsync<DbUpdateException>(() => _repository.AddAsync(position), "Succesfuly throwed exception that position cant be added with team that is not exists");
+            Assert.ThrowsAsync<DbUpdateException>(() => _repository.AddAsync(position), "Succesfuly throwed exception that position cannot be added with team that is not exists");
         }
 
         [Test]
@@ -149,6 +150,8 @@ namespace Gateway.API.Test
             // Assert
             Assert.ThrowsAsync<DbUpdateException>(() => _repository.AddAsync(position), "Succesfuly throwed exception that position cant be added with team that is not exists");
         }
+
+        [Test]
         public void UpdateAsync_should_update_position_into_db()
         {
             // Arrange
@@ -156,7 +159,7 @@ namespace Gateway.API.Test
             {
                 Id = 1,
                 Name = "test update",
-                CreatedOn = new DateTime(2020, 01, 01, 12, 00, 00),
+                CreatedOn = new DateTime(2020, 01, 01, 12, 00, 12),
                 Team = _team2,
                 TeamId = _team2.Id,
             };
@@ -165,7 +168,7 @@ namespace Gateway.API.Test
             int result = _repository.UpdateAsync(position).Result;
             Position expected = _dbContext.Positions.FirstOrDefault(p => p.Id == position.Id);
             // Assert
-            Assert.AreEqual(expected, position, "Succesfuly added new position");
+            Assert.AreEqual(expected, position, "Succesfuly updated position");
         }
 
         [Test]
@@ -242,7 +245,29 @@ namespace Gateway.API.Test
         }
 
         [Test]
-        public void Delete_should_delete_team_from_db()
+        public void Delete_should_delete_position_from_db()
+        {
+            // Arrange
+            Position position = new Position
+            {
+                Id = 3,
+                Name = "test",
+                CreatedOn = new DateTime(2020, 01, 01, 12, 00, 00),
+                Team = _team2,
+                TeamId = 3,
+            };
+            _dbContext.Positions.Add(position);
+            // Act
+            int result = _repository.DeleteAsync(position).Result;
+            Position recieved = _dbContext.Positions.FirstOrDefault(p => p.Id == position.Id);
+
+
+            // Assert
+            Assert.AreEqual(null, recieved, "Succesfuly deleted from db");
+        }
+
+        [Test]
+        public void Delete_should_throw_exception_because_position_relates_to_team()
         {
             // Arrange
             Position position = new Position
@@ -254,13 +279,31 @@ namespace Gateway.API.Test
                 TeamId = 1,
             };
             _dbContext.Positions.Add(position);
-            // Act
-            int result = _repository.DeleteAsync(position).Result;
-            Position recieved = _dbContext.Positions.FirstOrDefault(p => p.Id == position.Id);
-
 
             // Assert
-            Assert.AreEqual(null, recieved, "Succesfuly deleted from db");
+            Assert.ThrowsAsync<DbUpdateException>(() => _repository.DeleteAsync(position), "Should throw exception because of positions relates to team");
+        }
+
+        [Test]
+        public void Get_should_return_position_from_db()
+        {
+            // Act
+            Position actual = _repository.Get(_position1.Id);
+
+            // Assert
+            Assert.AreEqual(_position1, actual, "Should return position from db");
+        }
+
+        [Test]
+        public void GetAll_should_return_positions_from_db()
+        {
+            // Arrange
+            List<Position> expected = new List<Position> { _position1, _position2 };
+            // Act
+            IQueryable<Position> actual = _repository.GetAll();
+
+            // Assert
+            Assert.AreEqual(expected, actual, "Should return positions from db");
         }
     }
 }

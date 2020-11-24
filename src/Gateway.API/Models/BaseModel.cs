@@ -1,8 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace EMS.Gateway.API.Models
 {
+    [ExcludeFromCodeCoverage]
     public class BaseModel
     {
         [Column("Id")]

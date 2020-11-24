@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 
 namespace EMS.Gateway.API.Models
 {
+    [ExcludeFromCodeCoverage]
 	public class Team: BaseModel
 	{
 		[Column("description")]

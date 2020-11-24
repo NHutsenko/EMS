@@ -1,14 +1,13 @@
-﻿using EMS.Gateway.API.DAL;
-using EMS.Gateway.API.Models;
+﻿using EMS.Gateway.API.Models;
 using EMS.Gateway.API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EMS.Gateway.API.Repositories
+namespace EMS.Gateway.API.DAL.Repositories
 {
-	public class PositionsRepository: BaseRepository, IPositionsRepository
+    public class PositionsRepository: BaseRepository, IPositionsRepository
 	{
 		public PositionsRepository(IApplicationDbContext context): base(context) { }
 
@@ -52,18 +51,22 @@ namespace EMS.Gateway.API.Repositories
 
 		public async Task<int> DeleteAsync(Position position)
 		{
+            if(_context.Teams.Any(e => e.Id == position.TeamId))
+            {
+                throw new DbUpdateException("Cannot delete position related to team");
+            }
             _context.Positions.Remove(position);
 			return await _context.SaveChangesAsync();
 		}
 
-		public async Task<Position> GetAsync(long id)
+		public Position Get(long id)
 		{
-			return await _context.Positions.FirstOrDefaultAsync(p => p.Id == id);
+			return _context.Positions.FirstOrDefault(p => p.Id == id);
 		}
 
 		public IQueryable<Position> GetAll()
 		{
-			return _context.Positions.AsQueryable();
+            return _context.Positions.Select(e => e);
 		}
 	}
 }

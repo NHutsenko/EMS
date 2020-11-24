@@ -21,6 +21,11 @@ namespace EMS.Gateway.API.DAL
 				.HasForeignKey(e => e.TeamId);
 			modelBuilder.Entity<Team>()
 				.ToTable("Teams", "core");
+            modelBuilder.Entity<Staff>()
+                .ToTable("Staff", "core")
+                .HasOne(e => e.Position)
+                .WithMany(e => e.Staff)
+                .HasForeignKey(e => e.PositionId);
 		}
 	}
 }

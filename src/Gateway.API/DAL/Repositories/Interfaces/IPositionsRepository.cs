@@ -9,7 +9,7 @@ namespace EMS.Gateway.API.Repositories.Interfaces
 		Task<int> AddAsync(Position position);
 		Task<int> UpdateAsync(Position position);
 		Task<int> DeleteAsync(Position position);
-		Task<Position> GetAsync(long positionId);
+		Position Get(long positionId);
 		IQueryable<Position> GetAll();
 	}
 }

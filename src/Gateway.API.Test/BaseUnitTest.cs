@@ -1,9 +1,11 @@
-﻿using EMS.Gateway.API.DAL;
+﻿using System.Diagnostics.CodeAnalysis;
+using EMS.Gateway.API.DAL;
 using Gateway.API.Test.Mocks;
 using Moq;
 
 namespace Gateway.API.Test
 {
+    [ExcludeFromCodeCoverage]
 	public class BaseUnitTest
 	{
 		protected Mock<IApplicationDbContext> _dbContextMock;

@@ -1,8 +1,6 @@
-﻿using EMS.Gateway.API.DAL;
-
-namespace EMS.Gateway.API.Repositories
+﻿namespace EMS.Gateway.API.DAL.Repositories
 {
-	public class BaseRepository
+    public class BaseRepository
 	{
 		protected readonly IApplicationDbContext _context;
 		public BaseRepository(IApplicationDbContext context)

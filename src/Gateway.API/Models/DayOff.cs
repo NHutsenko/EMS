@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 using EMS.Gateway.API.Enums;
 
 namespace EMS.Gateway.API.Models
 {
+    [ExcludeFromCodeCoverage]
     public class DayOff: BaseModel
     {
         [Column("type")]

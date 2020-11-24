@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Text;
+using EMS.Gateway.API.DAL.Repositories;
 using EMS.Gateway.API.Models;
-using EMS.Gateway.API.Repositories;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 
 namespace Gateway.API.Test
 {
+    [ExcludeFromCodeCoverage]
     public class TeamsRepositoryTest: BaseUnitTest
     {
         public TeamsRepository _repository;
@@ -136,7 +137,7 @@ namespace Gateway.API.Test
         }
 
         [Test]
-        public void GetAll_should_retrun_team_enity_by_specified_id()
+        public void Get_should_retrun_team_enity_by_specified_id()
         {
             // Act
             Team team = _repository.Get(1);
