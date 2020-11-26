@@ -12,7 +12,7 @@ namespace EMS.Gateway.API.Models
         public long? PersonId { get; set; }
         [Column("person")]
         public Person Person { get; set; }
-        [Column("personId")]
+        [Column("managerId")]
         public long ManagerId { get; set; }
         [Column("manager")]
         public Person Manager { get; set; }

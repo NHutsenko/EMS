@@ -36,8 +36,7 @@ namespace EMS.Gateway.API
                 // for manual db migration creating
                 connectionString = Configuration.GetConnectionString("DbConnectionString");
             }
-            services.AddEntityFrameworkSqlServer()
-                .AddDbContext<IApplicationDbContext, ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
 
             services.AddControllers();

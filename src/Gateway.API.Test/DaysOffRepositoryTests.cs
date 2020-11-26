@@ -1,18 +1,15 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using EMS.Gateway.API.Models;
 using NUnit.Framework;
 
 namespace Gateway.API.Test
 {
     [ExcludeFromCodeCoverage]
-    public class StaffRepositoryTest: BaseUnitTest
+    public class DaysOffRepositoryTests: BaseUnitTest
     {
-        public Staff _staff1;
-        public Staff _staff2;
         [SetUp]
         public void Setup()
         {
-            
+
         }
     }
 }

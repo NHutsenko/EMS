@@ -10,7 +10,7 @@ namespace EMS.Gateway.API.Models
         [Column("type")]
         public DayOffType DayOffType { get; set; }
         [Column("hours")]
-        public decimal Hours { get; set; }
+        public float Hours { get; set; }
         [Column("staffId")]
         public long StaffId { get; set; }
         [Column("Staff")]
