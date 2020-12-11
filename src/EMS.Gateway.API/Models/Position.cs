@@ -23,7 +23,7 @@ namespace EMS.Gateway.API.Models
 
         public override bool Equals(object obj)
         {
-            if(!(obj is Position))
+            if(obj is not Position)
             {
                 return false;
             }

@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Threading;
 using EMS.Gateway.API.DAL.Repositories;
 using EMS.Gateway.API.Models;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 using NUnit.Framework;
 
 namespace Gateway.API.Test
@@ -17,6 +19,7 @@ namespace Gateway.API.Test
         public Position _position2;
         public Team _team1;
         public Team _team2;
+        public Staff _staff1;
 
         [SetUp]
         public void Setup()
@@ -54,6 +57,12 @@ namespace Gateway.API.Test
                 Team = _team2,
                 TeamId = _team2.Id
             };
+            _staff1 = new Staff
+            {
+                Id = 1,
+                PersonId = 2
+            };
+            _dbContext.Staff.Add(_staff1);
             _dbContext.Positions.Add(_position1);
             _dbContext.Positions.Add(_position2);
             _dbContext.Teams.Add(_team1);
@@ -78,6 +87,7 @@ namespace Gateway.API.Test
             Position expected = _dbContext.Positions.FirstOrDefault(p => p.Id == position.Id);
             // Assert
             Assert.AreEqual(expected, position, "Succesfuly added new position");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Once);
         }
 
         [Test]
@@ -85,6 +95,7 @@ namespace Gateway.API.Test
         {
             // Assert
             Assert.ThrowsAsync<ArgumentNullException>(() => _repository.AddAsync(null), "Succesfuly throwed exception that position entity is empty");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
         [Test]
@@ -101,6 +112,7 @@ namespace Gateway.API.Test
 
             // Assert
             Assert.ThrowsAsync<ArgumentNullException>(() => _repository.AddAsync(position), "Succesfuly throwed exception that position name is empty");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
         [Test]
@@ -117,6 +129,7 @@ namespace Gateway.API.Test
 
             // Assert
             Assert.ThrowsAsync<DbUpdateException>(() => _repository.AddAsync(position), "Succesfuly throwed exception that position cant be added with team that is not exists");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
         [Test]
@@ -133,6 +146,7 @@ namespace Gateway.API.Test
 
             // Assert
             Assert.ThrowsAsync<DbUpdateException>(() => _repository.AddAsync(position), "Succesfuly throwed exception that position cannot be added with team that is not exists");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
         [Test]
@@ -149,6 +163,7 @@ namespace Gateway.API.Test
 
             // Assert
             Assert.ThrowsAsync<DbUpdateException>(() => _repository.AddAsync(position), "Succesfuly throwed exception that position cant be added with team that is not exists");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
         [Test]
@@ -169,6 +184,7 @@ namespace Gateway.API.Test
             Position expected = _dbContext.Positions.FirstOrDefault(p => p.Id == position.Id);
             // Assert
             Assert.AreEqual(expected, position, "Succesfuly updated position");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Once);
         }
 
         [Test]
@@ -176,6 +192,7 @@ namespace Gateway.API.Test
         {
             // Assert
             Assert.ThrowsAsync<ArgumentNullException>(() => _repository.UpdateAsync(null), "Succesfuly throwed exception that position entity is empty");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
         [Test]
@@ -193,6 +210,7 @@ namespace Gateway.API.Test
 
             // Assert
             Assert.ThrowsAsync<ArgumentNullException>(() => _repository.UpdateAsync(position), "Succesfuly throwed exception that position name is empty");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
         [Test]
@@ -210,6 +228,7 @@ namespace Gateway.API.Test
 
             // Assert
             Assert.ThrowsAsync<DbUpdateException>(() => _repository.UpdateAsync(position), "Succesfuly throwed exception that position cant be added with team that is not exists");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
         [Test]
@@ -226,6 +245,7 @@ namespace Gateway.API.Test
 
             // Assert
             Assert.ThrowsAsync<DbUpdateException>(() => _repository.UpdateAsync(position), "Succesfuly throwed exception that position cant be added with team that is not exists");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
         [Test]
@@ -242,6 +262,7 @@ namespace Gateway.API.Test
 
             // Assert
             Assert.ThrowsAsync<DbUpdateException>(() => _repository.UpdateAsync(position), "Succesfuly throwed exception that position cant be added with team that is not exists");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
         [Test]
@@ -264,6 +285,7 @@ namespace Gateway.API.Test
 
             // Assert
             Assert.AreEqual(null, recieved, "Succesfuly deleted from db");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Once);
         }
 
         [Test]
@@ -282,6 +304,25 @@ namespace Gateway.API.Test
 
             // Assert
             Assert.ThrowsAsync<DbUpdateException>(() => _repository.DeleteAsync(position), "Should throw exception because of positions relates to team");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
+        public void Delete_should_throw_exception_because_position_relates_to_staff()
+        {
+            // Arrange
+            Position position = new Position
+            {
+                Id = 3,
+                Name = "test",
+                CreatedOn = new DateTime(2020, 01, 01, 12, 00, 00),
+            };
+            _staff1.PositionId = position.Id;
+            _dbContext.Positions.Add(position);
+
+            // Assert
+            Assert.ThrowsAsync<DbUpdateException>(() => _repository.DeleteAsync(position), "Should throw exception because of positions relates to staff");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
         [Test]

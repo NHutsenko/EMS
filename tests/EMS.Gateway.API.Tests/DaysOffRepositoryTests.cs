@@ -1,0 +1,343 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Threading;
+using EMS.Gateway.API.DAL.Repositories;
+using EMS.Gateway.API.Enums;
+using EMS.Gateway.API.Models;
+using Microsoft.EntityFrameworkCore;
+using Moq;
+using NUnit.Framework;
+
+namespace Gateway.API.Test
+{
+    [ExcludeFromCodeCoverage]
+    public class DaysOffRepositoryTests: BaseUnitTest
+    {
+        private Staff _staff1;
+        private DayOff _dayOff1;
+        private DayOff _dayOff2;
+        private DayOffRepository _repository;
+
+        [SetUp]
+        public void Setup()
+        {
+            InitializeMocks();
+            _staff1 = new Staff
+            {
+                Id = 1,
+            };
+            _dbContext.Staff.Add(_staff1);
+
+            _dayOff1 = new DayOff
+            {
+                Id = 1,
+                CreatedOn = new DateTime(2020, 01, 01, 12, 00, 00),
+                StaffId = _staff1.Id,
+                Hours = 8,
+                DayOffType = DayOffType.Vacation
+            };
+
+            _dayOff2 = new DayOff
+            {
+                Id = 2,
+                CreatedOn = new DateTime(2020, 01, 02, 12, 00, 00),
+                StaffId = _staff1.Id,
+                Hours = 8,
+                DayOffType = DayOffType.Vacation
+            };
+
+            _dbContext.DaysOff.Add(_dayOff1);
+            _dbContext.DaysOff.Add(_dayOff2);
+
+            _repository = new DayOffRepository(_dbContext);
+        }
+
+        [Test]
+        public void AddAsync_should_add_new_record_to_db()
+        {
+            // Arrange
+            DayOff dayOff = new DayOff
+            {
+                Hours = 8,
+                CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
+                DayOffType = DayOffType.SickLeave,
+                StaffId = _staff1.Id
+            };
+
+            // Act
+            int result = _repository.AddAsync(dayOff).Result;
+            DayOff expected = _dbContext.DaysOff.FirstOrDefault(e => e.Id == dayOff.Id);
+
+            // Assert
+            Assert.AreEqual(expected, dayOff, "Added data as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Once);
+        }
+
+        [Test]
+        public void AddAsync_should_throws_exception_because_staffId_is_not_specified()
+        {
+            // Arrange
+            DayOff dayOff = new DayOff
+            {
+                Hours = 8,
+                CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
+                DayOffType = DayOffType.SickLeave,
+            };
+
+            // Assert
+            Assert.ThrowsAsync<DbUpdateException>(() => _repository.AddAsync(dayOff), "Throws exception as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
+        public void AddAsync_should_throws_exception_because_hours_is_less_or_equal_to_zero()
+        {
+            // Arrange
+            DayOff dayOff = new DayOff
+            {
+                Hours = -1,
+                CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
+                DayOffType = DayOffType.SickLeave,
+                StaffId = _staff1.Id
+            };
+
+            // Assert
+            Assert.ThrowsAsync<DbUpdateException>(() => _repository.AddAsync(dayOff), "Throws exception as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
+        public void AddAsync_should_throws_exception_because_hours_is_greater_than_max_work_hours()
+        {
+            // Arrange
+            DayOff dayOff = new DayOff
+            {
+                Hours = 9,
+                CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
+                DayOffType = DayOffType.SickLeave,
+                StaffId = _staff1.Id
+            };
+
+            // Assert
+            Assert.ThrowsAsync<DbUpdateException>(() => _repository.AddAsync(dayOff), "Throws exception as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
+        public void AddAsync_should_throws_exception_because_date_is_not_specified()
+        {
+            // Arrange
+            DayOff dayOff = new DayOff
+            {
+                Hours = 8,
+                CreatedOn = DateTime.MinValue,
+                DayOffType = DayOffType.SickLeave,
+                StaffId = _staff1.Id
+            };
+
+            // Assert
+            Assert.ThrowsAsync<DbUpdateException>(() => _repository.AddAsync(dayOff), "Throws exception as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
+        public void AddAsync_should_not_ad_new_record_because_record_with_this_date_already_exists()
+        {
+            // Arrange
+            DayOff dayOff = new DayOff
+            {
+                Hours = 8,
+                CreatedOn = new DateTime(2020, 01, 02, 12, 00, 00),
+                DayOffType = DayOffType.SickLeave,
+                StaffId = _staff1.Id
+            };
+
+            // Act
+            int result = _repository.AddAsync(dayOff).Result;
+
+            // Assert
+            Assert.AreEqual(0, result, "Result as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
+        public void UpdateAsync_should_succesfullty_update_record()
+        {
+            // Arrange
+            DayOff dayOff = new DayOff
+            {
+                Id = 1,
+                Hours = 6,
+                CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
+                DayOffType = DayOffType.SickLeave,
+                StaffId = _staff1.Id
+            };
+
+            // Act
+            int result = _repository.UpdateAsync(dayOff).Result;
+
+            // Assert
+            Assert.AreEqual(dayOff, _dayOff1, "Updated succesfully");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Once);
+        }
+
+        [Test]
+        public void UpdateAsync_should_throws_exception_because_hours_is_less_or_equal_to_zero()
+        {
+            // Arrange
+            DayOff dayOff = new DayOff
+            {
+                Id = 1,
+                Hours = -1,
+                CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
+                DayOffType = DayOffType.SickLeave,
+                StaffId = _staff1.Id
+            };
+
+            // Assert
+            Assert.ThrowsAsync<DbUpdateException>(() => _repository.UpdateAsync(dayOff), "Throws exception as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
+        public void UpdateAsync_should_throws_exception_because_hours_is_greater_than_max_work_hours()
+        {
+            // Arrange
+            DayOff dayOff = new DayOff
+            {
+                Id = 1,
+                Hours = 9,
+                CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
+                DayOffType = DayOffType.SickLeave,
+                StaffId = _staff1.Id
+            };
+
+            // Assert
+            Assert.ThrowsAsync<DbUpdateException>(() => _repository.UpdateAsync(dayOff), "Throws exception as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
+        public void UpdateAsync_should_throws_exception_because_date_is_not_specified()
+        {
+            // Arrange
+            DayOff dayOff = new DayOff
+            {
+                Id = 1,
+                Hours = 8,
+                CreatedOn = DateTime.MinValue,
+                DayOffType = DayOffType.SickLeave,
+                StaffId = _staff1.Id
+            };
+
+            // Assert
+            Assert.ThrowsAsync<DbUpdateException>(() => _repository.UpdateAsync(dayOff), "Throws exception as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
+        public void GetAll_should_return_all_records_from_db()
+        {
+            // Arrange
+            DayOff dayOff = new DayOff
+            {
+                Id = 3,
+                Hours = 8,
+                CreatedOn = DateTime.MinValue,
+                DayOffType = DayOffType.SickLeave,
+                StaffId = _staff1.Id
+            };
+            _dbContext.DaysOff.Add(dayOff);
+
+            // Act
+            IQueryable<DayOff> result = _repository.GetAll();
+
+            // Assert
+            CollectionAssert.AreEqual(new List<DayOff> { _dayOff1, _dayOff2, dayOff }, result, "Result as expected");
+        }
+
+        [Test]
+        public void GetByStaffId_should_return_all_records_from_db_by_specified_staffId()
+        {
+            // Act
+            IQueryable<DayOff> result = _repository.GetByStaffId(_staff1.Id);
+
+            // Assert
+            CollectionAssert.AreEqual(new List<DayOff> { _dayOff1, _dayOff2 }, result, "Result as expected");
+        }
+
+        [Test]
+        public void GetByStaffId_should_throw_exception_because_staffId_is_zero()
+        {
+            // Assert
+            Assert.Throws<ArgumentException>(() => _repository.GetByStaffId(0), "Throws exception as expected");
+        }
+
+        [Test]
+        public void GetByDateRange_should_return_all_records_from_db_by_specified_DateRange()
+        {
+            // Arrange
+            DayOff dayOff = new DayOff
+            {
+                Id = 3,
+                Hours = 8,
+                CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
+                DayOffType = DayOffType.SickLeave,
+                StaffId = _staff1.Id
+            };
+            _dbContext.DaysOff.Add(dayOff);
+
+            // Act
+            IQueryable<DayOff> result = _repository.GetByDateRange(new DateTime(2020, 01, 01, 12, 00, 00), new DateTime(2020, 01, 02, 12, 00, 00));
+
+            // Assert
+            CollectionAssert.AreEqual(new List<DayOff> { _dayOff1, _dayOff2 }, result, "Result as expected");
+        }
+
+        [Test]
+        public void GetByDateRange_should_throw_exception_because_date_range_is_wrong()
+        {
+            // Assert
+            Assert.Throws<ArgumentException>(() => _repository.GetByDateRange(new DateTime(2020, 01, 02, 12, 00, 00), new DateTime(2020, 01, 01, 12, 00, 00)), "Throws exception as expected");
+        }
+
+        [Test]
+        public void GetByDateRangeAndStaffId_should_return_all_records_from_db_by_specified_DateRange_and_staffId()
+        {
+            // Arrange
+            DayOff dayOff = new DayOff
+            {
+                Id = 3,
+                Hours = 8,
+                CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
+                DayOffType = DayOffType.SickLeave,
+                StaffId = _staff1.Id
+            };
+            DayOff staffNotForSearch = new DayOff
+            {
+                Id = 3,
+                Hours = 8,
+                CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
+                DayOffType = DayOffType.SickLeave,
+                StaffId = 2
+            };
+            _dbContext.DaysOff.Add(dayOff);
+            _dbContext.DaysOff.Add(staffNotForSearch);
+
+            // Act
+            IQueryable<DayOff> result = _repository.GetByDateRangeAndStaffId(new DateTime(2020, 01, 02, 12, 00, 00), new DateTime(2020, 01, 03, 12, 00, 00), _staff1.Id);
+
+            // Assert
+            CollectionAssert.AreEqual(new List<DayOff> { _dayOff2, dayOff }, result, "Result as expected");
+        }
+
+        [Test]
+        public void GetByDateRangeAndStaffId_should_throw_exception_because_staffId_is_zero()
+        {
+            // Assert
+            Assert.Throws<ArgumentException>(() => _repository.GetByDateRangeAndStaffId(new DateTime(2020, 01, 01, 12, 00, 00), new DateTime(2020, 01, 02, 12, 00, 00), 0), "Throws exception as expected");
+        }
+    }
+}

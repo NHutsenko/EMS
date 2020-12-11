@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Threading;
 using EMS.Gateway.API.DAL.Repositories;
 using EMS.Gateway.API.Models;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 using NUnit.Framework;
 
 namespace Gateway.API.Test
@@ -99,6 +101,7 @@ namespace Gateway.API.Test
 
             // Assert
             Assert.AreEqual(expected, toAdd, "Team success add hass been passed");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Once);
         }
 
         [Test]
@@ -114,6 +117,7 @@ namespace Gateway.API.Test
 
             // Assert
             Assert.ThrowsAsync<ArgumentNullException>(() => _repository.AddAsync(toAdd), "Team succesfully throws an exception because team name is empty");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
         [Test]
@@ -121,6 +125,7 @@ namespace Gateway.API.Test
         {
             // Assert
             Assert.ThrowsAsync<ArgumentNullException>(() => _repository.AddAsync(null), "Team succesfully throws an exception because team name is empty");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
         [Test]
@@ -180,6 +185,7 @@ namespace Gateway.API.Test
             Assert.AreEqual(expected.Description, team.Description, "Team description succesfullty update");
             Assert.AreEqual(expected.CreatedOn, team.CreatedOn, "Team cratedOn succesfullty update");
             Assert.AreEqual(1, expected.Id, "Team with id 1 has been updated");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Once);
         }
 
         [Test]
@@ -196,6 +202,7 @@ namespace Gateway.API.Test
 
             // Assert
             Assert.ThrowsAsync<ArgumentNullException>(() => _repository.UpdateAsync(team), "Succesfullty throwed an exception that team name cannot be null while updating");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
         [Test]
@@ -203,6 +210,7 @@ namespace Gateway.API.Test
         {
             // Assert
             Assert.ThrowsAsync<ArgumentNullException>(() => _repository.UpdateAsync(null), "Succesfullty throwed an exception that team name cannot be null while updating");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
         [Test]
@@ -224,6 +232,7 @@ namespace Gateway.API.Test
 
             // Assert
             Assert.AreEqual(null, deleted, "Succesfullty deleted team");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Once);
         }
 
         [Test]
@@ -237,6 +246,7 @@ namespace Gateway.API.Test
 
             // Assert
             Assert.ThrowsAsync<DbUpdateException>(() => _repository.DeleteAsync(team), "Succesfullty throwed an exception that team linked with positions");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
         [Test]
@@ -244,6 +254,7 @@ namespace Gateway.API.Test
         {
             // Assert
             Assert.ThrowsAsync<ArgumentNullException>(() => _repository.DeleteAsync(null), "Succesfullty throwed an exception that team is null");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
     }
 }
