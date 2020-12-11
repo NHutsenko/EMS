@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
-using EMS.Gateway.API.DAL.Repositories;
-using EMS.Gateway.API.Enums;
-using EMS.Gateway.API.Models;
+using EMS.Core.API.Models;
+using EMS.Core.API.DAL.Repositories;
+using EMS.Core.API.Enums;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;
 
-namespace Gateway.API.Test
+namespace EMS.Core.API.Tests
 {
     [ExcludeFromCodeCoverage]
-    public class DaysOffRepositoryTests: BaseUnitTest
+    public class DaysOffRepositoryTests : BaseUnitTest
     {
         private Staff _staff1;
         private DayOff _dayOff1;

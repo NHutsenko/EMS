@@ -7,9 +7,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{ECCEDC2B-205
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{C0F94643-91A7-4CF3-8565-B1B19A17EBE4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMS.Gateway.API", "src\EMS.Gateway.API\EMS.Gateway.API.csproj", "{66F65AE1-ABCD-4E1F-9753-B1DA4E8B8066}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EMS.Core.API", "src\EMS.Core.API\EMS.Core.API.csproj", "{66F65AE1-ABCD-4E1F-9753-B1DA4E8B8066}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMS.Gateway.API.Tests", "tests\EMS.Gateway.API.Tests\EMS.Gateway.API.Tests.csproj", "{4A0FD12F-32F6-4BA8-BE1A-88F44E380040}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EMS.Core.API.Tests", "tests\EMS.Gateway.API.Tests\EMS.Core.API.Tests.csproj", "{4A0FD12F-32F6-4BA8-BE1A-88F44E380040}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

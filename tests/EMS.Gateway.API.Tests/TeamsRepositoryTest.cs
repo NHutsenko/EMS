@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
-using EMS.Gateway.API.DAL.Repositories;
-using EMS.Gateway.API.Models;
+using EMS.Core.API.DAL.Repositories;
+using EMS.Core.API.Models;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;
 
-namespace Gateway.API.Test
+namespace EMS.Core.API.Tests
 {
     [ExcludeFromCodeCoverage]
-    public class TeamsRepositoryTest: BaseUnitTest
+    public class TeamsRepositoryTest : BaseUnitTest
     {
         public TeamsRepository _repository;
         public Team _test1;
@@ -41,7 +41,7 @@ namespace Gateway.API.Test
                 Description = "test",
                 CreatedOn = new DateTime(2020, 01, 01, 13, 00, 00)
             };
-           
+
             _position1 = new Position
             {
                 Id = 1,
@@ -78,7 +78,7 @@ namespace Gateway.API.Test
             _dbContext.Positions.Add(_position1);
             _dbContext.Positions.Add(_position2);
             _dbContext.Positions.Add(_position3);
-            _dbContext.Positions.Add(_position4);  
+            _dbContext.Positions.Add(_position4);
             _dbContext.Teams.Add(_test1);
             _dbContext.Teams.Add(_test2);
             _repository = new TeamsRepository(_dbContext);

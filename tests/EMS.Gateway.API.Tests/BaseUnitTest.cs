@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using EMS.Gateway.API.DAL;
-using Gateway.API.Test.Mocks;
+using EMS.Core.API.DAL;
+using EMS.Core.API.Tests.Mocks;
 using Moq;
 
-namespace Gateway.API.Test
+namespace EMS.Core.API.Tests
 {
     [ExcludeFromCodeCoverage]
 	public class BaseUnitTest

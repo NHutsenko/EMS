@@ -1,4 +1,4 @@
-﻿using EMS.Gateway.API.DAL;
+﻿using EMS.Core.API.DAL;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using System;
@@ -7,7 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 
-namespace Gateway.API.Test.Mocks
+namespace EMS.Core.API.Tests.Mocks
 {
     [ExcludeFromCodeCoverage]
     public class DbContextMock
