@@ -284,7 +284,7 @@ namespace EMS.Core.API.Tests
 
 
             // Assert
-            Assert.AreEqual(null, recieved, "Succesfuly deleted from db");
+            CollectionAssert.AreEqual(new List<Position> { _position1, _position2 }, _dbContext.Positions.ToList(), "Succesfuly deleted from db");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Once);
         }
 

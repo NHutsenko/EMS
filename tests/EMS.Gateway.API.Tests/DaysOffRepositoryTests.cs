@@ -76,6 +76,14 @@ namespace EMS.Core.API.Tests
         }
 
         [Test]
+        public void AddAsync_should_throws_exception_because_dayoff_entity_is_null()
+        {
+            // Assert
+            Assert.ThrowsAsync<ArgumentNullException>(() => _repository.AddAsync(null), "Throws exception as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
         public void AddAsync_should_throws_exception_because_staffId_is_not_specified()
         {
             // Arrange
@@ -184,6 +192,14 @@ namespace EMS.Core.API.Tests
         }
 
         [Test]
+        public void UpdateAsync_should_throws_exception_because_dayoff_entity_is_null()
+        {
+            // Assert
+            Assert.ThrowsAsync<ArgumentNullException>(() => _repository.UpdateAsync(null), "Throws exception as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
         public void UpdateAsync_should_throws_exception_because_hours_is_less_or_equal_to_zero()
         {
             // Arrange
@@ -235,6 +251,28 @@ namespace EMS.Core.API.Tests
             // Assert
             Assert.ThrowsAsync<DbUpdateException>(() => _repository.UpdateAsync(dayOff), "Throws exception as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
+        public void DeleteAsync_should_delete_record_from_db()
+        {
+            // Arrange
+            DayOff dayOff = new DayOff
+            {
+                Id = 3,
+                Hours = 8,
+                CreatedOn = DateTime.MinValue,
+                DayOffType = DayOffType.SickLeave,
+                StaffId = _staff1.Id
+            };
+            _dbContext.DaysOff.Add(dayOff);
+
+            // Act
+            int result = _repository.DeleteAsync(dayOff).Result;
+
+            // Assert
+            CollectionAssert.AreEqual(new List<DayOff> { _dayOff1, _dayOff2 }, _dbContext.DaysOff.ToList(), "DeleteAsync deleted as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Once);
         }
 
         [Test]

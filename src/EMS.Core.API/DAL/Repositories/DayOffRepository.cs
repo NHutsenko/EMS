@@ -15,6 +15,10 @@ namespace EMS.Core.API.DAL.Repositories
 
         public async Task<int> AddAsync(DayOff dayOff)
         {
+            if(dayOff is null)
+            {
+                throw new ArgumentNullException("Dayoff entity cannot be null");
+            }
             if(dayOff.StaffId == 0)
             {
                 throw new DbUpdateException("Cannot add day off record without specified staff Id");
@@ -37,6 +41,10 @@ namespace EMS.Core.API.DAL.Repositories
 
         public async Task<int> UpdateAsync(DayOff dayOff)
         {
+            if (dayOff is null)
+            {
+                throw new ArgumentNullException("Dayoff entity cannot be null");
+            }
             if (!IsRelevantTime(dayOff.Hours))
             {
                 throw new DbUpdateException("Cannot update day off record without specified time");
@@ -46,6 +54,12 @@ namespace EMS.Core.API.DAL.Repositories
                 throw new DbUpdateException("Cannot add day off record without specified date");
             }
             _context.DaysOff.Update(dayOff);
+            return await _context.SaveChangesAsync();
+        }
+
+        public async Task<int> DeleteAsync(DayOff dayOff)
+        {
+            _context.DaysOff.Remove(dayOff);
             return await _context.SaveChangesAsync();
         }
 

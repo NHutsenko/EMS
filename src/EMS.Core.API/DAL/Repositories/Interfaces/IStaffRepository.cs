@@ -9,8 +9,8 @@ namespace EMS.Core.API.DAL.Repositories.Interfaces
         Task<int> AddAsync(Staff staff);
         Task<int> UpdateAsync(Staff staff);
         Task<int> DeleteAsync(Staff staff);
-        public IQueryable<Staff> GetByPerson(long personId);
-        public IQueryable<Staff> GetByManager(long managerId);
+        public IQueryable<Staff> GetByPersonId(long personId);
+        public IQueryable<Staff> GetByManagerId(long managerId);
         public IQueryable<Staff> GetAll();
     }
 }

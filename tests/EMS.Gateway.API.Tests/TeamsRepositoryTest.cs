@@ -231,7 +231,7 @@ namespace EMS.Core.API.Tests
             Team deleted = _dbContext.Teams.FirstOrDefault(t => t.Id == team.Id);
 
             // Assert
-            Assert.AreEqual(null, deleted, "Succesfullty deleted team");
+            CollectionAssert.AreEqual(new List<Team> { _test1, _test2}, _dbContext.Teams.ToList(), "Succesfullty deleted team");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Once);
         }
 
