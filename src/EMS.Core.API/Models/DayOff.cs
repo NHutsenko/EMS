@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
+using EMS.Common.Models.BaseModel;
 using EMS.Core.API.Enums;
 
 namespace EMS.Core.API.Models

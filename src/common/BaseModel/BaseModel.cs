@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
-namespace EMS.Core.API.Models
+namespace EMS.Common.Models.BaseModel
 {
     [ExcludeFromCodeCoverage]
     public class BaseModel

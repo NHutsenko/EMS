@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.Serialization;
-using EMS.Core.API.Models;
+using EMS.Common.Models.BaseModel;
 
 namespace EMS.Core.API.Models
 {

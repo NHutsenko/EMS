@@ -30,20 +30,20 @@ namespace EMS.Core.API.Tests
                 Id = 1,
                 Name = "test1",
                 Description = "test",
-                CreatedOn = new DateTime(2020, 01, 01, 12, 00, 00)
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime()
             };
             _team2 = new Team
             {
                 Id = 2,
                 Name = "test2",
                 Description = "test",
-                CreatedOn = new DateTime(2020, 01, 01, 13, 00, 00)
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime()
             };
 
             _position1 = new Position
             {
                 Id = 1,
-                CreatedOn = new DateTime(2020, 01, 01, 12, 00, 00),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Name = "position1",
                 Team = _team1,
                 TeamId = _team1.Id
@@ -51,7 +51,7 @@ namespace EMS.Core.API.Tests
             _position2 = new Position
             {
                 Id = 2,
-                CreatedOn = new DateTime(2020, 01, 01, 12, 00, 00),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Name = "position2"
                 ,
                 Team = _team2,
@@ -67,7 +67,7 @@ namespace EMS.Core.API.Tests
             _dbContext.Positions.Add(_position2);
             _dbContext.Teams.Add(_team1);
             _dbContext.Teams.Add(_team2);
-            _repository = new PositionsRepository(_dbContext);
+            _repository = new PositionsRepository(_dbContext, _dateTimeUtil);
         }
 
         [Test]
@@ -77,7 +77,7 @@ namespace EMS.Core.API.Tests
             Position position = new Position
             {
                 Name = "add test",
-                CreatedOn = new DateTime(2020, 01, 01, 12, 00, 00),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Team = _team1,
                 TeamId = _team1.Id,
             };
@@ -105,7 +105,7 @@ namespace EMS.Core.API.Tests
             Position position = new Position
             {
                 Name = "",
-                CreatedOn = new DateTime(2020, 01, 01, 12, 00, 00),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Team = _team1,
                 TeamId = _team1.Id,
             };
@@ -122,7 +122,7 @@ namespace EMS.Core.API.Tests
             Position position = new Position
             {
                 Name = "test",
-                CreatedOn = new DateTime(2020, 01, 01, 12, 00, 00),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Team = _team2,
                 TeamId = 0,
             };
@@ -139,7 +139,7 @@ namespace EMS.Core.API.Tests
             Position position = new Position
             {
                 Name = "test",
-                CreatedOn = new DateTime(2020, 01, 01, 12, 00, 00),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Team = _team1,
                 TeamId = 4,
             };
@@ -156,7 +156,7 @@ namespace EMS.Core.API.Tests
             Position position = new Position
             {
                 Name = "test",
-                CreatedOn = new DateTime(2020, 01, 01, 12, 00, 00),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Team = _team2,
                 TeamId = 1,
             };
@@ -174,7 +174,7 @@ namespace EMS.Core.API.Tests
             {
                 Id = 1,
                 Name = "test update",
-                CreatedOn = new DateTime(2020, 01, 01, 12, 00, 12),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Team = _team2,
                 TeamId = _team2.Id,
             };
@@ -203,7 +203,7 @@ namespace EMS.Core.API.Tests
             {
                 Id = 1,
                 Name = "",
-                CreatedOn = new DateTime(2020, 01, 01, 12, 00, 00),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Team = _team1,
                 TeamId = _team1.Id,
             };
@@ -221,7 +221,7 @@ namespace EMS.Core.API.Tests
             {
                 Id = 1,
                 Name = "test",
-                CreatedOn = new DateTime(2020, 01, 01, 12, 00, 00),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Team = _team2,
                 TeamId = 0,
             };
@@ -238,7 +238,7 @@ namespace EMS.Core.API.Tests
             Position position = new Position
             {
                 Name = "test",
-                CreatedOn = new DateTime(2020, 01, 01, 12, 00, 00),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Team = _team1,
                 TeamId = 4,
             };
@@ -255,7 +255,7 @@ namespace EMS.Core.API.Tests
             Position position = new Position
             {
                 Name = "test",
-                CreatedOn = new DateTime(2020, 01, 01, 12, 00, 00),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Team = _team2,
                 TeamId = 1,
             };
@@ -273,7 +273,7 @@ namespace EMS.Core.API.Tests
             {
                 Id = 3,
                 Name = "test",
-                CreatedOn = new DateTime(2020, 01, 01, 12, 00, 00),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Team = _team2,
                 TeamId = 3,
             };
@@ -296,7 +296,7 @@ namespace EMS.Core.API.Tests
             {
                 Id = 3,
                 Name = "test",
-                CreatedOn = new DateTime(2020, 01, 01, 12, 00, 00),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Team = _team2,
                 TeamId = 1,
             };
@@ -315,7 +315,7 @@ namespace EMS.Core.API.Tests
             {
                 Id = 3,
                 Name = "test",
-                CreatedOn = new DateTime(2020, 01, 01, 12, 00, 00),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
             };
             _staff1.PositionId = position.Id;
             _dbContext.Positions.Add(position);

@@ -17,4 +17,9 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\common\BaseModel\BaseModel.csproj" />
+    <ProjectReference Include="..\common\DateTimeUtil\DateTimeUtil.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>EMS.Common.Models.BaseModel</RootNamespace>
+    <AssemblyName>EMS.Common.Models.BaseModel</AssemblyName>
+  </PropertyGroup>
+
+</Project>

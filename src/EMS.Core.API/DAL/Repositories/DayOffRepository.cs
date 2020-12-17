@@ -11,7 +11,7 @@ namespace EMS.Core.API.DAL.Repositories
 {
     public class DayOffRepository : BaseRepository, IDayOffRepository
     {
-        public DayOffRepository(IApplicationDbContext context) : base(context) { }
+        public DayOffRepository(IApplicationDbContext context) : base(context, null) { }
 
         public async Task<int> AddAsync(DayOff dayOff)
         {

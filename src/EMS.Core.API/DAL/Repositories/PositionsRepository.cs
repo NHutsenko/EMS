@@ -1,4 +1,5 @@
-﻿using EMS.Core.API.Models;
+﻿using EMS.Common.Utils.DateTimeUtil;
+using EMS.Core.API.Models;
 using EMS.Core.API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -9,7 +10,7 @@ namespace EMS.Core.API.DAL.Repositories
 {
     public class PositionsRepository : BaseRepository, IPositionsRepository
     {
-        public PositionsRepository(IApplicationDbContext context) : base(context) { }
+        public PositionsRepository(IApplicationDbContext context, IDateTimeUtil dateTimeUtil) : base(context, dateTimeUtil) { }
 
         public async Task<int> AddAsync(Position position)
         {
@@ -26,6 +27,7 @@ namespace EMS.Core.API.DAL.Repositories
             {
                 throw new DbUpdateException("Cannot add position with non exists team");
             }
+            position.CreatedOn = _dateTimeUtil.GetCurrentDateTime();
             _context.Positions.Add(position);
             return await _context.SaveChangesAsync();
         }

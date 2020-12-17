@@ -12,6 +12,8 @@ namespace EMS.Core.API.DAL
         public DbSet<Staff> Staff { get; set; }
         public DbSet<DayOff> DaysOff { get; set; }
         public DbSet<Person> People { get; set; }
+        public DbSet<PersonPhoto> Photos { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
 
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
@@ -39,6 +41,16 @@ namespace EMS.Core.API.DAL
                 .HasOne(e => e.Staff)
                 .WithMany(e => e.DayOff)
                 .HasForeignKey(e => e.StaffId);
-		}
+            modelBuilder.Entity<Contact>()
+                .ToTable("Contacts", "core")
+                .HasOne(e => e.Person)
+                .WithMany(e => e.Contacts)
+                .HasForeignKey(e => e.PersonId);
+            modelBuilder.Entity<PersonPhoto>()
+                .ToTable("PerosnPhotos", "core")
+                .HasOne(e => e.Person)
+                .WithMany(e => e.Photos)
+                .HasForeignKey(e => e.PersonId);
+        }
 	}
 }

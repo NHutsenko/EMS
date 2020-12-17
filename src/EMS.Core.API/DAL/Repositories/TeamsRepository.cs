@@ -1,4 +1,5 @@
-﻿using EMS.Core.API.Models;
+﻿using EMS.Common.Utils.DateTimeUtil;
+using EMS.Core.API.Models;
 using EMS.Core.API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -9,7 +10,7 @@ namespace EMS.Core.API.DAL.Repositories
 {
     public class TeamsRepository: BaseRepository, ITeamsRepository
 	{
-		public TeamsRepository(IApplicationDbContext context): base(context) { }
+		public TeamsRepository(IApplicationDbContext context, IDateTimeUtil dateTimeUtil): base(context, dateTimeUtil) { }
 
 		public async Task<int> AddAsync(Team team)
 		{

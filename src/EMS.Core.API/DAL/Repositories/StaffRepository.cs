@@ -9,7 +9,7 @@ namespace EMS.Core.API.DAL.Repositories
 {
     public class StaffRepository: BaseRepository, IStaffRepository
     {
-        public StaffRepository(IApplicationDbContext context) : base(context) { }
+        public StaffRepository(IApplicationDbContext context) : base(context, null) { }
 
         public async Task<int> AddAsync(Staff staff)
         {

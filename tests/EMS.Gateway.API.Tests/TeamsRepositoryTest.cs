@@ -32,20 +32,20 @@ namespace EMS.Core.API.Tests
                 Id = 1,
                 Name = "test1",
                 Description = "test",
-                CreatedOn = new DateTime(2020, 01, 01, 12, 00, 00)
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime()
             };
             _test2 = new Team
             {
                 Id = 2,
                 Name = "test2",
                 Description = "test",
-                CreatedOn = new DateTime(2020, 01, 01, 13, 00, 00)
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime()
             };
 
             _position1 = new Position
             {
                 Id = 1,
-                CreatedOn = new DateTime(2020, 01, 01, 12, 00, 00),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Name = "position1",
                 Team = _test1,
                 TeamId = _test1.Id
@@ -53,7 +53,7 @@ namespace EMS.Core.API.Tests
             _position2 = new Position
             {
                 Id = 2,
-                CreatedOn = new DateTime(2020, 01, 01, 12, 00, 00),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Name = "position2"
                 ,
                 Team = _test1,
@@ -62,7 +62,7 @@ namespace EMS.Core.API.Tests
             _position3 = new Position
             {
                 Id = 3,
-                CreatedOn = new DateTime(2020, 01, 01, 12, 00, 00),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Name = "position3",
                 Team = _test2,
                 TeamId = _test2.Id
@@ -70,7 +70,7 @@ namespace EMS.Core.API.Tests
             _position4 = new Position
             {
                 Id = 4,
-                CreatedOn = new DateTime(2020, 01, 01, 12, 00, 00),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Name = "position4",
                 Team = _test2,
                 TeamId = _test2.Id
@@ -81,7 +81,7 @@ namespace EMS.Core.API.Tests
             _dbContext.Positions.Add(_position4);
             _dbContext.Teams.Add(_test1);
             _dbContext.Teams.Add(_test2);
-            _repository = new TeamsRepository(_dbContext);
+            _repository = new TeamsRepository(_dbContext, _dateTimeUtil);
         }
 
         [Test]
@@ -92,7 +92,7 @@ namespace EMS.Core.API.Tests
             {
                 Name = "Test",
                 Description = "test",
-                CreatedOn = new DateTime(2020, 01, 01, 12, 00, 00)
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime()
             };
 
             // Act
@@ -112,7 +112,7 @@ namespace EMS.Core.API.Tests
             {
                 Name = "",
                 Description = "test",
-                CreatedOn = new DateTime(2020, 01, 01, 12, 00, 00)
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime()
             };
 
             // Assert
@@ -172,7 +172,7 @@ namespace EMS.Core.API.Tests
             {
                 Id = _test1.Id,
                 Name = "new test name",
-                CreatedOn = new DateTime(2020, 01, 01, 12, 00, 00),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Description = "new test description"
             };
 
@@ -196,7 +196,7 @@ namespace EMS.Core.API.Tests
             {
                 Id = _test1.Id,
                 Name = "",
-                CreatedOn = new DateTime(2020, 01, 01, 12, 00, 00),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Description = "new test description"
             };
 
@@ -221,7 +221,7 @@ namespace EMS.Core.API.Tests
             {
                 Id = 3,
                 Name = "to delete",
-                CreatedOn = new DateTime(2020, 01, 01, 12, 00, 00),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Description = "new test description"
             };
             _dbContext.Teams.Add(team);
