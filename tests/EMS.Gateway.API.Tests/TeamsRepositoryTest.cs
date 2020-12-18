@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using EMS.Core.API.DAL.Repositories;
 using EMS.Core.API.Models;
+using EMS.Core.API.Tests.Mocks;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;
@@ -26,6 +27,7 @@ namespace EMS.Core.API.Tests
         public void Setup()
         {
             InitializeMocks();
+            DbContextMock.ShouldThrowException = false;
             _test1 = new Team
             {
                 Id = 1,
@@ -120,6 +122,23 @@ namespace EMS.Core.API.Tests
         }
 
         [Test]
+        public void AddAsync_should_throw_exception_from_db()
+        {
+            // Arrange
+            DbContextMock.ShouldThrowException = true;
+            Team toAdd = new Team
+            {
+                Name = "test",
+                Description = "test",
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime()
+            };
+
+            // Assert
+            Assert.ThrowsAsync<Exception>(() => _teamsRepository.AddAsync(toAdd), "Exception from db throws as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
         public void AddAsync_should_throw_an_exception_because_team_is_empty()
         {
             // Assert
@@ -188,6 +207,24 @@ namespace EMS.Core.API.Tests
         }
 
         [Test]
+        public void UpdateAsync_should_throw_exception_from_db()
+        {
+            // Arrange
+            DbContextMock.ShouldThrowException = true;
+            Team team = new Team
+            {
+                Id = _test1.Id,
+                Name = "new test name",
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Description = "new test description"
+            };
+
+            // Assert
+            Assert.ThrowsAsync<Exception>(() => _teamsRepository.UpdateAsync(team), "Exception from db throws as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
         public void UpdateAsync_should_throw_an_exception_because_team_name_is_empty()
         {
             // Arrange
@@ -232,6 +269,24 @@ namespace EMS.Core.API.Tests
             // Assert
             CollectionAssert.AreEqual(new List<Team> { _test1, _test2}, _dbContext.Teams.ToList(), "Succesfullty deleted team");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Once);
+        }
+
+        [Test]
+        public void DeleteAsync_should_throw_exception_from_db()
+        {
+            // Arrange
+            DbContextMock.ShouldThrowException = true;
+            Team team = new Team
+            {
+                Id = 3,
+                Name = "new test name",
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Description = "new test description"
+            };
+
+            // Assert
+            Assert.ThrowsAsync<Exception>(() => _teamsRepository.DeleteAsync(team), "Exception from db throws as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
         [Test]

@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Threading;
 using EMS.Core.API.DAL.Repositories;
 using EMS.Core.API.Models;
 using EMS.Core.API.Tests.Mocks;
+using Moq;
 using NUnit.Framework;
 
 namespace EMS.Core.API.Tests
@@ -23,6 +25,7 @@ namespace EMS.Core.API.Tests
         public void Setup()
         {
             InitializeMocks();
+            DbContextMock.ShouldThrowException = false;
 
             _contact1 = new Contact
             {
@@ -98,7 +101,6 @@ namespace EMS.Core.API.Tests
             _dbContext.People.Add(_person1);
 
             _peopleRepository = new PeopleRepository(_dbContext, _dateTimeUtil);
-            DbContextMock.ShouldThrowException = false;
         }
 
         [Test]
@@ -133,6 +135,188 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected, actual, "Person data returned as expected");
+        }
+
+        [Test]
+        public void AddAsync_should_add_person_data_to_db()
+        {
+            // Arrange
+            Person person = new Person
+            {
+                BornedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Name = "Test",
+                LastName = "Test"
+            };
+
+            // Act
+            int result = _peopleRepository.AddAsync(person).Result;
+            Person actual = _dbContext.People.FirstOrDefault(e => e.Id == person.Id);
+
+            // Assert
+            Assert.AreEqual(person, actual, "Person added to db as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Once);
+        }
+
+        [Test]
+        public void AddAsync_should_throw_exception_from_db()
+        {
+            // Arrange
+            DbContextMock.ShouldThrowException = true;
+            Person person = new Person
+            {
+                BornedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Name = "Test",
+                LastName = "Test"
+            };
+
+            // Assert
+            Assert.ThrowsAsync<Exception>(() => _peopleRepository.AddAsync(person), "Exception from db throws as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
+        public void AddAsync_should_throw_exception_because_person_data_is_null()
+        {
+            // Assert
+            Assert.ThrowsAsync<ArgumentException>(() => _peopleRepository.AddAsync(null), "Exception from db throws as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
+        public void AddAsync_should_throw_exception_because_last_name_is_invalid()
+        {
+            // Arrange
+            Person person = new Person
+            {
+                BornedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Name = "Test"
+            };
+
+            // Assert
+            Assert.ThrowsAsync<ArgumentNullException>(() => _peopleRepository.AddAsync(person), "Exception throws as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
+        public void AddAsync_should_throw_exception_because_name_is_invalid()
+        {
+            // Arrange
+            Person person = new Person
+            {
+                BornedOn = _dateTimeUtil.GetCurrentDateTime(),
+                LastName = "Test"
+            };
+
+            // Assert
+            Assert.ThrowsAsync<ArgumentNullException>(() => _peopleRepository.AddAsync(person), "Exception throws as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
+        public void AddAsync_should_throw_exception_because_born_date_is_invalid()
+        {
+            // Arrange
+            Person person = new Person
+            {
+                BornedOn = DateTime.MinValue,
+                LastName = "Test"
+            };
+
+            // Assert
+            Assert.ThrowsAsync<ArgumentNullException>(() => _peopleRepository.AddAsync(person), "Exception throws as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
+        public void Update_should_update_person_data_to_db()
+        {
+            // Arrange
+            Person person = new Person
+            {
+                BornedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Name = "Test",
+                LastName = "Test",
+                Id = 1
+            };
+
+            // Act
+            int result = _peopleRepository.UpdateAsync(person).Result;
+
+            // Assert
+            Assert.AreEqual(person, _person1, "Person added to db as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Once);
+        }
+
+        [Test]
+        public void UpdateAsync_should_throw_exception_from_db()
+        {
+            // Arrange
+            DbContextMock.ShouldThrowException = true;
+            Person person = new Person
+            {
+                BornedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Name = "Test",
+                LastName = "Test",
+                Id = 1
+            };
+
+            // Assert
+            Assert.ThrowsAsync<Exception>(() => _peopleRepository.UpdateAsync(person), "Exception from db throws as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
+        public void UpdateAsync_should_throw_exception_because_person_data_is_null()
+        {
+            // Assert
+            Assert.ThrowsAsync<ArgumentNullException>(() => _peopleRepository.UpdateAsync(null), "Exception from db throws as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
+        public void UpdateAsync_should_throw_exception_because_last_name_is_invalid()
+        {
+            // Arrange
+            Person person = new Person
+            {
+                BornedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Name = "Test"
+            };
+
+            // Assert
+            Assert.ThrowsAsync<ArgumentNullException>(() => _peopleRepository.UpdateAsync(person), "Exception throws as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
+        public void UpdateAsync_should_throw_exception_because_name_is_invalid()
+        {
+            // Arrange
+            Person person = new Person
+            {
+                BornedOn = _dateTimeUtil.GetCurrentDateTime(),
+                LastName = "Test"
+            };
+
+            // Assert
+            Assert.ThrowsAsync<ArgumentNullException>(() => _peopleRepository.UpdateAsync(person), "Exception throws as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
+        public void UpdateAsync_should_throw_exception_because_born_date_is_invalid()
+        {
+            // Arrange
+            DbContextMock.ShouldThrowException = true;
+            Person person = new Person
+            {
+                BornedOn = DateTime.MinValue,
+                LastName = "Test"
+            };
+
+            // Assert
+            Assert.ThrowsAsync<ArgumentNullException>(() => _peopleRepository.UpdateAsync(person), "Exception throws as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
     }
 }

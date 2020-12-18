@@ -9,6 +9,7 @@ using EMS.Core.API.Enums;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;
+using EMS.Core.API.Tests.Mocks;
 
 namespace EMS.Core.API.Tests
 {
@@ -51,6 +52,7 @@ namespace EMS.Core.API.Tests
             _dbContext.DaysOff.Add(_dayOff2);
 
             _dayOffRepository = new DayOffRepository(_dbContext);
+            DbContextMock.ShouldThrowException = false;
         }
 
         [Test]
@@ -72,6 +74,24 @@ namespace EMS.Core.API.Tests
             // Assert
             Assert.AreEqual(expected, dayOff, "Added data as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Once);
+        }
+
+        [Test]
+        public void AddAsync_should_throw_exception_from_db()
+        {
+            // Arrange
+            DbContextMock.ShouldThrowException = true;
+            DayOff dayOff = new DayOff
+            {
+                Hours = 8,
+                CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
+                DayOffType = DayOffType.SickLeave,
+                StaffId = _staff1.Id
+            };
+
+            // Assert
+            Assert.ThrowsAsync<Exception>(() => _dayOffRepository.AddAsync(dayOff), "Exception from db throws as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
         [Test]
@@ -191,6 +211,24 @@ namespace EMS.Core.API.Tests
         }
 
         [Test]
+        public void UpdateAsync_should_throw_exception_from_db()
+        {
+            // Arrange
+            DbContextMock.ShouldThrowException = true;
+            DayOff dayOff = new DayOff
+            {
+                Hours = 8,
+                CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
+                DayOffType = DayOffType.SickLeave,
+                StaffId = _staff1.Id
+            };
+
+            // Assert
+            Assert.ThrowsAsync<Exception>(() => _dayOffRepository.UpdateAsync(dayOff), "Exception from db throws as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
         public void UpdateAsync_should_throws_exception_because_dayoff_entity_is_null()
         {
             // Assert
@@ -272,6 +310,24 @@ namespace EMS.Core.API.Tests
             // Assert
             CollectionAssert.AreEqual(new List<DayOff> { _dayOff1, _dayOff2 }, _dbContext.DaysOff.ToList(), "DeleteAsync deleted as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Once);
+        }
+
+        [Test]
+        public void DeleteAsync_should_throw_exception_from_db()
+        {
+            // Arrange
+            DbContextMock.ShouldThrowException = true;
+            DayOff dayOff = new DayOff
+            {
+                Hours = 8,
+                CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
+                DayOffType = DayOffType.SickLeave,
+                StaffId = _staff1.Id
+            };
+
+            // Assert
+            Assert.ThrowsAsync<Exception>(() => _dayOffRepository.DeleteAsync(dayOff), "Exception from db throws as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
         [Test]

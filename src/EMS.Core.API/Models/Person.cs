@@ -46,8 +46,8 @@ namespace EMS.Core.API.Models
                 && LastName == toCompare.LastName
                 && SecondName == toCompare.SecondName
                 && BornedOn == toCompare.BornedOn
-                && Enumerable.SequenceEqual(Photos, toCompare.Photos)
-                && Enumerable.SequenceEqual(Contacts, toCompare.Contacts);
+                && ((Photos == null && toCompare.Photos == null) || Enumerable.SequenceEqual(Photos, toCompare.Photos))
+                && ((Contacts == null && toCompare.Contacts == null) || Enumerable.SequenceEqual(Contacts, toCompare.Contacts));
         }
     }
 }

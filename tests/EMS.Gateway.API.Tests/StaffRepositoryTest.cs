@@ -8,6 +8,7 @@ using NUnit.Framework;
 using Moq;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using EMS.Core.API.Tests.Mocks;
 
 namespace EMS.Core.API.Tests
 {
@@ -41,6 +42,7 @@ namespace EMS.Core.API.Tests
             _dbContext.Staff.Add(_staff1);
             _dbContext.Staff.Add(_staff2);
             _staffRepository = new StaffRepository(_dbContext);
+            DbContextMock.ShouldThrowException = false;
         }
 
         [Test]
@@ -62,6 +64,24 @@ namespace EMS.Core.API.Tests
             // Assert
             Assert.AreEqual(toAdd, added, "AddAsync added entity as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Once);
+        }
+
+        [Test]
+        public void AddAsync_should_throw_exception_from_db()
+        {
+            // Arrange
+            DbContextMock.ShouldThrowException = true;
+            Staff toAdd = new Staff
+            {
+                CreatedOn = new DateTime(2020, 03, 01, 12, 00, 00),
+                PersonId = 1,
+                ManagerId = 123,
+                PositionId = 3
+            };
+
+            // Assert
+            Assert.ThrowsAsync<Exception>(() => _staffRepository.AddAsync(toAdd), "Exception from db throws as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
         [Test]
@@ -142,6 +162,25 @@ namespace EMS.Core.API.Tests
             // Assert
             Assert.AreEqual(toUpdate, _staff1, "Updated as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Once);
+        }
+
+        [Test]
+        public void UpdateAsync_should_throw_exception_from_db()
+        {
+            // Arrange
+            DbContextMock.ShouldThrowException = true;
+            Staff toUpdate = new Staff
+            {
+                CreatedOn = new DateTime(2020, 03, 01, 12, 00, 00),
+                PersonId = 1,
+                ManagerId = 123,
+                PositionId = 3,
+                Id = _staff1.Id
+            };
+
+            // Assert
+            Assert.ThrowsAsync<Exception>(() => _staffRepository.UpdateAsync(toUpdate), "Exception from db throws as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
         [Test]
@@ -226,6 +265,25 @@ namespace EMS.Core.API.Tests
             // Assert
             CollectionAssert.AreEqual(new List<Staff> { _staff1, _staff2 }, _dbContext.Staff.ToList(), "DeleteAsync deleted entity as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Once);
+        }
+
+        [Test]
+        public void DeleteAsync_should_throw_exception_from_db()
+        {
+            // Arrange
+            DbContextMock.ShouldThrowException = true;
+            Staff toDelete = new Staff
+            {
+                CreatedOn = new DateTime(2021, 03, 01, 12, 00, 00),
+                PersonId = 1,
+                ManagerId = 123,
+                PositionId = 3,
+                Id = _staff1.Id
+            };
+
+            // Assert
+            Assert.ThrowsAsync<Exception>(() => _staffRepository.DeleteAsync(toDelete), "Exception from db throws as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
         [Test]

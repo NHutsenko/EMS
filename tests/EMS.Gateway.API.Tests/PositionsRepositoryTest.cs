@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using EMS.Core.API.DAL.Repositories;
 using EMS.Core.API.Models;
+using EMS.Core.API.Tests.Mocks;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;
@@ -67,6 +68,7 @@ namespace EMS.Core.API.Tests
             _dbContext.Teams.Add(_team1);
             _dbContext.Teams.Add(_team2);
             _positionsRepository = new PositionsRepository(_dbContext, _dateTimeUtil);
+            DbContextMock.ShouldThrowException = false;
         }
 
         [Test]
@@ -87,6 +89,24 @@ namespace EMS.Core.API.Tests
             // Assert
             Assert.AreEqual(expected, position, "Succesfuly added new position");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Once);
+        }
+
+        [Test]
+        public void AddAsync_should_throw_exception_from_db()
+        {
+            // Arrange
+            DbContextMock.ShouldThrowException = true;
+            Position position = new Position
+            {
+                Name = "add test",
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Team = _team1,
+                TeamId = _team1.Id,
+            };
+
+            // Assert
+            Assert.ThrowsAsync<Exception>(() => _positionsRepository.AddAsync(position), "Exception from db throws as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
         [Test]
@@ -187,6 +207,25 @@ namespace EMS.Core.API.Tests
         }
 
         [Test]
+        public void UpdateAsync_should_throw_exception_from_db()
+        {
+            // Arrange
+            DbContextMock.ShouldThrowException = true;
+            Position position = new Position
+            {
+                Name = "add test",
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Team = _team1,
+                TeamId = _team1.Id,
+                Id = _position1.Id
+            };
+
+            // Assert
+            Assert.ThrowsAsync<Exception>(() => _positionsRepository.UpdateAsync(position), "Exception from db throws as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
         public void UpdateAsync_should_throws_an_exception_that_position_object_is_empty()
         {
             // Assert
@@ -265,7 +304,7 @@ namespace EMS.Core.API.Tests
         }
 
         [Test]
-        public void Delete_should_delete_position_from_db()
+        public void DeleteAsync_should_Delete_position_from_db()
         {
             // Arrange
             Position position = new Position
@@ -283,12 +322,31 @@ namespace EMS.Core.API.Tests
 
 
             // Assert
-            CollectionAssert.AreEqual(new List<Position> { _position1, _position2 }, _dbContext.Positions.ToList(), "Succesfuly deleted from db");
+            CollectionAssert.AreEqual(new List<Position> { _position1, _position2 }, _dbContext.Positions.ToList(), "Succesfuly Deletefrom db");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Once);
         }
 
         [Test]
-        public void Delete_should_throw_exception_because_position_relates_to_team()
+        public void DeleteAsync_should_throw_exception_from_db()
+        {
+            // Arrange
+            DbContextMock.ShouldThrowException = true;
+            Position position = new Position
+            {
+                Name = "add test",
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Team = _team1,
+                TeamId = 3,
+                Id = _position1.Id
+            };
+
+            // Assert
+            Assert.ThrowsAsync<Exception>(() => _positionsRepository.DeleteAsync(position), "Exception from db throws as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
+        public void DeleteAsync_should_throw_exception_because_position_relates_to_team()
         {
             // Arrange
             Position position = new Position
@@ -307,7 +365,7 @@ namespace EMS.Core.API.Tests
         }
 
         [Test]
-        public void Delete_should_throw_exception_because_position_relates_to_staff()
+        public void DeleteAsync_should_throw_exception_because_position_relates_to_staff()
         {
             // Arrange
             Position position = new Position
