@@ -18,7 +18,6 @@ namespace EMS.Core.API.Tests
         private Staff _staff1;
         private DayOff _dayOff1;
         private DayOff _dayOff2;
-        private DayOffRepository _repository;
 
         [SetUp]
         public void Setup()
@@ -51,7 +50,7 @@ namespace EMS.Core.API.Tests
             _dbContext.DaysOff.Add(_dayOff1);
             _dbContext.DaysOff.Add(_dayOff2);
 
-            _repository = new DayOffRepository(_dbContext);
+            _dayOffRepository = new DayOffRepository(_dbContext);
         }
 
         [Test]
@@ -67,7 +66,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Act
-            int result = _repository.AddAsync(dayOff).Result;
+            int result = _dayOffRepository.AddAsync(dayOff).Result;
             DayOff expected = _dbContext.DaysOff.FirstOrDefault(e => e.Id == dayOff.Id);
 
             // Assert
@@ -79,7 +78,7 @@ namespace EMS.Core.API.Tests
         public void AddAsync_should_throws_exception_because_dayoff_entity_is_null()
         {
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => _repository.AddAsync(null), "Throws exception as expected");
+            Assert.ThrowsAsync<ArgumentNullException>(() => _dayOffRepository.AddAsync(null), "Throws exception as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -95,7 +94,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<DbUpdateException>(() => _repository.AddAsync(dayOff), "Throws exception as expected");
+            Assert.ThrowsAsync<DbUpdateException>(() => _dayOffRepository.AddAsync(dayOff), "Throws exception as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -112,7 +111,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<DbUpdateException>(() => _repository.AddAsync(dayOff), "Throws exception as expected");
+            Assert.ThrowsAsync<DbUpdateException>(() => _dayOffRepository.AddAsync(dayOff), "Throws exception as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -129,7 +128,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<DbUpdateException>(() => _repository.AddAsync(dayOff), "Throws exception as expected");
+            Assert.ThrowsAsync<DbUpdateException>(() => _dayOffRepository.AddAsync(dayOff), "Throws exception as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -146,7 +145,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<DbUpdateException>(() => _repository.AddAsync(dayOff), "Throws exception as expected");
+            Assert.ThrowsAsync<DbUpdateException>(() => _dayOffRepository.AddAsync(dayOff), "Throws exception as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -163,7 +162,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Act
-            int result = _repository.AddAsync(dayOff).Result;
+            int result = _dayOffRepository.AddAsync(dayOff).Result;
 
             // Assert
             Assert.AreEqual(0, result, "Result as expected");
@@ -184,7 +183,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Act
-            int result = _repository.UpdateAsync(dayOff).Result;
+            int result = _dayOffRepository.UpdateAsync(dayOff).Result;
 
             // Assert
             Assert.AreEqual(dayOff, _dayOff1, "Updated succesfully");
@@ -195,7 +194,7 @@ namespace EMS.Core.API.Tests
         public void UpdateAsync_should_throws_exception_because_dayoff_entity_is_null()
         {
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => _repository.UpdateAsync(null), "Throws exception as expected");
+            Assert.ThrowsAsync<ArgumentNullException>(() => _dayOffRepository.UpdateAsync(null), "Throws exception as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -213,7 +212,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<DbUpdateException>(() => _repository.UpdateAsync(dayOff), "Throws exception as expected");
+            Assert.ThrowsAsync<DbUpdateException>(() => _dayOffRepository.UpdateAsync(dayOff), "Throws exception as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -231,7 +230,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<DbUpdateException>(() => _repository.UpdateAsync(dayOff), "Throws exception as expected");
+            Assert.ThrowsAsync<DbUpdateException>(() => _dayOffRepository.UpdateAsync(dayOff), "Throws exception as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -249,7 +248,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<DbUpdateException>(() => _repository.UpdateAsync(dayOff), "Throws exception as expected");
+            Assert.ThrowsAsync<DbUpdateException>(() => _dayOffRepository.UpdateAsync(dayOff), "Throws exception as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -268,7 +267,7 @@ namespace EMS.Core.API.Tests
             _dbContext.DaysOff.Add(dayOff);
 
             // Act
-            int result = _repository.DeleteAsync(dayOff).Result;
+            int result = _dayOffRepository.DeleteAsync(dayOff).Result;
 
             // Assert
             CollectionAssert.AreEqual(new List<DayOff> { _dayOff1, _dayOff2 }, _dbContext.DaysOff.ToList(), "DeleteAsync deleted as expected");
@@ -290,7 +289,7 @@ namespace EMS.Core.API.Tests
             _dbContext.DaysOff.Add(dayOff);
 
             // Act
-            IQueryable<DayOff> result = _repository.GetAll();
+            IQueryable<DayOff> result = _dayOffRepository.GetAll();
 
             // Assert
             CollectionAssert.AreEqual(new List<DayOff> { _dayOff1, _dayOff2, dayOff }, result, "Result as expected");
@@ -300,7 +299,7 @@ namespace EMS.Core.API.Tests
         public void GetByStaffId_should_return_all_records_from_db_by_specified_staffId()
         {
             // Act
-            IQueryable<DayOff> result = _repository.GetByStaffId(_staff1.Id);
+            IQueryable<DayOff> result = _dayOffRepository.GetByStaffId(_staff1.Id);
 
             // Assert
             CollectionAssert.AreEqual(new List<DayOff> { _dayOff1, _dayOff2 }, result, "Result as expected");
@@ -310,7 +309,7 @@ namespace EMS.Core.API.Tests
         public void GetByStaffId_should_throw_exception_because_staffId_is_zero()
         {
             // Assert
-            Assert.Throws<ArgumentException>(() => _repository.GetByStaffId(0), "Throws exception as expected");
+            Assert.Throws<ArgumentException>(() => _dayOffRepository.GetByStaffId(0), "Throws exception as expected");
         }
 
         [Test]
@@ -328,7 +327,7 @@ namespace EMS.Core.API.Tests
             _dbContext.DaysOff.Add(dayOff);
 
             // Act
-            IQueryable<DayOff> result = _repository.GetByDateRange(new DateTime(2020, 01, 01, 12, 00, 00), new DateTime(2020, 01, 02, 12, 00, 00));
+            IQueryable<DayOff> result = _dayOffRepository.GetByDateRange(new DateTime(2020, 01, 01, 12, 00, 00), new DateTime(2020, 01, 02, 12, 00, 00));
 
             // Assert
             CollectionAssert.AreEqual(new List<DayOff> { _dayOff1, _dayOff2 }, result, "Result as expected");
@@ -338,7 +337,7 @@ namespace EMS.Core.API.Tests
         public void GetByDateRange_should_throw_exception_because_date_range_is_wrong()
         {
             // Assert
-            Assert.Throws<ArgumentException>(() => _repository.GetByDateRange(new DateTime(2020, 01, 02, 12, 00, 00), new DateTime(2020, 01, 01, 12, 00, 00)), "Throws exception as expected");
+            Assert.Throws<ArgumentException>(() => _dayOffRepository.GetByDateRange(new DateTime(2020, 01, 02, 12, 00, 00), new DateTime(2020, 01, 01, 12, 00, 00)), "Throws exception as expected");
         }
 
         [Test]
@@ -365,7 +364,7 @@ namespace EMS.Core.API.Tests
             _dbContext.DaysOff.Add(staffNotForSearch);
 
             // Act
-            IQueryable<DayOff> result = _repository.GetByDateRangeAndStaffId(new DateTime(2020, 01, 02, 12, 00, 00), new DateTime(2020, 01, 03, 12, 00, 00), _staff1.Id);
+            IQueryable<DayOff> result = _dayOffRepository.GetByDateRangeAndStaffId(new DateTime(2020, 01, 02, 12, 00, 00), new DateTime(2020, 01, 03, 12, 00, 00), _staff1.Id);
 
             // Assert
             CollectionAssert.AreEqual(new List<DayOff> { _dayOff2, dayOff }, result, "Result as expected");
@@ -375,7 +374,7 @@ namespace EMS.Core.API.Tests
         public void GetByDateRangeAndStaffId_should_throw_exception_because_staffId_is_zero()
         {
             // Assert
-            Assert.Throws<ArgumentException>(() => _repository.GetByDateRangeAndStaffId(new DateTime(2020, 01, 01, 12, 00, 00), new DateTime(2020, 01, 02, 12, 00, 00), 0), "Throws exception as expected");
+            Assert.Throws<ArgumentException>(() => _dayOffRepository.GetByDateRangeAndStaffId(new DateTime(2020, 01, 01, 12, 00, 00), new DateTime(2020, 01, 02, 12, 00, 00), 0), "Throws exception as expected");
         }
     }
 }

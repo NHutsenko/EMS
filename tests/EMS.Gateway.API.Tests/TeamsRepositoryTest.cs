@@ -14,7 +14,6 @@ namespace EMS.Core.API.Tests
     [ExcludeFromCodeCoverage]
     public class TeamsRepositoryTest : BaseUnitTest
     {
-        public TeamsRepository _repository;
         public Team _test1;
         public Team _test2;
         public Position _position1;
@@ -81,7 +80,7 @@ namespace EMS.Core.API.Tests
             _dbContext.Positions.Add(_position4);
             _dbContext.Teams.Add(_test1);
             _dbContext.Teams.Add(_test2);
-            _repository = new TeamsRepository(_dbContext, _dateTimeUtil);
+            _teamsRepository = new TeamsRepository(_dbContext, _dateTimeUtil);
         }
 
         [Test]
@@ -96,7 +95,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Act
-            int result = _repository.AddAsync(toAdd).Result;
+            int result = _teamsRepository.AddAsync(toAdd).Result;
             Team expected = _dbContext.Teams.FirstOrDefault(t => t.Id == toAdd.Id);
 
             // Assert
@@ -116,7 +115,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => _repository.AddAsync(toAdd), "Team succesfully throws an exception because team name is empty");
+            Assert.ThrowsAsync<ArgumentNullException>(() => _teamsRepository.AddAsync(toAdd), "Team succesfully throws an exception because team name is empty");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -124,7 +123,7 @@ namespace EMS.Core.API.Tests
         public void AddAsync_should_throw_an_exception_because_team_is_empty()
         {
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => _repository.AddAsync(null), "Team succesfully throws an exception because team name is empty");
+            Assert.ThrowsAsync<ArgumentNullException>(() => _teamsRepository.AddAsync(null), "Team succesfully throws an exception because team name is empty");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -135,7 +134,7 @@ namespace EMS.Core.API.Tests
             List<Team> expected = new List<Team>() { _test1, _test2 };
 
             // Act
-            IQueryable<Team> teams = _repository.GetAll();
+            IQueryable<Team> teams = _teamsRepository.GetAll();
 
             // Assert
             CollectionAssert.AreEqual(expected, teams, "Should return team entities");
@@ -145,7 +144,7 @@ namespace EMS.Core.API.Tests
         public void Get_should_retrun_team_enity_by_specified_id()
         {
             // Act
-            Team team = _repository.Get(1);
+            Team team = _teamsRepository.Get(1);
 
             // Assert
             Assert.AreEqual(_test1, team, "Should return team entity by specified id");
@@ -158,7 +157,7 @@ namespace EMS.Core.API.Tests
             List<Position> expected = new List<Position>() { _position1, _position2 };
 
             // Act
-            IQueryable<Position> teams = _repository.GetPositionsByTeamId(1);
+            IQueryable<Position> teams = _teamsRepository.GetPositionsByTeamId(1);
 
             // Assert
             CollectionAssert.AreEqual(expected, teams, "Should return position entities");
@@ -177,7 +176,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Act
-            int result = _repository.UpdateAsync(team).Result;
+            int result = _teamsRepository.UpdateAsync(team).Result;
             Team expected = _dbContext.Teams.FirstOrDefault(team => team.Id == 1);
 
             // Assert
@@ -201,7 +200,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => _repository.UpdateAsync(team), "Succesfullty throwed an exception that team name cannot be null while updating");
+            Assert.ThrowsAsync<ArgumentNullException>(() => _teamsRepository.UpdateAsync(team), "Succesfullty throwed an exception that team name cannot be null while updating");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -209,7 +208,7 @@ namespace EMS.Core.API.Tests
         public void UpdateAsync_should_throw_an_exception_because_team_is_empty()
         {
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => _repository.UpdateAsync(null), "Succesfullty throwed an exception that team name cannot be null while updating");
+            Assert.ThrowsAsync<ArgumentNullException>(() => _teamsRepository.UpdateAsync(null), "Succesfullty throwed an exception that team name cannot be null while updating");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -227,7 +226,7 @@ namespace EMS.Core.API.Tests
             _dbContext.Teams.Add(team);
 
             // Act
-            int result = _repository.DeleteAsync(team).Result;
+            int result = _teamsRepository.DeleteAsync(team).Result;
             Team deleted = _dbContext.Teams.FirstOrDefault(t => t.Id == team.Id);
 
             // Assert
@@ -245,7 +244,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<DbUpdateException>(() => _repository.DeleteAsync(team), "Succesfullty throwed an exception that team linked with positions");
+            Assert.ThrowsAsync<DbUpdateException>(() => _teamsRepository.DeleteAsync(team), "Succesfullty throwed an exception that team linked with positions");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -253,7 +252,7 @@ namespace EMS.Core.API.Tests
         public void DeleteAsync_should_throw_an_exception_because_team_is_null()
         {
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => _repository.DeleteAsync(null), "Succesfullty throwed an exception that team is null");
+            Assert.ThrowsAsync<ArgumentNullException>(() => _teamsRepository.DeleteAsync(null), "Succesfullty throwed an exception that team is null");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
     }

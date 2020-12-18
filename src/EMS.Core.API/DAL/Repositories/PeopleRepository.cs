@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -20,17 +21,36 @@ namespace EMS.Core.API.DAL.Repositories
 
         public Person GetById(long personId)
         {
-            Person person = _context.People
+            var person = _context.People
                 .Include(e => e.Contacts)
-                .Include(e => e.Photos.OrderByDescending(e => e.CreatedOn)
-                    .FirstOrDefault())
-                .FirstOrDefault(e => e.Id == personId);
-            person.Contacts = person.Contacts.GroupBy(e => e.ContactType)
-                .Select(e =>
-                    e.OrderByDescending(c => c.CreatedOn)
-                    .FirstOrDefault())
-                .ToList();
-            return person;
+                .Include(e => e.Photos)
+                .Where(e => e.Id == personId)
+                .Select(e => new
+                {
+                    e.Id,
+                    e.CreatedOn,
+                    e.BornedOn,
+                    e.Name,
+                    e.LastName,
+                    e.SecondName,
+                    Photos = new List<PersonPhoto> { e.Photos.OrderByDescending(p => p.CreatedOn).FirstOrDefault() },
+                    Contacts = e.Contacts.GroupBy(c => c.ContactType)
+                        .Select(c => c.OrderByDescending(data =>data.CreatedOn)
+                        .FirstOrDefault())
+                        .ToList()
+                })
+                .FirstOrDefault();
+            return new Person
+            {
+                Id = person.Id,
+                CreatedOn = person.CreatedOn,
+                BornedOn = person.BornedOn,
+                Name = person.Name,
+                LastName = person.LastName,
+                SecondName = person.SecondName,
+                Photos = person.Photos,
+                Contacts = person.Contacts
+            };
         }
 
         public async Task<int> AddAsync(Person person)

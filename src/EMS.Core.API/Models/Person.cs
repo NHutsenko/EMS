@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
@@ -24,5 +25,29 @@ namespace EMS.Core.API.Models
 
         [IgnoreDataMember]
         public ICollection<Staff> Staff { get; set; }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if(obj is not Person)
+            {
+                return false;
+            }
+
+            Person toCompare = obj as Person;
+
+            return Id.Equals(toCompare.Id)
+                && CreatedOn == toCompare.CreatedOn
+                && Name == toCompare.Name
+                && LastName == toCompare.LastName
+                && SecondName == toCompare.SecondName
+                && BornedOn == toCompare.BornedOn
+                && Enumerable.SequenceEqual(Photos, toCompare.Photos)
+                && Enumerable.SequenceEqual(Contacts, toCompare.Contacts);
+        }
     }
 }

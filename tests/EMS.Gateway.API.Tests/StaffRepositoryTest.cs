@@ -16,7 +16,6 @@ namespace EMS.Core.API.Tests
     {
         public Staff _staff1;
         public Staff _staff2;
-        public StaffRepository _repository;
 
         [SetUp]
         public void Setup()
@@ -41,7 +40,7 @@ namespace EMS.Core.API.Tests
             };
             _dbContext.Staff.Add(_staff1);
             _dbContext.Staff.Add(_staff2);
-            _repository = new StaffRepository(_dbContext);
+            _staffRepository = new StaffRepository(_dbContext);
         }
 
         [Test]
@@ -57,7 +56,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Act
-            int result = _repository.AddAsync(toAdd).Result;
+            int result = _staffRepository.AddAsync(toAdd).Result;
             Staff added = _dbContext.Staff.FirstOrDefault(e => e.Id == toAdd.Id);
 
             // Assert
@@ -69,7 +68,7 @@ namespace EMS.Core.API.Tests
         public void AddAsync_should_throw_exception_because_entity_is_null()
         {
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => _repository.AddAsync(null), "AddAsync throws exception as expected");
+            Assert.ThrowsAsync<ArgumentNullException>(() => _staffRepository.AddAsync(null), "AddAsync throws exception as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -86,7 +85,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<ArgumentException>(() => _repository.AddAsync(toAdd), "AddAsync throws exception as expected");
+            Assert.ThrowsAsync<ArgumentException>(() => _staffRepository.AddAsync(toAdd), "AddAsync throws exception as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -103,7 +102,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<ArgumentException>(() => _repository.AddAsync(toAdd), "AddAsync throws exception as expected");
+            Assert.ThrowsAsync<ArgumentException>(() => _staffRepository.AddAsync(toAdd), "AddAsync throws exception as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -120,7 +119,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<ArgumentException>(() => _repository.AddAsync(toAdd), "AddAsync throws exception as expected");
+            Assert.ThrowsAsync<ArgumentException>(() => _staffRepository.AddAsync(toAdd), "AddAsync throws exception as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -138,7 +137,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Act
-            int result = _repository.UpdateAsync(toUpdate).Result;
+            int result = _staffRepository.UpdateAsync(toUpdate).Result;
 
             // Assert
             Assert.AreEqual(toUpdate, _staff1, "Updated as expected");
@@ -149,7 +148,7 @@ namespace EMS.Core.API.Tests
         public void UpdateAsync_should_throw_exception_because_entity_is_null()
         {
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => _repository.UpdateAsync(null), "AddAsync throws exception as expected");
+            Assert.ThrowsAsync<ArgumentNullException>(() => _staffRepository.UpdateAsync(null), "AddAsync throws exception as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -167,7 +166,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<ArgumentException>(() => _repository.UpdateAsync(toUpdate), "AddAsync throws exception as expected");
+            Assert.ThrowsAsync<ArgumentException>(() => _staffRepository.UpdateAsync(toUpdate), "AddAsync throws exception as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -185,7 +184,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<ArgumentException>(() => _repository.UpdateAsync(toUpdate), "AddAsync throws exception as expected");
+            Assert.ThrowsAsync<ArgumentException>(() => _staffRepository.UpdateAsync(toUpdate), "AddAsync throws exception as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -203,7 +202,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<ArgumentException>(() => _repository.UpdateAsync(toUpdate), "AddAsync throws exception as expected");
+            Assert.ThrowsAsync<ArgumentException>(() => _staffRepository.UpdateAsync(toUpdate), "AddAsync throws exception as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -222,7 +221,7 @@ namespace EMS.Core.API.Tests
             _dbContext.Staff.Add(toDelete);
 
             // Act
-            int result = _repository.DeleteAsync(toDelete).Result;
+            int result = _staffRepository.DeleteAsync(toDelete).Result;
 
             // Assert
             CollectionAssert.AreEqual(new List<Staff> { _staff1, _staff2 }, _dbContext.Staff.ToList(), "DeleteAsync deleted entity as expected");
@@ -244,7 +243,7 @@ namespace EMS.Core.API.Tests
             _dbContext.Staff.Add(toDelete);
 
             // Assert
-            Assert.ThrowsAsync<DbUpdateException>(() => _repository.DeleteAsync(toDelete), "DeleteAsync throws exception as expected");
+            Assert.ThrowsAsync<DbUpdateException>(() => _staffRepository.DeleteAsync(toDelete), "DeleteAsync throws exception as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -252,7 +251,7 @@ namespace EMS.Core.API.Tests
         public void GetAll_should_return_records_from_db()
         {
             // Act
-            IQueryable<Staff> actual = _repository.GetAll();
+            IQueryable<Staff> actual = _staffRepository.GetAll();
 
             // Assert
             CollectionAssert.AreEqual(new List<Staff> { _staff1, _staff2 }, actual, "GetAll returned result as expected");
@@ -262,7 +261,7 @@ namespace EMS.Core.API.Tests
         public void GetByPersonId_should_return_records_from_db()
         {
             // Act
-            IQueryable<Staff> actual = _repository.GetByPersonId(1);
+            IQueryable<Staff> actual = _staffRepository.GetByPersonId(1);
 
             // Assert
             CollectionAssert.AreEqual(new List<Staff> { _staff1, _staff2 }, actual, "GetByPersonId returned result as expected");
@@ -279,7 +278,7 @@ namespace EMS.Core.API.Tests
             _dbContext.Staff.Add(byManager);
 
             // Act
-            IQueryable<Staff> actual = _repository.GetByManagerId(byManager.ManagerId);
+            IQueryable<Staff> actual = _staffRepository.GetByManagerId(byManager.ManagerId);
 
             // Assert
             CollectionAssert.AreEqual(new List<Staff> { byManager }, actual, "GetByManagerId returned result as expected");

@@ -16,5 +16,27 @@ namespace EMS.Core.API.Models
         public long PersonId { get; set; }
         [Column("value")]
         public string Value { get; set; }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if(obj is not Contact)
+            {
+                return false;
+            }
+
+            Contact toCompare = obj as Contact;
+
+            return Id.Equals(toCompare.Id)
+                && Name == toCompare.Name
+                && CreatedOn == toCompare.CreatedOn
+                && ContactType == toCompare.ContactType
+                && Value == toCompare.Value
+                && PersonId == toCompare.PersonId;
+        }
     }
 }

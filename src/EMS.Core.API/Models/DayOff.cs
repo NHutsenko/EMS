@@ -30,11 +30,11 @@ namespace EMS.Core.API.Models
             }
             DayOff toCompare = obj as DayOff;
 
-            return Id.Equals(toCompare.Id) &&
-                DayOffType.Equals(toCompare.DayOffType) &&
-                CreatedOn.Equals(toCompare.CreatedOn) &&
-                StaffId.Equals(toCompare.StaffId) &&
-                Hours.Equals(Hours);
+            return Id.Equals(toCompare.Id)
+                   && DayOffType == toCompare.DayOffType
+                   && CreatedOn == toCompare.CreatedOn
+                   && StaffId == toCompare.StaffId
+                   && Hours.Equals(Hours);
         }
     }
 }

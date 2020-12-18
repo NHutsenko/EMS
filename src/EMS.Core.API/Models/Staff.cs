@@ -37,11 +37,11 @@ namespace EMS.Core.API.Models
             }
             Staff toCompare = obj as Staff;
 
-            return Id.Equals(toCompare.Id) &&
-                PersonId.Equals(toCompare.PersonId) &&
-                ManagerId.Equals(toCompare.ManagerId) &&
-                PositionId.Equals(toCompare.PositionId) &&
-                CreatedOn.Equals(toCompare.CreatedOn);
+            return Id.Equals(toCompare.Id)
+                   && PersonId == toCompare.PersonId
+                   && ManagerId == toCompare.ManagerId
+                   && PositionId == toCompare.PositionId
+                   && CreatedOn == toCompare.CreatedOn;
         }
     }
 }

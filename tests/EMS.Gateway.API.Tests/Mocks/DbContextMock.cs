@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace EMS.Core.API.Tests.Mocks
@@ -83,6 +84,7 @@ namespace EMS.Core.API.Tests.Mocks
 
         private static object GetEntityId<T>(T entity)
         {
+            ThrowExceptionIfNeeded(ShouldThrowException);
             return entity.GetType().GetProperty("Id").GetValue(entity);
         }
 

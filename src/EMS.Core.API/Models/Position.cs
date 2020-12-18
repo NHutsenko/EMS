@@ -30,7 +30,7 @@ namespace EMS.Core.API.Models
             }
             Position toCompare = obj as Position;
 
-            return Id == toCompare.Id && Name.Equals(toCompare.Name) && TeamId == toCompare.TeamId && CreatedOn == toCompare.CreatedOn;
+            return Id == toCompare.Id && Name == toCompare.Name && TeamId == toCompare.TeamId && CreatedOn == toCompare.CreatedOn;
         }
     }
 }

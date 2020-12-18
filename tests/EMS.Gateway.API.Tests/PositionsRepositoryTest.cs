@@ -14,7 +14,6 @@ namespace EMS.Core.API.Tests
     [ExcludeFromCodeCoverage]
     public class PositionsRepositoryTest : BaseUnitTest
     {
-        public PositionsRepository _repository;
         public Position _position1;
         public Position _position2;
         public Team _team1;
@@ -67,7 +66,7 @@ namespace EMS.Core.API.Tests
             _dbContext.Positions.Add(_position2);
             _dbContext.Teams.Add(_team1);
             _dbContext.Teams.Add(_team2);
-            _repository = new PositionsRepository(_dbContext, _dateTimeUtil);
+            _positionsRepository = new PositionsRepository(_dbContext, _dateTimeUtil);
         }
 
         [Test]
@@ -83,7 +82,7 @@ namespace EMS.Core.API.Tests
             };
 
             // act
-            int result = _repository.AddAsync(position).Result;
+            int result = _positionsRepository.AddAsync(position).Result;
             Position expected = _dbContext.Positions.FirstOrDefault(p => p.Id == position.Id);
             // Assert
             Assert.AreEqual(expected, position, "Succesfuly added new position");
@@ -94,7 +93,7 @@ namespace EMS.Core.API.Tests
         public void AddAsync_should_throws_an_exception_that_position_object_is_empty()
         {
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => _repository.AddAsync(null), "Succesfuly throwed exception that position entity is empty");
+            Assert.ThrowsAsync<ArgumentNullException>(() => _positionsRepository.AddAsync(null), "Succesfuly throwed exception that position entity is empty");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -111,7 +110,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => _repository.AddAsync(position), "Succesfuly throwed exception that position name is empty");
+            Assert.ThrowsAsync<ArgumentNullException>(() => _positionsRepository.AddAsync(position), "Succesfuly throwed exception that position name is empty");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -128,7 +127,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<DbUpdateException>(() => _repository.AddAsync(position), "Succesfuly throwed exception that position cant be added with team that is not exists");
+            Assert.ThrowsAsync<DbUpdateException>(() => _positionsRepository.AddAsync(position), "Succesfuly throwed exception that position cant be added with team that is not exists");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -145,7 +144,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<DbUpdateException>(() => _repository.AddAsync(position), "Succesfuly throwed exception that position cannot be added with team that is not exists");
+            Assert.ThrowsAsync<DbUpdateException>(() => _positionsRepository.AddAsync(position), "Succesfuly throwed exception that position cannot be added with team that is not exists");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -162,7 +161,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<DbUpdateException>(() => _repository.AddAsync(position), "Succesfuly throwed exception that position cant be added with team that is not exists");
+            Assert.ThrowsAsync<DbUpdateException>(() => _positionsRepository.AddAsync(position), "Succesfuly throwed exception that position cant be added with team that is not exists");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -180,7 +179,7 @@ namespace EMS.Core.API.Tests
             };
 
             // act
-            int result = _repository.UpdateAsync(position).Result;
+            int result = _positionsRepository.UpdateAsync(position).Result;
             Position expected = _dbContext.Positions.FirstOrDefault(p => p.Id == position.Id);
             // Assert
             Assert.AreEqual(expected, position, "Succesfuly updated position");
@@ -191,7 +190,7 @@ namespace EMS.Core.API.Tests
         public void UpdateAsync_should_throws_an_exception_that_position_object_is_empty()
         {
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => _repository.UpdateAsync(null), "Succesfuly throwed exception that position entity is empty");
+            Assert.ThrowsAsync<ArgumentNullException>(() => _positionsRepository.UpdateAsync(null), "Succesfuly throwed exception that position entity is empty");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -209,7 +208,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => _repository.UpdateAsync(position), "Succesfuly throwed exception that position name is empty");
+            Assert.ThrowsAsync<ArgumentNullException>(() => _positionsRepository.UpdateAsync(position), "Succesfuly throwed exception that position name is empty");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -227,7 +226,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<DbUpdateException>(() => _repository.UpdateAsync(position), "Succesfuly throwed exception that position cant be added with team that is not exists");
+            Assert.ThrowsAsync<DbUpdateException>(() => _positionsRepository.UpdateAsync(position), "Succesfuly throwed exception that position cant be added with team that is not exists");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -244,7 +243,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<DbUpdateException>(() => _repository.UpdateAsync(position), "Succesfuly throwed exception that position cant be added with team that is not exists");
+            Assert.ThrowsAsync<DbUpdateException>(() => _positionsRepository.UpdateAsync(position), "Succesfuly throwed exception that position cant be added with team that is not exists");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -261,7 +260,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<DbUpdateException>(() => _repository.UpdateAsync(position), "Succesfuly throwed exception that position cant be added with team that is not exists");
+            Assert.ThrowsAsync<DbUpdateException>(() => _positionsRepository.UpdateAsync(position), "Succesfuly throwed exception that position cant be added with team that is not exists");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -279,7 +278,7 @@ namespace EMS.Core.API.Tests
             };
             _dbContext.Positions.Add(position);
             // Act
-            int result = _repository.DeleteAsync(position).Result;
+            int result = _positionsRepository.DeleteAsync(position).Result;
             Position recieved = _dbContext.Positions.FirstOrDefault(p => p.Id == position.Id);
 
 
@@ -303,7 +302,7 @@ namespace EMS.Core.API.Tests
             _dbContext.Positions.Add(position);
 
             // Assert
-            Assert.ThrowsAsync<DbUpdateException>(() => _repository.DeleteAsync(position), "Should throw exception because of positions relates to team");
+            Assert.ThrowsAsync<DbUpdateException>(() => _positionsRepository.DeleteAsync(position), "Should throw exception because of positions relates to team");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -321,7 +320,7 @@ namespace EMS.Core.API.Tests
             _dbContext.Positions.Add(position);
 
             // Assert
-            Assert.ThrowsAsync<DbUpdateException>(() => _repository.DeleteAsync(position), "Should throw exception because of positions relates to staff");
+            Assert.ThrowsAsync<DbUpdateException>(() => _positionsRepository.DeleteAsync(position), "Should throw exception because of positions relates to staff");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -329,7 +328,7 @@ namespace EMS.Core.API.Tests
         public void Get_should_return_position_from_db()
         {
             // Act
-            Position actual = _repository.Get(_position1.Id);
+            Position actual = _positionsRepository.Get(_position1.Id);
 
             // Assert
             Assert.AreEqual(_position1, actual, "Should return position from db");
@@ -341,7 +340,7 @@ namespace EMS.Core.API.Tests
             // Arrange
             List<Position> expected = new List<Position> { _position1, _position2 };
             // Act
-            IQueryable<Position> actual = _repository.GetAll();
+            IQueryable<Position> actual = _positionsRepository.GetAll();
 
             // Assert
             Assert.AreEqual(expected, actual, "Should return positions from db");
