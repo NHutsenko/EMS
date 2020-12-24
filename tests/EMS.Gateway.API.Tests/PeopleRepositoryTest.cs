@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using EMS.Core.API.DAL.Repositories;
+using EMS.Core.API.Enums;
 using EMS.Core.API.Models;
 using EMS.Core.API.Tests.Mocks;
 using Moq;
@@ -219,7 +220,8 @@ namespace EMS.Core.API.Tests
             Person person = new Person
             {
                 BornedOn = DateTime.MinValue,
-                LastName = "Test"
+                LastName = "Test",
+                Name = "Test"
             };
 
             // Assert
@@ -311,11 +313,135 @@ namespace EMS.Core.API.Tests
             Person person = new Person
             {
                 BornedOn = DateTime.MinValue,
-                LastName = "Test"
+                LastName = "Test",
+                Name = "Test"
             };
 
             // Assert
             Assert.ThrowsAsync<ArgumentNullException>(() => _peopleRepository.UpdateAsync(person), "Exception throws as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
+        public void AddContactAsync_should_add_contact_to_db()
+        {
+            // Arrange
+            Contact contact = new Contact
+            {
+                ContactType = ContactType.Messenger,
+                Name = "Telegram",
+                PersonId = _person1.Id,
+                Value = "test"
+            };
+
+            // Act
+            int result = _peopleRepository.AddContactAsync(contact).Result;
+            Contact expected = _dbContext.Contacts.FirstOrDefault(e => e.Id == contact.Id);
+
+            // Assert
+            Assert.AreEqual(contact, expected, "Contact added to db as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Once);
+        }
+
+
+        [Test]
+        public void AddContactAsync_should_throw_exception_because_contact_is_null()
+        {
+            // Assert
+            Assert.ThrowsAsync<ArgumentNullException>(() => _peopleRepository.AddContactAsync(null), "Exception throws as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
+        public void AddContactAsync_should_throws_expection_because_contact_value_is_empty()
+        {
+            // Arrange
+            Contact contact = new Contact
+            {
+                ContactType = ContactType.Messenger,
+                Name = "Telegram",
+                PersonId = _person1.Id,
+                Value = string.Empty
+            };
+
+            // Assert
+            Assert.ThrowsAsync<ArgumentNullException>(() => _peopleRepository.AddContactAsync(contact), "Exception throws as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
+        public void AddPhotoAsync_should_add_photo_entity_to_db()
+        {
+            // Arrange
+            PersonPhoto personPhoto = new PersonPhoto
+            {
+                PersonId = _person1.Id,
+                Name = "1.jpg",
+                Base64 = "dGVzdCBmaWxlIG9uZQ=="
+            };
+
+            // Act
+            int result = _peopleRepository.AddPhotoAsync(personPhoto).Result;
+            PersonPhoto actual = _dbContext.Photos.FirstOrDefault(e => e.Id == personPhoto.Id);
+
+            // Assert
+            Assert.AreEqual(personPhoto, actual, "Person photo added to db as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Once);
+        }
+
+        [Test]
+        public void AddPhotoAsync_should_throws_exception_because_photo_data_is_empty()
+        {
+            // Assert
+            Assert.ThrowsAsync<ArgumentNullException>(() => _peopleRepository.AddPhotoAsync(null), "exception throws as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
+        public void AddPhotoAsync_should_throws_exception_because_photo_name_is_empty()
+        {
+            // Arrange
+            PersonPhoto personPhoto = new PersonPhoto
+            {
+                PersonId = _person1.Id,
+                Name = string.Empty,
+                Base64 = "dGVzdCBmaWxlIG9uZQ=="
+            };
+
+            // Assert
+            Assert.ThrowsAsync<ArgumentNullException>(() => _peopleRepository.AddPhotoAsync(personPhoto), "exception throws as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
+        public void AddPhotoAsync_should_throws_exception_because_photo_extension_mime_type_is_wrong()
+        {
+            // Arrange
+            PersonPhoto personPhoto = new PersonPhoto
+            {
+                PersonId = _person1.Id,
+                Name = "1.tst",
+                Base64 = "dGVzdCBmaWxlIG9uZQ=="
+            };
+
+            // Assert
+            Assert.ThrowsAsync<ArgumentException>(() => _peopleRepository.AddPhotoAsync(personPhoto), "exception throws as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
+        public void AddPhotoAsync_should_throws_exception_because_base64_is_invalid()
+        {
+            // Arrange
+            PersonPhoto personPhoto = new PersonPhoto
+            {
+                PersonId = _person1.Id,
+                Name = "1.txt",
+                Base64 = "test"
+            };
+
+            // Assert
+            Assert.ThrowsAsync<ArgumentException>(() => _peopleRepository.AddPhotoAsync(personPhoto), "exception throws as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
     }

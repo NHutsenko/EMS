@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
 
 namespace EMS.Core.API.Tests.Mocks
@@ -13,7 +12,7 @@ namespace EMS.Core.API.Tests.Mocks
     [ExcludeFromCodeCoverage]
     public class DbContextMock
     {
-        public static bool ShouldThrowException = false;
+        public static bool ShouldThrowException { get; set; }
 
         public static Mock<DbSet<T>> SetupCollectionMock<T>(List<T> data) where T : class
         {
@@ -28,14 +27,20 @@ namespace EMS.Core.API.Tests.Mocks
             mockSet.Setup(m => m.Add(It.IsAny<T>())).Callback((T item) =>
             {
                 ThrowExceptionIfNeeded(ShouldThrowException);
+                if((long)item.GetType().GetProperty("Id").GetValue(item) == 0)
+                {
+                    long index = 0;
+                    foreach(object entity in data)
+                    {
+                        long currentIndex = (long)entity.GetType().GetProperty("Id").GetValue(entity);
+                        if(currentIndex >= index)
+                        {
+                            index = ++currentIndex;
+                        }
+                    }
+                    item.GetType().GetProperty("Id").SetValue(item, index);
+                }
                 data.Add(item);
-            });
-
-            mockSet.Setup(m => m.AddRange(It.IsAny<IEnumerable<T>>())).Callback((IEnumerable<T> items) =>
-            {
-                ThrowExceptionIfNeeded(ShouldThrowException);
-                data.AddRange(items);
-
             });
 
             mockSet.Setup(m => m.Remove(It.IsAny<T>())).Callback((T item) =>

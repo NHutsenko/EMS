@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using EMS.Common.Utils.DateTimeUtil;
 using EMS.Core.API.DAL.Repositories.Interfaces;
 using EMS.Core.API.Models;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 
 namespace EMS.Core.API.DAL.Repositories
@@ -96,14 +97,22 @@ namespace EMS.Core.API.DAL.Repositories
             {
                 throw new ArgumentNullException("Photo data cannot be empty");
             }
-            if (string.IsNullOrWhiteSpace(photo.Mime))
+            if (string.IsNullOrEmpty(photo.Name))
             {
-                throw new ArgumentNullException("Mime type has not passed");
+                throw new ArgumentNullException("Photo name has not passed");
             }
-            if(!new Regex("[^-A-Za-z0-9+/=]|=[^=]|={3,}$").IsMatch(photo.Base64))
+            if(!new Regex("[^-A-Za-z0-9+/=]|=[^=]|={2,}$").IsMatch(photo.Base64))
             {
                 throw new ArgumentException("Base 64 is broken");
             }
+
+            bool parsed = new FileExtensionContentTypeProvider().TryGetContentType(photo.Name, out string mime);
+            if (!parsed)
+            {
+                throw new ArgumentException("Unknown file MIME");
+            }
+
+            photo.Mime = mime;
             photo.CreatedOn = _dateTimeUtil.GetCurrentDateTime();
             _context.Photos.Add(photo);
             return await _context.SaveChangesAsync();
