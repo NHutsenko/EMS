@@ -25,6 +25,8 @@ namespace EMS.Core.API
 		{
 			string connectionString = Environment.GetEnvironmentVariable("DbConnectionString");
 
+            services.AddAuthorization();
+
 			if (string.IsNullOrEmpty(connectionString))
 			{
 				// for manual db migration creating

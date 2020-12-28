@@ -14,6 +14,7 @@ namespace EMS.Common.Models.BaseModel
         public long Id { get; set; }
         [Column("createdOn")]
         public DateTime CreatedOn { get; set; }
+
         [Column("name")]
         public string Name { get; set; }
     }

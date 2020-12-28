@@ -26,6 +26,9 @@ namespace EMS.Core.API.Models
         [IgnoreDataMember]
         public ICollection<Staff> Staff { get; set; }
 
+        [IgnoreDataMember]
+        public ICollection<OtherPayment> OtherPayments { get; set; }
+
         public override int GetHashCode()
         {
             return base.GetHashCode();

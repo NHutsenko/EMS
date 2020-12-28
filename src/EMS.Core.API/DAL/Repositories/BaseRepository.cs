@@ -1,4 +1,5 @@
-﻿using EMS.Common.Utils.DateTimeUtil;
+﻿using EMS.Common.Models.BaseModel;
+using EMS.Common.Utils.DateTimeUtil;
 
 namespace EMS.Core.API.DAL.Repositories
 {
@@ -11,5 +12,5 @@ namespace EMS.Core.API.DAL.Repositories
 			_context = context;
             _dateTimeUtil = dateTimeUtil;
 		}
-	}
+    }
 }
