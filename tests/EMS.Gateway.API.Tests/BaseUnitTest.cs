@@ -19,11 +19,15 @@ namespace EMS.Core.API.Tests
         protected PositionsRepository _positionsRepository;
         protected StaffRepository _staffRepository;
         protected TeamsRepository _teamsRepository;
+        protected OtherPaymentsRepository _otherPaymentsRepository;
 
 		protected void InitializeMocks()
 		{
+            // DB context
 			_dbContextMock = DbContextMock.SetupDbContext<IApplicationDbContext>();
 			_dbContext = _dbContextMock.Object;
+
+            // Utils
             _dateTimeUtil = new DateTimeUtilMock();
 		}
 	}

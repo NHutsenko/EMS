@@ -11,6 +11,8 @@ namespace EMS.Core.API.Models
     [ExcludeFromCodeCoverage]
     public class Person: BaseModel
     {
+        [Column("name")]
+        public string Name { get; set; }
         [Column("lastName")]
         public string LastName { get; set; }
         [Column("secondName")]

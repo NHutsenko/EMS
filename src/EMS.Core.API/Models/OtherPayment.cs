@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 using EMS.Common.Models.BaseModel;
 
 namespace EMS.Core.API.Models
 {
+    [ExcludeFromCodeCoverage]
     public class OtherPayment: BaseModel
     {
         [Column("value")]

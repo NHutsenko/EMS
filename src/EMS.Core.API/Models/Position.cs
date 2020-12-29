@@ -9,7 +9,9 @@ namespace EMS.Core.API.Models
     [ExcludeFromCodeCoverage]
     public class Position: BaseModel
 	{
-		[Column("team")]
+        [Column("name")]
+        public string Name { get; set; }
+        [Column("team")]
 		public Team Team { get; set; }
 
 		[Column("teamId")]

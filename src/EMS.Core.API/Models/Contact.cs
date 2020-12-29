@@ -8,6 +8,8 @@ namespace EMS.Core.API.Models
     [ExcludeFromCodeCoverage]
     public class Contact: BaseModel
     {
+        [Column("name")]
+        public string Name { get; set; }
         [Column("contactType")]
         public ContactType ContactType { get; set; }
         [Column("person")]

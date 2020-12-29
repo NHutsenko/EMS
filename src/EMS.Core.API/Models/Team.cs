@@ -9,7 +9,9 @@ namespace EMS.Core.API.Models
     [ExcludeFromCodeCoverage]
 	public class Team: BaseModel
 	{
-		[Column("description")]
+        [Column("name")]
+        public string Name { get; set; }
+        [Column("description")]
 		public string Description { get; set; }
 
 		[IgnoreDataMember]

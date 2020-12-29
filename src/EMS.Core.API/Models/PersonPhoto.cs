@@ -7,6 +7,8 @@ namespace EMS.Core.API.Models
     [ExcludeFromCodeCoverage]
     public class PersonPhoto : BaseModel
     {
+        [Column("name")]
+        public string Name { get; set; }
         [Column("mime")]
         public string Mime { get; set; }
         [Column("base64")]
