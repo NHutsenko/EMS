@@ -9,7 +9,7 @@ namespace EMS.Core.API.DAL.Repositories
 {
     public class OtherPaymentsRepository: BaseRepository, IOtherPaymentsRepository
     {
-        public  OtherPaymentsRepository(IApplicationDbContext applicationDbContext) : base(applicationDbContext, null) { }
+        public  OtherPaymentsRepository(IApplicationDbContext applicationDbContext, IDateTimeUtil dateTimeUtil) : base(applicationDbContext, dateTimeUtil) { }
 
         public async Task<int> AddAsync(OtherPayment otherPayment)
         {
@@ -27,10 +27,11 @@ namespace EMS.Core.API.DAL.Repositories
 
         public async Task<int> DeleteAsync(OtherPayment otherPayment)
         {
-            DateTime currentMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            DateTime currentDate = _dateTimeUtil.GetCurrentDateTime();
+            DateTime currentMonth = new DateTime(currentDate.Year, currentDate.Month, 1);
             if(otherPayment.CreatedOn < currentMonth)
             {
-                throw new Exception("Cannot delete history record");
+                throw new ArgumentException("Cannot delete history record");
             }
             _context.OtherPayments.Remove(otherPayment);
             return await _context.SaveChangesAsync();

@@ -7,9 +7,9 @@ namespace EMS.Core.API.Tests.Mocks
     [ExcludeFromCodeCoverage]
     public class DateTimeUtilMock: DateTimeUtil, IDateTimeUtil
     {
-        public override DateTime GetCurrentDateTime()
+        public DateTimeUtilMock()
         {
-            return new DateTime(2020, 01, 01, 12, 00, 00);
+            _currentDate = new DateTime(2020, 01, 01, 12, 00, 00);
         }
     }
 }

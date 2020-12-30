@@ -4,9 +4,11 @@ namespace EMS.Common.Utils.DateTimeUtil
 {
     public class DateTimeUtil: IDateTimeUtil
 	{
-        public virtual DateTime GetCurrentDateTime()
+        protected DateTime _currentDate = DateTime.Now;
+
+        public DateTime GetCurrentDateTime()
         {
-            return DateTime.Now;
+            return _currentDate;
         }
 	}
 }

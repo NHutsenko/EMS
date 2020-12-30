@@ -48,7 +48,7 @@ namespace EMS.Core.API.Tests
             _dbContext.OtherPayments.Add(_otherPayment1);
             _dbContext.OtherPayments.Add(_otherPayment2);
 
-            _otherPaymentsRepository = new DAL.Repositories.OtherPaymentsRepository(_dbContext);
+            _otherPaymentsRepository = new DAL.Repositories.OtherPaymentsRepository(_dbContext, _dateTimeUtil);
         }
 
         [Test]
@@ -102,15 +102,6 @@ namespace EMS.Core.API.Tests
         [Test]
         public void AddAsync_should_throws_argument_null_exception_because_of_other_payment_is_null()
         {
-            // Arrange
-            OtherPayment otherPayment = new OtherPayment
-            {
-                Value = 10,
-                Comment = "Test",
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                PersonId = _person.Id
-            };
-
             // Assert
             Assert.ThrowsAsync<ArgumentNullException>(() => _otherPaymentsRepository.AddAsync(null), "Argument null exception because of other payment is null throws as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
@@ -175,11 +166,134 @@ namespace EMS.Core.API.Tests
             {
                 Value = 10,
                 Comment = "Test",
-                CreatedOn = DateTime.MinValue,
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
             };
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _otherPaymentsRepository.AddAsync(otherPayment), "Argument exception because person Id is wrong as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
+        public void UpdateAsync_should_update_other_payment_into_db()
+        {
+            // Arrange
+            OtherPayment otherPayment = new OtherPayment
+            {
+                Value = 10,
+                Comment = "Test",
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                PersonId = _person.Id,
+                Id = 1
+            };
+
+            // Act
+            int result = _otherPaymentsRepository.UpdateAsync(otherPayment).Result;
+            OtherPayment actual = _dbContext.OtherPayments.FirstOrDefault(e => e.Id == otherPayment.Id);
+
+            // Assert
+            Assert.AreEqual(otherPayment, actual, "Other payment updated succesfully");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Once);
+        }
+
+        [Test]
+        public void UpdateAsync_should_throws_argument_null_exception_because_of_other_payment_is_null()
+        {
+            // Assert
+            Assert.ThrowsAsync<ArgumentNullException>(() => _otherPaymentsRepository.UpdateAsync(null), "Argument null exception because of other payment is null throws as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
+        public void UpdateAsync_should_throws_argument_exception_because_of_other_payment_value_is_wrong()
+        {
+            // Arrange
+            OtherPayment otherPayment = new OtherPayment
+            {
+                Value = -10,
+                Comment = "Test",
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                PersonId = _person.Id,
+                Id = 1
+            };
+
+            // Assert
+            Assert.ThrowsAsync<ArgumentException>(() => _otherPaymentsRepository.UpdateAsync(otherPayment), "Argument exception because value less or equal to 0 throws as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
+        public void UpdateAsync_should_throws_argument_exception_because_of_other_payment_comment_is_empty()
+        {
+            // Arrange
+            OtherPayment otherPayment = new OtherPayment
+            {
+                Value = 10,
+                Comment = string.Empty,
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                PersonId = _person.Id,
+                Id = 1
+            };
+
+            // Assert
+            Assert.ThrowsAsync<ArgumentException>(() => _otherPaymentsRepository.UpdateAsync(otherPayment), "Argument exception because comment is empty as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
+        public void UpdateAsync_should_throws_argument_exception_because_of_other_payment_creation_date_is_wrong()
+        {
+            // Arrange
+            OtherPayment otherPayment = new OtherPayment
+            {
+                Value = 10,
+                Comment = "Test",
+                CreatedOn = DateTime.MinValue,
+                PersonId = _person.Id,
+                Id = 1
+            };
+
+            // Assert
+            Assert.ThrowsAsync<ArgumentException>(() => _otherPaymentsRepository.UpdateAsync(otherPayment), "Argument exception because creation date is wrong as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
+        public void UpdateAsync_should_throws_argument_exception_because_of_other_payment_personId_is_wrong()
+        {
+            // Arrange
+            OtherPayment otherPayment = new OtherPayment
+            {
+                Value = 10,
+                Comment = "Test",
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Id = 1
+            };
+
+            // Assert
+            Assert.ThrowsAsync<ArgumentException>(() => _otherPaymentsRepository.UpdateAsync(otherPayment), "Argument exception because person Id is wrong as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
+        public void DeleteAsync_should_succesfully_delete_record_from_db()
+        {
+            // Act
+            int result = _otherPaymentsRepository.DeleteAsync(_otherPayment2).Result;
+
+            // Assert
+            CollectionAssert.AreEqual(new List<OtherPayment> { _otherPayment1 }, _dbContext.OtherPayments.ToList(), "Record deleted as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Once);
+        }
+
+        [Test]
+        public void DeleteAsync_should_throw_exception_because_of_record_is_not_from_current_month_or_later()
+        {
+            // Arrange
+            _otherPayment2.CreatedOn = _otherPayment2.CreatedOn.AddMonths(-3);
+
+            // Assert
+            Assert.ThrowsAsync<ArgumentException>(() => _otherPaymentsRepository.DeleteAsync(_otherPayment2), "exception throws as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
     }
