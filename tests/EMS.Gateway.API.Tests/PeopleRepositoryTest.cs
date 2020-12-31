@@ -179,7 +179,7 @@ namespace EMS.Core.API.Tests
         public void AddAsync_should_throw_exception_because_person_data_is_null()
         {
             // Assert
-            Assert.ThrowsAsync<ArgumentException>(() => _peopleRepository.AddAsync(null), "Exception from db throws as expected");
+            Assert.ThrowsAsync<NullReferenceException>(() => _peopleRepository.AddAsync(null), "Exception from db throws as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -271,7 +271,7 @@ namespace EMS.Core.API.Tests
         public void UpdateAsync_should_throw_exception_because_person_data_is_null()
         {
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => _peopleRepository.UpdateAsync(null), "Exception from db throws as expected");
+            Assert.ThrowsAsync<NullReferenceException>(() => _peopleRepository.UpdateAsync(null), "Exception from db throws as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -348,7 +348,7 @@ namespace EMS.Core.API.Tests
         public void AddContactAsync_should_throw_exception_because_contact_is_null()
         {
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => _peopleRepository.AddContactAsync(null), "Exception throws as expected");
+            Assert.ThrowsAsync<NullReferenceException>(() => _peopleRepository.AddContactAsync(null), "Exception throws as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -393,7 +393,7 @@ namespace EMS.Core.API.Tests
         public void AddPhotoAsync_should_throws_exception_because_photo_data_is_empty()
         {
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => _peopleRepository.AddPhotoAsync(null), "exception throws as expected");
+            Assert.ThrowsAsync<NullReferenceException>(() => _peopleRepository.AddPhotoAsync(null), "exception throws as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 

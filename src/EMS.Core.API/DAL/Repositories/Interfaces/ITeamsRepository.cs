@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EMS.Core.API.Repositories.Interfaces
+namespace EMS.Core.API.DAL.Repositories.Interfaces
 {
     public interface ITeamsRepository
 	{

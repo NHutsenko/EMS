@@ -1,4 +1,7 @@
-﻿using EMS.Core.API.DAL;
+﻿using EMS.Common.Utils.DateTimeUtil;
+using EMS.Core.API.DAL;
+using EMS.Core.API.DAL.Repositories;
+using EMS.Core.API.DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -23,16 +26,25 @@ namespace EMS.Core.API
 
         public void ConfigureServices(IServiceCollection services)
 		{
-			string connectionString = Environment.GetEnvironmentVariable("DbConnectionString");
 
             services.AddAuthorization();
 
+			string connectionString = Environment.GetEnvironmentVariable("DbConnectionString");
 			if (string.IsNullOrEmpty(connectionString))
 			{
 				// for manual db migration creating
 				connectionString = Configuration.GetConnectionString("DbConnectionString");
 			}
 			services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+
+            services.AddSingleton<IDateTimeUtil, DateTimeUtil>();
+            services.AddTransient<IDayOffRepository, DayOffRepository>();
+            services.AddTransient<IOtherPaymentsRepository, OtherPaymentsRepository>();
+            services.AddTransient<IPeopleRepository, PeopleRepository>();
+            services.AddTransient<IPositionsRepository, PositionsRepository>();
+            services.AddTransient<IStaffRepository, StaffRepository>();
+            services.AddTransient<ITeamsRepository, TeamsRepository>();
+
 			services.AddGrpc();
 		}
 

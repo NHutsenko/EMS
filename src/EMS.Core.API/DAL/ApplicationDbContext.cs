@@ -7,14 +7,15 @@ namespace EMS.Core.API.DAL
     [ExcludeFromCodeCoverage]
 	public class ApplicationDbContext: DbContext, IApplicationDbContext
 	{
-		public DbSet<Position> Positions { get; set; }
-		public DbSet<Team> Teams { get; set; }
-        public DbSet<Staff> Staff { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
         public DbSet<DayOff> DaysOff { get; set; }
+        public DbSet<Holiday> Holidays { get; set; }
+        public DbSet<OtherPayment> OtherPayments { get; set; }
         public DbSet<Person> People { get; set; }
         public DbSet<PersonPhoto> Photos { get; set; }
-        public DbSet<Contact> Contacts { get; set; }
-        public DbSet<OtherPayment> OtherPayments { get; set; }
+		public DbSet<Position> Positions { get; set; }
+        public DbSet<Staff> Staff { get; set; }
+		public DbSet<Team> Teams { get; set; }
 
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
@@ -63,6 +64,9 @@ namespace EMS.Core.API.DAL
                 .HasOne(e => e.Person)
                 .WithMany(e => e.OtherPayments)
                 .HasForeignKey(e => e.PersonId);
+
+            modelBuilder.Entity<Holiday>()
+                .ToTable("Holidays", "core");
         }
 	}
 }

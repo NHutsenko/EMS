@@ -58,7 +58,7 @@ namespace EMS.Core.API.DAL.Repositories
         {
             if(person is null)
             {
-                throw new ArgumentException("Person entity cannot be empty");
+                throw new NullReferenceException("Person entity cannot be empty");
             }
             if (!IsNamesValid(person))
             {
@@ -77,7 +77,7 @@ namespace EMS.Core.API.DAL.Repositories
         {
             if (person is null)
             {
-                throw new ArgumentNullException("Person data cannot be empty");
+                throw new NullReferenceException("Person data cannot be empty");
             }
             if (!IsNamesValid(person))
             {
@@ -95,7 +95,7 @@ namespace EMS.Core.API.DAL.Repositories
         {
             if(photo is null)
             {
-                throw new ArgumentNullException("Photo data cannot be empty");
+                throw new NullReferenceException("Photo data cannot be empty");
             }
             if (string.IsNullOrEmpty(photo.Name))
             {
@@ -122,7 +122,7 @@ namespace EMS.Core.API.DAL.Repositories
         {
             if(contact is null)
             {
-                throw new ArgumentNullException("Contact data cannot be empty");
+                throw new NullReferenceException("Contact data cannot be empty");
             }
             if (string.IsNullOrWhiteSpace(contact.Value))
             {

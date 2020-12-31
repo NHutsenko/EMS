@@ -15,7 +15,7 @@ namespace EMS.Core.API.DAL.Repositories
         {
             if(staff is null)
             {
-                throw new ArgumentNullException("Staff entity cannot be null");
+                throw new NullReferenceException("Staff entity cannot be null");
             }
 
             if(staff.ManagerId == 0)
@@ -41,7 +41,7 @@ namespace EMS.Core.API.DAL.Repositories
         {
             if (staff is null)
             {
-                throw new ArgumentNullException("Staff entity cannot be null");
+                throw new NullReferenceException("Staff entity cannot be null");
             }
 
             if (staff.ManagerId == 0)

@@ -98,7 +98,7 @@ namespace EMS.Core.API.Tests
         public void AddAsync_should_throws_exception_because_dayoff_entity_is_null()
         {
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => _dayOffRepository.AddAsync(null), "Throws exception as expected");
+            Assert.ThrowsAsync<NullReferenceException>(() => _dayOffRepository.AddAsync(null), "Throws exception as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -232,7 +232,7 @@ namespace EMS.Core.API.Tests
         public void UpdateAsync_should_throws_exception_because_dayoff_entity_is_null()
         {
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => _dayOffRepository.UpdateAsync(null), "Throws exception as expected");
+            Assert.ThrowsAsync<NullReferenceException>(() => _dayOffRepository.UpdateAsync(null), "Throws exception as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 

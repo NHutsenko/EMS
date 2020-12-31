@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using EMS.Core.API.Models;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;
 
@@ -103,7 +104,7 @@ namespace EMS.Core.API.Tests
         public void AddAsync_should_throws_argument_null_exception_because_of_other_payment_is_null()
         {
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => _otherPaymentsRepository.AddAsync(null), "Argument null exception because of other payment is null throws as expected");
+            Assert.ThrowsAsync<NullReferenceException>(() => _otherPaymentsRepository.AddAsync(null), "Argument null exception because of other payment is null throws as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -200,7 +201,7 @@ namespace EMS.Core.API.Tests
         public void UpdateAsync_should_throws_argument_null_exception_because_of_other_payment_is_null()
         {
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => _otherPaymentsRepository.UpdateAsync(null), "Argument null exception because of other payment is null throws as expected");
+            Assert.ThrowsAsync<NullReferenceException>(() => _otherPaymentsRepository.UpdateAsync(null), "Argument null exception because of other payment is null throws as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -293,7 +294,7 @@ namespace EMS.Core.API.Tests
             _otherPayment2.CreatedOn = _otherPayment2.CreatedOn.AddMonths(-3);
 
             // Assert
-            Assert.ThrowsAsync<ArgumentException>(() => _otherPaymentsRepository.DeleteAsync(_otherPayment2), "exception throws as expected");
+            Assert.ThrowsAsync<DbUpdateException>(() => _otherPaymentsRepository.DeleteAsync(_otherPayment2), "exception throws as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
     }

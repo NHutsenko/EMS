@@ -1,6 +1,6 @@
 ﻿using EMS.Common.Utils.DateTimeUtil;
+using EMS.Core.API.DAL.Repositories.Interfaces;
 using EMS.Core.API.Models;
-using EMS.Core.API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -16,7 +16,7 @@ namespace EMS.Core.API.DAL.Repositories
 		{
             if(team is null)
             {
-                throw new ArgumentNullException(nameof(team), "Team cannot be empty");
+                throw new NullReferenceException("Team cannot be empty");
             }
             if (string.IsNullOrWhiteSpace(team.Name))
             {
@@ -31,7 +31,7 @@ namespace EMS.Core.API.DAL.Repositories
 		{
             if (team is null)
             {
-                throw new ArgumentNullException(nameof(team), "Team cannot be empty");
+                throw new NullReferenceException("Team cannot be empty");
             }
             if (string.IsNullOrWhiteSpace(team.Name))
             {
@@ -45,7 +45,7 @@ namespace EMS.Core.API.DAL.Repositories
 		{
             if (team is null)
             {
-                throw new ArgumentNullException(nameof(team), "Team cannot be empty");
+                throw new NullReferenceException("Team cannot be empty");
             }
             if (!(_context.Positions.FirstOrDefault(p => p.TeamId == team.Id) is null) )
             {

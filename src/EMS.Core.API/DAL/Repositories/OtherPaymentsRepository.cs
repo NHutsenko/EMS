@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using EMS.Common.Utils.DateTimeUtil;
 using EMS.Core.API.DAL.Repositories.Interfaces;
 using EMS.Core.API.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace EMS.Core.API.DAL.Repositories
 {
@@ -28,10 +29,10 @@ namespace EMS.Core.API.DAL.Repositories
         public async Task<int> DeleteAsync(OtherPayment otherPayment)
         {
             DateTime currentDate = _dateTimeUtil.GetCurrentDateTime();
-            DateTime currentMonth = new DateTime(currentDate.Year, currentDate.Month, 1);
+            DateTime currentMonth = new DateTime(currentDate.Year, currentDate.Month + 1, 1);
             if(otherPayment.CreatedOn < currentMonth)
             {
-                throw new ArgumentException("Cannot delete history record");
+                throw new DbUpdateException("Cannot delete history record");
             }
             _context.OtherPayments.Remove(otherPayment);
             return await _context.SaveChangesAsync();
@@ -55,7 +56,7 @@ namespace EMS.Core.API.DAL.Repositories
         {
             if (otherPayment is null)
             {
-                throw new ArgumentNullException("Other payment data cannot be empty");
+                throw new NullReferenceException("Other payment data cannot be empty");
             }
             if (otherPayment.Value <= 0)
             {

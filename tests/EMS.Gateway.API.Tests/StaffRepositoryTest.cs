@@ -88,7 +88,7 @@ namespace EMS.Core.API.Tests
         public void AddAsync_should_throw_exception_because_entity_is_null()
         {
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => _staffRepository.AddAsync(null), "AddAsync throws exception as expected");
+            Assert.ThrowsAsync<NullReferenceException>(() => _staffRepository.AddAsync(null), "AddAsync throws exception as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -187,7 +187,7 @@ namespace EMS.Core.API.Tests
         public void UpdateAsync_should_throw_exception_because_entity_is_null()
         {
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => _staffRepository.UpdateAsync(null), "AddAsync throws exception as expected");
+            Assert.ThrowsAsync<NullReferenceException>(() => _staffRepository.UpdateAsync(null), "AddAsync throws exception as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 

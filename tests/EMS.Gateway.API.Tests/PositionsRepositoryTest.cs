@@ -113,7 +113,7 @@ namespace EMS.Core.API.Tests
         public void AddAsync_should_throws_an_exception_that_position_object_is_empty()
         {
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => _positionsRepository.AddAsync(null), "Succesfuly throwed exception that position entity is empty");
+            Assert.ThrowsAsync<NullReferenceException>(() => _positionsRepository.AddAsync(null), "Succesfuly throwed exception that position entity is empty");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -229,7 +229,7 @@ namespace EMS.Core.API.Tests
         public void UpdateAsync_should_throws_an_exception_that_position_object_is_empty()
         {
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => _positionsRepository.UpdateAsync(null), "Succesfuly throwed exception that position entity is empty");
+            Assert.ThrowsAsync<NullReferenceException>(() => _positionsRepository.UpdateAsync(null), "Succesfuly throwed exception that position entity is empty");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 

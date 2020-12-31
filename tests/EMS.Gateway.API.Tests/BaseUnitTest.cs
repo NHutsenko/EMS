@@ -20,6 +20,7 @@ namespace EMS.Core.API.Tests
         protected StaffRepository _staffRepository;
         protected TeamsRepository _teamsRepository;
         protected OtherPaymentsRepository _otherPaymentsRepository;
+        protected HolidaysRepository _holidaysRepository;
 
 		protected void InitializeMocks()
 		{

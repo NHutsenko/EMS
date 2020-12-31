@@ -17,7 +17,7 @@ namespace EMS.Core.API.DAL.Repositories
         {
             if(dayOff is null)
             {
-                throw new ArgumentNullException("Dayoff entity cannot be null");
+                throw new NullReferenceException("Dayoff entity cannot be null");
             }
             if(dayOff.StaffId == 0)
             {
@@ -43,7 +43,7 @@ namespace EMS.Core.API.DAL.Repositories
         {
             if (dayOff is null)
             {
-                throw new ArgumentNullException("Dayoff entity cannot be null");
+                throw new NullReferenceException("Dayoff entity cannot be null");
             }
             if (!IsRelevantTime(dayOff.Hours))
             {
