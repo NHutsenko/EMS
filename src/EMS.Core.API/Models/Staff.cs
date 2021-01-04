@@ -21,8 +21,6 @@ namespace EMS.Core.API.Models
         public long PositionId { get; set; }
         [Column("position")]
         public Position Position { get; set; }
-        [IgnoreDataMember]
-        public IQueryable<DayOff> DayOff { get; set; }
 
         public override int GetHashCode()
         {

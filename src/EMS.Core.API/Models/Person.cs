@@ -21,15 +21,14 @@ namespace EMS.Core.API.Models
         public DateTime BornedOn { get; set; }
         [IgnoreDataMember]
         public ICollection<PersonPhoto> Photos { get; set; }
-
         [IgnoreDataMember]
         public ICollection<Contact> Contacts { get; set; }
-
         [IgnoreDataMember]
         public ICollection<Staff> Staff { get; set; }
-
         [IgnoreDataMember]
         public ICollection<OtherPayment> OtherPayments { get; set; }
+        [IgnoreDataMember]
+        public IQueryable<DayOff> DayOff { get; set; }
 
         public override int GetHashCode()
         {

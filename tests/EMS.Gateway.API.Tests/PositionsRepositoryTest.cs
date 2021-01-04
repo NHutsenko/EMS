@@ -81,6 +81,7 @@ namespace EMS.Core.API.Tests
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Team = _team1,
                 TeamId = _team1.Id,
+                HourRate = 10
             };
 
             // act
@@ -102,6 +103,7 @@ namespace EMS.Core.API.Tests
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Team = _team1,
                 TeamId = _team1.Id,
+                HourRate = 10
             };
 
             // Assert
@@ -127,6 +129,7 @@ namespace EMS.Core.API.Tests
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Team = _team1,
                 TeamId = _team1.Id,
+                HourRate = 10
             };
 
             // Assert
@@ -135,7 +138,7 @@ namespace EMS.Core.API.Tests
         }
 
         [Test]
-        public void AddAsync_should_throws_an_exception_that_position_cant_be_added_with_team_that_is_not_exists()
+        public void AddAsync_should_throws_an_exception_that_position_cant_be_added_wrong_hour_rate()
         {
             // Arrange
             Position position = new Position
@@ -147,7 +150,26 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<DbUpdateException>(() => _positionsRepository.AddAsync(position), "Succesfuly throwed exception that position cant be added with team that is not exists");
+            Assert.ThrowsAsync<ArgumentException>(() => _positionsRepository.AddAsync(position), "Succesfuly throwed exception that position cant be added with wrong hour rate");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+
+        [Test]
+        public void AddAsync_should_throws_an_exception_that_position_cant_be_added_with_team_that_is_not_exists()
+        {
+            // Arrange
+            Position position = new Position
+            {
+                Name = "test",
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Team = _team2,
+                TeamId = 0,
+                HourRate = 10
+            };
+
+            // Assert
+            Assert.ThrowsAsync<ArgumentException>(() => _positionsRepository.AddAsync(position), "Succesfuly throwed exception that position cant be added with team that is not exists");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -161,10 +183,11 @@ namespace EMS.Core.API.Tests
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Team = _team1,
                 TeamId = 4,
+                HourRate = 10
             };
 
             // Assert
-            Assert.ThrowsAsync<DbUpdateException>(() => _positionsRepository.AddAsync(position), "Succesfuly throwed exception that position cannot be added with team that is not exists");
+            Assert.ThrowsAsync<ArgumentException>(() => _positionsRepository.AddAsync(position), "Succesfuly throwed exception that position cannot be added with team that is not exists");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -178,10 +201,11 @@ namespace EMS.Core.API.Tests
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Team = _team2,
                 TeamId = 1,
+                HourRate = 10
             };
 
             // Assert
-            Assert.ThrowsAsync<DbUpdateException>(() => _positionsRepository.AddAsync(position), "Succesfuly throwed exception that position cant be added with team that is not exists");
+            Assert.ThrowsAsync<ArgumentException>(() => _positionsRepository.AddAsync(position), "Succesfuly throwed exception that position cant be added with team that is not exists");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -196,6 +220,7 @@ namespace EMS.Core.API.Tests
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Team = _team2,
                 TeamId = _team2.Id,
+                HourRate = 10
             };
 
             // act
@@ -217,7 +242,8 @@ namespace EMS.Core.API.Tests
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Team = _team1,
                 TeamId = _team1.Id,
-                Id = _position1.Id
+                Id = _position1.Id, 
+                HourRate = 10
             };
 
             // Assert
@@ -252,6 +278,24 @@ namespace EMS.Core.API.Tests
         }
 
         [Test]
+        public void UpdateAsync_should_throws_an_exception_that_position_cant_be_added_wrong_hour_rate()
+        {
+            // Arrange
+            Position position = new Position
+            {
+                Name = "test",
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Team = _team2,
+                TeamId = 0,
+                Id = 1
+            };
+
+            // Assert
+            Assert.ThrowsAsync<ArgumentException>(() => _positionsRepository.UpdateAsync(position), "Succesfuly throwed exception that position cant be added with wrong hour rate");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
         public void UpdateAsync_should_throws_an_exception_that_position_cant_be_added_with_team_that_is_not_exists()
         {
             // Arrange
@@ -262,10 +306,11 @@ namespace EMS.Core.API.Tests
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Team = _team2,
                 TeamId = 0,
+                HourRate = 10
             };
 
             // Assert
-            Assert.ThrowsAsync<DbUpdateException>(() => _positionsRepository.UpdateAsync(position), "Succesfuly throwed exception that position cant be added with team that is not exists");
+            Assert.ThrowsAsync<ArgumentException>(() => _positionsRepository.UpdateAsync(position), "Succesfuly throwed exception that position cant be added with team that is not exists");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -279,10 +324,11 @@ namespace EMS.Core.API.Tests
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Team = _team1,
                 TeamId = 4,
+                HourRate = 10
             };
 
             // Assert
-            Assert.ThrowsAsync<DbUpdateException>(() => _positionsRepository.UpdateAsync(position), "Succesfuly throwed exception that position cant be added with team that is not exists");
+            Assert.ThrowsAsync<ArgumentException>(() => _positionsRepository.UpdateAsync(position), "Succesfuly throwed exception that position cant be added with team that is not exists");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -296,10 +342,11 @@ namespace EMS.Core.API.Tests
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Team = _team2,
                 TeamId = 1,
+                HourRate = 10
             };
 
             // Assert
-            Assert.ThrowsAsync<DbUpdateException>(() => _positionsRepository.UpdateAsync(position), "Succesfuly throwed exception that position cant be added with team that is not exists");
+            Assert.ThrowsAsync<ArgumentException>(() => _positionsRepository.UpdateAsync(position), "Succesfuly throwed exception that position cant be added with team that is not exists");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 

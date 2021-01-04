@@ -1,0 +1,43 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "EMS.Core.API";
+
+package salary;
+
+service Salary{
+	rpc GetSalary(SalaryRequest) returns (ISalaryResponse){
+
+	}
+}
+
+message SalaryRequest{
+	int64 manager_id = 1;
+	google.protobuf.Timestamp startDate = 2;
+	google.protobuf.Timestamp endDate = 3;
+}
+
+message ISalaryResponse {
+	repeated SalaryResponse salary_response = 1;
+}
+
+message SalaryResponse {
+	int64 id = 1;
+	double current_salary = 2;
+	double month_salary = 3;
+	double manager_id = 4;
+	int64 current_position = 5;
+	google.protobuf.Timestamp started_on = 6;
+	repeated DayOffData day_offs = 7;
+}
+
+message DayOffData{
+	enum DayOffType {
+		ABSENTIISM = 0;
+        SICKLEAVE = 1;
+        VACATION = 2;
+	}
+	DayOffType day_off_type = 1;
+	float hours = 2;
+}

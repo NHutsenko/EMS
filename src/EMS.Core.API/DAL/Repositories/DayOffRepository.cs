@@ -19,9 +19,9 @@ namespace EMS.Core.API.DAL.Repositories
             {
                 throw new NullReferenceException("Dayoff entity cannot be null");
             }
-            if(dayOff.StaffId == 0)
+            if(dayOff.PersonId == 0)
             {
-                throw new DbUpdateException("Cannot add day off record without specified staff Id");
+                throw new DbUpdateException("Cannot add day off record without specified person");
             }
             if(!IsRelevantTime(dayOff.Hours))
             {
@@ -31,7 +31,7 @@ namespace EMS.Core.API.DAL.Repositories
             {
                 throw new DbUpdateException("Cannot add day off record without specified date");
             }
-            if (_context.DaysOff.Any(e => e.CreatedOn.Date == dayOff.CreatedOn.Date && e.StaffId == dayOff.StaffId))
+            if (_context.DaysOff.Any(e => e.CreatedOn.Date == dayOff.CreatedOn.Date && e.PersonId == dayOff.PersonId))
             {
                 return 0;
             }
@@ -68,13 +68,13 @@ namespace EMS.Core.API.DAL.Repositories
             return _context.DaysOff.Select(e => e);
         }
 
-        public IQueryable<DayOff> GetByStaffId(long staffId)
+        public IQueryable<DayOff> GetByPersonId(long personId)
         {
-            if(staffId == 0)
+            if(personId == 0)
             {
-                throw new ArgumentException("Cannot get records for staff Id equals to 0");
+                throw new ArgumentException("Cannot get records for non existing person");
             }
-            return _context.DaysOff.Where(e => e.StaffId == staffId);
+            return _context.DaysOff.Where(e => e.PersonId == personId);
         }
 
         public IQueryable<DayOff> GetByDateRange(DateTime start, DateTime end)
@@ -86,13 +86,13 @@ namespace EMS.Core.API.DAL.Repositories
             return _context.DaysOff.Where(e => e.CreatedOn >= start && e.CreatedOn <= end).OrderBy(e => e.CreatedOn);
         }
 
-        public IQueryable<DayOff> GetByDateRangeAndStaffId(DateTime start, DateTime end, long staffId)
+        public IQueryable<DayOff> GetByDateRangeAndPersonId(DateTime start, DateTime end, long personId)
         {
-            if (staffId == 0)
+            if (personId == 0)
             {
-                throw new ArgumentException("Cannot get records for staff Id equals to 0");
+                throw new ArgumentException("Cannot get records for non existing person");
             }
-            return GetByDateRange(start, end).Where(e => e.StaffId == staffId);
+            return GetByDateRange(start, end).Where(e => e.PersonId == personId);
         }
 
         [ExcludeFromCodeCoverage]

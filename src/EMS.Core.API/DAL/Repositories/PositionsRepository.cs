@@ -22,10 +22,14 @@ namespace EMS.Core.API.DAL.Repositories
             {
                 throw new ArgumentNullException("Position name cannot be empty");
             }
+            if(position.HourRate <= 0)
+            {
+                throw new ArgumentException("Hour rate cannot be 0 or less");
+            }
             if (position.TeamId == 0 || _context.Teams.FirstOrDefault(t => t.Id == position.TeamId) is null ||
                 _context.Teams.First(t => t.Id == position.TeamId) != position.Team)
             {
-                throw new DbUpdateException("Cannot add position with non exists team");
+                throw new ArgumentException("Cannot add position with non exists team");
             }
             position.CreatedOn = _dateTimeUtil.GetCurrentDateTime();
             _context.Positions.Add(position);
@@ -42,10 +46,14 @@ namespace EMS.Core.API.DAL.Repositories
             {
                 throw new ArgumentNullException("Position name cannot be empty");
             }
+            if (position.HourRate <= 0)
+            {
+                throw new ArgumentException("Hour rate cannot be 0 or less");
+            }
             if (position.TeamId == 0 || _context.Teams.FirstOrDefault(t => t.Id == position.TeamId) is null ||
                 _context.Teams.First(t => t.Id == position.TeamId) != position.Team)
             {
-                throw new DbUpdateException("Cannot add position with non exists team");
+                throw new ArgumentException("Cannot add position with non exists team");
             }
             _context.Positions.Update(position);
             return await _context.SaveChangesAsync();

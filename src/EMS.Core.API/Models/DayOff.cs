@@ -12,10 +12,10 @@ namespace EMS.Core.API.Models
         public DayOffType DayOffType { get; set; }
         [Column("hours")]
         public float Hours { get; set; }
-        [Column("staffId")]
-        public long StaffId { get; set; }
+        [Column("personId")]
+        public long PersonId { get; set; }
         [Column("Staff")]
-        public Staff Staff { get; set; }
+        public Person Person { get; set; }
 
         public override int GetHashCode()
         {
@@ -33,7 +33,7 @@ namespace EMS.Core.API.Models
             return Id.Equals(toCompare.Id)
                    && DayOffType == toCompare.DayOffType
                    && CreatedOn == toCompare.CreatedOn
-                   && StaffId == toCompare.StaffId
+                   && PersonId == toCompare.PersonId
                    && Hours.Equals(Hours);
         }
     }

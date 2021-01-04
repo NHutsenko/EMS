@@ -11,8 +11,8 @@ namespace EMS.Core.API.DAL.Repositories.Interfaces
         Task<int> UpdateAsync(DayOff dayOff);
         Task<int> DeleteAsync(DayOff dayOff);
         IQueryable<DayOff> GetAll();
-        IQueryable<DayOff> GetByStaffId(long staffId);
+        IQueryable<DayOff> GetByPersonId(long personId);
         IQueryable<DayOff> GetByDateRange(DateTime start, DateTime end);
-        IQueryable<DayOff> GetByDateRangeAndStaffId(DateTime start, DateTime end, long staffId);
+        IQueryable<DayOff> GetByDateRangeAndPersonId(DateTime start, DateTime end, long personId);
     }
 }

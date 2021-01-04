@@ -23,7 +23,7 @@ namespace EMS.Core.API.DAL.Repositories
                 throw new ArgumentException("ManagerId in staff entity cannot be 0");
             }
 
-            if(staff.PositionId == 0)
+            if(staff.PositionId == 0 || !_context.Positions.Any(e => e.Id == staff.PositionId))
             {
                 throw new ArgumentException("PositionId in staff entity cannot be 0");
             }
@@ -49,7 +49,7 @@ namespace EMS.Core.API.DAL.Repositories
                 throw new ArgumentException("ManagerId in staff entity cannot be 0");
             }
 
-            if (staff.PositionId == 0)
+            if (staff.PositionId == 0 || !_context.Positions.Any(e => e.Id == staff.PositionId))
             {
                 throw new ArgumentException("PositionId in staff entity cannot be 0");
             }

@@ -43,9 +43,9 @@ namespace EMS.Core.API.DAL
 
             modelBuilder.Entity<DayOff>()
                 .ToTable("DayOffs", "core")
-                .HasOne(e => e.Staff)
+                .HasOne(e => e.Person)
                 .WithMany(e => e.DayOff)
-                .HasForeignKey(e => e.StaffId);
+                .HasForeignKey(e => e.PersonId);
 
             modelBuilder.Entity<Contact>()
                 .ToTable("Contacts", "core")

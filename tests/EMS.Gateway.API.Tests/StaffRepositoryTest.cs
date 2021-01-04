@@ -17,6 +17,8 @@ namespace EMS.Core.API.Tests
     {
         public Staff _staff1;
         public Staff _staff2;
+        public Position _position1;
+        public Position _position2;
 
         [SetUp]
         public void Setup()
@@ -41,6 +43,19 @@ namespace EMS.Core.API.Tests
             };
             _dbContext.Staff.Add(_staff1);
             _dbContext.Staff.Add(_staff2);
+
+            _position1 = new Position
+            {
+                Id = 1
+            };
+
+            _position2 = new Position
+            {
+                Id = 2
+            };
+            _dbContext.Positions.Add(_position1);
+            _dbContext.Positions.Add(_position2);
+
             _staffRepository = new StaffRepository(_dbContext);
             DbContextMock.ShouldThrowException = false;
         }
@@ -54,7 +69,7 @@ namespace EMS.Core.API.Tests
                 CreatedOn = new DateTime(2020, 03, 01, 12, 00, 00),
                 PersonId = 1,
                 ManagerId = 123,
-                PositionId = 3
+                PositionId = _position2.Id
             };
 
             // Act
@@ -76,7 +91,7 @@ namespace EMS.Core.API.Tests
                 CreatedOn = new DateTime(2020, 03, 01, 12, 00, 00),
                 PersonId = 1,
                 ManagerId = 123,
-                PositionId = 3
+                PositionId = _position2.Id
             };
 
             // Assert
@@ -110,6 +125,23 @@ namespace EMS.Core.API.Tests
         }
 
         [Test]
+        public void AddAsync_should_throw_exception_because_position_does_not_exists_in_db()
+        {
+            // Arrange
+            Staff toAdd = new Staff
+            {
+                CreatedOn = new DateTime(2020, 03, 01, 12, 00, 00),
+                PersonId = 1,
+                ManagerId = 123,
+                PositionId = 3
+            };
+
+            // Assert
+            Assert.ThrowsAsync<ArgumentException>(() => _staffRepository.AddAsync(toAdd), "AddAsync succesfully throws exception with wrong position");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
         public void AddAsync_should_throw_exception_because_managerId_is_equal_to_zero()
         {
             // Arrange
@@ -118,7 +150,7 @@ namespace EMS.Core.API.Tests
                 CreatedOn = new DateTime(2019, 03, 01, 12, 00, 00),
                 PersonId = 1,
                 ManagerId = 0,
-                PositionId = 3
+                PositionId = _position2.Id
             };
 
             // Assert
@@ -135,7 +167,7 @@ namespace EMS.Core.API.Tests
                 CreatedOn = new DateTime(2019, 02, 01, 12, 00, 00),
                 PersonId = 1,
                 ManagerId = 123,
-                PositionId = 3
+                PositionId = _position2.Id
             };
 
             // Assert
@@ -153,7 +185,7 @@ namespace EMS.Core.API.Tests
                 CreatedOn = new DateTime(2020, 02, 01, 12, 00, 00),
                 ManagerId = 123,
                 PersonId = 1,
-                PositionId = 3
+                PositionId = _position2.Id
             };
 
             // Act
@@ -174,7 +206,7 @@ namespace EMS.Core.API.Tests
                 CreatedOn = new DateTime(2020, 03, 01, 12, 00, 00),
                 PersonId = 1,
                 ManagerId = 123,
-                PositionId = 3,
+                PositionId = _position2.Id,
                 Id = _staff1.Id
             };
 
@@ -206,6 +238,23 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _staffRepository.UpdateAsync(toUpdate), "AddAsync throws exception as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
+        public void UpdateAsync_should_throw_exception_because_position_does_not_exists_in_db()
+        {
+            // Arrange
+            Staff toAdd = new Staff
+            {
+                CreatedOn = new DateTime(2020, 03, 01, 12, 00, 00),
+                PersonId = 1,
+                ManagerId = 123,
+                PositionId = 3
+            };
+
+            // Assert
+            Assert.ThrowsAsync<ArgumentException>(() => _staffRepository.UpdateAsync(toAdd), "UpdateAsync succesfully throws exception with wrong position");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 

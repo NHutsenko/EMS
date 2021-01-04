@@ -2,8 +2,8 @@
 {
     public enum ContactType
     {
-        Email = 1,
-        Phone = 2,
-        Messenger = 3
+        Email = 0,
+        Phone = 1,
+        Messenger = 2
     }
 }

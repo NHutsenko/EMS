@@ -11,6 +11,8 @@ namespace EMS.Core.API.Models
 	{
         [Column("name")]
         public string Name { get; set; }
+        [Column("hourRate")]
+        public double HourRate { get; set; }
         [Column("team")]
 		public Team Team { get; set; }
 

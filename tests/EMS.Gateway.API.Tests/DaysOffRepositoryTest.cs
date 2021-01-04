@@ -16,7 +16,7 @@ namespace EMS.Core.API.Tests
     [ExcludeFromCodeCoverage]
     public class DaysOffRepositoryTest : BaseUnitTest
     {
-        private Staff _staff1;
+        private Person _person;
         private DayOff _dayOff1;
         private DayOff _dayOff2;
 
@@ -24,17 +24,17 @@ namespace EMS.Core.API.Tests
         public void Setup()
         {
             InitializeMocks();
-            _staff1 = new Staff
+            _person = new Person
             {
                 Id = 1,
             };
-            _dbContext.Staff.Add(_staff1);
+            _dbContext.People.Add(_person);
 
             _dayOff1 = new DayOff
             {
                 Id = 1,
                 CreatedOn = new DateTime(2020, 01, 01, 12, 00, 00),
-                StaffId = _staff1.Id,
+                PersonId = _person.Id,
                 Hours = 8,
                 DayOffType = DayOffType.Vacation
             };
@@ -43,7 +43,7 @@ namespace EMS.Core.API.Tests
             {
                 Id = 2,
                 CreatedOn = new DateTime(2020, 01, 02, 12, 00, 00),
-                StaffId = _staff1.Id,
+                PersonId = _person.Id,
                 Hours = 8,
                 DayOffType = DayOffType.Vacation
             };
@@ -64,7 +64,7 @@ namespace EMS.Core.API.Tests
                 Hours = 8,
                 CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
                 DayOffType = DayOffType.SickLeave,
-                StaffId = _staff1.Id
+                PersonId = _person.Id,
             };
 
             // Act
@@ -86,7 +86,7 @@ namespace EMS.Core.API.Tests
                 Hours = 8,
                 CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
                 DayOffType = DayOffType.SickLeave,
-                StaffId = _staff1.Id
+                PersonId = _person.Id,
             };
 
             // Assert
@@ -103,7 +103,7 @@ namespace EMS.Core.API.Tests
         }
 
         [Test]
-        public void AddAsync_should_throws_exception_because_staffId_is_not_specified()
+        public void AddAsync_should_throws_exception_because_person_Id_is_not_specified()
         {
             // Arrange
             DayOff dayOff = new DayOff
@@ -127,7 +127,7 @@ namespace EMS.Core.API.Tests
                 Hours = -1,
                 CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
                 DayOffType = DayOffType.SickLeave,
-                StaffId = _staff1.Id
+                PersonId = _person.Id,
             };
 
             // Assert
@@ -144,7 +144,7 @@ namespace EMS.Core.API.Tests
                 Hours = 9,
                 CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
                 DayOffType = DayOffType.SickLeave,
-                StaffId = _staff1.Id
+                PersonId = _person.Id,
             };
 
             // Assert
@@ -161,7 +161,7 @@ namespace EMS.Core.API.Tests
                 Hours = 8,
                 CreatedOn = DateTime.MinValue,
                 DayOffType = DayOffType.SickLeave,
-                StaffId = _staff1.Id
+                PersonId = _person.Id,
             };
 
             // Assert
@@ -178,7 +178,7 @@ namespace EMS.Core.API.Tests
                 Hours = 8,
                 CreatedOn = new DateTime(2020, 01, 02, 12, 00, 00),
                 DayOffType = DayOffType.SickLeave,
-                StaffId = _staff1.Id
+                PersonId = _person.Id,
             };
 
             // Act
@@ -199,7 +199,7 @@ namespace EMS.Core.API.Tests
                 Hours = 6,
                 CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
                 DayOffType = DayOffType.SickLeave,
-                StaffId = _staff1.Id
+                PersonId = _person.Id,
             };
 
             // Act
@@ -220,7 +220,7 @@ namespace EMS.Core.API.Tests
                 Hours = 8,
                 CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
                 DayOffType = DayOffType.SickLeave,
-                StaffId = _staff1.Id
+                PersonId = _person.Id,
             };
 
             // Assert
@@ -246,7 +246,7 @@ namespace EMS.Core.API.Tests
                 Hours = -1,
                 CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
                 DayOffType = DayOffType.SickLeave,
-                StaffId = _staff1.Id
+                PersonId = _person.Id,
             };
 
             // Assert
@@ -264,7 +264,7 @@ namespace EMS.Core.API.Tests
                 Hours = 9,
                 CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
                 DayOffType = DayOffType.SickLeave,
-                StaffId = _staff1.Id
+                PersonId = _person.Id,
             };
 
             // Assert
@@ -282,7 +282,7 @@ namespace EMS.Core.API.Tests
                 Hours = 8,
                 CreatedOn = DateTime.MinValue,
                 DayOffType = DayOffType.SickLeave,
-                StaffId = _staff1.Id
+                PersonId = _person.Id,
             };
 
             // Assert
@@ -300,7 +300,7 @@ namespace EMS.Core.API.Tests
                 Hours = 8,
                 CreatedOn = DateTime.MinValue,
                 DayOffType = DayOffType.SickLeave,
-                StaffId = _staff1.Id
+                PersonId = _person.Id,
             };
             _dbContext.DaysOff.Add(dayOff);
 
@@ -322,7 +322,7 @@ namespace EMS.Core.API.Tests
                 Hours = 8,
                 CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
                 DayOffType = DayOffType.SickLeave,
-                StaffId = _staff1.Id
+                PersonId = _person.Id,
             };
 
             // Assert
@@ -340,7 +340,7 @@ namespace EMS.Core.API.Tests
                 Hours = 8,
                 CreatedOn = DateTime.MinValue,
                 DayOffType = DayOffType.SickLeave,
-                StaffId = _staff1.Id
+                PersonId = _person.Id,
             };
             _dbContext.DaysOff.Add(dayOff);
 
@@ -352,10 +352,10 @@ namespace EMS.Core.API.Tests
         }
 
         [Test]
-        public void GetByStaffId_should_return_all_records_from_db_by_specified_staffId()
+        public void GetByPersobId_should_return_all_records_from_db_by_specified_personId()
         {
             // Act
-            IQueryable<DayOff> result = _dayOffRepository.GetByStaffId(_staff1.Id);
+            IQueryable<DayOff> result = _dayOffRepository.GetByPersonId(_person.Id);
 
             // Assert
             CollectionAssert.AreEqual(new List<DayOff> { _dayOff1, _dayOff2 }, result, "Result as expected");
@@ -365,7 +365,7 @@ namespace EMS.Core.API.Tests
         public void GetByStaffId_should_throw_exception_because_staffId_is_zero()
         {
             // Assert
-            Assert.Throws<ArgumentException>(() => _dayOffRepository.GetByStaffId(0), "Throws exception as expected");
+            Assert.Throws<ArgumentException>(() => _dayOffRepository.GetByPersonId(0), "Throws exception as expected");
         }
 
         [Test]
@@ -378,7 +378,7 @@ namespace EMS.Core.API.Tests
                 Hours = 8,
                 CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
                 DayOffType = DayOffType.SickLeave,
-                StaffId = _staff1.Id
+                PersonId = _person.Id,
             };
             _dbContext.DaysOff.Add(dayOff);
 
@@ -406,7 +406,7 @@ namespace EMS.Core.API.Tests
                 Hours = 8,
                 CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
                 DayOffType = DayOffType.SickLeave,
-                StaffId = _staff1.Id
+                PersonId = _person.Id,
             };
             DayOff staffNotForSearch = new DayOff
             {
@@ -414,13 +414,13 @@ namespace EMS.Core.API.Tests
                 Hours = 8,
                 CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
                 DayOffType = DayOffType.SickLeave,
-                StaffId = 2
+                PersonId = 2
             };
             _dbContext.DaysOff.Add(dayOff);
             _dbContext.DaysOff.Add(staffNotForSearch);
 
             // Act
-            IQueryable<DayOff> result = _dayOffRepository.GetByDateRangeAndStaffId(new DateTime(2020, 01, 02, 12, 00, 00), new DateTime(2020, 01, 03, 12, 00, 00), _staff1.Id);
+            IQueryable<DayOff> result = _dayOffRepository.GetByDateRangeAndPersonId(new DateTime(2020, 01, 02, 12, 00, 00), new DateTime(2020, 01, 03, 12, 00, 00), _person.Id);
 
             // Assert
             CollectionAssert.AreEqual(new List<DayOff> { _dayOff2, dayOff }, result, "Result as expected");
@@ -430,7 +430,7 @@ namespace EMS.Core.API.Tests
         public void GetByDateRangeAndStaffId_should_throw_exception_because_staffId_is_zero()
         {
             // Assert
-            Assert.Throws<ArgumentException>(() => _dayOffRepository.GetByDateRangeAndStaffId(new DateTime(2020, 01, 01, 12, 00, 00), new DateTime(2020, 01, 02, 12, 00, 00), 0), "Throws exception as expected");
+            Assert.Throws<ArgumentException>(() => _dayOffRepository.GetByDateRangeAndPersonId(new DateTime(2020, 01, 01, 12, 00, 00), new DateTime(2020, 01, 02, 12, 00, 00), 0), "Throws exception as expected");
         }
     }
 }

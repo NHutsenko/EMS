@@ -2,8 +2,8 @@
 {
     public enum DayOffType
     {
-        Absentiism = 1,
-        SickLeave = 2,
-        Vacation = 3
+        Absentiism = 0,
+        SickLeave = 1,
+        Vacation = 2
     }
 }
