@@ -12,6 +12,8 @@ namespace EMS.Core.API.Models
         public DayOffType DayOffType { get; set; }
         [Column("hours")]
         public float Hours { get; set; }
+        [Column("isPaid")]
+        public bool IsPaid { get; set; }
         [Column("personId")]
         public long PersonId { get; set; }
         [Column("Staff")]

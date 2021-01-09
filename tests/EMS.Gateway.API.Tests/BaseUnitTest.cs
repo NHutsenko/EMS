@@ -2,6 +2,7 @@
 using EMS.Common.Utils.DateTimeUtil;
 using EMS.Core.API.DAL;
 using EMS.Core.API.DAL.Repositories;
+using EMS.Core.API.Services;
 using EMS.Core.API.Tests.Mocks;
 using Moq;
 
@@ -21,6 +22,7 @@ namespace EMS.Core.API.Tests
         protected TeamsRepository _teamsRepository;
         protected OtherPaymentsRepository _otherPaymentsRepository;
         protected HolidaysRepository _holidaysRepository;
+        protected SalaryService _salaryService;
 
 		protected void InitializeMocks()
 		{

@@ -7,7 +7,6 @@ using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using static EMS.Core.API.DayOffData.Types;
 
 namespace EMS.Core.API.Services
 {
@@ -39,41 +38,62 @@ namespace EMS.Core.API.Services
             IQueryable<Staff> staffs = request.ManagerId == 0 ? _staffRepository.GetAll() : _staffRepository.GetByManagerId(request.ManagerId);
             IQueryable<IGrouping<long?, Staff>> groupedStaff = staffs.Where(e => e.PersonId.HasValue)
                 .GroupBy(e => e.PersonId);
-            foreach(IGrouping<long?, Staff> data in groupedStaff)
+            foreach (IGrouping<long?, Staff> data in groupedStaff)
             {
-                
+                response.SalaryResponse.Add(CalculateCurrentSalary(data, request.StartDate.ToDateTime(), request.EndDate.ToDateTime()));
             }
-            
-            
 
             return Task.FromResult(response);
         }
 
+
+        // TODO: Add to calculation other payments and grademods
         private SalaryResponse CalculateCurrentSalary(IGrouping<long?, Staff> staff, DateTime startDate, DateTime endDate)
         {
             IQueryable<DayOff> dayOffs = _dayOffRepository.GetByDateRangeAndPersonId(startDate, endDate, staff.First().PersonId.Value);
             IQueryable<Holiday> holidays = _holidaysRepository.GetByDateRange(startDate, endDate);
             SalaryResponse response = new SalaryResponse();
-            response.StartedOn = Timestamp.FromDateTime(staff.First().CreatedOn);
+            response.StartedOn = Timestamp.FromDateTime(staff.First().CreatedOn.ToUniversalTime());
             double workHours = GetWorkHours();
-            
-            for (DateTime current = startDate; current <= endDate; current.AddDays(1))
+
+            for (DateTime current = startDate; current <= endDate; current = current.AddDays(1))
             {
-                if(current.DayOfWeek != DayOfWeek.Sunday
-                    && (!holidays.Any(e => e.HolidayDate == current.Date)
-                        || holidays.Any(e => e.ToDoDate.HasValue && e.ToDoDate.Value == current.Date)))
+                bool todoDay = (current.DayOfWeek == DayOfWeek.Saturday || current.DayOfWeek == DayOfWeek.Sunday)
+                    && holidays.Any(e => e.ToDoDate.HasValue && e.ToDoDate.Value.Date == current.Date);
+
+                bool notHoliday = current.DayOfWeek != DayOfWeek.Saturday
+                    && current.DayOfWeek != DayOfWeek.Sunday
+                    && !holidays.Any(e => e.HolidayDate.Date == current.Date);
+                if (notHoliday || todoDay)
                 {
                     Staff currentStaff = staff.OrderByDescending(e => e.CreatedOn).FirstOrDefault(e => e.CreatedOn <= current);
-                    if(currentStaff is not null)
+                    if (currentStaff is not null)
                     {
                         Position position = _positionsRepository.Get(currentStaff.PositionId);
+                        response.CurrentPosition = position.Id;
                         if (!dayOffs.Any(e => e.CreatedOn.Date == current.Date))
                         {
-                            response.CurrentSalary = workHours * position.HourRate;
+                            response.CurrentSalary += workHours * position.HourRate;
                         }
                         else
                         {
-                            DayOff dayOff = dayOffs.First(e => e.CreatedOn == current.Date);
+                            DayOff dayOff = dayOffs.First(e => e.CreatedOn.Date == current.Date);
+                            response.DayOffs.Add(new DayOffData
+                            {
+                                DayOffType = (int)dayOff.DayOffType,
+                                Hours = dayOff.Hours
+                            });
+                            if (dayOff.IsPaid)
+                            {
+                                if (dayOff.Hours < workHours)
+                                {
+                                    response.CurrentSalary += dayOff.Hours * position.HourRate + (workHours - dayOff.Hours) * position.HourRate;
+                                }
+                                else
+                                {
+                                    response.CurrentSalary += dayOff.Hours * position.HourRate;
+                                }
+                            }
                         }
                     }
                 }
@@ -82,7 +102,8 @@ namespace EMS.Core.API.Services
             return response;
         }
 
-        private static double GetWorkHours() {
+        private static double GetWorkHours()
+        {
             bool parsed = double.TryParse(Environment.GetEnvironmentVariable("MaxWorkHours"), out double workHours);
             if (!parsed)
             {

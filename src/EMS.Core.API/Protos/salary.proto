@@ -33,11 +33,6 @@ message SalaryResponse {
 }
 
 message DayOffData{
-	enum DayOffType {
-		ABSENTIISM = 0;
-        SICKLEAVE = 1;
-        VACATION = 2;
-	}
-	DayOffType day_off_type = 1;
+	int32 day_off_type = 1;
 	float hours = 2;
 }
