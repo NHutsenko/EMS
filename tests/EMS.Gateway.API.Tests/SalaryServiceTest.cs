@@ -35,7 +35,8 @@ namespace EMS.Core.API.Tests
                 Id = 1,
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 PositionId = _position1.Id,
-                PersonId = 1
+                PersonId = 1,
+                ManagerId = 1
             };
 
             _dbContext.Staff.Add(_staff1);
@@ -97,6 +98,7 @@ namespace EMS.Core.API.Tests
             SalaryRequest request = new SalaryRequest();
             request.StartDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc));
             request.EndDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1).AddDays(-1));
+            request.ManagerId = 1;
 
             // Act
             ISalaryResponse response = _salaryService.GetSalary(request, null).Result;
@@ -221,7 +223,7 @@ namespace EMS.Core.API.Tests
         }
 
         [Test]
-        public void GetSalary_should_return_month_salary_with_partly_dayoff()
+        public void GetSalary_should_return_month_salary_with_partly_unpayed_dayoff()
         {
             // Arrange
             SalaryResponse expected = new SalaryResponse
@@ -235,6 +237,44 @@ namespace EMS.Core.API.Tests
             {
                 DayOffType = Enums.DayOffType.Vacation,
                 IsPaid = false,
+                PersonId = _staff1.PersonId.GetValueOrDefault(),
+                Hours = 4,
+                Id = 1,
+                CreatedOn = new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc)
+            };
+
+            _dbContext.DaysOff.Add(dayOff);
+
+            SalaryRequest request = new SalaryRequest();
+            request.StartDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc));
+            request.EndDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1).AddDays(-1));
+
+            // Act
+            ISalaryResponse response = _salaryService.GetSalary(request, null).Result;
+            SalaryResponse actual = response.SalaryResponse.First();
+
+            // Assert
+            Assert.AreEqual(expected.CurrentSalary, actual.CurrentSalary, "Salary calculated as expected");
+            Assert.AreEqual(expected.PersonId, actual.PersonId, "Employee id returned as expected");
+            Assert.AreEqual(expected.CurrentPosition, actual.CurrentPosition, "Employee actual position returned as expected");
+            Assert.AreEqual(expected.StartedOn.ToDateTime(), actual.StartedOn.ToDateTime(), "Date of start work returned as expected");
+        }
+
+        [Test]
+        public void GetSalary_should_return_month_salary_with_partly_payed_dayoff()
+        {
+            // Arrange
+            SalaryResponse expected = new SalaryResponse
+            {
+                CurrentPosition = _position1.Id,
+                PersonId = _staff1.PersonId.GetValueOrDefault(),
+                CurrentSalary = 1680,
+                StartedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime())
+            };
+            DayOff dayOff = new DayOff
+            {
+                DayOffType = Enums.DayOffType.Vacation,
+                IsPaid = true,
                 PersonId = _staff1.PersonId.GetValueOrDefault(),
                 Hours = 4,
                 Id = 1,

@@ -286,7 +286,7 @@ namespace EMS.Core.API.Tests
                 CreatedOn = new DateTime(2019, 02, 01, 12, 00, 00),
                 PersonId = 1,
                 ManagerId = 123,
-                PositionId = 3
+                PositionId = _position1.Id
             };
 
             // Assert
