@@ -38,6 +38,7 @@ namespace EMS.Core.API
 			}
 			services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
+            services.AddTransient<IApplicationDbContext, ApplicationDbContext>();
             services.AddSingleton<IDateTimeUtil, DateTimeUtil>();
             services.AddTransient<IDayOffRepository, DayOffRepository>();
             services.AddTransient<IOtherPaymentsRepository, OtherPaymentsRepository>();

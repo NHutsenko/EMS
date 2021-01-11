@@ -55,7 +55,7 @@ namespace EMS.Core.API.Tests
             SalaryResponse expected = new SalaryResponse
             {
                 CurrentPosition = _position1.Id,
-                Id = _staff1.PersonId.GetValueOrDefault(),
+                PersonId = _staff1.PersonId.GetValueOrDefault(),
                 CurrentSalary = 1680,
                 StartedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime())
             };
@@ -70,7 +70,190 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected.CurrentSalary, actual.CurrentSalary, "Salary calculated as expected");
-            Assert.AreEqual(expected.Id, actual.Id, "Employee id returned as expected");
+            Assert.AreEqual(expected.PersonId, actual.PersonId, "Employee id returned as expected");
+            Assert.AreEqual(expected.CurrentPosition, actual.CurrentPosition, "Employee actual position returned as expected");
+            Assert.AreEqual(expected.StartedOn.ToDateTime(), actual.StartedOn.ToDateTime(), "Date of start work returned as expected");
+        }
+
+        [Test]
+        public void GetSalary_should_return_month_salary_with_paid_holidays()
+        {
+            // Arrange
+            SalaryResponse expected = new SalaryResponse
+            {
+                CurrentPosition = _position1.Id,
+                PersonId = _staff1.PersonId.GetValueOrDefault(),
+                CurrentSalary = 1680,
+                StartedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime())
+            };
+            Holiday holiday = new Holiday
+            {
+                HolidayDate = new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+                Id = 1,
+                Description = "Test"
+            };
+            _dbContext.Holidays.Add(holiday);
+
+            SalaryRequest request = new SalaryRequest();
+            request.StartDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc));
+            request.EndDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1).AddDays(-1));
+
+            // Act
+            ISalaryResponse response = _salaryService.GetSalary(request, null).Result;
+            SalaryResponse actual = response.SalaryResponse.First();
+
+            // Assert
+            Assert.AreEqual(expected.CurrentSalary, actual.CurrentSalary, "Salary calculated as expected");
+            Assert.AreEqual(expected.PersonId, actual.PersonId, "Employee id returned as expected");
+            Assert.AreEqual(expected.CurrentPosition, actual.CurrentPosition, "Employee actual position returned as expected");
+            Assert.AreEqual(expected.StartedOn.ToDateTime(), actual.StartedOn.ToDateTime(), "Date of start work returned as expected");
+        }
+
+        [Test]
+        public void GetSalary_should_return_month_salary_with_unpaid_holidays()
+        {
+            // Arrange
+            SalaryResponse expected = new SalaryResponse
+            {
+                CurrentPosition = _position1.Id,
+                PersonId = _staff1.PersonId.GetValueOrDefault(),
+                CurrentSalary = 1680,
+                StartedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime())
+            };
+            Holiday holiday = new Holiday
+            {
+                HolidayDate = new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+                ToDoDate = new DateTime(2021, 1, 2, 0, 0, 0, DateTimeKind.Utc),
+                Id = 1,
+                Description = "Test"
+            };
+            _dbContext.Holidays.Add(holiday);
+
+            SalaryRequest request = new SalaryRequest();
+            request.StartDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc));
+            request.EndDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1).AddDays(-1));
+
+            // Act
+            ISalaryResponse response = _salaryService.GetSalary(request, null).Result;
+            SalaryResponse actual = response.SalaryResponse.First();
+
+            // Assert
+            Assert.AreEqual(expected.CurrentSalary, actual.CurrentSalary, "Salary calculated as expected");
+            Assert.AreEqual(expected.PersonId, actual.PersonId, "Employee id returned as expected");
+            Assert.AreEqual(expected.CurrentPosition, actual.CurrentPosition, "Employee actual position returned as expected");
+            Assert.AreEqual(expected.StartedOn.ToDateTime(), actual.StartedOn.ToDateTime(), "Date of start work returned as expected");
+        }
+
+        [Test]
+        public void GetSalary_should_return_month_salary_with_paid_dayoff()
+        {
+            // Arrange
+            SalaryResponse expected = new SalaryResponse
+            {
+                CurrentPosition = _position1.Id,
+                PersonId = _staff1.PersonId.GetValueOrDefault(),
+                CurrentSalary = 1680,
+                StartedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime())
+            };
+            DayOff dayOff = new DayOff
+            {
+                DayOffType = Enums.DayOffType.Vacation,
+                IsPaid = true,
+                PersonId = _staff1.PersonId.GetValueOrDefault(),
+                Hours = 8,
+                Id = 1,
+                CreatedOn = new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc)
+            };
+
+            _dbContext.DaysOff.Add(dayOff);
+
+            SalaryRequest request = new SalaryRequest();
+            request.StartDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc));
+            request.EndDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1).AddDays(-1));
+
+            // Act
+            ISalaryResponse response = _salaryService.GetSalary(request, null).Result;
+            SalaryResponse actual = response.SalaryResponse.First();
+
+            // Assert
+            Assert.AreEqual(expected.CurrentSalary, actual.CurrentSalary, "Salary calculated as expected");
+            Assert.AreEqual(expected.PersonId, actual.PersonId, "Employee id returned as expected");
+            Assert.AreEqual(expected.CurrentPosition, actual.CurrentPosition, "Employee actual position returned as expected");
+            Assert.AreEqual(expected.StartedOn.ToDateTime(), actual.StartedOn.ToDateTime(), "Date of start work returned as expected");
+        }
+
+        [Test]
+        public void GetSalary_should_return_month_salary_with_unpaid_dayoff()
+        {
+            // Arrange
+            SalaryResponse expected = new SalaryResponse
+            {
+                CurrentPosition = _position1.Id,
+                PersonId = _staff1.PersonId.GetValueOrDefault(),
+                CurrentSalary = 1600,
+                StartedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime())
+            };
+            DayOff dayOff = new DayOff
+            {
+                DayOffType = Enums.DayOffType.Vacation,
+                IsPaid = false,
+                PersonId = _staff1.PersonId.GetValueOrDefault(),
+                Hours = 8,
+                Id = 1,
+                CreatedOn = new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc)
+            };
+
+            _dbContext.DaysOff.Add(dayOff);
+
+            SalaryRequest request = new SalaryRequest();
+            request.StartDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc));
+            request.EndDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1).AddDays(-1));
+
+            // Act
+            ISalaryResponse response = _salaryService.GetSalary(request, null).Result;
+            SalaryResponse actual = response.SalaryResponse.First();
+
+            // Assert
+            Assert.AreEqual(expected.CurrentSalary, actual.CurrentSalary, "Salary calculated as expected");
+            Assert.AreEqual(expected.PersonId, actual.PersonId, "Employee id returned as expected");
+            Assert.AreEqual(expected.CurrentPosition, actual.CurrentPosition, "Employee actual position returned as expected");
+            Assert.AreEqual(expected.StartedOn.ToDateTime(), actual.StartedOn.ToDateTime(), "Date of start work returned as expected");
+        }
+
+        [Test]
+        public void GetSalary_should_return_month_salary_with_partly_dayoff()
+        {
+            // Arrange
+            SalaryResponse expected = new SalaryResponse
+            {
+                CurrentPosition = _position1.Id,
+                PersonId = _staff1.PersonId.GetValueOrDefault(),
+                CurrentSalary = 1640,
+                StartedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime())
+            };
+            DayOff dayOff = new DayOff
+            {
+                DayOffType = Enums.DayOffType.Vacation,
+                IsPaid = false,
+                PersonId = _staff1.PersonId.GetValueOrDefault(),
+                Hours = 4,
+                Id = 1,
+                CreatedOn = new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc)
+            };
+
+            _dbContext.DaysOff.Add(dayOff);
+
+            SalaryRequest request = new SalaryRequest();
+            request.StartDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc));
+            request.EndDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1).AddDays(-1));
+
+            // Act
+            ISalaryResponse response = _salaryService.GetSalary(request, null).Result;
+            SalaryResponse actual = response.SalaryResponse.First();
+
+            // Assert
+            Assert.AreEqual(expected.CurrentSalary, actual.CurrentSalary, "Salary calculated as expected");
+            Assert.AreEqual(expected.PersonId, actual.PersonId, "Employee id returned as expected");
             Assert.AreEqual(expected.CurrentPosition, actual.CurrentPosition, "Employee actual position returned as expected");
             Assert.AreEqual(expected.StartedOn.ToDateTime(), actual.StartedOn.ToDateTime(), "Date of start work returned as expected");
         }

@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Protobuf Include="Protos\salary.proto" GrpcServices="Server" />
+    <None Remove="Protos\salary.proto" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,6 +24,10 @@
   <ItemGroup>
     <ProjectReference Include="..\common\BaseModel\BaseModel.csproj" />
     <ProjectReference Include="..\common\DateTimeUtil\DateTimeUtil.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="Protos\salary.proto" GrpcServices="Server" />
   </ItemGroup>
 
 </Project>

@@ -14,7 +14,7 @@
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
-        "DbConnectionString": "Data Source=localhost\\sqlexpress01;Initial Catalog=EMS;Integrated Security=True",
+        "DbConnectionString": "Data Source=localhost;Initial Catalog=EMS;Integrated Security=True",
         "ASPNETCORE_ENVIRONMENT": "Development",
         "MaxWorkHours": "8"
       },

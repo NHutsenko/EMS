@@ -61,16 +61,18 @@ namespace EMS.Core.API.Services
                 bool todoDay = (current.DayOfWeek == DayOfWeek.Saturday || current.DayOfWeek == DayOfWeek.Sunday)
                     && holidays.Any(e => e.ToDoDate.HasValue && e.ToDoDate.Value.Date == current.Date);
 
-                bool notHoliday = current.DayOfWeek != DayOfWeek.Saturday
+                bool workDay = current.DayOfWeek != DayOfWeek.Saturday
                     && current.DayOfWeek != DayOfWeek.Sunday
                     && !holidays.Any(e => e.HolidayDate.Date == current.Date);
-                if (notHoliday || todoDay)
+
+                Staff currentStaff = staff.OrderByDescending(e => e.CreatedOn).FirstOrDefault(e => e.CreatedOn <= current);
+                if (currentStaff is not null)
                 {
-                    Staff currentStaff = staff.OrderByDescending(e => e.CreatedOn).FirstOrDefault(e => e.CreatedOn <= current);
-                    if (currentStaff is not null)
+                    Position position = _positionsRepository.Get(currentStaff.PositionId);
+                    response.CurrentPosition = position.Id;
+                    response.PersonId = currentStaff.PersonId.GetValueOrDefault();
+                    if (workDay || todoDay)
                     {
-                        Position position = _positionsRepository.Get(currentStaff.PositionId);
-                        response.CurrentPosition = position.Id;
                         if (!dayOffs.Any(e => e.CreatedOn.Date == current.Date))
                         {
                             response.CurrentSalary += workHours * position.HourRate;
@@ -94,10 +96,17 @@ namespace EMS.Core.API.Services
                                     response.CurrentSalary += dayOff.Hours * position.HourRate;
                                 }
                             }
+                            else
+                            {
+                                response.CurrentSalary += (workHours - dayOff.Hours) * position.HourRate;
+                            }
                         }
                     }
+                    else if (holidays.Any(e => e.HolidayDate.Date == current.Date && !e.ToDoDate.HasValue))
+                    {
+                        response.CurrentSalary += workHours * position.HourRate;
+                    }
                 }
-
             }
             return response;
         }
