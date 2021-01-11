@@ -1,0 +1,68 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+option csharp_namespace = "EMS.Core.API";
+
+package people;
+
+
+service People{
+	rpc GetAll(google.protobuf.Empty) returns (PeopleData){
+
+	}
+
+	rpc GetById(PersonRequest) returns (PersonData){
+
+	}
+
+	rpc Add(PersonData) returns (google.protobuf.Empty){
+
+	}
+
+	rpc Update(PersonData) returns (google.protobuf.Empty){
+
+	}
+
+	rpc AddContact(ContactData)  returns (google.protobuf.Empty){
+
+	}
+
+	rpc AddPhoto(PhotoData) returns (google.protobuf.Empty){
+
+	}
+}
+
+message PersonRequest{
+	int32 id = 1;
+}
+
+message PeopleData {
+	repeated PersonData people = 1;
+}
+
+message PersonData {
+	int64 id = 1;
+	google.protobuf.Timestamp created_on = 2;
+	string name = 3;
+	string last_name = 4;
+	string second_name = 5;
+	google.protobuf.Timestamp borned_on = 6;
+	repeated ContactData contacts = 7;
+	repeated PhotoData photos = 8;
+}
+
+message ContactData {
+	string name = 1;
+	int32 contact_type = 2;
+	string value = 3;
+	int64 person_id = 4;
+}
+
+message PhotoData {
+	string name = 1;
+	string mime = 2;
+	string base64 = 3;
+	int64 person_id = 4;
+}
