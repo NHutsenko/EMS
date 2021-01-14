@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace EMS.Core.API.Tests.Mocks
 {
@@ -98,6 +100,15 @@ namespace EMS.Core.API.Tests.Mocks
             Mock<IApplicationDbContext> dbContext = new Mock<IApplicationDbContext>();
 
             dbContext.SetupAllProperties();
+
+            dbContext.Setup(m => m.SaveChangesAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>())).Returns<bool, CancellationToken>((accept, token) =>
+            {
+                if (ShouldThrowException)
+                {
+                    throw new Exception("Test Exception");
+                }
+                return Task.FromResult(1);
+            });
 
             Type interfaceType = typeof(T);
             List<PropertyInfo> interfaceIDbSetProperties = interfaceType.GetProperties()

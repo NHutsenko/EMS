@@ -10,6 +10,7 @@ namespace EMS.Core.API.DAL
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<DayOff> DaysOff { get; set; }
         public DbSet<Holiday> Holidays { get; set; }
+        public DbSet<MotivationModificator> MotivationModificators { get; set; }
         public DbSet<OtherPayment> OtherPayments { get; set; }
         public DbSet<Person> People { get; set; }
         public DbSet<PersonPhoto> Photos { get; set; }
@@ -67,6 +68,11 @@ namespace EMS.Core.API.DAL
 
             modelBuilder.Entity<Holiday>()
                 .ToTable("Holidays", "core");
+
+            modelBuilder.Entity<MotivationModificator>()
+                .ToTable("MotivationModificators", "core")
+                .HasOne(e => e.Staff)
+                .WithOne(e => e.MotivationModificator);
         }
 	}
 }

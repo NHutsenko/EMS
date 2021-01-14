@@ -9,12 +9,16 @@ using Moq;
 namespace EMS.Core.API.Tests
 {
     [ExcludeFromCodeCoverage]
-	public class BaseUnitTest
-	{
-		protected Mock<IApplicationDbContext> _dbContextMock;
-		protected IApplicationDbContext _dbContext;
+    public class BaseUnitTest
+    {
+        // Context
+        protected Mock<IApplicationDbContext> _dbContextMock;
+        protected IApplicationDbContext _dbContext;
+
+        // Utils
         protected IDateTimeUtil _dateTimeUtil;
 
+        // Repos
         protected DayOffRepository _dayOffRepository;
         protected PeopleRepository _peopleRepository;
         protected PositionsRepository _positionsRepository;
@@ -22,16 +26,19 @@ namespace EMS.Core.API.Tests
         protected TeamsRepository _teamsRepository;
         protected OtherPaymentsRepository _otherPaymentsRepository;
         protected HolidaysRepository _holidaysRepository;
+        protected MotivationModificatorRepository _motivationModificatorRepository;
+
+        // Services
         protected SalaryService _salaryService;
 
-		protected void InitializeMocks()
-		{
+        protected void InitializeMocks()
+        {
             // DB context
-			_dbContextMock = DbContextMock.SetupDbContext<IApplicationDbContext>();
-			_dbContext = _dbContextMock.Object;
+            _dbContextMock = DbContextMock.SetupDbContext<IApplicationDbContext>();
+            _dbContext = _dbContextMock.Object;
 
             // Utils
             _dateTimeUtil = new DateTimeUtilMock();
-		}
-	}
+        }
+    }
 }

@@ -21,6 +21,10 @@ namespace EMS.Core.API.Models
         public long PositionId { get; set; }
         [Column("position")]
         public Position Position { get; set; }
+        [Column("motivationMod")]
+        public MotivationModificator MotivationModificator { get; set; }
+        [Column("motivationModId")]
+        public long MotivationModificatorId { get; set; }
 
         public override int GetHashCode()
         {
