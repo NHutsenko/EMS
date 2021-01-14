@@ -15,6 +15,7 @@ namespace EMS.Core.API.DAL.Repositories
         public async Task<int> AddAsync(Holiday holiday)
         {
             ValidateData(holiday);
+            holiday.CreatedOn = _dateTimeUtil.GetCurrentDateTime();
             _context.Holidays.Add(holiday);
             return await _context.SaveChangesAsync();
         }

@@ -47,14 +47,14 @@ namespace EMS.Core.API.Tests
             {
                 Id = 1,
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                ModValue = 0.8M,
+                ModValue = 0.8,
                 StaffId = _staff1.Id
             };
             _motivationModificator2 = new MotivationModificator
             {
                 Id = 2,
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                ModValue = 0.9M,
+                ModValue = 0.9,
                 StaffId = _staff2.Id
             };
             _dbContext.MotivationModificators.Add(_motivationModificator1);
@@ -95,7 +95,7 @@ namespace EMS.Core.API.Tests
             // Arrange
             MotivationModificator motivationModificator = new MotivationModificator
             {
-                ModValue = 0.5M,
+                ModValue = 0.5,
                 StaffId = _staff3.Id
             };
 
@@ -114,7 +114,7 @@ namespace EMS.Core.API.Tests
             // Arrange
             MotivationModificator motivationModificator = new MotivationModificator
             {
-                ModValue = 0.5M,
+                ModValue = 0.5,
                 StaffId = _staff3.Id
             };
 
@@ -129,7 +129,7 @@ namespace EMS.Core.API.Tests
             // Arrange
             MotivationModificator motivationModificator = new MotivationModificator
             {
-                ModValue = 0.5M,
+                ModValue = 0.5,
                 StaffId = 4
             };
 
@@ -145,7 +145,7 @@ namespace EMS.Core.API.Tests
             // Arrange
             MotivationModificator motivationModificator = new MotivationModificator
             {
-                ModValue = 0.5M,
+                ModValue = 0.5,
                 StaffId = 0
             };
 
@@ -160,8 +160,8 @@ namespace EMS.Core.API.Tests
             // Arrange
             MotivationModificator motivationModificator = new MotivationModificator
             {
-                ModValue = -0.5M,
-                StaffId = 0
+                ModValue = -0.5,
+                StaffId = _staff1.Id
             };
 
             // Assert
@@ -176,7 +176,7 @@ namespace EMS.Core.API.Tests
             MotivationModificator motivationModificator = new MotivationModificator
             {
                 Id = _motivationModificator1.Id,
-                ModValue = 0.5M,
+                ModValue = 0.5,
                 StaffId = _staff3.Id
             };
 
@@ -195,7 +195,7 @@ namespace EMS.Core.API.Tests
             // Arrange
             MotivationModificator motivationModificator = new MotivationModificator
             {
-                ModValue = 0.5M,
+                ModValue = 0.5,
                 StaffId = _staff3.Id
             };
 
@@ -210,7 +210,7 @@ namespace EMS.Core.API.Tests
             // Arrange
             MotivationModificator motivationModificator = new MotivationModificator
             {
-                ModValue = 0.5M,
+                ModValue = 0.5,
                 StaffId = 4,
                 Id = _motivationModificator1.Id
             };
@@ -227,7 +227,7 @@ namespace EMS.Core.API.Tests
             // Arrange
             MotivationModificator motivationModificator = new MotivationModificator
             {
-                ModValue = 0.5M,
+                ModValue = 0.5,
                 StaffId = 0,
                 Id = _motivationModificator1.Id
             };
@@ -243,8 +243,8 @@ namespace EMS.Core.API.Tests
             // Arrange
             MotivationModificator motivationModificator = new MotivationModificator
             {
-                ModValue = -0.5M,
-                StaffId = 0,
+                ModValue = -0.5,
+                StaffId = _staff1.Id,
                 Id = _motivationModificator1.Id
             };
 

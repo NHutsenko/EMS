@@ -8,7 +8,7 @@ namespace EMS.Core.API.Models
     public class MotivationModificator: BaseModel
     {
         [Column("modValue")]
-        public decimal ModValue { get; set; }
+        public double ModValue { get; set; }
         [Column("staff")]
         public Staff Staff { get; set; }
         [Column("StaffId")]

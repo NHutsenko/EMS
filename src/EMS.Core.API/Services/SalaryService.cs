@@ -17,18 +17,21 @@ namespace EMS.Core.API.Services
         private readonly IDayOffRepository _dayOffRepository;
         private readonly IHolidaysRepository _holidaysRepository;
         private readonly IPositionsRepository _positionsRepository;
+        private readonly IMotivationModificatorRepository _motivationModificatorRepository;
 
         public SalaryService(ILogger<SalaryService> logger,
             IStaffRepository staffRepository,
             IDayOffRepository dayOffRepository,
             IHolidaysRepository holidaysRepository,
-            IPositionsRepository positionsRepository)
+            IPositionsRepository positionsRepository,
+            IMotivationModificatorRepository motivationModificatorRepository)
         {
             _logger = logger;
             _staffRepository = staffRepository;
             _dayOffRepository = dayOffRepository;
             _holidaysRepository = holidaysRepository;
             _positionsRepository = positionsRepository;
+            _motivationModificatorRepository = motivationModificatorRepository;
         }
 
         public override Task<ISalaryResponse> GetSalary(SalaryRequest request, ServerCallContext context)
@@ -69,13 +72,15 @@ namespace EMS.Core.API.Services
                 if (currentStaff is not null)
                 {
                     Position position = _positionsRepository.Get(currentStaff.PositionId);
+                    MotivationModificator modificator = _motivationModificatorRepository.GetByStaffId(currentStaff.MotivationModificatorId);
+                    double rate = modificator != null ? position.HourRate * modificator.ModValue : position.HourRate;
                     response.CurrentPosition = position.Id;
                     response.PersonId = currentStaff.PersonId.GetValueOrDefault();
                     if (workDay || todoDay)
                     {
                         if (!dayOffs.Any(e => e.CreatedOn.Date == current.Date))
                         {
-                            response.CurrentSalary += workHours * position.HourRate;
+                            response.CurrentSalary += workHours * rate;
                         }
                         else
                         {
@@ -89,25 +94,26 @@ namespace EMS.Core.API.Services
                             {
                                 if (dayOff.Hours < workHours)
                                 {
-                                    response.CurrentSalary += dayOff.Hours * position.HourRate + (workHours - dayOff.Hours) * position.HourRate;
+                                    response.CurrentSalary += dayOff.Hours * rate + (workHours - dayOff.Hours) * rate;
                                 }
                                 else
                                 {
-                                    response.CurrentSalary += dayOff.Hours * position.HourRate;
+                                    response.CurrentSalary += dayOff.Hours * rate;
                                 }
                             }
                             else
                             {
-                                response.CurrentSalary += (workHours - dayOff.Hours) * position.HourRate;
+                                response.CurrentSalary += (workHours - dayOff.Hours) * rate;
                             }
                         }
                     }
                     else if (holidays.Any(e => e.HolidayDate.Date == current.Date && !e.ToDoDate.HasValue))
                     {
-                        response.CurrentSalary += workHours * position.HourRate;
+                        response.CurrentSalary += workHours * rate;
                     }
                 }
             }
+            //response.CurrentSalary = 
             return response;
         }
 

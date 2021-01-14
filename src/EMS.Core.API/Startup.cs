@@ -40,6 +40,7 @@ namespace EMS.Core.API
 
             services.AddTransient<IApplicationDbContext, ApplicationDbContext>();
             services.AddSingleton<IDateTimeUtil, DateTimeUtil>();
+            services.AddTransient<IMotivationModificatorRepository, MotivationModificatorRepository>();
             services.AddTransient<IDayOffRepository, DayOffRepository>();
             services.AddTransient<IOtherPaymentsRepository, OtherPaymentsRepository>();
             services.AddTransient<IPeopleRepository, PeopleRepository>();

@@ -14,6 +14,7 @@ namespace EMS.Core.API.DAL.Repositories
         public async Task<int> AddAsync(MotivationModificator modificator)
         {
             CheckData(modificator);
+            modificator.CreatedOn = _dateTimeUtil.GetCurrentDateTime();
             _context.MotivationModificators.Add(modificator);
             return await _context.SaveChangesAsync();
         }
@@ -49,7 +50,7 @@ namespace EMS.Core.API.DAL.Repositories
             {
                 throw new ArgumentException("Staff does not exists");
             }
-            if(modificator.ModValue <= 0M)
+            if(modificator.ModValue <= 0)
             {
                 throw new ArgumentException("Motivation mod cannot be less than 0 or equal to 0");
             }
