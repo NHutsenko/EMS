@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,6 +15,7 @@ namespace EMS.Core.API.Tests.Mocks
     public class DbContextMock
     {
         public static bool ShouldThrowException { get; set; }
+        public static int SaveChangesResult { get; set; } = 1;
 
         public static Mock<DbSet<T>> SetupCollectionMock<T>(List<T> data) where T : class
         {
@@ -29,7 +29,6 @@ namespace EMS.Core.API.Tests.Mocks
 
             mockSet.Setup(m => m.Add(It.IsAny<T>())).Callback((T item) =>
             {
-                ThrowExceptionIfNeeded(ShouldThrowException);
                 if((long)item.GetType().GetProperty("Id").GetValue(item) == 0)
                 {
                     long index = 0;
@@ -48,24 +47,22 @@ namespace EMS.Core.API.Tests.Mocks
 
             mockSet.Setup(m => m.Remove(It.IsAny<T>())).Callback((T item) =>
             {
-                ThrowExceptionIfNeeded(ShouldThrowException);
                 data.Remove(item);
             });
 
             mockSet.Setup(m => m.Update(It.IsAny<T>())).Callback((T item) =>
             {
-                ThrowExceptionIfNeeded(ShouldThrowException);
                 UpdateEntity(item, data);
             });
             return mockSet;
         }
 
-        private static void ThrowExceptionIfNeeded(bool shouldThrowException)
+        private static void ThrowExceptionIfNeeded()
         {
-            if (shouldThrowException)
+            if (ShouldThrowException)
             {
                 ShouldThrowException = false;
-                throw new Exception("DbContext test Exception");
+                throw new DbUpdateException("DbContext test Exception");
             }
         }
 
@@ -91,7 +88,6 @@ namespace EMS.Core.API.Tests.Mocks
 
         private static object GetEntityId<T>(T entity)
         {
-            ThrowExceptionIfNeeded(ShouldThrowException);
             return entity.GetType().GetProperty("Id").GetValue(entity);
         }
 
@@ -103,11 +99,8 @@ namespace EMS.Core.API.Tests.Mocks
 
             dbContext.Setup(m => m.SaveChangesAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>())).Returns<bool, CancellationToken>((accept, token) =>
             {
-                if (ShouldThrowException)
-                {
-                    throw new Exception("Test Exception");
-                }
-                return Task.FromResult(1);
+                ThrowExceptionIfNeeded();
+                return Task.FromResult(SaveChangesResult);
             });
 
             Type interfaceType = typeof(T);

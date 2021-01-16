@@ -5,6 +5,7 @@ using EMS.Core.API.Models;
 using EMS.Core.API.DAL.Repositories.Interfaces;
 using System.Linq;
 using System;
+using Microsoft.EntityFrameworkCore;
 
 namespace EMS.Core.API.Services
 {
@@ -57,7 +58,7 @@ namespace EMS.Core.API.Services
                 response.Response.Code = Code.Success;
                 return Task.FromResult(response);
             }
-            catch(NullReferenceException nrex)
+            catch (NullReferenceException nrex)
             {
                 string error = $"Some data has not found (type: {nrex.GetType().Name})";
                 response.Response.ErrorMessage = error;
@@ -69,6 +70,113 @@ namespace EMS.Core.API.Services
                 response.Response.ErrorMessage = ex.Message;
                 response.Response.Code = Code.UnknownError;
                 return Task.FromResult(response);
+            }
+        }
+
+        public override async Task<BaseResponse> AddAsync(PersonData request, ServerCallContext context)
+        {
+            try
+            {
+                if (request is null)
+                    await _peopleRepository.AddAsync(null);
+
+                Person person = new Person
+                {
+                    LastName = request.LastName,
+                    Name = request.Name,
+                    SecondName = request.SecondName,
+                    BornedOn = request.BornedOn.ToDateTime()
+                };
+                int result = await _peopleRepository.AddAsync(person);
+                return new BaseResponse
+                {
+                    Code = Code.Success,
+                    ErrorMessage = string.Empty
+                };
+            }
+            catch (NullReferenceException nrex)
+            {
+                return new BaseResponse
+                {
+                    Code = Code.DataError,
+                    ErrorMessage = nrex.Message
+                };
+            }
+            catch (ArgumentException aex)
+            {
+                return new BaseResponse
+                {
+                    Code = Code.DataError,
+                    ErrorMessage = aex.Message
+                };
+            }
+            catch (DbUpdateException duex)
+            {
+                return new BaseResponse
+                {
+                    Code = Code.DbError,
+                    ErrorMessage = "An error occured while saving person data"
+                };
+            }
+        }
+
+        public override async Task<BaseResponse> UpdateAsync(PersonData request, ServerCallContext context)
+        {
+            try
+            {
+                if (request is null)
+                    await _peopleRepository.UpdateAsync(null);
+
+                Person person = new Person
+                {
+                    LastName = request.LastName,
+                    Name = request.Name,
+                    SecondName = request.SecondName,
+                    BornedOn = request.BornedOn.ToDateTime(),
+                    Id = request.Id
+                };
+                int result = await _peopleRepository.UpdateAsync(person);
+                if (result == 0)
+                {
+                    throw new Exception("Updated people data is equal to 0");
+                }
+                return new BaseResponse
+                {
+                    Code = Code.Success,
+                    ErrorMessage = string.Empty
+                };
+            }
+            catch (NullReferenceException nrex)
+            {
+                return new BaseResponse
+                {
+                    Code = Code.DataError,
+                    ErrorMessage = nrex.Message
+                };
+            }
+            catch (ArgumentException aex)
+            {
+                return new BaseResponse
+                {
+                    Code = Code.DataError,
+                    ErrorMessage = aex.Message
+                };
+            }
+            catch (DbUpdateException duex)
+            {
+                return new BaseResponse
+                {
+                    Code = Code.DbError,
+                    ErrorMessage = "An error occured while saving person data"
+                };
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponse
+                {
+                    Code = Code.UnknownError,
+                    ErrorMessage = ex.Message
+                };
             }
         }
 

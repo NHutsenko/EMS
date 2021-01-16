@@ -18,19 +18,19 @@ service People {
 
 	}
 
-	rpc Add(PersonData) returns (response.BaseResponse){
+	rpc AddAsync(PersonData) returns (response.BaseResponse){
 
 	}
 
-	rpc Update(PersonData) returns (response.BaseResponse){
+	rpc UpdateAsync(PersonData) returns (response.BaseResponse){
 
 	}
 
-	rpc AddContact(ContactData)  returns (response.BaseResponse){
+	rpc AddContactAsync(ContactData)  returns (response.BaseResponse){
 
 	}
 
-	rpc AddPhoto(PhotoData) returns (response.BaseResponse){
+	rpc AddPhotoAsync(PhotoData) returns (response.BaseResponse){
 
 	}
 }

@@ -108,8 +108,8 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<Exception>(() => _positionsRepository.AddAsync(position), "Exception from db throws as expected");
-            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+            Assert.ThrowsAsync<DbUpdateException>(() => _positionsRepository.AddAsync(position), "Exception from db throws as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Once);
         }
 
         [Test]
@@ -248,8 +248,8 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<Exception>(() => _positionsRepository.UpdateAsync(position), "Exception from db throws as expected");
-            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+            Assert.ThrowsAsync<DbUpdateException>(() => _positionsRepository.UpdateAsync(position), "Exception from db throws as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Once);
         }
 
         [Test]
@@ -389,8 +389,8 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<Exception>(() => _positionsRepository.DeleteAsync(position), "Exception from db throws as expected");
-            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+            Assert.ThrowsAsync<DbUpdateException>(() => _positionsRepository.DeleteAsync(position), "Exception from db throws as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Once);
         }
 
         [Test]

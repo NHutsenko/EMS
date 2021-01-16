@@ -20,6 +20,7 @@ namespace EMS.Core.API.Tests
         {
             InitializeMocks();
             DbContextMock.ShouldThrowException = false;
+            DbContextMock.SaveChangesResult = 1;
 
             int idPersonOne = 1;
             _contact = new Contact
@@ -211,6 +212,226 @@ namespace EMS.Core.API.Tests
             Assert.AreEqual(expected.Response.Code, actual.Response.Code, "Code as expected");
             Assert.AreEqual(expected.Response.ErrorMessage, actual.Response.ErrorMessage, "Error message as expected");
             Assert.AreEqual(expected.Data, actual.Data, "Data as expected");
+        }
+
+        [Test]
+        public void AddAsync_should_Add_person_to_db()
+        {
+            // Arrange
+            PersonData person = new PersonData
+            {
+                Name = "Test",
+                LastName = "Test",
+                SecondName = "Test",
+                BornedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
+                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime())
+            };
+
+            BaseResponse expected = new BaseResponse
+            {
+                Code = Code.Success,
+                ErrorMessage = string.Empty
+            };
+
+            // Act
+            BaseResponse actual = _peopleService.AddAsync(person, null).Result;
+
+            // Assert
+            Assert.AreEqual(expected, actual, "Response as expected");
+        }
+
+        [Test]
+        public void AddAsync_should_handle_null_reference_exception_from_people_repository()
+        {
+            // Arrange
+            BaseResponse expected = new BaseResponse
+            {
+                Code = Code.DataError,
+                ErrorMessage = "Person data cannot be empty"
+            };
+
+            // Act
+            BaseResponse actual = _peopleService.AddAsync(null, null).Result;
+
+            // Assert
+            Assert.AreEqual(expected, actual, "Null reference exception handled as expected");
+        }
+
+        [Test]
+        public void AddAsync_should_handle_argument_exception_from_people_repository()
+        {
+            // Arrange
+            BaseResponse expected = new BaseResponse
+            {
+                Code = Code.DataError,
+                ErrorMessage = "Person first name or last name cannot be empty"
+            };
+            PersonData person = new PersonData
+            {
+                Name = "Test",
+                LastName = string.Empty,
+                SecondName = "Test",
+                BornedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
+                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime())
+            };
+
+            // Act
+            BaseResponse actual = _peopleService.AddAsync(person, null).Result;
+
+            // Assert
+            Assert.AreEqual(expected, actual, "Argument exception handled as expected");
+        }
+
+        [Test]
+        public void AddAsync_should_handle_db_update_exception_from_people_repository()
+        {
+            // Arrange
+            DbContextMock.ShouldThrowException = true;
+            BaseResponse expected = new BaseResponse
+            {
+                Code = Code.DbError,
+                ErrorMessage = "An error occured while saving person data"
+            };
+            PersonData person = new PersonData
+            {
+                Name = "Test",
+                LastName = "Test",
+                SecondName = "Test",
+                BornedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
+                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime())
+            };
+            DbContextMock.ShouldThrowException = true;
+
+            // Act
+            BaseResponse actual = _peopleService.AddAsync(person, null).Result;
+
+            // Assert
+            Assert.AreEqual(expected, actual, "Db update exception handled as expected");
+        }
+
+        [Test]
+        public void UpdateAsync_should_update_person_int_db()
+        {
+            // Arrange
+            PersonData person = new PersonData
+            {
+                Name = "Test",
+                LastName = "Test",
+                SecondName = "Test",
+                BornedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
+                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
+                Id = _person1.Id
+            };
+
+            BaseResponse expected = new BaseResponse
+            {
+                Code = Code.Success,
+                ErrorMessage = string.Empty
+            };
+
+            // Act
+            BaseResponse actual = _peopleService.UpdateAsync(person, null).Result;
+
+            // Assert
+            Assert.AreEqual(expected, actual, "Response as expected");
+        }
+
+        [Test]
+        public void UpdateAsync_should_return_unknown_error_based_on_general_exception()
+        {
+            // Arrange
+            DbContextMock.SaveChangesResult = 0;
+            PersonData person = new PersonData
+            {
+                Name = "Test",
+                LastName = "Test",
+                SecondName = "Test",
+                BornedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
+                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
+                Id = 4
+            };
+
+            BaseResponse expected = new BaseResponse
+            {
+                Code = Code.UnknownError,
+                ErrorMessage = "Updated people data is equal to 0"
+            };
+
+            // Act
+            BaseResponse actual = _peopleService.UpdateAsync(person, null).Result;
+
+            // Assert
+            Assert.AreEqual(expected, actual, "Response as expected");
+        }
+
+        [Test]
+        public void UpdateAsync_should_handle_null_reference_exception_from_people_repository()
+        {
+            // Arrange
+            BaseResponse expected = new BaseResponse
+            {
+                Code = Code.DataError,
+                ErrorMessage = "Person data cannot be empty"
+            };
+
+            // Act
+            BaseResponse actual = _peopleService.UpdateAsync(null, null).Result;
+
+            // Assert
+            Assert.AreEqual(expected, actual, "Null reference exception handled as expected");
+        }
+
+        [Test]
+        public void UpdateAsync_should_handle_argument_exception_from_people_repository()
+        {
+            // Arrange
+            BaseResponse expected = new BaseResponse
+            {
+                Code = Code.DataError,
+                ErrorMessage = "Person first name or last name cannot be empty"
+            };
+            PersonData person = new PersonData
+            {
+                Name = "Test",
+                LastName = string.Empty,
+                SecondName = "Test",
+                BornedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
+                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
+                Id = _person1.Id
+            };
+
+            // Act
+            BaseResponse actual = _peopleService.UpdateAsync(person, null).Result;
+
+            // Assert
+            Assert.AreEqual(expected, actual, "Argument exception handled as expected");
+        }
+
+        [Test]
+        public void UpdateAsync_should_handle_db_update_exception_from_people_repository()
+        {
+            // Arrange
+            DbContextMock.ShouldThrowException = true;
+            BaseResponse expected = new BaseResponse
+            {
+                Code = Code.DbError,
+                ErrorMessage = "An error occured while saving person data"
+            };
+            PersonData person = new PersonData
+            {
+                Name = "Test",
+                LastName = "Test",
+                SecondName = "Test",
+                BornedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
+                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
+                Id = _person1.Id
+            };
+
+            // Act
+            BaseResponse actual = _peopleService.UpdateAsync(person, null).Result;
+
+            // Assert
+            Assert.AreEqual(expected, actual, "Db update exception handled as expected");
         }
     }
 }

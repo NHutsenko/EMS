@@ -58,15 +58,15 @@ namespace EMS.Core.API.DAL.Repositories
         {
             if(person is null)
             {
-                throw new NullReferenceException("Person entity cannot be empty");
+                throw new NullReferenceException("Person data cannot be empty");
             }
             if (!IsNamesValid(person))
             {
-                throw new ArgumentNullException("Person first name or last name cannot be empty");
+                throw new ArgumentException("Person first name or last name cannot be empty");
             }
             if(person.BornedOn == DateTime.MinValue)
             {
-                throw new ArgumentNullException("Person born date cannot be empty");
+                throw new ArgumentException("Person born date cannot be empty");
             }
             person.CreatedOn = _dateTimeUtil.GetCurrentDateTime();
             _context.People.Add(person);
@@ -81,11 +81,11 @@ namespace EMS.Core.API.DAL.Repositories
             }
             if (!IsNamesValid(person))
             {
-                throw new ArgumentNullException("Person first name or last name cannot be empty");
+                throw new ArgumentException("Person first name or last name cannot be empty");
             }
             if (person.BornedOn == DateTime.MinValue)
             {
-                throw new ArgumentNullException("Person born date cannot be empty");
+                throw new ArgumentException("Person born date cannot be empty");
             }
             _context.People.Update(person);
             return await _context.SaveChangesAsync();

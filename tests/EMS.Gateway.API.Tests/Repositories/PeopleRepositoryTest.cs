@@ -7,6 +7,7 @@ using EMS.Core.API.DAL.Repositories;
 using EMS.Core.API.Enums;
 using EMS.Core.API.Models;
 using EMS.Core.API.Tests.Mocks;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;
 
@@ -173,8 +174,8 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<Exception>(() => _peopleRepository.AddAsync(person), "Exception from db throws as expected");
-            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+            Assert.ThrowsAsync<DbUpdateException>(() => _peopleRepository.AddAsync(person), "Exception from db throws as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Once);
         }
 
         [Test]
@@ -196,7 +197,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => _peopleRepository.AddAsync(person), "Exception throws as expected");
+            Assert.ThrowsAsync<ArgumentException>(() => _peopleRepository.AddAsync(person), "Exception throws as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -211,7 +212,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => _peopleRepository.AddAsync(person), "Exception throws as expected");
+            Assert.ThrowsAsync<ArgumentException>(() => _peopleRepository.AddAsync(person), "Exception throws as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -223,11 +224,12 @@ namespace EMS.Core.API.Tests
             {
                 BornedOn = DateTime.MinValue,
                 LastName = "Test",
-                Name = "Test"
+                Name = "Test",
+                SecondName = "Test"
             };
 
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => _peopleRepository.AddAsync(person), "Exception throws as expected");
+            Assert.ThrowsAsync<ArgumentException>(() => _peopleRepository.AddAsync(person), "Exception throws as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -267,8 +269,8 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<Exception>(() => _peopleRepository.UpdateAsync(person), "Exception from db throws as expected");
-            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+            Assert.ThrowsAsync<DbUpdateException>(() => _peopleRepository.UpdateAsync(person), "Exception from db throws as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Once);
         }
 
         [Test]
@@ -290,7 +292,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => _peopleRepository.UpdateAsync(person), "Exception throws as expected");
+            Assert.ThrowsAsync<ArgumentException>(() => _peopleRepository.UpdateAsync(person), "Exception throws as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -305,7 +307,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => _peopleRepository.UpdateAsync(person), "Exception throws as expected");
+            Assert.ThrowsAsync<ArgumentException>(() => _peopleRepository.UpdateAsync(person), "Exception throws as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -318,11 +320,12 @@ namespace EMS.Core.API.Tests
             {
                 BornedOn = DateTime.MinValue,
                 LastName = "Test",
-                Name = "Test"
+                Name = "Test",
+                SecondName = "Test"
             };
 
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => _peopleRepository.UpdateAsync(person), "Exception throws as expected");
+            Assert.ThrowsAsync<ArgumentException>(() => _peopleRepository.UpdateAsync(person), "Exception throws as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
