@@ -7,11 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Protos\salary.proto" />
-    <None Remove="Protos\people.proto" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore" Version="2.34.0" />
     <PackageReference Include="Grpc.Tools" Version="2.34.0">
       <PrivateAssets>all</PrivateAssets>
@@ -28,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Protobuf Include="Protos\response.proto" />
     <Protobuf Include="Protos\salary.proto" GrpcServices="Server" />
     <Protobuf Include="Protos\people.proto" GrpcServices="Server" />
   </ItemGroup>

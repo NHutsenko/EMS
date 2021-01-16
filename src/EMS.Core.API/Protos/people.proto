@@ -2,44 +2,41 @@
 
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
+import "Protos/response.proto";
 
 option csharp_namespace = "EMS.Core.API";
 
 package people;
 
 
-service People{
-	rpc GetAll(google.protobuf.Empty) returns (PeopleData){
+service People {
+	rpc GetAll(google.protobuf.Empty) returns (PeopleResponse){
 
 	}
 
-	rpc GetById(PersonRequest) returns (PersonData){
+	rpc GetById(PersonRequest) returns (PersonResponse){
 
 	}
 
-	rpc Add(PersonData) returns (google.protobuf.Empty){
+	rpc Add(PersonData) returns (response.BaseResponse){
 
 	}
 
-	rpc Update(PersonData) returns (google.protobuf.Empty){
+	rpc Update(PersonData) returns (response.BaseResponse){
 
 	}
 
-	rpc AddContact(ContactData)  returns (google.protobuf.Empty){
+	rpc AddContact(ContactData)  returns (response.BaseResponse){
 
 	}
 
-	rpc AddPhoto(PhotoData) returns (google.protobuf.Empty){
+	rpc AddPhoto(PhotoData) returns (response.BaseResponse){
 
 	}
 }
 
 message PersonRequest{
 	int32 id = 1;
-}
-
-message PeopleData {
-	repeated PersonData people = 1;
 }
 
 message PersonData {
@@ -65,4 +62,14 @@ message PhotoData {
 	string mime = 2;
 	string base64 = 3;
 	int64 person_id = 4;
+}
+
+message PersonResponse {
+	response.BaseResponse response = 1;
+	PersonData data = 2;
+}
+
+message PeopleResponse {
+	response.BaseResponse response = 1;
+	repeated PersonData people = 2;
 }

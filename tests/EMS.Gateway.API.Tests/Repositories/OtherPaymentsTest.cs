@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using EMS.Core.API.Models;
+using EMS.Core.API.Tests.Mocks;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;
@@ -23,6 +24,8 @@ namespace EMS.Core.API.Tests
         public void Setup()
         {
             InitializeMocks();
+            DbContextMock.ShouldThrowException = false;
+
             _person = new Person
             {
                 Id = 1

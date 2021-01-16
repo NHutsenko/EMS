@@ -26,6 +26,7 @@ namespace EMS.Core.API.Tests
         public void Setup()
         {
             InitializeMocks();
+            DbContextMock.ShouldThrowException = false;
 
             _staff1 = new Staff
             {
@@ -59,7 +60,6 @@ namespace EMS.Core.API.Tests
             };
             _dbContext.MotivationModificators.Add(_motivationModificator1);
             _dbContext.MotivationModificators.Add(_motivationModificator2);
-            DbContextMock.ShouldThrowException = false;
             _motivationModificatorRepository = new MotivationModificatorRepository(_dbContext, _dateTimeUtil);
         }
 

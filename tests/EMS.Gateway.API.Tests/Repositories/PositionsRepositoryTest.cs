@@ -25,6 +25,8 @@ namespace EMS.Core.API.Tests
         public void Setup()
         {
             InitializeMocks();
+            DbContextMock.ShouldThrowException = false;
+
             _team1 = new Team
             {
                 Id = 1,
@@ -68,7 +70,6 @@ namespace EMS.Core.API.Tests
             _dbContext.Teams.Add(_team1);
             _dbContext.Teams.Add(_team2);
             _positionsRepository = new PositionsRepository(_dbContext, _dateTimeUtil);
-            DbContextMock.ShouldThrowException = false;
         }
 
         [Test]

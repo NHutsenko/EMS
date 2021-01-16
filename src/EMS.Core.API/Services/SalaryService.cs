@@ -7,6 +7,7 @@ using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace EMS.Core.API.Services
 {
@@ -36,21 +37,36 @@ namespace EMS.Core.API.Services
 
         public override Task<ISalaryResponse> GetSalary(SalaryRequest request, ServerCallContext context)
         {
-            ISalaryResponse response = new ISalaryResponse();
-
-            IQueryable<Staff> staffs = request.ManagerId == 0 ? _staffRepository.GetAll() : _staffRepository.GetByManagerId(request.ManagerId);
-            IQueryable<IGrouping<long?, Staff>> groupedStaff = staffs.Where(e => e.PersonId.HasValue)
-                .GroupBy(e => e.PersonId);
-            foreach (IGrouping<long?, Staff> data in groupedStaff)
+            ISalaryResponse response = new ISalaryResponse()
             {
-                response.SalaryResponse.Add(CalculateCurrentSalary(data, request.StartDate.ToDateTime(), request.EndDate.ToDateTime()));
+                Response = new BaseResponse { Code = Code.Success, ErrorMessage = string.Empty }
+            };
+            try
+            {
+                IQueryable<Staff> staffs = request.ManagerId == 0 ? _staffRepository.GetAll() : _staffRepository.GetByManagerId(request.ManagerId);
+                IQueryable<IGrouping<long?, Staff>> groupedStaff = staffs.Where(e => e.PersonId.HasValue)
+                    .GroupBy(e => e.PersonId);
+                foreach (IGrouping<long?, Staff> data in groupedStaff)
+                {
+                    response.SalaryResponse.Add(CalculateCurrentSalary(data, request.StartDate.ToDateTime(), request.EndDate.ToDateTime()));
+                }
+            }
+            catch (NullReferenceException nrex)
+            {
+                response.Response.ErrorMessage = $"Some data has not found (type: {nrex.GetType().Name})";
+                response.Response.Code = Code.DataError;
+            }
+            catch (Exception ex)
+            {
+                response.Response.ErrorMessage = ex.Message;
+                response.Response.Code = Code.UnknownError;
             }
 
             return Task.FromResult(response);
         }
 
 
-        // TODO: Add to calculation other payments and grademods
+        // TODO: Add to calculation other payments
         private SalaryResponse CalculateCurrentSalary(IGrouping<long?, Staff> staff, DateTime startDate, DateTime endDate)
         {
             IQueryable<DayOff> dayOffs = _dayOffRepository.GetByDateRangeAndPersonId(startDate, endDate, staff.First().PersonId.Value);
@@ -113,7 +129,6 @@ namespace EMS.Core.API.Services
                     }
                 }
             }
-            //response.CurrentSalary = 
             return response;
         }
 

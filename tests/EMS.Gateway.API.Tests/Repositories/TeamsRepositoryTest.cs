@@ -28,6 +28,7 @@ namespace EMS.Core.API.Tests
         {
             InitializeMocks();
             DbContextMock.ShouldThrowException = false;
+
             _test1 = new Team
             {
                 Id = 1,

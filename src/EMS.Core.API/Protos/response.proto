@@ -1,0 +1,17 @@
+﻿syntax="proto3";
+
+option csharp_namespace = "EMS.Core.API";
+
+package response;
+
+enum Code {
+	SUCCESS=0;
+	DATA_ERROR=1;
+	DB_ERROR=2;
+	UNKNOWN_ERROR=3;
+}
+
+message BaseResponse {
+	Code code=1;
+	string error_message=2;
+}

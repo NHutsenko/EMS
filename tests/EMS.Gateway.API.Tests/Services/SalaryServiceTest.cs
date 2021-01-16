@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using EMS.Core.API.Models;
 using EMS.Core.API.Services;
+using EMS.Core.API.Tests.Mocks;
 using Google.Protobuf.WellKnownTypes;
 using NUnit.Framework;
 
@@ -18,6 +19,7 @@ namespace EMS.Core.API.Tests
         public void Setup()
         {
             InitializeMocks();
+            DbContextMock.ShouldThrowException = false;
             _position1 = new Position
             {
                 Id = 1,
@@ -330,6 +332,44 @@ namespace EMS.Core.API.Tests
             Assert.AreEqual(expected.PersonId, actual.PersonId, "Employee id returned as expected");
             Assert.AreEqual(expected.CurrentPosition, actual.CurrentPosition, "Employee actual position returned as expected");
             Assert.AreEqual(expected.StartedOn.ToDateTime(), actual.StartedOn.ToDateTime(), "Date of start work returned as expected");
+        }
+
+        [Test]
+        public void GetSalary_should_handle_null_reference_exception()
+        {
+            // Arrange
+            _dbContext.Positions.Remove(_position1);
+            SalaryRequest request = new SalaryRequest
+            {
+                StartDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc)),
+                EndDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1).AddDays(-1))
+            };
+
+
+            // Act
+            ISalaryResponse actual = _salaryService.GetSalary(request, null).Result;
+
+            // Assert
+            Assert.AreEqual(Code.DataError, actual.Response.Code, "Code returned as expected");
+            Assert.AreEqual("Some data has not found (type: NullReferenceException)", actual.Response.ErrorMessage, "Error message as expected");
+        }
+
+        [Test]
+        public void GetSalary_should_handle_base_exception()
+        {
+            // Arrange
+            _dbContext.Positions = null;
+            SalaryRequest request = new SalaryRequest();
+            request.StartDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc));
+            request.EndDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1).AddDays(-1));
+
+
+            // Act
+            ISalaryResponse actual = _salaryService.GetSalary(request, null).Result;
+
+            // Assert
+            Assert.AreEqual(Code.UnknownError, actual.Response.Code, "Code returned as expected");
+            Assert.AreEqual("Value cannot be null. (Parameter 'source')", actual.Response.ErrorMessage, "Error message as expected");
         }
     }
 }

@@ -24,6 +24,7 @@ namespace EMS.Core.API.Tests
         public void Setup()
         {
             InitializeMocks();
+            DbContextMock.ShouldThrowException = false;
             _person = new Person
             {
                 Id = 1,
@@ -52,7 +53,6 @@ namespace EMS.Core.API.Tests
             _dbContext.DaysOff.Add(_dayOff2);
 
             _dayOffRepository = new DayOffRepository(_dbContext);
-            DbContextMock.ShouldThrowException = false;
         }
 
         [Test]

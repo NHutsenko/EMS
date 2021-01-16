@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using EMS.Core.API.DAL.Repositories;
 using EMS.Core.API.Models;
+using EMS.Core.API.Tests.Mocks;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;
@@ -23,6 +24,7 @@ namespace EMS.Core.API.Tests
         public void Setup()
         {
             InitializeMocks();
+            DbContextMock.ShouldThrowException = false;
 
             _holiday1 = new Holiday
             {
