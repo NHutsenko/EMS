@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -56,7 +57,6 @@ namespace EMS.Core.API.Tests.Mocks
                 ThrowExceptionIfNeeded(ShouldThrowException);
                 UpdateEntity(item, data);
             });
-
             return mockSet;
         }
 

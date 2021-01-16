@@ -32,7 +32,7 @@ namespace EMS.Core.API.Services
 
             foreach (Person person in people)
             {
-                response.People.Add(ConvertData(person));
+                response.Data.Add(ConvertData(person));
             }
 
             return Task.FromResult(response);
@@ -57,10 +57,17 @@ namespace EMS.Core.API.Services
                 response.Response.Code = Code.Success;
                 return Task.FromResult(response);
             }
+            catch(NullReferenceException nrex)
+            {
+                string error = $"Some data has not found (type: {nrex.GetType().Name})";
+                response.Response.ErrorMessage = error;
+                response.Response.Code = Code.DataError;
+                return Task.FromResult(response);
+            }
             catch (Exception ex)
             {
                 response.Response.ErrorMessage = ex.Message;
-                response.Response.Code = Code.DataError;
+                response.Response.Code = Code.UnknownError;
                 return Task.FromResult(response);
             }
         }

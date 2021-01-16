@@ -34,8 +34,8 @@ namespace EMS.Core.API.DAL.Repositories
                     e.Name,
                     e.LastName,
                     e.SecondName,
-                    Photos = new List<PersonPhoto> { e.Photos.OrderByDescending(p => p.CreatedOn).FirstOrDefault() },
-                    Contacts = e.Contacts.GroupBy(c => c.ContactType)
+                    Photos = e.Photos == null ? null : new List<PersonPhoto> { e.Photos.OrderByDescending(p => p.CreatedOn).FirstOrDefault() },
+                    Contacts = e.Contacts == null ? null : e.Contacts.GroupBy(c => c.ContactType)
                         .Select(c => c.OrderByDescending(data =>data.CreatedOn)
                         .FirstOrDefault())
                         .ToList()
@@ -136,7 +136,8 @@ namespace EMS.Core.API.DAL.Repositories
         private static bool IsNamesValid(Person person)
         {
             return !string.IsNullOrWhiteSpace(person.LastName) && 
-                !string.IsNullOrWhiteSpace(person.Name);
+                !string.IsNullOrWhiteSpace(person.Name) &&
+                !string.IsNullOrEmpty(person.SecondName);
         }
     }
 }

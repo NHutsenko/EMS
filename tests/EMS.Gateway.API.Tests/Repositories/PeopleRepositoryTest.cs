@@ -146,7 +146,8 @@ namespace EMS.Core.API.Tests
             {
                 BornedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Name = "Test",
-                LastName = "Test"
+                LastName = "Test",
+                SecondName = "Test"
             };
 
             // Act
@@ -167,7 +168,8 @@ namespace EMS.Core.API.Tests
             {
                 BornedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Name = "Test",
-                LastName = "Test"
+                LastName = "Test",
+                SecondName = "Test"
             };
 
             // Assert
@@ -238,6 +240,7 @@ namespace EMS.Core.API.Tests
                 BornedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Name = "Test",
                 LastName = "Test",
+                SecondName = "Test",
                 Id = 1
             };
 
@@ -259,6 +262,7 @@ namespace EMS.Core.API.Tests
                 BornedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Name = "Test",
                 LastName = "Test",
+                SecondName = "Test",
                 Id = 1
             };
 
