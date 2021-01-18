@@ -6,6 +6,7 @@ using EMS.Core.API.DAL.Repositories.Interfaces;
 using System.Linq;
 using System;
 using Microsoft.EntityFrameworkCore;
+using EMS.Common.Protos;
 
 namespace EMS.Core.API.Services
 {
@@ -88,6 +89,10 @@ namespace EMS.Core.API.Services
                     BornedOn = request.BornedOn.ToDateTime()
                 };
                 int result = await _peopleRepository.AddAsync(person);
+                if(result == 0)
+                {
+                    throw new Exception("Person data has not been saved");
+                }
                 return new BaseResponse
                 {
                     Code = Code.Success,
@@ -118,6 +123,14 @@ namespace EMS.Core.API.Services
                     ErrorMessage = "An error occured while saving person data"
                 };
             }
+            catch(Exception ex)
+            {
+                return new BaseResponse
+                {
+                    Code = Code.UnknownError,
+                    ErrorMessage = ex.Message
+                };
+            }
         }
 
         public override async Task<BaseResponse> UpdateAsync(PersonData request, ServerCallContext context)
@@ -138,7 +151,7 @@ namespace EMS.Core.API.Services
                 int result = await _peopleRepository.UpdateAsync(person);
                 if (result == 0)
                 {
-                    throw new Exception("Updated people data is equal to 0");
+                    throw new Exception("Person data has not been updated");
                 }
                 return new BaseResponse
                 {
@@ -178,6 +191,16 @@ namespace EMS.Core.API.Services
                     ErrorMessage = ex.Message
                 };
             }
+        }
+
+        public override async Task<BaseResponse> AddContactAsync(ContactData request, ServerCallContext context)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override async Task<BaseResponse> AddPhotoAsync(PhotoData request, ServerCallContext context)
+        {
+            throw new NotImplementedException();
         }
 
         private static PersonData ConvertData(Person person)

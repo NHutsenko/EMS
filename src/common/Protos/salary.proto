@@ -1,7 +1,7 @@
 ﻿syntax = "proto3";
 
 import "google/protobuf/timestamp.proto";
-import "Protos/response.proto";
+import "response.proto";
 
 option csharp_namespace = "EMS.Core.API";
 

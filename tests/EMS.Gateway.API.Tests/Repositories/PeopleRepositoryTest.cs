@@ -377,6 +377,23 @@ namespace EMS.Core.API.Tests
         }
 
         [Test]
+        public void AddContactAsync_should_throws_expection_because_person_id_bot_found_in_db()
+        {
+            // Arrange
+            Contact contact = new Contact
+            {
+                ContactType = ContactType.Messenger,
+                Name = "Telegram",
+                PersonId = 2,
+                Value = "Test"
+            };
+
+            // Assert
+            Assert.ThrowsAsync<ArgumentException>(() => _peopleRepository.AddContactAsync(contact), "Exception throws as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
         public void AddPhotoAsync_should_add_photo_entity_to_db()
         {
             // Arrange
@@ -417,6 +434,22 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.ThrowsAsync<ArgumentNullException>(() => _peopleRepository.AddPhotoAsync(personPhoto), "exception throws as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
+        public void AddPhotoAsync_should_throws_exception_because_person_id_not_found_in_db()
+        {
+            // Arrange
+            PersonPhoto personPhoto = new PersonPhoto
+            {
+                PersonId = 2,
+                Name = "Test.jpg",
+                Base64 = "dGVzdCBmaWxlIG9uZQ=="
+            };
+
+            // Assert
+            Assert.ThrowsAsync<ArgumentException>(() => _peopleRepository.AddPhotoAsync(personPhoto), "exception throws as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 

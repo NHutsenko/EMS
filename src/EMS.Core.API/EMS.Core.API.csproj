@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -8,12 +8,12 @@
 
   <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore" Version="2.34.0" />
-    <PackageReference Include="Grpc.Tools" Version="2.34.0">
+    <PackageReference Include="Grpc.Tools" Version="2.34.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
   </ItemGroup>
 
@@ -23,9 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="Protos\response.proto" />
-    <Protobuf Include="Protos\salary.proto" GrpcServices="Server" />
-    <Protobuf Include="Protos\people.proto" GrpcServices="Server" />
+    <Protobuf Include="../common/Protos/response.proto" Link="Protos/response.proto"/>
+    <Protobuf Include="../common/Protos/salary.proto" Link="Protos/salary.proto" GrpcServices="Server"/>
+    <Protobuf Include="../common/Protos/people.proto" Link="Protos/people.proto" GrpcServices="Server"/>
   </ItemGroup>
 
 </Project>

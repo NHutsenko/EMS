@@ -1,6 +1,6 @@
 ﻿syntax="proto3";
 
-option csharp_namespace = "EMS.Core.API";
+option csharp_namespace = "EMS.Common.Protos";
 
 package response;
 

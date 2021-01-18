@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using EMS.Common.Protos;
 using EMS.Core.API.Models;
 using EMS.Core.API.Tests.Mocks;
 using Google.Protobuf.WellKnownTypes;
@@ -310,6 +311,34 @@ namespace EMS.Core.API.Tests
         }
 
         [Test]
+        public void AddAsync_should_return_unknown_error_based_on_general_exception()
+        {
+            // Arrange
+            DbContextMock.SaveChangesResult = 0;
+            PersonData person = new PersonData
+            {
+                Name = "Test",
+                LastName = "Test",
+                SecondName = "Test",
+                BornedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
+                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
+                Id = 4
+            };
+
+            BaseResponse expected = new BaseResponse
+            {
+                Code = Code.UnknownError,
+                ErrorMessage = "Person data has not been saved"
+            };
+
+            // Act
+            BaseResponse actual = _peopleService.AddAsync(person, null).Result;
+
+            // Assert
+            Assert.AreEqual(expected, actual, "Response as expected");
+        }
+
+        [Test]
         public void UpdateAsync_should_update_person_int_db()
         {
             // Arrange
@@ -354,7 +383,7 @@ namespace EMS.Core.API.Tests
             BaseResponse expected = new BaseResponse
             {
                 Code = Code.UnknownError,
-                ErrorMessage = "Updated people data is equal to 0"
+                ErrorMessage = "Person data has not been updated"
             };
 
             // Act
@@ -432,6 +461,31 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected, actual, "Db update exception handled as expected");
+        }
+
+        [Test]
+        public void AddContactAsync_should_add_contact_to_db_via_people_repository()
+        {
+            // Arrange
+            ContactData contact = new ContactData
+            {
+                PersonId = _person1.Id,
+                ContactType = 1,
+                Name = "Test",
+                Value = "Test"
+            };
+
+            BaseResponse expected = new BaseResponse
+            {
+                Code = Code.Success,
+                ErrorMessage = string.Empty
+            };
+
+            // Act
+            BaseResponse actual = _peopleService.AddContactAsync(contact, null).Result;
+
+            // Assert
+            Assert.AreEqual(expected, actual, "Saved via people repository as expected");
         }
     }
 }

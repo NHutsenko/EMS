@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Protobuf Include="people.proto" GrpcServices="Server" />
+    <Protobuf Include="response.proto" />
+    <Protobuf Include="salary.proto" GrpcServices="Server" />
+  </ItemGroup>
+
+</Project>

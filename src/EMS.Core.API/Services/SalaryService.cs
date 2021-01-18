@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using EMS.Common.Protos;
 using EMS.Core.API.DAL.Repositories.Interfaces;
 using EMS.Core.API.Models;
 using Google.Protobuf.WellKnownTypes;

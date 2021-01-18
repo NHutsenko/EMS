@@ -97,6 +97,10 @@ namespace EMS.Core.API.DAL.Repositories
             {
                 throw new NullReferenceException("Photo data cannot be empty");
             }
+            if(!_context.People.Any(e => e.Id == photo.PersonId))
+            {
+                throw new ArgumentException("Person is not specified");
+            }
             if (string.IsNullOrEmpty(photo.Name))
             {
                 throw new ArgumentNullException("Photo name has not passed");
@@ -123,6 +127,10 @@ namespace EMS.Core.API.DAL.Repositories
             if(contact is null)
             {
                 throw new NullReferenceException("Contact data cannot be empty");
+            }
+            if (!_context.People.Any(e => e.Id == contact.PersonId))
+            {
+                throw new ArgumentException("Person is not specified");
             }
             if (string.IsNullOrWhiteSpace(contact.Value))
             {

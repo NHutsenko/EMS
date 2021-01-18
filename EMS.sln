@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DateTimeUtil", "src\common\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EMS.Common.Utils.Tests", "tests\EMS.common.Utils.Tests\EMS.Common.Utils.Tests.csproj", "{BC2C2786-E5C5-4351-B057-F2F74DABD05B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Protos", "src\common\Protos\Protos.csproj", "{C2F10C06-B0E8-496B-966D-8C04BC4222C2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{BC2C2786-E5C5-4351-B057-F2F74DABD05B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC2C2786-E5C5-4351-B057-F2F74DABD05B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC2C2786-E5C5-4351-B057-F2F74DABD05B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2F10C06-B0E8-496B-966D-8C04BC4222C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2F10C06-B0E8-496B-966D-8C04BC4222C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2F10C06-B0E8-496B-966D-8C04BC4222C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2F10C06-B0E8-496B-966D-8C04BC4222C2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -56,6 +62,7 @@ Global
 		{9269533B-7FB9-466A-84A2-6D24B3FA6E39} = {A4A7443F-C844-49E4-9334-1C3A50EAF9FA}
 		{4876FB5C-0434-46C4-8270-59044244B0DD} = {A4A7443F-C844-49E4-9334-1C3A50EAF9FA}
 		{BC2C2786-E5C5-4351-B057-F2F74DABD05B} = {C0F94643-91A7-4CF3-8565-B1B19A17EBE4}
+		{C2F10C06-B0E8-496B-966D-8C04BC4222C2} = {A4A7443F-C844-49E4-9334-1C3A50EAF9FA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B2BDE7CC-3861-4B59-8436-B083C5D26219}
