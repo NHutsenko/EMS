@@ -1,0 +1,52 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "response.proto";
+
+option csharp_namespace = "EMS.Core.API";
+
+package teams;
+
+service Teams{
+	rpc GetAll(google.protobuf.Empty) returns (TeamsResponse) {
+
+	}
+
+	rpc GetById(TeamRequest) returns(TeamResponse) {
+
+	}
+
+	rpc AddAsync(Team) returns (response.BaseResponse) {
+
+	}
+
+	rpc UpdateAsync(Team) returns (response.BaseResponse) {
+
+	}
+
+	rpc DeleteAsync(Team) returns (response.BaseResponse) {
+
+	}
+}
+
+message Team {
+	int64 id = 1;
+	string name = 2;
+	string description = 3;
+	google.protobuf.Timestamp created_on = 4; 
+}
+
+message TeamRequest {
+	int64 id = 1;
+}
+
+message TeamsResponse{
+	response.BaseResponse response = 1;
+	repeated Team teams = 2;
+}
+
+message TeamResponse{
+	response.BaseResponse response = 1;
+	Team teams = 2;
+}

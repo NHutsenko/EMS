@@ -11,6 +11,5 @@ namespace EMS.Core.API.DAL.Repositories.Interfaces
 		Task<int> DeleteAsync(Team team);
 		Team Get(long teamId);
 		IQueryable<Team> GetAll();
-        IQueryable<Position> GetPositionsByTeamId(long teamId);
 	}
 }

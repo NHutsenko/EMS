@@ -8,7 +8,7 @@ option csharp_namespace = "EMS.Core.API";
 package salary;
 
 service Salary{
-	rpc GetSalary(SalaryRequest) returns (ISalaryResponse){
+	rpc GetSalary(SalaryRequest) returns (ISalaryResponse) {
 
 	}
 }

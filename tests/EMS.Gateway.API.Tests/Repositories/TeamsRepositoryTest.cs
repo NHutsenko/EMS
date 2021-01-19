@@ -171,19 +171,6 @@ namespace EMS.Core.API.Tests
         }
 
         [Test]
-        public void GetPositionsByTEamId_should_retrun_all_position_entites_in_team()
-        {
-            // Arrange
-            List<Position> expected = new List<Position>() { _position1, _position2 };
-
-            // Act
-            IQueryable<Position> teams = _teamsRepository.GetPositionsByTeamId(1);
-
-            // Assert
-            CollectionAssert.AreEqual(expected, teams, "Should return position entities");
-        }
-
-        [Test]
         public void UpdateAsync_should_update_enitity_by_id()
         {
             // Arrange

@@ -26,6 +26,7 @@
     <Protobuf Include="../common/Protos/response.proto" Link="Protos/response.proto"/>
     <Protobuf Include="../common/Protos/salary.proto" Link="Protos/salary.proto" GrpcServices="Server"/>
     <Protobuf Include="../common/Protos/people.proto" Link="Protos/people.proto" GrpcServices="Server"/>
+    <Protobuf Include="../common/Protos/teams.proto" Link="Protos/teams.proto" GrpcServices="Server"/>
   </ItemGroup>
 
 </Project>

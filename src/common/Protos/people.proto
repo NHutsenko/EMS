@@ -10,27 +10,27 @@ package people;
 
 
 service People {
-	rpc GetAll(google.protobuf.Empty) returns (PeopleResponse){
+	rpc GetAll(google.protobuf.Empty) returns (PeopleResponse) {
 
 	}
 
-	rpc GetById(PersonRequest) returns (PersonResponse){
+	rpc GetById(PersonRequest) returns (PersonResponse) {
 
 	}
 
-	rpc AddAsync(PersonData) returns (response.BaseResponse){
+	rpc AddAsync(PersonData) returns (response.BaseResponse) {
 
 	}
 
-	rpc UpdateAsync(PersonData) returns (response.BaseResponse){
+	rpc UpdateAsync(PersonData) returns (response.BaseResponse) {
 
 	}
 
-	rpc AddContactAsync(ContactData)  returns (response.BaseResponse){
+	rpc AddContactAsync(ContactData)  returns (response.BaseResponse) {
 
 	}
 
-	rpc AddPhotoAsync(PhotoData) returns (response.BaseResponse){
+	rpc AddPhotoAsync(PhotoData) returns (response.BaseResponse) {
 
 	}
 }

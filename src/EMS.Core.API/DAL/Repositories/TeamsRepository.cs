@@ -64,11 +64,5 @@ namespace EMS.Core.API.DAL.Repositories
 		{
             return _context.Teams.Select(e => e);
 		}
-
-        public IQueryable<Position> GetPositionsByTeamId(long teamId)
-        {
-            return _context.Positions.Where(p => p.TeamId == teamId);
-        }
-
     }
 }
