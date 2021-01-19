@@ -65,7 +65,7 @@ namespace EMS.Core.API.Tests
             {
                 CurrentPosition = _position1.Id,
                 PersonId = _staff1.PersonId.GetValueOrDefault(),
-                CurrentSalary = 1680,
+                Salary = 1680,
                 StartedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime())
             };
 
@@ -78,7 +78,7 @@ namespace EMS.Core.API.Tests
             SalaryResponse actual = response.SalaryResponse.First();
 
             // Assert
-            Assert.AreEqual(expected.CurrentSalary, actual.CurrentSalary, "Salary calculated as expected");
+            Assert.AreEqual(expected.Salary, actual.Salary, "Salary calculated as expected");
             Assert.AreEqual(expected.PersonId, actual.PersonId, "Employee id returned as expected");
             Assert.AreEqual(expected.CurrentPosition, actual.CurrentPosition, "Employee actual position returned as expected");
             Assert.AreEqual(expected.StartedOn.ToDateTime(), actual.StartedOn.ToDateTime(), "Date of start work returned as expected");
@@ -92,7 +92,7 @@ namespace EMS.Core.API.Tests
             {
                 CurrentPosition = _position1.Id,
                 PersonId = _staff1.PersonId.GetValueOrDefault(),
-                CurrentSalary = 1680,
+                Salary = 1680,
                 StartedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime())
             };
             Holiday holiday = new Holiday
@@ -113,7 +113,7 @@ namespace EMS.Core.API.Tests
             SalaryResponse actual = response.SalaryResponse.First();
 
             // Assert
-            Assert.AreEqual(expected.CurrentSalary, actual.CurrentSalary, "Salary calculated as expected");
+            Assert.AreEqual(expected.Salary, actual.Salary, "Salary calculated as expected");
             Assert.AreEqual(expected.PersonId, actual.PersonId, "Employee id returned as expected");
             Assert.AreEqual(expected.CurrentPosition, actual.CurrentPosition, "Employee actual position returned as expected");
             Assert.AreEqual(expected.StartedOn.ToDateTime(), actual.StartedOn.ToDateTime(), "Date of start work returned as expected");
@@ -127,7 +127,7 @@ namespace EMS.Core.API.Tests
             {
                 CurrentPosition = _position1.Id,
                 PersonId = _staff1.PersonId.GetValueOrDefault(),
-                CurrentSalary = 1680,
+                Salary = 1680,
                 StartedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime())
             };
             Holiday holiday = new Holiday
@@ -148,7 +148,7 @@ namespace EMS.Core.API.Tests
             SalaryResponse actual = response.SalaryResponse.First();
 
             // Assert
-            Assert.AreEqual(expected.CurrentSalary, actual.CurrentSalary, "Salary calculated as expected");
+            Assert.AreEqual(expected.Salary, actual.Salary, "Salary calculated as expected");
             Assert.AreEqual(expected.PersonId, actual.PersonId, "Employee id returned as expected");
             Assert.AreEqual(expected.CurrentPosition, actual.CurrentPosition, "Employee actual position returned as expected");
             Assert.AreEqual(expected.StartedOn.ToDateTime(), actual.StartedOn.ToDateTime(), "Date of start work returned as expected");
@@ -162,7 +162,7 @@ namespace EMS.Core.API.Tests
             {
                 CurrentPosition = _position1.Id,
                 PersonId = _staff1.PersonId.GetValueOrDefault(),
-                CurrentSalary = 1680,
+                Salary = 1680,
                 StartedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime())
             };
             DayOff dayOff = new DayOff
@@ -186,7 +186,7 @@ namespace EMS.Core.API.Tests
             SalaryResponse actual = response.SalaryResponse.First();
 
             // Assert
-            Assert.AreEqual(expected.CurrentSalary, actual.CurrentSalary, "Salary calculated as expected");
+            Assert.AreEqual(expected.Salary, actual.Salary, "Salary calculated as expected");
             Assert.AreEqual(expected.PersonId, actual.PersonId, "Employee id returned as expected");
             Assert.AreEqual(expected.CurrentPosition, actual.CurrentPosition, "Employee actual position returned as expected");
             Assert.AreEqual(expected.StartedOn.ToDateTime(), actual.StartedOn.ToDateTime(), "Date of start work returned as expected");
@@ -200,7 +200,7 @@ namespace EMS.Core.API.Tests
             {
                 CurrentPosition = _position1.Id,
                 PersonId = _staff1.PersonId.GetValueOrDefault(),
-                CurrentSalary = 1600,
+                Salary = 1600,
                 StartedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime())
             };
             DayOff dayOff = new DayOff
@@ -224,7 +224,7 @@ namespace EMS.Core.API.Tests
             SalaryResponse actual = response.SalaryResponse.First();
 
             // Assert
-            Assert.AreEqual(expected.CurrentSalary, actual.CurrentSalary, "Salary calculated as expected");
+            Assert.AreEqual(expected.Salary, actual.Salary, "Salary calculated as expected");
             Assert.AreEqual(expected.PersonId, actual.PersonId, "Employee id returned as expected");
             Assert.AreEqual(expected.CurrentPosition, actual.CurrentPosition, "Employee actual position returned as expected");
             Assert.AreEqual(expected.StartedOn.ToDateTime(), actual.StartedOn.ToDateTime(), "Date of start work returned as expected");
@@ -238,7 +238,7 @@ namespace EMS.Core.API.Tests
             {
                 CurrentPosition = _position1.Id,
                 PersonId = _staff1.PersonId.GetValueOrDefault(),
-                CurrentSalary = 1640,
+                Salary = 1640,
                 StartedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime())
             };
             DayOff dayOff = new DayOff
@@ -262,7 +262,7 @@ namespace EMS.Core.API.Tests
             SalaryResponse actual = response.SalaryResponse.First();
 
             // Assert
-            Assert.AreEqual(expected.CurrentSalary, actual.CurrentSalary, "Salary calculated as expected");
+            Assert.AreEqual(expected.Salary, actual.Salary, "Salary calculated as expected");
             Assert.AreEqual(expected.PersonId, actual.PersonId, "Employee id returned as expected");
             Assert.AreEqual(expected.CurrentPosition, actual.CurrentPosition, "Employee actual position returned as expected");
             Assert.AreEqual(expected.StartedOn.ToDateTime(), actual.StartedOn.ToDateTime(), "Date of start work returned as expected");
@@ -276,7 +276,7 @@ namespace EMS.Core.API.Tests
             {
                 CurrentPosition = _position1.Id,
                 PersonId = _staff1.PersonId.GetValueOrDefault(),
-                CurrentSalary = 1680,
+                Salary = 1680,
                 StartedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime())
             };
             DayOff dayOff = new DayOff
@@ -300,7 +300,7 @@ namespace EMS.Core.API.Tests
             SalaryResponse actual = response.SalaryResponse.First();
 
             // Assert
-            Assert.AreEqual(expected.CurrentSalary, actual.CurrentSalary, "Salary calculated as expected");
+            Assert.AreEqual(expected.Salary, actual.Salary, "Salary calculated as expected");
             Assert.AreEqual(expected.PersonId, actual.PersonId, "Employee id returned as expected");
             Assert.AreEqual(expected.CurrentPosition, actual.CurrentPosition, "Employee actual position returned as expected");
             Assert.AreEqual(expected.StartedOn.ToDateTime(), actual.StartedOn.ToDateTime(), "Date of start work returned as expected");
@@ -314,7 +314,7 @@ namespace EMS.Core.API.Tests
             {
                 CurrentPosition = _position1.Id,
                 PersonId = _staff1.PersonId.GetValueOrDefault(),
-                CurrentSalary = 840,
+                Salary = 840,
                 StartedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime())
             };
             MotivationModificator modificator = new MotivationModificator
@@ -336,7 +336,7 @@ namespace EMS.Core.API.Tests
             SalaryResponse actual = response.SalaryResponse.First();
 
             // Assert
-            Assert.AreEqual(expected.CurrentSalary, actual.CurrentSalary, "Salary calculated as expected");
+            Assert.AreEqual(expected.Salary, actual.Salary, "Salary calculated as expected");
             Assert.AreEqual(expected.PersonId, actual.PersonId, "Employee id returned as expected");
             Assert.AreEqual(expected.CurrentPosition, actual.CurrentPosition, "Employee actual position returned as expected");
             Assert.AreEqual(expected.StartedOn.ToDateTime(), actual.StartedOn.ToDateTime(), "Date of start work returned as expected");
@@ -350,7 +350,7 @@ namespace EMS.Core.API.Tests
             {
                 CurrentPosition = _position1.Id,
                 PersonId = _staff1.PersonId.GetValueOrDefault(),
-                CurrentSalary = 1700,
+                Salary = 1700,
                 StartedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime())
             };
             OtherPayment otherPayment = new OtherPayment
@@ -372,7 +372,7 @@ namespace EMS.Core.API.Tests
             SalaryResponse actual = response.SalaryResponse.First();
 
             // Assert
-            Assert.AreEqual(expected.CurrentSalary, actual.CurrentSalary, "Salary calculated as expected");
+            Assert.AreEqual(expected.Salary, actual.Salary, "Salary calculated as expected");
             Assert.AreEqual(expected.PersonId, actual.PersonId, "Employee id returned as expected");
             Assert.AreEqual(expected.CurrentPosition, actual.CurrentPosition, "Employee actual position returned as expected");
             Assert.AreEqual(expected.StartedOn.ToDateTime(), actual.StartedOn.ToDateTime(), "Date of start work returned as expected");

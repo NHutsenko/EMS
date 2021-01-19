@@ -101,7 +101,7 @@ namespace EMS.Core.API.Services
                     {
                         if (!dayOffs.Any(e => e.CreatedOn.Date == current.Date))
                         {
-                            response.CurrentSalary += workHours * rate;
+                            response.Salary += workHours * rate;
                         }
                         else
                         {
@@ -115,22 +115,22 @@ namespace EMS.Core.API.Services
                             {
                                 if (dayOff.Hours < workHours)
                                 {
-                                    response.CurrentSalary += dayOff.Hours * rate + (workHours - dayOff.Hours) * rate;
+                                    response.Salary += dayOff.Hours * rate + (workHours - dayOff.Hours) * rate;
                                 }
                                 else
                                 {
-                                    response.CurrentSalary += dayOff.Hours * rate;
+                                    response.Salary += dayOff.Hours * rate;
                                 }
                             }
                             else
                             {
-                                response.CurrentSalary += (workHours - dayOff.Hours) * rate;
+                                response.Salary += (workHours - dayOff.Hours) * rate;
                             }
                         }
                     }
                     else if (holidays.Any(e => e.HolidayDate.Date == current.Date && !e.ToDoDate.HasValue))
                     {
-                        response.CurrentSalary += workHours * rate;
+                        response.Salary += workHours * rate;
                     }
                 }
             }
@@ -143,7 +143,7 @@ namespace EMS.Core.API.Services
 
             foreach(OtherPayment otherPayment in otherPayments)
             {
-                calculatedSalary.CurrentSalary += otherPayment.Value;
+                calculatedSalary.Salary += otherPayment.Value;
             }
 
             return calculatedSalary;
