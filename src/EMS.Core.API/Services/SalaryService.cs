@@ -19,13 +19,15 @@ namespace EMS.Core.API.Services
         private readonly IHolidaysRepository _holidaysRepository;
         private readonly IPositionsRepository _positionsRepository;
         private readonly IMotivationModificatorRepository _motivationModificatorRepository;
+        private readonly IOtherPaymentsRepository _otherPaymentsRepository;
 
         public SalaryService(ILogger<SalaryService> logger,
             IStaffRepository staffRepository,
             IDayOffRepository dayOffRepository,
             IHolidaysRepository holidaysRepository,
             IPositionsRepository positionsRepository,
-            IMotivationModificatorRepository motivationModificatorRepository)
+            IMotivationModificatorRepository motivationModificatorRepository,
+            IOtherPaymentsRepository otherPaymentsRepository)
         {
             _logger = logger;
             _staffRepository = staffRepository;
@@ -33,6 +35,7 @@ namespace EMS.Core.API.Services
             _holidaysRepository = holidaysRepository;
             _positionsRepository = positionsRepository;
             _motivationModificatorRepository = motivationModificatorRepository;
+            _otherPaymentsRepository = otherPaymentsRepository;
         }
 
         public override Task<ISalaryResponse> GetSalary(SalaryRequest request, ServerCallContext context)
@@ -48,7 +51,9 @@ namespace EMS.Core.API.Services
                     .GroupBy(e => e.PersonId);
                 foreach (IGrouping<long?, Staff> data in groupedStaff)
                 {
-                    response.SalaryResponse.Add(CalculateCurrentSalary(data, request.StartDate.ToDateTime(), request.EndDate.ToDateTime()));
+                    SalaryResponse salaryResponse = CalculateCurrentSalary(data, request.StartDate.ToDateTime(), request.EndDate.ToDateTime());
+                    salaryResponse = CalculateOtherPayments(salaryResponse, request.StartDate.ToDateTime(), request.EndDate.ToDateTime());
+                    response.SalaryResponse.Add(salaryResponse);
                 }
             }
             catch (NullReferenceException nrex)
@@ -130,6 +135,18 @@ namespace EMS.Core.API.Services
                 }
             }
             return response;
+        }
+
+        private SalaryResponse CalculateOtherPayments(SalaryResponse calculatedSalary, DateTime start, DateTime end)
+        {
+            IQueryable<OtherPayment> otherPayments = _otherPaymentsRepository.GetByPersonIdAndDateRange(calculatedSalary.PersonId, start, end);
+
+            foreach(OtherPayment otherPayment in otherPayments)
+            {
+                calculatedSalary.CurrentSalary += otherPayment.Value;
+            }
+
+            return calculatedSalary;
         }
 
         private static double GetWorkHours()

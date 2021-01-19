@@ -8,7 +8,7 @@ namespace EMS.Core.API.Models
     public class OtherPayment: BaseModel
     {
         [Column("value")]
-        public decimal Value { get; set; }
+        public double Value { get; set; }
         [Column("personId")]
         public long PersonId { get; set; }
         [Column("person")]

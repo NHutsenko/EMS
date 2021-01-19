@@ -46,8 +46,15 @@ namespace EMS.Core.API.Tests
             _dayOffRepository = new DAL.Repositories.DayOffRepository(_dbContext);
             _holidaysRepository = new DAL.Repositories.HolidaysRepository(_dbContext, _dateTimeUtil);
             _motivationModificatorRepository = new DAL.Repositories.MotivationModificatorRepository(_dbContext, _dateTimeUtil);
+            _otherPaymentsRepository = new DAL.Repositories.OtherPaymentsRepository(_dbContext, _dateTimeUtil);
 
-            _salaryService = new SalaryService(null, _staffRepository, _dayOffRepository, _holidaysRepository, _positionsRepository, _motivationModificatorRepository);
+            _salaryService = new SalaryService(null, 
+                _staffRepository, 
+                _dayOffRepository, 
+                _holidaysRepository, 
+                _positionsRepository, 
+                _motivationModificatorRepository,
+                _otherPaymentsRepository);
         }
 
         [Test]
@@ -318,6 +325,42 @@ namespace EMS.Core.API.Tests
             };
             _dbContext.MotivationModificators.Add(modificator);
             _staff1.MotivationModificatorId = modificator.Id;
+
+
+            SalaryRequest request = new SalaryRequest();
+            request.StartDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc));
+            request.EndDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1).AddDays(-1));
+
+            // Act
+            ISalaryResponse response = _salaryService.GetSalary(request, null).Result;
+            SalaryResponse actual = response.SalaryResponse.First();
+
+            // Assert
+            Assert.AreEqual(expected.CurrentSalary, actual.CurrentSalary, "Salary calculated as expected");
+            Assert.AreEqual(expected.PersonId, actual.PersonId, "Employee id returned as expected");
+            Assert.AreEqual(expected.CurrentPosition, actual.CurrentPosition, "Employee actual position returned as expected");
+            Assert.AreEqual(expected.StartedOn.ToDateTime(), actual.StartedOn.ToDateTime(), "Date of start work returned as expected");
+        }
+
+        [Test]
+        public void GetSalary_should_return_month_salary_with_other_payments()
+        {
+            // Arrange
+            SalaryResponse expected = new SalaryResponse
+            {
+                CurrentPosition = _position1.Id,
+                PersonId = _staff1.PersonId.GetValueOrDefault(),
+                CurrentSalary = 1700,
+                StartedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime())
+            };
+            OtherPayment otherPayment = new OtherPayment
+            {
+                CreatedOn = new DateTime(2021, 1, 15, 0, 0, 0, DateTimeKind.Utc),
+                Id = 1,
+                PersonId = _staff1.PersonId.Value,
+                Value = 20
+            };
+            _dbContext.OtherPayments.Add(otherPayment);
 
 
             SalaryRequest request = new SalaryRequest();

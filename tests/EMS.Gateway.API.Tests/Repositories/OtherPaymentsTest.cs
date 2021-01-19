@@ -35,7 +35,7 @@ namespace EMS.Core.API.Tests
             _otherPayment1 = new OtherPayment
             {
                 Id = 1,
-                Value = 123.45M,
+                Value = 123.45,
                 Comment = "Test",
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 PersonId = _person.Id
@@ -44,7 +44,7 @@ namespace EMS.Core.API.Tests
             _otherPayment2 = new OtherPayment
             {
                 Id = 1,
-                Value = 123.45M,
+                Value = 123.45,
                 Comment = "Test",
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime().AddMonths(1),
                 PersonId = _person.Id
