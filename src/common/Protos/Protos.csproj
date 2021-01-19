@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
@@ -6,9 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Protobuf Include="people.proto" GrpcServices="Server" />
+    <Protobuf Include="people.proto" />
     <Protobuf Include="response.proto" />
-    <Protobuf Include="salary.proto" GrpcServices="Server" />
+    <Protobuf Include="salary.proto" />
   </ItemGroup>
 
 </Project>

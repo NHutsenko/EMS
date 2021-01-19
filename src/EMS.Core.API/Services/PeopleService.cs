@@ -7,6 +7,7 @@ using System.Linq;
 using System;
 using Microsoft.EntityFrameworkCore;
 using EMS.Common.Protos;
+using EMS.Core.API.Enums;
 
 namespace EMS.Core.API.Services
 {
@@ -195,12 +196,118 @@ namespace EMS.Core.API.Services
 
         public override async Task<BaseResponse> AddContactAsync(ContactData request, ServerCallContext context)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (request is null)
+                    await _peopleRepository.AddContactAsync(null);
+
+                Contact contact = new Contact
+                {
+                    ContactType = (ContactType)System.Enum.Parse(typeof(ContactType), request.ContactType.ToString()),
+                    Name = request.Name,
+                    PersonId = request.PersonId,
+                    Value = request.Value
+                };
+                int result = await _peopleRepository.AddContactAsync(contact);
+                if(result == 0)
+                {
+                    throw new Exception("Contact has not been saved");
+                }
+                return new BaseResponse
+                {
+                    Code = Code.Success,
+                    ErrorMessage = string.Empty
+                };
+            }
+            catch(NullReferenceException nrex)
+            {
+                return new BaseResponse
+                {
+                    Code = Code.DataError,
+                    ErrorMessage = nrex.Message
+                };
+            }
+            catch(ArgumentException aex)
+            {
+                return new BaseResponse
+                {
+                    Code = Code.DataError,
+                    ErrorMessage = aex.Message
+                };
+            }
+            catch(DbUpdateException duex)
+            {
+                return new BaseResponse
+                {
+                    Code = Code.DbError,
+                    ErrorMessage = "An error occured while saving contact"
+                };
+            }
+            catch(Exception ex)
+            {
+                return new BaseResponse
+                {
+                    Code = Code.UnknownError,
+                    ErrorMessage = ex.Message
+                };
+            }
         }
 
         public override async Task<BaseResponse> AddPhotoAsync(PhotoData request, ServerCallContext context)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (request is null)
+                    await _peopleRepository.AddPhotoAsync(null);
+                PersonPhoto photo = new PersonPhoto
+                {
+                    Base64 = request.Base64,
+                    Name = request.Name,
+                    PersonId = request.PersonId
+                };
+                int result = await _peopleRepository.AddPhotoAsync(photo);
+                if(result == 0)
+                {
+                    throw new Exception("Photo has not been saved");
+                }
+                return new BaseResponse
+                {
+                    Code = Code.Success,
+                    ErrorMessage = string.Empty
+                };
+            }
+            catch (NullReferenceException nrex)
+            {
+                return new BaseResponse
+                {
+                    Code = Code.DataError,
+                    ErrorMessage = nrex.Message
+                };
+            }
+            catch (ArgumentException aex)
+            {
+                return new BaseResponse
+                {
+                    Code = Code.DataError,
+                    ErrorMessage = aex.Message
+                };
+            }
+            catch (DbUpdateException duex)
+            {
+                return new BaseResponse
+                {
+                    Code = Code.DbError,
+                    ErrorMessage = "An error occured while saving contact"
+                };
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponse
+                {
+                    Code = Code.UnknownError,
+                    ErrorMessage = ex.Message
+                };
+            }
         }
 
         private static PersonData ConvertData(Person person)

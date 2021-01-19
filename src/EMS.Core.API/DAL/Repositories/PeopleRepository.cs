@@ -103,7 +103,7 @@ namespace EMS.Core.API.DAL.Repositories
             }
             if (string.IsNullOrEmpty(photo.Name))
             {
-                throw new ArgumentNullException("Photo name has not passed");
+                throw new ArgumentException("Photo name has not passed");
             }
             if(!new Regex("[^-A-Za-z0-9+/=]|=[^=]|={2,}$").IsMatch(photo.Base64))
             {
@@ -134,7 +134,7 @@ namespace EMS.Core.API.DAL.Repositories
             }
             if (string.IsNullOrWhiteSpace(contact.Value))
             {
-                throw new ArgumentNullException("Contact value cannot be emty");
+                throw new ArgumentException("Contact value cannot be empty");
             }
             contact.CreatedOn = _dateTimeUtil.GetCurrentDateTime();
             _context.Contacts.Add(contact);

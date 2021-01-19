@@ -487,5 +487,218 @@ namespace EMS.Core.API.Tests
             // Assert
             Assert.AreEqual(expected, actual, "Saved via people repository as expected");
         }
+
+        [Test]
+        public void AddContactAsync_should_handle_null_reference_exception_from_people_repository()
+        {
+            // Arrange
+            BaseResponse expected = new BaseResponse
+            {
+                Code = Code.DataError,
+                ErrorMessage = "Contact data cannot be empty"
+            };
+
+            // Act
+            BaseResponse actual = _peopleService.AddContactAsync(null, null).Result;
+
+            // Assert
+            Assert.AreEqual(expected, actual, "Handled NullReferenceException from people repository as expected");
+        }
+
+        [Test]
+        public void AddContactAsync_should_handle_argument_exception_from_people_repository()
+        {
+            // Arrange
+            ContactData contact = new ContactData
+            {
+                PersonId = 3,
+                ContactType = 1,
+                Name = "Test",
+                Value = "Test"
+            };
+
+            BaseResponse expected = new BaseResponse
+            {
+                Code = Code.DataError,
+                ErrorMessage = "Person is not specified"
+            };
+
+            // Act
+            BaseResponse actual = _peopleService.AddContactAsync(contact, null).Result;
+
+            // Assert
+            Assert.AreEqual(expected, actual, "Handled ArgumentException from people repository as expected");
+        }
+
+        [Test]
+        public void AddContactAsync_should_handle_db_update_exception_from_people_repository()
+        {
+            // Arrange
+            DbContextMock.ShouldThrowException = true;
+            ContactData contact = new ContactData
+            {
+                PersonId = _person1.Id,
+                ContactType = 1,
+                Name = "Test",
+                Value = "Test"
+            };
+
+            BaseResponse expected = new BaseResponse
+            {
+                Code = Code.DbError,
+                ErrorMessage = "An error occured while saving contact"
+            };
+
+            // Act
+            BaseResponse actual = _peopleService.AddContactAsync(contact, null).Result;
+
+            // Assert
+            Assert.AreEqual(expected, actual, "Handled DbUpdateException from people repository as expected");
+        }
+
+        [Test]
+        public void AddContactAsync_should_handle_exception_from_people_repository()
+        {
+            // Arrange
+            DbContextMock.SaveChangesResult = 0;
+            ContactData contact = new ContactData
+            {
+                PersonId = _person1.Id,
+                ContactType = 1,
+                Name = "Test",
+                Value = "Test"
+            };
+
+            BaseResponse expected = new BaseResponse
+            {
+                Code = Code.UnknownError,
+                ErrorMessage = "Contact has not been saved"
+            };
+
+            // Act
+            BaseResponse actual = _peopleService.AddContactAsync(contact, null).Result;
+
+            // Assert
+            Assert.AreEqual(expected, actual, "Handled exception from people repository as expected");
+        }
+
+        [Test]
+        public void AddPhotoAsync_should_add_contact_to_db_via_people_repository()
+        {
+            // Arrange
+            PhotoData photoData = new PhotoData
+            {
+                PersonId = _person1.Id,
+                Name = "test.jpg",
+                Base64 = "dGVzdCBmaWxlIG9uZQ==",
+                Mime = string.Empty
+            };
+
+            BaseResponse expected = new BaseResponse
+            {
+                Code = Code.Success,
+                ErrorMessage = string.Empty
+            };
+
+            // Act
+            BaseResponse actual = _peopleService.AddPhotoAsync(photoData, null).Result;
+
+            // Assert
+            Assert.AreEqual(expected, actual, "Saved via people repository as expected");
+        }
+
+        [Test]
+        public void AddPhotoAsync_should_handle_null_reference_exception_from_people_repository()
+        {
+            // Arrange
+            BaseResponse expected = new BaseResponse
+            {
+                Code = Code.DataError,
+                ErrorMessage = "Photo data cannot be empty"
+            };
+
+            // Act
+            BaseResponse actual = _peopleService.AddPhotoAsync(null, null).Result;
+
+            // Assert
+            Assert.AreEqual(expected, actual, "Handled NullReferenceException from people repository as expected");
+        }
+
+        [Test]
+        public void AddPhotoAsync_should_handle_argument_exception_from_people_repository()
+        {
+            // Arrange
+            PhotoData photoData = new PhotoData
+            {
+                PersonId = 3,
+                Name = "test.jpg",
+                Base64 = "dGVzdCBmaWxlIG9uZQ==",
+                Mime = string.Empty
+            };
+
+            BaseResponse expected = new BaseResponse
+            {
+                Code = Code.DataError,
+                ErrorMessage = "Person is not specified"
+            };
+
+            // Act
+            BaseResponse actual = _peopleService.AddPhotoAsync(photoData, null).Result;
+
+            // Assert
+            Assert.AreEqual(expected, actual, "Handled ArgumentException from people repository as expected");
+        }
+
+        [Test]
+        public void AddPhotoAsync_should_handle_db_update_exception_from_people_repository()
+        {
+            // Arrange
+            DbContextMock.ShouldThrowException = true;
+            PhotoData photoData = new PhotoData
+            {
+                PersonId = _person1.Id,
+                Name = "test.jpg",
+                Base64 = "dGVzdCBmaWxlIG9uZQ==",
+                Mime = string.Empty
+            };
+
+            BaseResponse expected = new BaseResponse
+            {
+                Code = Code.DbError,
+                ErrorMessage = "An error occured while saving contact"
+            };
+
+            // Act
+            BaseResponse actual = _peopleService.AddPhotoAsync(photoData, null).Result;
+
+            // Assert
+            Assert.AreEqual(expected, actual, "Handled DbUpdateException from people repository as expected");
+        }
+
+        [Test]
+        public void AddPhotoAsync_should_handle_exception_from_people_repository()
+        {
+            // Arrange
+            DbContextMock.SaveChangesResult = 0;
+            PhotoData photoData = new PhotoData
+            {
+                PersonId = _person1.Id,
+                Name = "test.jpg",
+                Base64 = "dGVzdCBmaWxlIG9uZQ==",
+                Mime = string.Empty
+            };
+
+            BaseResponse expected = new BaseResponse
+            {
+                Code = Code.UnknownError,
+                ErrorMessage = "Photo has not been saved"
+            };
+
+            // Act
+            BaseResponse actual = _peopleService.AddPhotoAsync(photoData, null).Result;
+
+            // Assert
+            Assert.AreEqual(expected, actual, "Handled exception from people repository as expected");
+        }
     }
 }

@@ -372,7 +372,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => _peopleRepository.AddContactAsync(contact), "Exception throws as expected");
+            Assert.ThrowsAsync<ArgumentException>(() => _peopleRepository.AddContactAsync(contact), "Exception throws as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -433,7 +433,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => _peopleRepository.AddPhotoAsync(personPhoto), "exception throws as expected");
+            Assert.ThrowsAsync<ArgumentException>(() => _peopleRepository.AddPhotoAsync(personPhoto), "exception throws as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
