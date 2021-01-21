@@ -17,20 +17,20 @@ service Teams{
 
 	}
 
-	rpc AddAsync(Team) returns (response.BaseResponse) {
+	rpc AddAsync(TeamData) returns (response.BaseResponse) {
 
 	}
 
-	rpc UpdateAsync(Team) returns (response.BaseResponse) {
+	rpc UpdateAsync(TeamData) returns (response.BaseResponse) {
 
 	}
 
-	rpc DeleteAsync(Team) returns (response.BaseResponse) {
+	rpc DeleteAsync(TeamData) returns (response.BaseResponse) {
 
 	}
 }
 
-message Team {
+message TeamData {
 	int64 id = 1;
 	string name = 2;
 	string description = 3;
@@ -43,10 +43,10 @@ message TeamRequest {
 
 message TeamsResponse{
 	response.BaseResponse response = 1;
-	repeated Team teams = 2;
+	repeated TeamData data = 2;
 }
 
 message TeamResponse{
 	response.BaseResponse response = 1;
-	Team teams = 2;
+	TeamData data = 2;
 }

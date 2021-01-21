@@ -8,61 +8,69 @@ using System.Threading.Tasks;
 
 namespace EMS.Core.API.DAL.Repositories
 {
-    public class TeamsRepository: BaseRepository, ITeamsRepository
-	{
-		public TeamsRepository(IApplicationDbContext context, IDateTimeUtil dateTimeUtil): base(context, dateTimeUtil) { }
+    public class TeamsRepository : BaseRepository, ITeamsRepository
+    {
+        public TeamsRepository(IApplicationDbContext context, IDateTimeUtil dateTimeUtil) : base(context, dateTimeUtil) { }
 
-		public async Task<int> AddAsync(Team team)
-		{
-            if(team is null)
+        public async Task<int> AddAsync(Team team)
+        {
+            if (team is null)
             {
                 throw new NullReferenceException("Team cannot be empty");
             }
             if (string.IsNullOrWhiteSpace(team.Name))
             {
-                throw new ArgumentNullException(nameof(team.Name), "Team Name cannot be empty");
+                throw new ArgumentException(nameof(team.Name), "Team Name cannot be empty");
+            }
+            if (_context.Teams.Any(e => e.Name == team.Name))
+            {
+                throw new ArgumentException("Team with the same name already exists");
             }
             _context.Teams.Add(team);
-			return await _context.SaveChangesAsync();
-		}
+            return await _context.SaveChangesAsync();
+        }
 
 
-		public async Task<int> UpdateAsync(Team team)
-		{
+        public async Task<int> UpdateAsync(Team team)
+        {
             if (team is null)
             {
                 throw new NullReferenceException("Team cannot be empty");
             }
             if (string.IsNullOrWhiteSpace(team.Name))
             {
-                throw new ArgumentNullException(nameof(team.Name), "Team Name cannot be empty");
+                throw new ArgumentException(nameof(team.Name), "Team Name cannot be empty");
+            }
+            if (_context.Teams.Any(e => e.Name == team.Name))
+            {
+                throw new ArgumentException("Team with the same name already exists");
             }
             _context.Teams.Update(team);
-			return await _context.SaveChangesAsync();
-		}
+            return await _context.SaveChangesAsync();
+        }
 
-		public async Task<int> DeleteAsync(Team team)
-		{
+        public async Task<int> DeleteAsync(Team team)
+        {
             if (team is null)
             {
                 throw new NullReferenceException("Team cannot be empty");
             }
-            if (!(_context.Positions.FirstOrDefault(p => p.TeamId == team.Id) is null) )
+            if (_context.Positions.Any(p => p.TeamId == team.Id))
             {
-                throw new DbUpdateException("Team cannot be deleted because of this team has positions");
+                throw new InvalidOperationException("Team cannot be deleted because of this team has positions");
             }
             _context.Teams.Remove(team);
-			return await  _context.SaveChangesAsync();
-		}
+            return await _context.SaveChangesAsync();
+        }
 
-		public Team Get(long teamId)
-		{
-			return _context.Teams.FirstOrDefault(t => t.Id == teamId);
-		}
+        public Team Get(long teamId)
+        {
+            return _context.Teams.FirstOrDefault(t => t.Id == teamId);
+        }
 
-		public IQueryable<Team> GetAll()
-		{
+        public IQueryable<Team> GetAll()
+        {
             return _context.Teams.Select(e => e);
-		}
+        }
     }
 }

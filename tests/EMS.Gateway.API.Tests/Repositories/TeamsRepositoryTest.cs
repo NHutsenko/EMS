@@ -107,6 +107,22 @@ namespace EMS.Core.API.Tests
         }
 
         [Test]
+        public void AddAsync_should_throw_argument_exception_because_team_with_the_same_name_already_exists()
+        {
+            // Arrange
+            Team toAdd = new Team
+            {
+                Name = "test1",
+                Description = "test",
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime()
+            };
+
+            // Assert
+            Assert.ThrowsAsync<ArgumentException>(() => _teamsRepository.AddAsync(toAdd), "Team succesfully throws an exception because team with the same name already exists");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
         public void AddAsync_should_throw_an_exception_because_team_name_is_empty()
         {
             // Arrange
@@ -118,7 +134,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => _teamsRepository.AddAsync(toAdd), "Team succesfully throws an exception because team name is empty");
+            Assert.ThrowsAsync<ArgumentException>(() => _teamsRepository.AddAsync(toAdd), "Team succesfully throws an exception because team name is empty");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -195,6 +211,23 @@ namespace EMS.Core.API.Tests
         }
 
         [Test]
+        public void UpdateAsync_should_throw_argument_exception_because_team_with_the_same_name_already_exists()
+        {
+            // Arrange
+            Team toAdd = new Team
+            {
+                Id = _test2.Id,
+                Name = "test1",
+                Description = "test",
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime()
+            };
+
+            // Assert
+            Assert.ThrowsAsync<ArgumentException>(() => _teamsRepository.UpdateAsync(toAdd), "Team succesfully throws an exception because team with the same name already exists");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
         public void UpdateAsync_should_throw_exception_from_db()
         {
             // Arrange
@@ -225,7 +258,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => _teamsRepository.UpdateAsync(team), "Succesfullty throwed an exception that team name cannot be null while updating");
+            Assert.ThrowsAsync<ArgumentException>(() => _teamsRepository.UpdateAsync(team), "Succesfullty throwed an exception that team name cannot be null while updating");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -287,7 +320,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<DbUpdateException>(() => _teamsRepository.DeleteAsync(team), "Succesfullty throwed an exception that team linked with positions");
+            Assert.ThrowsAsync<InvalidOperationException>(() => _teamsRepository.DeleteAsync(team), "Succesfullty throwed an exception that team linked with positions");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 

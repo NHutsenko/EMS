@@ -31,6 +31,7 @@ namespace EMS.Core.API.Tests
         // Services
         protected SalaryService _salaryService;
         protected PeopleService _peopleService;
+        protected TeamsService _teamsService;
 
         protected void InitializeMocks()
         {
