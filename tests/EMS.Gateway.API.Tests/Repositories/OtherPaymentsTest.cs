@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using EMS.Core.API.Models;
-using EMS.Core.API.Tests.Mocks;
+using EMS.Core.API.Tests.Mock;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;

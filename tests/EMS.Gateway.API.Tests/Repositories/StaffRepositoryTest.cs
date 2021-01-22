@@ -8,7 +8,7 @@ using NUnit.Framework;
 using Moq;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using EMS.Core.API.Tests.Mocks;
+using EMS.Core.API.Tests.Mock;
 
 namespace EMS.Core.API.Tests
 {

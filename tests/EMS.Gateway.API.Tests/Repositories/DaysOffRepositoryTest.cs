@@ -9,7 +9,7 @@ using EMS.Core.API.Enums;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;
-using EMS.Core.API.Tests.Mocks;
+using EMS.Core.API.Tests.Mock;
 
 namespace EMS.Core.API.Tests
 {

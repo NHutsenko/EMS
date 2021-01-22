@@ -3,7 +3,8 @@ using EMS.Common.Utils.DateTimeUtil;
 using EMS.Core.API.DAL;
 using EMS.Core.API.DAL.Repositories;
 using EMS.Core.API.Services;
-using EMS.Core.API.Tests.Mocks;
+using EMS.Core.API.Tests.Mock;
+using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace EMS.Core.API.Tests

@@ -4,7 +4,7 @@ using System.Linq;
 using EMS.Common.Protos;
 using EMS.Core.API.Models;
 using EMS.Core.API.Services;
-using EMS.Core.API.Tests.Mocks;
+using EMS.Core.API.Tests.Mock;
 using Google.Protobuf.WellKnownTypes;
 using NUnit.Framework;
 

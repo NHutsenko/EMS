@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EMS.Common.Models.BaseModel;
 using EMS.Common.Protos;
 using EMS.Core.API.DAL.Repositories.Interfaces;
 using EMS.Core.API.Models;
@@ -9,18 +9,21 @@ using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using LoggerExtensions;
+using Newtonsoft.Json;
+using EMS.Common.Utils.DateTimeUtil;
 
 namespace EMS.Core.API.Services
 {
     public class TeamsService : Teams.TeamsBase
     {
-        private readonly ILogger<TeamsService> _logger;
         private readonly ITeamsRepository _teamsRepository;
+        private readonly IDateTimeUtil _dateTimeUtil;
 
-        public TeamsService(ILogger<TeamsService> logger, ITeamsRepository teamsRepository)
+        public TeamsService(ITeamsRepository teamsRepository, IDateTimeUtil dateTimeUtil)
         {
-            _logger = logger;
             _teamsRepository = teamsRepository;
+            _dateTimeUtil = dateTimeUtil;
         }
 
         public override async Task<BaseResponse> AddAsync(TeamData request, ServerCallContext context)
@@ -39,11 +42,20 @@ namespace EMS.Core.API.Services
                 {
                     throw new Exception("Team has not been saved");
                 }
-                return new BaseResponse
+                BaseResponse response = new BaseResponse
                 {
                     Code = Code.Success,
                     ErrorMessage = string.Empty
                 };
+
+                RequestResponseObject rrObject = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = response
+                };
+
+                return response;
             }
             catch(NullReferenceException nrex)
             {
@@ -81,14 +93,88 @@ namespace EMS.Core.API.Services
 
         public override async Task<BaseResponse> DeleteAsync(TeamData request, ServerCallContext context)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (request is null)
+                    await _teamsRepository.DeleteAsync(null);
+
+                Team team = new Team
+                {
+                    Id = request.Id,
+                    CreatedOn = request.CreatedOn.ToDateTime().ToLocalTime(),
+                    Name = request.Name,
+                    Description = request.Description
+                };
+                int result = await _teamsRepository.DeleteAsync(team);
+                if(result == 0)
+                {
+                    throw new Exception("Team has not been deleted");
+                }
+                return new BaseResponse
+                {
+                    Code = Code.Success,
+                    ErrorMessage = string.Empty
+                };
+            }
+            catch(NullReferenceException nrex)
+            {
+                return new BaseResponse
+                {
+                    Code = Code.DataError,
+                    ErrorMessage = nrex.Message
+                };
+            }
+            catch(InvalidOperationException oex)
+            {
+                return new BaseResponse
+                {
+                    Code = Code.DataError,
+                    ErrorMessage = oex.Message
+                };
+            }
+            catch(DbUpdateException duex)
+            {
+                return new BaseResponse
+                {
+                    Code = Code.DbError,
+                    ErrorMessage = "An error occured while deleting team"
+                };
+            }
+            catch(Exception ex)
+            {
+                return new BaseResponse
+                {
+                    Code = Code.UnknownError,
+                    ErrorMessage = ex.Message
+                };
+            }
         }
 
         public override async Task<BaseResponse> UpdateAsync(TeamData request, ServerCallContext context)
         {
             try
             {
-                throw new NotImplementedException();
+                if (request is null)
+                    await _teamsRepository.UpdateAsync(null);
+
+                Team team = new Team
+                {
+                    Id = request.Id,
+                    CreatedOn = request.CreatedOn.ToDateTime().ToLocalTime(),
+                    Name = request.Name,
+                    Description = request.Description
+                };
+
+                int result = await _teamsRepository.UpdateAsync(team);
+                if (result == 0)
+                {
+                    throw new Exception("Team has not been updated");
+                }
+                return new BaseResponse
+                {
+                    Code = Code.Success,
+                    ErrorMessage = string.Empty
+                };
             }
             catch (NullReferenceException nrex)
             {

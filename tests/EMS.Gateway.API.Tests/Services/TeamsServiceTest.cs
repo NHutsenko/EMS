@@ -6,7 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using EMS.Common.Protos;
 using EMS.Core.API.Models;
-using EMS.Core.API.Tests.Mocks;
+using EMS.Core.API.Services;
+using EMS.Core.API.Tests.Mock;
 using Google.Protobuf.WellKnownTypes;
 using NUnit.Framework;
 
@@ -50,9 +51,10 @@ namespace EMS.Core.API.Tests
                 Id = 1,
                 TeamId = _team1.Id
             };
+            _dbContext.Positions.Add(_position);
 
             _teamsRepository = new DAL.Repositories.TeamsRepository(_dbContext, _dateTimeUtil);
-            _teamsService = new Services.TeamsService(null, _teamsRepository);
+            _teamsService = new TeamsService(_teamsRepository, _dateTimeUtil);
         }
 
         [Test]
@@ -241,6 +243,7 @@ namespace EMS.Core.API.Tests
         public void UpdateAsync_should_handle_db_update_exception()
         {
             // Arrange
+            DbContextMock.ShouldThrowException = true;
             TeamData team = new TeamData
             {
                 Id = _team1.Id,
@@ -266,6 +269,7 @@ namespace EMS.Core.API.Tests
         public void UpdateAsync_should_handle_exception()
         {
             // Arrange
+            DbContextMock.SaveChangesResult = 0;
             TeamData team = new TeamData
             {
                 Id = _team1.Id,
@@ -277,7 +281,7 @@ namespace EMS.Core.API.Tests
             BaseResponse expected = new BaseResponse
             {
                 Code = Code.UnknownError,
-                ErrorMessage = "Team has not been saved"
+                ErrorMessage = "Team has not been updated"
             };
 
             // Act
@@ -356,9 +360,10 @@ namespace EMS.Core.API.Tests
         public void DeleteAsync_should_handle_db_update_exception()
         {
             // Arrange
+            DbContextMock.ShouldThrowException = true;
             BaseResponse expected = new BaseResponse
             {
-                Code = Code.DataError,
+                Code = Code.DbError,
                 ErrorMessage = "An error occured while deleting team"
             };
             TeamData teamData = new TeamData
@@ -380,9 +385,10 @@ namespace EMS.Core.API.Tests
         public void DeleteAsync_should_handle_exception()
         {
             // Arrange
+            DbContextMock.SaveChangesResult = 0;
             BaseResponse expected = new BaseResponse
             {
-                Code = Code.DataError,
+                Code = Code.UnknownError,
                 ErrorMessage = "Team has not been deleted"
             };
             TeamData teamData = new TeamData
