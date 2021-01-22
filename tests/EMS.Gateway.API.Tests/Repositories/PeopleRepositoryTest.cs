@@ -14,7 +14,7 @@ using NUnit.Framework;
 namespace EMS.Core.API.Tests
 {
     [ExcludeFromCodeCoverage]
-    public class PeopleRepositoryTest : BaseUnitTest
+    public class PeopleRepositoryTest : BaseUnitTest<PeopleRepository>
     {
         private Person _person1;
         private Contact _contact1;

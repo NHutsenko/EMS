@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using EMS.Common.Protos;
 using EMS.Core.API.Models;
+using EMS.Core.API.Services;
 using EMS.Core.API.Tests.Mock;
 using Google.Protobuf.WellKnownTypes;
 using NUnit.Framework;
@@ -9,7 +10,7 @@ using NUnit.Framework;
 namespace EMS.Core.API.Tests
 {
     [ExcludeFromCodeCoverage]
-    public class PeopleServiceTest : BaseUnitTest
+    public class PeopleServiceTest : BaseUnitTest<PeopleService>
     {
         private Person _person1;
         private Person _person2;
@@ -72,7 +73,7 @@ namespace EMS.Core.API.Tests
 
 
             _peopleRepository = new DAL.Repositories.PeopleRepository(_dbContext, _dateTimeUtil);
-            _peopleService = new API.Services.PeopleService(_peopleRepository);
+            _peopleService = new PeopleService(_peopleRepository);
         }
 
         [Test]

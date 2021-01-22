@@ -26,6 +26,7 @@ namespace EMS.Core.API.DAL.Repositories
             {
                 throw new ArgumentException("Team with the same name already exists");
             }
+            team.CreatedOn = _dateTimeUtil.GetCurrentDateTime();
             _context.Teams.Add(team);
             return await _context.SaveChangesAsync();
         }

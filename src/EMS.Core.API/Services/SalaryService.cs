@@ -1,33 +1,38 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using EMS.Common.Logger;
 using EMS.Common.Protos;
 using EMS.Core.API.DAL.Repositories.Interfaces;
 using EMS.Core.API.Models;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+using EMS.Common.Logger;
+using EMS.Common.Models.BaseModel;
+using EMS.Common.Utils.DateTimeUtil;
 
 namespace EMS.Core.API.Services
 {
     public class SalaryService : Salary.SalaryBase
     {
-        private readonly ILogger<SalaryService> _logger;
+        private readonly IEMSLogger<SalaryService> _logger;
         private readonly IStaffRepository _staffRepository;
         private readonly IDayOffRepository _dayOffRepository;
         private readonly IHolidaysRepository _holidaysRepository;
         private readonly IPositionsRepository _positionsRepository;
         private readonly IMotivationModificatorRepository _motivationModificatorRepository;
         private readonly IOtherPaymentsRepository _otherPaymentsRepository;
+        private readonly IDateTimeUtil _dateTimeUtil;
 
-        public SalaryService(ILogger<SalaryService> logger,
+        public SalaryService(IEMSLogger<SalaryService> logger,
             IStaffRepository staffRepository,
             IDayOffRepository dayOffRepository,
             IHolidaysRepository holidaysRepository,
             IPositionsRepository positionsRepository,
             IMotivationModificatorRepository motivationModificatorRepository,
-            IOtherPaymentsRepository otherPaymentsRepository)
+            IOtherPaymentsRepository otherPaymentsRepository,
+            IDateTimeUtil dateTimeUtil)
         {
             _logger = logger;
             _staffRepository = staffRepository;
@@ -36,6 +41,7 @@ namespace EMS.Core.API.Services
             _positionsRepository = positionsRepository;
             _motivationModificatorRepository = motivationModificatorRepository;
             _otherPaymentsRepository = otherPaymentsRepository;
+            _dateTimeUtil = dateTimeUtil;
         }
 
         public override Task<ISalaryResponse> GetSalary(SalaryRequest request, ServerCallContext context)
@@ -58,14 +64,39 @@ namespace EMS.Core.API.Services
             }
             catch (NullReferenceException nrex)
             {
+                RequestResponseObject error = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = nrex
+                };
+
+                _logger.AddErrorLog(error);
                 response.Response.ErrorMessage = $"Some data has not found (type: {nrex.GetType().Name})";
                 response.Response.Code = Code.DataError;
             }
             catch (Exception ex)
             {
+                RequestResponseObject error = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = ex
+                };
+
+                _logger.AddErrorLog(error);
                 response.Response.ErrorMessage = ex.Message;
                 response.Response.Code = Code.UnknownError;
             }
+
+            RequestResponseObject requestResponseObject = new RequestResponseObject
+            {
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = request,
+                Response = response
+            };
+
+            _logger.AddLog(requestResponseObject);
 
             return Task.FromResult(response);
         }

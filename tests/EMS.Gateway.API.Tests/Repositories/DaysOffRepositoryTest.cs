@@ -14,7 +14,7 @@ using EMS.Core.API.Tests.Mock;
 namespace EMS.Core.API.Tests
 {
     [ExcludeFromCodeCoverage]
-    public class DaysOffRepositoryTest : BaseUnitTest
+    public class DaysOffRepositoryTest : BaseUnitTest<DayOffRepository>
     {
         private Person _person;
         private DayOff _dayOff1;

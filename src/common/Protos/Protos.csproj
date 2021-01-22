@@ -3,12 +3,7 @@
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>EMS.Common.Protos</RootNamespace>
+    <AssemblyName>EMS.Common.Protos</AssemblyName>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Protobuf Include="people.proto" />
-    <Protobuf Include="response.proto" />
-    <Protobuf Include="salary.proto" />
-  </ItemGroup>
-
 </Project>

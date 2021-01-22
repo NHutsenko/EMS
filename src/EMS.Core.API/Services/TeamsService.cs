@@ -8,10 +8,8 @@ using EMS.Core.API.Models;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using LoggerExtensions;
-using Newtonsoft.Json;
 using EMS.Common.Utils.DateTimeUtil;
+using EMS.Common.Logger;
 
 namespace EMS.Core.API.Services
 {
@@ -19,11 +17,13 @@ namespace EMS.Core.API.Services
     {
         private readonly ITeamsRepository _teamsRepository;
         private readonly IDateTimeUtil _dateTimeUtil;
+        private readonly IEMSLogger<TeamsService> _logger;
 
-        public TeamsService(ITeamsRepository teamsRepository, IDateTimeUtil dateTimeUtil)
+        public TeamsService(ITeamsRepository teamsRepository, IDateTimeUtil dateTimeUtil, IEMSLogger<TeamsService> logger)
         {
             _teamsRepository = teamsRepository;
             _dateTimeUtil = dateTimeUtil;
+            _logger = logger;
         }
 
         public override async Task<BaseResponse> AddAsync(TeamData request, ServerCallContext context)
@@ -38,7 +38,7 @@ namespace EMS.Core.API.Services
                     Description = request.Description,
                 };
                 int result = await _teamsRepository.AddAsync(team);
-                if(result == 0)
+                if (result == 0)
                 {
                     throw new Exception("Team has not been saved");
                 }
@@ -55,34 +55,68 @@ namespace EMS.Core.API.Services
                     Response = response
                 };
 
+                _logger.AddLog(rrObject);
+
                 return response;
             }
-            catch(NullReferenceException nrex)
+            catch (NullReferenceException nrex)
             {
+                RequestResponseObject rrObject = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = nrex
+                };
+
+                _logger.AddErrorLog(rrObject);
                 return new BaseResponse
                 {
                     Code = Code.DataError,
                     ErrorMessage = nrex.Message
                 };
             }
-            catch(ArgumentException aex)
+            catch (ArgumentException aex)
             {
+                RequestResponseObject rrObject = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = aex
+                };
+
+                _logger.AddErrorLog(rrObject);
                 return new BaseResponse
                 {
                     Code = Code.DataError,
                     ErrorMessage = aex.Message
                 };
             }
-            catch(DbUpdateException duex)
+            catch (DbUpdateException duex)
             {
+                RequestResponseObject rrObject = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = duex
+                };
+
+                _logger.AddErrorLog(rrObject);
                 return new BaseResponse
                 {
                     Code = Code.DbError,
                     ErrorMessage = "An error occured while saving team"
                 };
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
+                RequestResponseObject rrObject = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = ex
+                };
+
+                _logger.AddErrorLog(rrObject);
                 return new BaseResponse
                 {
                     Code = Code.UnknownError,
@@ -106,42 +140,82 @@ namespace EMS.Core.API.Services
                     Description = request.Description
                 };
                 int result = await _teamsRepository.DeleteAsync(team);
-                if(result == 0)
+                if (result == 0)
                 {
                     throw new Exception("Team has not been deleted");
                 }
-                return new BaseResponse
+                BaseResponse response = new BaseResponse
                 {
                     Code = Code.Success,
                     ErrorMessage = string.Empty
                 };
+                RequestResponseObject rrObject = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = response
+                };
+
+                _logger.AddLog(rrObject);
+                return response;
             }
-            catch(NullReferenceException nrex)
+            catch (NullReferenceException nrex)
             {
+                RequestResponseObject rrObject = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = nrex
+                };
+
+                _logger.AddErrorLog(rrObject);
                 return new BaseResponse
                 {
                     Code = Code.DataError,
                     ErrorMessage = nrex.Message
                 };
             }
-            catch(InvalidOperationException oex)
+            catch (InvalidOperationException oex)
             {
+                RequestResponseObject rrObject = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = oex
+                };
+
+                _logger.AddErrorLog(rrObject);
                 return new BaseResponse
                 {
                     Code = Code.DataError,
                     ErrorMessage = oex.Message
                 };
             }
-            catch(DbUpdateException duex)
+            catch (DbUpdateException duex)
             {
+                RequestResponseObject rrObject = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = duex
+                };
+
+                _logger.AddErrorLog(rrObject);
                 return new BaseResponse
                 {
                     Code = Code.DbError,
                     ErrorMessage = "An error occured while deleting team"
                 };
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
+                RequestResponseObject rrObject = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = ex
+                };
+                _logger.AddErrorLog(rrObject);
                 return new BaseResponse
                 {
                     Code = Code.UnknownError,
@@ -170,14 +244,29 @@ namespace EMS.Core.API.Services
                 {
                     throw new Exception("Team has not been updated");
                 }
-                return new BaseResponse
+                BaseResponse response = new BaseResponse
                 {
                     Code = Code.Success,
                     ErrorMessage = string.Empty
                 };
+                RequestResponseObject rrObject = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = response
+                };
+                _logger.AddLog(rrObject);
+                return response;
             }
             catch (NullReferenceException nrex)
             {
+                RequestResponseObject rrObject = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = nrex
+                };
+                _logger.AddErrorLog(rrObject);
                 return new BaseResponse
                 {
                     Code = Code.DataError,
@@ -186,6 +275,13 @@ namespace EMS.Core.API.Services
             }
             catch (ArgumentException aex)
             {
+                RequestResponseObject rrObject = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = aex
+                };
+                _logger.AddErrorLog(rrObject);
                 return new BaseResponse
                 {
                     Code = Code.DataError,
@@ -194,6 +290,13 @@ namespace EMS.Core.API.Services
             }
             catch (DbUpdateException duex)
             {
+                RequestResponseObject rrObject = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = duex
+                };
+                _logger.AddErrorLog(rrObject);
                 return new BaseResponse
                 {
                     Code = Code.DbError,
@@ -202,6 +305,13 @@ namespace EMS.Core.API.Services
             }
             catch (Exception ex)
             {
+                RequestResponseObject rrObject = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = ex
+                };
+                _logger.AddErrorLog(rrObject);
                 return new BaseResponse
                 {
                     Code = Code.UnknownError,
@@ -232,6 +342,13 @@ namespace EMS.Core.API.Services
                 };
                 response.Data.Add(data);
             }
+            RequestResponseObject rro = new RequestResponseObject
+            {
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = request,
+                Response = response
+            };
+            _logger.AddLog(rro);
             return Task.FromResult(response);
         }
 
@@ -247,7 +364,7 @@ namespace EMS.Core.API.Services
                 }
             };
 
-            if(team is null)
+            if (team is null)
             {
                 response.Response.Code = Code.DataError;
                 response.Response.ErrorMessage = "Requested team not found";
@@ -263,6 +380,13 @@ namespace EMS.Core.API.Services
                 };
             }
 
+            RequestResponseObject rro = new RequestResponseObject
+            {
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = request,
+                Response = response
+            };
+            _logger.AddLog(rro);
             return Task.FromResult(response);
         }
     }

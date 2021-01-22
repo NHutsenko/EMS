@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using EMS.Common.Models.BaseModel;
 using EMS.Common.Protos;
 using EMS.Core.API.Models;
 using EMS.Core.API.Services;
@@ -11,7 +12,7 @@ using NUnit.Framework;
 namespace EMS.Core.API.Tests
 {
     [ExcludeFromCodeCoverage]
-    public class SalaryServiceTest : BaseUnitTest
+    public class SalaryServiceTest : BaseUnitTest<SalaryService>
     {
         public Staff _staff1;
         public Position _position1;
@@ -48,13 +49,16 @@ namespace EMS.Core.API.Tests
             _motivationModificatorRepository = new DAL.Repositories.MotivationModificatorRepository(_dbContext, _dateTimeUtil);
             _otherPaymentsRepository = new DAL.Repositories.OtherPaymentsRepository(_dbContext, _dateTimeUtil);
 
-            _salaryService = new SalaryService(null, 
+            InitializeLoggerMock(new SalaryService(null, null, null, null, null, null, null, null));
+
+            _salaryService = new SalaryService(_logger, 
                 _staffRepository, 
                 _dayOffRepository, 
                 _holidaysRepository, 
                 _positionsRepository, 
                 _motivationModificatorRepository,
-                _otherPaymentsRepository);
+                _otherPaymentsRepository,
+                _dateTimeUtil);
         }
 
         [Test]
@@ -69,19 +73,35 @@ namespace EMS.Core.API.Tests
                 StartedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime())
             };
 
-            SalaryRequest request = new SalaryRequest();
-            request.StartDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc));
-            request.EndDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1).AddDays(-1));
+            ISalaryResponse salaryResponse = new ISalaryResponse
+            {
+                Response = new BaseResponse
+                {
+                    Code = Code.Success,
+                    ErrorMessage = string.Empty
+                }
+            };
+            salaryResponse.SalaryResponse.Add(expected);
+
+            SalaryRequest request = new SalaryRequest
+            {
+                StartDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc)),
+                EndDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1).AddDays(-1))
+            };
+
+            RequestResponseObject requestResponseObject = new RequestResponseObject
+            {
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = request,
+                Response = salaryResponse
+            };
 
             // Act
             ISalaryResponse response = _salaryService.GetSalary(request, null).Result;
-            SalaryResponse actual = response.SalaryResponse.First();
 
             // Assert
-            Assert.AreEqual(expected.Salary, actual.Salary, "Salary calculated as expected");
-            Assert.AreEqual(expected.PersonId, actual.PersonId, "Employee id returned as expected");
-            Assert.AreEqual(expected.CurrentPosition, actual.CurrentPosition, "Employee actual position returned as expected");
-            Assert.AreEqual(expected.StartedOn.ToDateTime(), actual.StartedOn.ToDateTime(), "Date of start work returned as expected");
+            Assert.AreEqual(salaryResponse, response, "Calculated as expected");
+            _loggerMock.Verify(m => m.AddLog(requestResponseObject), "Data logged");
         }
 
         [Test]
@@ -102,21 +122,28 @@ namespace EMS.Core.API.Tests
                 Description = "Test"
             };
             _dbContext.Holidays.Add(holiday);
+            ISalaryResponse salaryResponse = new ISalaryResponse
+            {
+                Response = new BaseResponse
+                {
+                    Code = Code.Success,
+                    ErrorMessage = string.Empty
+                }
+            };
+            salaryResponse.SalaryResponse.Add(expected);
 
-            SalaryRequest request = new SalaryRequest();
-            request.StartDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc));
-            request.EndDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1).AddDays(-1));
-            request.ManagerId = 1;
+            SalaryRequest request = new SalaryRequest
+            {
+                StartDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc)),
+                EndDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1).AddDays(-1)),
+                ManagerId = 1
+            };
 
             // Act
             ISalaryResponse response = _salaryService.GetSalary(request, null).Result;
-            SalaryResponse actual = response.SalaryResponse.First();
 
             // Assert
-            Assert.AreEqual(expected.Salary, actual.Salary, "Salary calculated as expected");
-            Assert.AreEqual(expected.PersonId, actual.PersonId, "Employee id returned as expected");
-            Assert.AreEqual(expected.CurrentPosition, actual.CurrentPosition, "Employee actual position returned as expected");
-            Assert.AreEqual(expected.StartedOn.ToDateTime(), actual.StartedOn.ToDateTime(), "Date of start work returned as expected");
+            Assert.AreEqual(salaryResponse, response, "Calculated as expected");
         }
 
         [Test]
@@ -139,19 +166,27 @@ namespace EMS.Core.API.Tests
             };
             _dbContext.Holidays.Add(holiday);
 
-            SalaryRequest request = new SalaryRequest();
-            request.StartDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc));
-            request.EndDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1).AddDays(-1));
+            ISalaryResponse salaryResponse = new ISalaryResponse
+            {
+                Response = new BaseResponse
+                {
+                    Code = Code.Success,
+                    ErrorMessage = string.Empty
+                }
+            };
+            salaryResponse.SalaryResponse.Add(expected);
+
+            SalaryRequest request = new SalaryRequest
+            {
+                StartDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc)),
+                EndDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1).AddDays(-1))
+            };
 
             // Act
             ISalaryResponse response = _salaryService.GetSalary(request, null).Result;
-            SalaryResponse actual = response.SalaryResponse.First();
 
             // Assert
-            Assert.AreEqual(expected.Salary, actual.Salary, "Salary calculated as expected");
-            Assert.AreEqual(expected.PersonId, actual.PersonId, "Employee id returned as expected");
-            Assert.AreEqual(expected.CurrentPosition, actual.CurrentPosition, "Employee actual position returned as expected");
-            Assert.AreEqual(expected.StartedOn.ToDateTime(), actual.StartedOn.ToDateTime(), "Date of start work returned as expected");
+            Assert.AreEqual(salaryResponse, response, "Calculated as expected");
         }
 
         [Test]
@@ -163,7 +198,7 @@ namespace EMS.Core.API.Tests
                 CurrentPosition = _position1.Id,
                 PersonId = _staff1.PersonId.GetValueOrDefault(),
                 Salary = 1680,
-                StartedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime())
+                StartedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
             };
             DayOff dayOff = new DayOff
             {
@@ -174,22 +209,34 @@ namespace EMS.Core.API.Tests
                 Id = 1,
                 CreatedOn = new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc)
             };
+            expected.DayOffs.Add(new DayOffData
+            {
+                DayOffType = (int)dayOff.DayOffType,
+                Hours = dayOff.Hours
+            });
 
             _dbContext.DaysOff.Add(dayOff);
 
-            SalaryRequest request = new SalaryRequest();
-            request.StartDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc));
-            request.EndDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1).AddDays(-1));
+            SalaryRequest request = new SalaryRequest
+            {
+                StartDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc)),
+                EndDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1).AddDays(-1))
+            };
+            ISalaryResponse salaryResponse = new ISalaryResponse
+            {
+                Response = new BaseResponse
+                {
+                    Code = Code.Success,
+                    ErrorMessage = string.Empty
+                }
+            };
+            salaryResponse.SalaryResponse.Add(expected);
 
             // Act
             ISalaryResponse response = _salaryService.GetSalary(request, null).Result;
-            SalaryResponse actual = response.SalaryResponse.First();
 
             // Assert
-            Assert.AreEqual(expected.Salary, actual.Salary, "Salary calculated as expected");
-            Assert.AreEqual(expected.PersonId, actual.PersonId, "Employee id returned as expected");
-            Assert.AreEqual(expected.CurrentPosition, actual.CurrentPosition, "Employee actual position returned as expected");
-            Assert.AreEqual(expected.StartedOn.ToDateTime(), actual.StartedOn.ToDateTime(), "Date of start work returned as expected");
+            Assert.AreEqual(salaryResponse, response, "Calculated as expected");
         }
 
         [Test]
@@ -212,26 +259,39 @@ namespace EMS.Core.API.Tests
                 Id = 1,
                 CreatedOn = new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc)
             };
+            expected.DayOffs.Add(new DayOffData
+            {
+                DayOffType = (int)dayOff.DayOffType,
+                Hours = dayOff.Hours
+            });
 
             _dbContext.DaysOff.Add(dayOff);
 
-            SalaryRequest request = new SalaryRequest();
-            request.StartDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc));
-            request.EndDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1).AddDays(-1));
+            SalaryRequest request = new SalaryRequest
+            {
+                StartDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc)),
+                EndDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1).AddDays(-1))
+            };
+
+            ISalaryResponse salaryResponse = new ISalaryResponse
+            {
+                Response = new BaseResponse
+                {
+                    Code = Code.Success,
+                    ErrorMessage = string.Empty
+                }
+            };
+            salaryResponse.SalaryResponse.Add(expected);
 
             // Act
             ISalaryResponse response = _salaryService.GetSalary(request, null).Result;
-            SalaryResponse actual = response.SalaryResponse.First();
 
             // Assert
-            Assert.AreEqual(expected.Salary, actual.Salary, "Salary calculated as expected");
-            Assert.AreEqual(expected.PersonId, actual.PersonId, "Employee id returned as expected");
-            Assert.AreEqual(expected.CurrentPosition, actual.CurrentPosition, "Employee actual position returned as expected");
-            Assert.AreEqual(expected.StartedOn.ToDateTime(), actual.StartedOn.ToDateTime(), "Date of start work returned as expected");
+            Assert.AreEqual(salaryResponse, response, "Calculated as expected");
         }
 
         [Test]
-        public void GetSalary_should_return_month_salary_with_partly_unpayed_dayoff()
+        public void GetSalary_should_return_month_salary_with_partly_unpaid_dayoff()
         {
             // Arrange
             SalaryResponse expected = new SalaryResponse
@@ -250,22 +310,35 @@ namespace EMS.Core.API.Tests
                 Id = 1,
                 CreatedOn = new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc)
             };
+            expected.DayOffs.Add(new DayOffData
+            {
+                DayOffType = (int)dayOff.DayOffType,
+                Hours = dayOff.Hours
+            });
 
             _dbContext.DaysOff.Add(dayOff);
 
-            SalaryRequest request = new SalaryRequest();
-            request.StartDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc));
-            request.EndDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1).AddDays(-1));
+            SalaryRequest request = new SalaryRequest
+            {
+                StartDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc)),
+                EndDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1).AddDays(-1))
+            };
+
+            ISalaryResponse salaryResponse = new ISalaryResponse
+            {
+                Response = new BaseResponse
+                {
+                    Code = Code.Success,
+                    ErrorMessage = string.Empty
+                }
+            };
+            salaryResponse.SalaryResponse.Add(expected);
 
             // Act
             ISalaryResponse response = _salaryService.GetSalary(request, null).Result;
-            SalaryResponse actual = response.SalaryResponse.First();
 
             // Assert
-            Assert.AreEqual(expected.Salary, actual.Salary, "Salary calculated as expected");
-            Assert.AreEqual(expected.PersonId, actual.PersonId, "Employee id returned as expected");
-            Assert.AreEqual(expected.CurrentPosition, actual.CurrentPosition, "Employee actual position returned as expected");
-            Assert.AreEqual(expected.StartedOn.ToDateTime(), actual.StartedOn.ToDateTime(), "Date of start work returned as expected");
+            Assert.AreEqual(salaryResponse, response, "Calculated as expected");
         }
 
         [Test]
@@ -288,22 +361,34 @@ namespace EMS.Core.API.Tests
                 Id = 1,
                 CreatedOn = new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc)
             };
+            expected.DayOffs.Add(new DayOffData
+            {
+                DayOffType = (int)dayOff.DayOffType,
+                Hours = dayOff.Hours
+            });
 
             _dbContext.DaysOff.Add(dayOff);
 
-            SalaryRequest request = new SalaryRequest();
-            request.StartDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc));
-            request.EndDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1).AddDays(-1));
+            SalaryRequest request = new SalaryRequest
+            {
+                StartDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc)),
+                EndDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1).AddDays(-1))
+            };
+            ISalaryResponse salaryResponse = new ISalaryResponse
+            {
+                Response = new BaseResponse
+                {
+                    Code = Code.Success,
+                    ErrorMessage = string.Empty
+                }
+            };
+            salaryResponse.SalaryResponse.Add(expected);
 
             // Act
             ISalaryResponse response = _salaryService.GetSalary(request, null).Result;
-            SalaryResponse actual = response.SalaryResponse.First();
 
             // Assert
-            Assert.AreEqual(expected.Salary, actual.Salary, "Salary calculated as expected");
-            Assert.AreEqual(expected.PersonId, actual.PersonId, "Employee id returned as expected");
-            Assert.AreEqual(expected.CurrentPosition, actual.CurrentPosition, "Employee actual position returned as expected");
-            Assert.AreEqual(expected.StartedOn.ToDateTime(), actual.StartedOn.ToDateTime(), "Date of start work returned as expected");
+            Assert.AreEqual(salaryResponse, response, "Calculated as expected");
         }
 
         [Test]
@@ -327,19 +412,27 @@ namespace EMS.Core.API.Tests
             _staff1.MotivationModificatorId = modificator.Id;
 
 
-            SalaryRequest request = new SalaryRequest();
-            request.StartDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc));
-            request.EndDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1).AddDays(-1));
+            SalaryRequest request = new SalaryRequest
+            {
+                StartDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc)),
+                EndDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1).AddDays(-1))
+            };
+
+            ISalaryResponse salaryResponse = new ISalaryResponse
+            {
+                Response = new BaseResponse
+                {
+                    Code = Code.Success,
+                    ErrorMessage = string.Empty
+                }
+            };
+            salaryResponse.SalaryResponse.Add(expected);
 
             // Act
             ISalaryResponse response = _salaryService.GetSalary(request, null).Result;
-            SalaryResponse actual = response.SalaryResponse.First();
 
             // Assert
-            Assert.AreEqual(expected.Salary, actual.Salary, "Salary calculated as expected");
-            Assert.AreEqual(expected.PersonId, actual.PersonId, "Employee id returned as expected");
-            Assert.AreEqual(expected.CurrentPosition, actual.CurrentPosition, "Employee actual position returned as expected");
-            Assert.AreEqual(expected.StartedOn.ToDateTime(), actual.StartedOn.ToDateTime(), "Date of start work returned as expected");
+            Assert.AreEqual(salaryResponse, response, "Calculated as expected");
         }
 
         [Test]
@@ -362,20 +455,28 @@ namespace EMS.Core.API.Tests
             };
             _dbContext.OtherPayments.Add(otherPayment);
 
+            SalaryRequest request = new SalaryRequest
+            {
+                StartDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc)),
+                EndDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1).AddDays(-1))
+            };
 
-            SalaryRequest request = new SalaryRequest();
-            request.StartDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc));
-            request.EndDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1).AddDays(-1));
+            ISalaryResponse salaryResponse = new ISalaryResponse
+            {
+                Response = new BaseResponse
+                {
+                    Code = Code.Success,
+                    ErrorMessage = string.Empty
+                }
+            };
+            salaryResponse.SalaryResponse.Add(expected);
 
             // Act
             ISalaryResponse response = _salaryService.GetSalary(request, null).Result;
             SalaryResponse actual = response.SalaryResponse.First();
 
             // Assert
-            Assert.AreEqual(expected.Salary, actual.Salary, "Salary calculated as expected");
-            Assert.AreEqual(expected.PersonId, actual.PersonId, "Employee id returned as expected");
-            Assert.AreEqual(expected.CurrentPosition, actual.CurrentPosition, "Employee actual position returned as expected");
-            Assert.AreEqual(expected.StartedOn.ToDateTime(), actual.StartedOn.ToDateTime(), "Date of start work returned as expected");
+            Assert.AreEqual(salaryResponse, response, "Calculated as expected");
         }
 
         [Test]
@@ -389,6 +490,12 @@ namespace EMS.Core.API.Tests
                 EndDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1).AddDays(-1))
             };
 
+            RequestResponseObject requestResponseObject = new RequestResponseObject
+            {
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = request,
+                Response = new Exception("Object reference not set to an instance of an object.")
+            };
 
             // Act
             ISalaryResponse actual = _salaryService.GetSalary(request, null).Result;
@@ -396,6 +503,7 @@ namespace EMS.Core.API.Tests
             // Assert
             Assert.AreEqual(Code.DataError, actual.Response.Code, "Code returned as expected");
             Assert.AreEqual("Some data has not found (type: NullReferenceException)", actual.Response.ErrorMessage, "Error message as expected");
+            _loggerMock.Verify(m => m.AddErrorLog(requestResponseObject), "Response logged");
         }
 
         [Test]
@@ -406,14 +514,20 @@ namespace EMS.Core.API.Tests
             SalaryRequest request = new SalaryRequest();
             request.StartDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc));
             request.EndDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1).AddDays(-1));
-
-
+            RequestResponseObject requestResponseObject = new RequestResponseObject
+            {
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = request,
+                Response = new Exception("Value cannot be null. (Parameter 'source')")
+            };
+            
             // Act
             ISalaryResponse actual = _salaryService.GetSalary(request, null).Result;
 
             // Assert
             Assert.AreEqual(Code.UnknownError, actual.Response.Code, "Code returned as expected");
             Assert.AreEqual("Value cannot be null. (Parameter 'source')", actual.Response.ErrorMessage, "Error message as expected");
+            _loggerMock.Verify(m => m.AddErrorLog(requestResponseObject), "Response logged");
         }
     }
 }

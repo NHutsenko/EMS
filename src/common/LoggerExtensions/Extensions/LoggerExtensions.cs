@@ -2,9 +2,9 @@
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace LoggerExtensions
+namespace EMS.Common.Logger.Extensions
 {
-    public static class LoggerExtensions
+    internal static class LoggerExtensions
 	{
         public static void AddLog<T>(this ILogger<T> logger, RequestResponseObject requestResponseObject)
         {

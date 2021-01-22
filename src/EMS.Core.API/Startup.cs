@@ -1,4 +1,5 @@
-﻿using EMS.Common.Utils.DateTimeUtil;
+﻿using EMS.Common.Logger;
+using EMS.Common.Utils.DateTimeUtil;
 using EMS.Core.API.DAL;
 using EMS.Core.API.DAL.Repositories;
 using EMS.Core.API.DAL.Repositories.Interfaces;
@@ -38,8 +39,9 @@ namespace EMS.Core.API
 			}
 			services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
-            services.AddTransient<IApplicationDbContext, ApplicationDbContext>();
+            services.AddSingleton(typeof(IEMSLogger<>), typeof(EMSLogger<>));
             services.AddSingleton<IDateTimeUtil, DateTimeUtil>();
+            services.AddTransient<IApplicationDbContext, ApplicationDbContext>();
             services.AddTransient<IMotivationModificatorRepository, MotivationModificatorRepository>();
             services.AddTransient<IDayOffRepository, DayOffRepository>();
             services.AddTransient<IOtherPaymentsRepository, OtherPaymentsRepository>();
@@ -68,8 +70,10 @@ namespace EMS.Core.API
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapGrpcService<SalaryService>();
+                endpoints.MapGrpcService<TeamsService>();
+                endpoints.MapGrpcService<PeopleService>();
 
-				endpoints.MapGet("/", async context =>
+                endpoints.MapGet("/", async context =>
 				{
 					await context.Response.WriteAsync("Core API is alive");
 				});

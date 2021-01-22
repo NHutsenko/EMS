@@ -13,7 +13,7 @@ using NUnit.Framework;
 namespace EMS.Core.API.Tests
 {
     [ExcludeFromCodeCoverage]
-    public class TeamsRepositoryTest : BaseUnitTest
+    public class TeamsRepositoryTest : BaseUnitTest<TeamsRepository>
     {
         public Team _test1;
         public Team _test2;
@@ -93,8 +93,7 @@ namespace EMS.Core.API.Tests
             Team toAdd = new Team
             {
                 Name = "Test",
-                Description = "test",
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime()
+                Description = "test"
             };
 
             // Act

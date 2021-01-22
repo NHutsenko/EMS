@@ -20,7 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\common\BaseModel\CommonModels.csproj" />
     <ProjectReference Include="..\common\DateTimeUtil\DateTimeUtil.csproj" />
-    <ProjectReference Include="..\common\LoggerExtensions\LoggerExtensions.csproj" />
+    <ProjectReference Include="..\common\LoggerExtensions\Logger.csproj" />
   </ItemGroup>
 
   <ItemGroup>

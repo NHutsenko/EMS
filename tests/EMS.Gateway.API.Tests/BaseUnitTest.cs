@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using EMS.Common.Logger;
 using EMS.Common.Utils.DateTimeUtil;
 using EMS.Core.API.DAL;
 using EMS.Core.API.DAL.Repositories;
@@ -10,7 +11,7 @@ using Moq;
 namespace EMS.Core.API.Tests
 {
     [ExcludeFromCodeCoverage]
-    public class BaseUnitTest
+    public class BaseUnitTest<T>
     {
         // Context
         protected Mock<IApplicationDbContext> _dbContextMock;
@@ -34,6 +35,10 @@ namespace EMS.Core.API.Tests
         protected PeopleService _peopleService;
         protected TeamsService _teamsService;
 
+        // Logger
+        protected Mock<IEMSLogger<T>> _loggerMock;
+        protected IEMSLogger<T> _logger;
+
         protected void InitializeMocks()
         {
             // DB context
@@ -42,6 +47,12 @@ namespace EMS.Core.API.Tests
 
             // Utils
             _dateTimeUtil = new DateTimeUtilMock();
+        }
+
+        protected void InitializeLoggerMock(T loggerClass)
+        {
+            _loggerMock = LoggerMock.SetupMock(loggerClass);
+            _logger = _loggerMock.Object;
         }
     }
 }

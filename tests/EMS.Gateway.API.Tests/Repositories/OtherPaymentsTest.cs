@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
+using EMS.Core.API.DAL.Repositories;
 using EMS.Core.API.Models;
 using EMS.Core.API.Tests.Mock;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,7 @@ using NUnit.Framework;
 namespace EMS.Core.API.Tests
 {
     [ExcludeFromCodeCoverage]
-    public class OtherPaymentsTest: BaseUnitTest
+    public class OtherPaymentsTest: BaseUnitTest<OtherPaymentsRepository>
     {
         private Person _person;
         private OtherPayment _otherPayment1;

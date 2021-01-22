@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using EMS.Core.API.DAL.Repositories;
 using EMS.Core.API.Models;
 using EMS.Core.API.Tests.Mock;
@@ -14,7 +12,7 @@ using NUnit.Framework;
 namespace EMS.Core.API.Tests
 {
     [ExcludeFromCodeCoverage]
-    public class MotivationModificatorRepositoryTests : BaseUnitTest
+    public class MotivationModificatorRepositoryTests : BaseUnitTest<MotivationModificatorRepository>
     {
         private MotivationModificator _motivationModificator1;
         private MotivationModificator _motivationModificator2;

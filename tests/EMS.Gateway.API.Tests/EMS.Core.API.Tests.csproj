@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\common\LoggerExtensions\LoggerExtensions.csproj" />
+    <ProjectReference Include="..\..\src\common\LoggerExtensions\Logger.csproj" />
     <ProjectReference Include="..\..\src\EMS.Core.API\EMS.Core.API.csproj" />
   </ItemGroup>
 

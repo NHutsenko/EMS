@@ -72,7 +72,8 @@ namespace EMS.Core.API.DAL
             modelBuilder.Entity<MotivationModificator>()
                 .ToTable("MotivationModificators", "core")
                 .HasOne(e => e.Staff)
-                .WithOne(e => e.MotivationModificator);
+                .WithOne(e => e.MotivationModificator)
+                .HasForeignKey<Staff>(e => e.MotivationModificatorId);
         }
 	}
 }
