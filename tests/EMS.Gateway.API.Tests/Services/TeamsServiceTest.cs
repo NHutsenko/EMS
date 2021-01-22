@@ -23,6 +23,7 @@ namespace EMS.Core.API.Tests
         public void Setup()
         {
             InitializeMocks();
+            InitializeLoggerMock(new TeamsService(null, null, null));
             DbContextMock.ShouldThrowException = false;
             DbContextMock.SaveChangesResult = 1;
 
@@ -53,7 +54,6 @@ namespace EMS.Core.API.Tests
             _dbContext.Positions.Add(_position);
 
             _teamsRepository = new DAL.Repositories.TeamsRepository(_dbContext, _dateTimeUtil);
-            InitializeLoggerMock(new TeamsService(null, null, null));
             _teamsService = new TeamsService(_teamsRepository, _dateTimeUtil, _logger);;
         }
 

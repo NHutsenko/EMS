@@ -8,16 +8,23 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using EMS.Common.Protos;
 using EMS.Core.API.Enums;
+using EMS.Common.Logger;
+using EMS.Common.Utils.DateTimeUtil;
+using EMS.Common.Models.BaseModel;
 
 namespace EMS.Core.API.Services
 {
     public class PeopleService : People.PeopleBase
     {
         private readonly IPeopleRepository _peopleRepository;
+        private readonly IEMSLogger<PeopleService> _logger;
+        private readonly IDateTimeUtil _dateTimeUtil;
 
-        public PeopleService(IPeopleRepository peopleRepository)
+        public PeopleService(IPeopleRepository peopleRepository, IEMSLogger<PeopleService> logger, IDateTimeUtil dateTimeUtil)
         {
             _peopleRepository = peopleRepository;
+            _logger = logger;
+            _dateTimeUtil = dateTimeUtil;
         }
 
         public override Task<PeopleResponse> GetAll(Empty request, ServerCallContext context)
@@ -37,6 +44,14 @@ namespace EMS.Core.API.Services
             {
                 response.Data.Add(ConvertData(person));
             }
+
+            RequestResponseObject requestResponseObject = new RequestResponseObject
+            {
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = request,
+                Response = response
+            };
+            _logger.AddLog(requestResponseObject);
 
             return Task.FromResult(response);
         }
@@ -58,6 +73,13 @@ namespace EMS.Core.API.Services
                 PersonData data = ConvertData(person);
                 response.Data = data;
                 response.Response.Code = Code.Success;
+                RequestResponseObject requestResponseObject = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = response
+                };
+                _logger.AddLog(requestResponseObject);
                 return Task.FromResult(response);
             }
             catch (NullReferenceException nrex)
@@ -65,12 +87,26 @@ namespace EMS.Core.API.Services
                 string error = $"Some data has not found (type: {nrex.GetType().Name})";
                 response.Response.ErrorMessage = error;
                 response.Response.Code = Code.DataError;
+                RequestResponseObject requestResponseObject = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = nrex
+                };
+                _logger.AddErrorLog(requestResponseObject);
                 return Task.FromResult(response);
             }
             catch (Exception ex)
             {
                 response.Response.ErrorMessage = ex.Message;
                 response.Response.Code = Code.UnknownError;
+                RequestResponseObject requestResponseObject = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = ex
+                };
+                _logger.AddErrorLog(requestResponseObject);
                 return Task.FromResult(response);
             }
         }

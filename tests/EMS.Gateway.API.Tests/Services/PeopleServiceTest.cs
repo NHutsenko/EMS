@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using EMS.Common.Models.BaseModel;
 using EMS.Common.Protos;
 using EMS.Core.API.Models;
 using EMS.Core.API.Services;
@@ -21,6 +23,7 @@ namespace EMS.Core.API.Tests
         public void Setup()
         {
             InitializeMocks();
+            InitializeLoggerMock(new PeopleService(null, null, null));
             DbContextMock.ShouldThrowException = false;
             DbContextMock.SaveChangesResult = 1;
 
@@ -73,7 +76,8 @@ namespace EMS.Core.API.Tests
 
 
             _peopleRepository = new DAL.Repositories.PeopleRepository(_dbContext, _dateTimeUtil);
-            _peopleService = new PeopleService(_peopleRepository);
+            
+            _peopleService = new PeopleService(_peopleRepository, _logger, _dateTimeUtil);
         }
 
         [Test]
@@ -110,6 +114,13 @@ namespace EMS.Core.API.Tests
                 CreatedOn = Timestamp.FromDateTime(_person2.CreatedOn.ToUniversalTime()),
             });
 
+            RequestResponseObject requestResponseObject = new RequestResponseObject
+            {
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = new Empty(),
+                Response = expected
+            };
+
             // Act
             PeopleResponse actual = _peopleService.GetAll(new Empty(), null).Result;
 
@@ -117,6 +128,7 @@ namespace EMS.Core.API.Tests
             Assert.AreEqual(expected.Response.Code, actual.Response.Code, "Code as expected");
             Assert.AreEqual(expected.Response.ErrorMessage, actual.Response.ErrorMessage, "Error message as expected");
             CollectionAssert.AreEqual(expected.Data, actual.Data, "Data as expected");
+            _loggerMock.Verify(mocks => mocks.AddLog(requestResponseObject), "Data logged");
         }
 
         [Test]
@@ -155,13 +167,23 @@ namespace EMS.Core.API.Tests
                 Name = _photo.Name
             });
 
+            PersonRequest request = new PersonRequest { Id = _person1.Id };
+
+            RequestResponseObject requestResponseObject = new RequestResponseObject
+            {
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = request,
+                Response = expected
+            };
+
             // Act
-            PersonResponse actual = _peopleService.GetById(new PersonRequest { Id = _person1.Id }, null).Result;
+            PersonResponse actual = _peopleService.GetById(request, null).Result;
 
             // Assert
             Assert.AreEqual(expected.Response.Code, actual.Response.Code, "Code as expected");
             Assert.AreEqual(expected.Response.ErrorMessage, actual.Response.ErrorMessage, "Error message as expected");
             Assert.AreEqual(expected.Data, actual.Data, "Data as expected");
+            _loggerMock.Verify(mocks => mocks.AddLog(requestResponseObject), "Data logged");
         }
 
         [Test]
@@ -178,13 +200,23 @@ namespace EMS.Core.API.Tests
                 Data = null
             };
 
+            PersonRequest request = new PersonRequest { Id = 3 };
+
+            RequestResponseObject requestResponseObject = new RequestResponseObject
+            {
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = request,
+                Response = new Exception("Object reference not set to an instance of an object.")
+            };
+
             // Act
-            PersonResponse actual = _peopleService.GetById(new PersonRequest { Id = 3 }, null).Result;
+            PersonResponse actual = _peopleService.GetById(request, null).Result;
 
             // Assert
             Assert.AreEqual(expected.Response.Code, actual.Response.Code, "Code as expected");
             Assert.AreEqual(expected.Response.ErrorMessage, actual.Response.ErrorMessage, "Error message as expected");
             Assert.AreEqual(expected.Data, actual.Data, "Data as expected");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(requestResponseObject), "Data logged");
         }
 
         [Test]
@@ -207,13 +239,23 @@ namespace EMS.Core.API.Tests
             };
             _dbContext.People.Add(person);
 
+            PersonRequest request = new PersonRequest { Id = person.Id };
+
+            RequestResponseObject requestResponseObject = new RequestResponseObject
+            {
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = request,
+                Response = new Exception("Value cannot be null. (Parameter 'value')")
+            };
+
             // Act
-            PersonResponse actual = _peopleService.GetById(new PersonRequest { Id = person.Id }, null).Result;
+            PersonResponse actual = _peopleService.GetById(request, null).Result;
 
             // Assert
             Assert.AreEqual(expected.Response.Code, actual.Response.Code, "Code as expected");
             Assert.AreEqual(expected.Response.ErrorMessage, actual.Response.ErrorMessage, "Error message as expected");
             Assert.AreEqual(expected.Data, actual.Data, "Data as expected");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(requestResponseObject), "Data logged");
         }
 
         [Test]

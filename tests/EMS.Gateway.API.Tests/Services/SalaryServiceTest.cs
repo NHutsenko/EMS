@@ -21,6 +21,7 @@ namespace EMS.Core.API.Tests
         public void Setup()
         {
             InitializeMocks();
+            InitializeLoggerMock(new SalaryService(null, null, null, null, null, null, null, null));
             DbContextMock.ShouldThrowException = false;
             _position1 = new Position
             {
@@ -47,9 +48,7 @@ namespace EMS.Core.API.Tests
             _dayOffRepository = new DAL.Repositories.DayOffRepository(_dbContext);
             _holidaysRepository = new DAL.Repositories.HolidaysRepository(_dbContext, _dateTimeUtil);
             _motivationModificatorRepository = new DAL.Repositories.MotivationModificatorRepository(_dbContext, _dateTimeUtil);
-            _otherPaymentsRepository = new DAL.Repositories.OtherPaymentsRepository(_dbContext, _dateTimeUtil);
-
-            InitializeLoggerMock(new SalaryService(null, null, null, null, null, null, null, null));
+            _otherPaymentsRepository = new DAL.Repositories.OtherPaymentsRepository(_dbContext, _dateTimeUtil); 
 
             _salaryService = new SalaryService(_logger, 
                 _staffRepository, 
