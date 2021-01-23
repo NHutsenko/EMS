@@ -216,7 +216,7 @@ namespace EMS.Core.API.Tests
             Assert.AreEqual(expected.Response.Code, actual.Response.Code, "Code as expected");
             Assert.AreEqual(expected.Response.ErrorMessage, actual.Response.ErrorMessage, "Error message as expected");
             Assert.AreEqual(expected.Data, actual.Data, "Data as expected");
-            _loggerMock.Verify(mocks => mocks.AddErrorLog(requestResponseObject), "Data logged");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(requestResponseObject), "Error logged");
         }
 
         [Test]
@@ -255,7 +255,7 @@ namespace EMS.Core.API.Tests
             Assert.AreEqual(expected.Response.Code, actual.Response.Code, "Code as expected");
             Assert.AreEqual(expected.Response.ErrorMessage, actual.Response.ErrorMessage, "Error message as expected");
             Assert.AreEqual(expected.Data, actual.Data, "Data as expected");
-            _loggerMock.Verify(mocks => mocks.AddErrorLog(requestResponseObject), "Data logged");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(requestResponseObject), "Error logged");
         }
 
         [Test]
@@ -277,11 +277,19 @@ namespace EMS.Core.API.Tests
                 ErrorMessage = string.Empty
             };
 
+            RequestResponseObject requestResponseObject = new RequestResponseObject
+            {
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = person,
+                Response = expected
+            };
+
             // Act
             BaseResponse actual = _peopleService.AddAsync(person, null).Result;
 
             // Assert
             Assert.AreEqual(expected, actual, "Response as expected");
+            _loggerMock.Verify(mocks => mocks.AddLog(requestResponseObject), "Error logged");
         }
 
         [Test]
@@ -294,11 +302,19 @@ namespace EMS.Core.API.Tests
                 ErrorMessage = "Person data cannot be empty"
             };
 
+            RequestResponseObject requestResponseObject = new RequestResponseObject
+            {
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = null,
+                Response = new Exception(expected.ErrorMessage)
+            };
+
             // Act
             BaseResponse actual = _peopleService.AddAsync(null, null).Result;
 
             // Assert
             Assert.AreEqual(expected, actual, "Null reference exception handled as expected");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(requestResponseObject), "Error logged");
         }
 
         [Test]
@@ -318,12 +334,19 @@ namespace EMS.Core.API.Tests
                 BornedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
                 CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime())
             };
+            RequestResponseObject requestResponseObject = new RequestResponseObject
+            {
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = person,
+                Response = new Exception(expected.ErrorMessage)
+            };
 
             // Act
             BaseResponse actual = _peopleService.AddAsync(person, null).Result;
 
             // Assert
             Assert.AreEqual(expected, actual, "Argument exception handled as expected");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(requestResponseObject), "Error logged");
         }
 
         [Test]
@@ -346,11 +369,19 @@ namespace EMS.Core.API.Tests
             };
             DbContextMock.ShouldThrowException = true;
 
+            RequestResponseObject requestResponseObject = new RequestResponseObject
+            {
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = person,
+                Response = new Exception("DbContext test Exception")
+            };
+
             // Act
             BaseResponse actual = _peopleService.AddAsync(person, null).Result;
 
             // Assert
             Assert.AreEqual(expected, actual, "Db update exception handled as expected");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(requestResponseObject), "Error logged");
         }
 
         [Test]
@@ -373,12 +404,19 @@ namespace EMS.Core.API.Tests
                 Code = Code.UnknownError,
                 ErrorMessage = "Person data has not been saved"
             };
+            RequestResponseObject requestResponseObject = new RequestResponseObject
+            {
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = person,
+                Response = new Exception(expected.ErrorMessage)
+            };
 
             // Act
             BaseResponse actual = _peopleService.AddAsync(person, null).Result;
 
             // Assert
             Assert.AreEqual(expected, actual, "Response as expected");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(requestResponseObject), "Error logged");
         }
 
         [Test]
@@ -401,11 +439,19 @@ namespace EMS.Core.API.Tests
                 ErrorMessage = string.Empty
             };
 
+            RequestResponseObject requestResponseObject = new RequestResponseObject
+            {
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = person,
+                Response = expected
+            };
+
             // Act
             BaseResponse actual = _peopleService.UpdateAsync(person, null).Result;
 
             // Assert
             Assert.AreEqual(expected, actual, "Response as expected");
+            _loggerMock.Verify(mocks => mocks.AddLog(requestResponseObject), "Data logged");
         }
 
         [Test]
@@ -428,12 +474,19 @@ namespace EMS.Core.API.Tests
                 Code = Code.UnknownError,
                 ErrorMessage = "Person data has not been updated"
             };
+            RequestResponseObject requestResponseObject = new RequestResponseObject
+            {
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = person,
+                Response = new Exception(expected.ErrorMessage)
+            };
 
             // Act
             BaseResponse actual = _peopleService.UpdateAsync(person, null).Result;
 
             // Assert
             Assert.AreEqual(expected, actual, "Response as expected");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(requestResponseObject), "Error logged");
         }
 
         [Test]
@@ -446,11 +499,19 @@ namespace EMS.Core.API.Tests
                 ErrorMessage = "Person data cannot be empty"
             };
 
+            RequestResponseObject requestResponseObject = new RequestResponseObject
+            {
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = null,
+                Response = new Exception(expected.ErrorMessage)
+            };
+
             // Act
             BaseResponse actual = _peopleService.UpdateAsync(null, null).Result;
 
             // Assert
             Assert.AreEqual(expected, actual, "Null reference exception handled as expected");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(requestResponseObject), "Error logged");
         }
 
         [Test]
@@ -471,12 +532,19 @@ namespace EMS.Core.API.Tests
                 CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
                 Id = _person1.Id
             };
+            RequestResponseObject requestResponseObject = new RequestResponseObject
+            {
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = person,
+                Response = new Exception(expected.ErrorMessage)
+            };
 
             // Act
             BaseResponse actual = _peopleService.UpdateAsync(person, null).Result;
 
             // Assert
             Assert.AreEqual(expected, actual, "Argument exception handled as expected");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(requestResponseObject), "Error logged");
         }
 
         [Test]
@@ -498,12 +566,19 @@ namespace EMS.Core.API.Tests
                 CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
                 Id = _person1.Id
             };
+            RequestResponseObject requestResponseObject = new RequestResponseObject
+            {
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = person,
+                Response = new Exception("DbContext test Exception")
+            };
 
             // Act
             BaseResponse actual = _peopleService.UpdateAsync(person, null).Result;
 
             // Assert
             Assert.AreEqual(expected, actual, "Db update exception handled as expected");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(requestResponseObject), "Error logged");
         }
 
         [Test]
@@ -523,12 +598,19 @@ namespace EMS.Core.API.Tests
                 Code = Code.Success,
                 ErrorMessage = string.Empty
             };
+            RequestResponseObject requestResponseObject = new RequestResponseObject
+            {
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = contact,
+                Response = expected
+            };
 
             // Act
             BaseResponse actual = _peopleService.AddContactAsync(contact, null).Result;
 
             // Assert
             Assert.AreEqual(expected, actual, "Saved via people repository as expected");
+            _loggerMock.Verify(mocks => mocks.AddLog(requestResponseObject), "Data logged");
         }
 
         [Test]
@@ -540,12 +622,19 @@ namespace EMS.Core.API.Tests
                 Code = Code.DataError,
                 ErrorMessage = "Contact data cannot be empty"
             };
+            RequestResponseObject requestResponseObject = new RequestResponseObject
+            {
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = null,
+                Response = new Exception(expected.ErrorMessage)
+            };
 
             // Act
             BaseResponse actual = _peopleService.AddContactAsync(null, null).Result;
 
             // Assert
             Assert.AreEqual(expected, actual, "Handled NullReferenceException from people repository as expected");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(requestResponseObject), "Error logged");
         }
 
         [Test]
@@ -565,12 +654,19 @@ namespace EMS.Core.API.Tests
                 Code = Code.DataError,
                 ErrorMessage = "Person is not specified"
             };
+            RequestResponseObject requestResponseObject = new RequestResponseObject
+            {
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = contact,
+                Response = new Exception(expected.ErrorMessage)
+            };
 
             // Act
             BaseResponse actual = _peopleService.AddContactAsync(contact, null).Result;
 
             // Assert
             Assert.AreEqual(expected, actual, "Handled ArgumentException from people repository as expected");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(requestResponseObject), "Error logged");
         }
 
         [Test]
@@ -592,11 +688,19 @@ namespace EMS.Core.API.Tests
                 ErrorMessage = "An error occured while saving contact"
             };
 
+            RequestResponseObject requestResponseObject = new RequestResponseObject
+            {
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = contact,
+                Response = new Exception("DbContext test Exception")
+            };
+
             // Act
             BaseResponse actual = _peopleService.AddContactAsync(contact, null).Result;
 
             // Assert
             Assert.AreEqual(expected, actual, "Handled DbUpdateException from people repository as expected");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(requestResponseObject), "Error logged");
         }
 
         [Test]
@@ -617,12 +721,19 @@ namespace EMS.Core.API.Tests
                 Code = Code.UnknownError,
                 ErrorMessage = "Contact has not been saved"
             };
+            RequestResponseObject requestResponseObject = new RequestResponseObject
+            {
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = contact,
+                Response = new Exception(expected.ErrorMessage)
+            };
 
             // Act
             BaseResponse actual = _peopleService.AddContactAsync(contact, null).Result;
 
             // Assert
             Assert.AreEqual(expected, actual, "Handled exception from people repository as expected");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(requestResponseObject), "Error logged");
         }
 
         [Test]
@@ -642,12 +753,19 @@ namespace EMS.Core.API.Tests
                 Code = Code.Success,
                 ErrorMessage = string.Empty
             };
+            RequestResponseObject requestResponseObject = new RequestResponseObject
+            {
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = photoData,
+                Response = expected
+            };
 
             // Act
             BaseResponse actual = _peopleService.AddPhotoAsync(photoData, null).Result;
 
             // Assert
             Assert.AreEqual(expected, actual, "Saved via people repository as expected");
+            _loggerMock.Verify(mocks => mocks.AddLog(requestResponseObject), "Data logged");
         }
 
         [Test]
@@ -660,11 +778,19 @@ namespace EMS.Core.API.Tests
                 ErrorMessage = "Photo data cannot be empty"
             };
 
+            RequestResponseObject requestResponseObject = new RequestResponseObject
+            {
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = null,
+                Response = new Exception(expected.ErrorMessage)
+            };
+
             // Act
             BaseResponse actual = _peopleService.AddPhotoAsync(null, null).Result;
 
             // Assert
             Assert.AreEqual(expected, actual, "Handled NullReferenceException from people repository as expected");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(requestResponseObject), "Error logged");
         }
 
         [Test]
@@ -684,12 +810,19 @@ namespace EMS.Core.API.Tests
                 Code = Code.DataError,
                 ErrorMessage = "Person is not specified"
             };
+            RequestResponseObject requestResponseObject = new RequestResponseObject
+            {
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = photoData,
+                Response = new Exception(expected.ErrorMessage)
+            };
 
             // Act
             BaseResponse actual = _peopleService.AddPhotoAsync(photoData, null).Result;
 
             // Assert
             Assert.AreEqual(expected, actual, "Handled ArgumentException from people repository as expected");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(requestResponseObject), "Error logged");
         }
 
         [Test]
@@ -710,12 +843,19 @@ namespace EMS.Core.API.Tests
                 Code = Code.DbError,
                 ErrorMessage = "An error occured while saving contact"
             };
+            RequestResponseObject requestResponseObject = new RequestResponseObject
+            {
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = photoData,
+                Response = new Exception("DbContext test Exception")
+            };
 
             // Act
             BaseResponse actual = _peopleService.AddPhotoAsync(photoData, null).Result;
 
             // Assert
             Assert.AreEqual(expected, actual, "Handled DbUpdateException from people repository as expected");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(requestResponseObject), "Error logged");
         }
 
         [Test]
@@ -736,12 +876,19 @@ namespace EMS.Core.API.Tests
                 Code = Code.UnknownError,
                 ErrorMessage = "Photo has not been saved"
             };
+            RequestResponseObject requestResponseObject = new RequestResponseObject
+            {
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = photoData,
+                Response = new Exception(expected.ErrorMessage)
+            };
 
             // Act
             BaseResponse actual = _peopleService.AddPhotoAsync(photoData, null).Result;
 
             // Assert
             Assert.AreEqual(expected, actual, "Handled exception from people repository as expected");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(requestResponseObject), "Error logged");
         }
     }
 }

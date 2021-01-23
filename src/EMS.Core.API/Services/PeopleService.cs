@@ -130,14 +130,33 @@ namespace EMS.Core.API.Services
                 {
                     throw new Exception("Person data has not been saved");
                 }
-                return new BaseResponse
+                BaseResponse response = new BaseResponse
                 {
                     Code = Code.Success,
                     ErrorMessage = string.Empty
                 };
+
+                RequestResponseObject requestResponseObject = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = response
+                };
+
+                _logger.AddLog(requestResponseObject);
+
+                return response;
             }
             catch (NullReferenceException nrex)
             {
+                RequestResponseObject requestResponseObject = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = nrex
+                };
+
+                _logger.AddErrorLog(requestResponseObject);
                 return new BaseResponse
                 {
                     Code = Code.DataError,
@@ -146,6 +165,14 @@ namespace EMS.Core.API.Services
             }
             catch (ArgumentException aex)
             {
+                RequestResponseObject requestResponseObject = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = aex
+                };
+
+                _logger.AddErrorLog(requestResponseObject);
                 return new BaseResponse
                 {
                     Code = Code.DataError,
@@ -154,6 +181,14 @@ namespace EMS.Core.API.Services
             }
             catch (DbUpdateException duex)
             {
+                RequestResponseObject requestResponseObject = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = duex
+                };
+
+                _logger.AddErrorLog(requestResponseObject);
                 return new BaseResponse
                 {
                     Code = Code.DbError,
@@ -162,6 +197,14 @@ namespace EMS.Core.API.Services
             }
             catch(Exception ex)
             {
+                RequestResponseObject requestResponseObject = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = ex
+                };
+
+                _logger.AddErrorLog(requestResponseObject);
                 return new BaseResponse
                 {
                     Code = Code.UnknownError,
@@ -190,14 +233,33 @@ namespace EMS.Core.API.Services
                 {
                     throw new Exception("Person data has not been updated");
                 }
-                return new BaseResponse
+                BaseResponse response = new BaseResponse
                 {
                     Code = Code.Success,
                     ErrorMessage = string.Empty
                 };
+
+                RequestResponseObject requestResponseObject = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = response
+                };
+
+                _logger.AddLog(requestResponseObject);
+
+                return response;
             }
             catch (NullReferenceException nrex)
             {
+                RequestResponseObject requestResponseObject = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = nrex
+                };
+
+                _logger.AddErrorLog(requestResponseObject);
                 return new BaseResponse
                 {
                     Code = Code.DataError,
@@ -206,6 +268,14 @@ namespace EMS.Core.API.Services
             }
             catch (ArgumentException aex)
             {
+                RequestResponseObject requestResponseObject = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = aex
+                };
+
+                _logger.AddErrorLog(requestResponseObject);
                 return new BaseResponse
                 {
                     Code = Code.DataError,
@@ -214,6 +284,14 @@ namespace EMS.Core.API.Services
             }
             catch (DbUpdateException duex)
             {
+                RequestResponseObject requestResponseObject = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = duex
+                };
+
+                _logger.AddErrorLog(requestResponseObject);
                 return new BaseResponse
                 {
                     Code = Code.DbError,
@@ -222,6 +300,14 @@ namespace EMS.Core.API.Services
             }
             catch (Exception ex)
             {
+                RequestResponseObject requestResponseObject = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = ex
+                };
+
+                _logger.AddErrorLog(requestResponseObject);
                 return new BaseResponse
                 {
                     Code = Code.UnknownError,
@@ -249,14 +335,33 @@ namespace EMS.Core.API.Services
                 {
                     throw new Exception("Contact has not been saved");
                 }
-                return new BaseResponse
+                BaseResponse response = new BaseResponse
                 {
                     Code = Code.Success,
                     ErrorMessage = string.Empty
                 };
+
+                RequestResponseObject requestResponseObject = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = response
+                };
+
+                _logger.AddLog(requestResponseObject);
+
+                return response;
             }
             catch(NullReferenceException nrex)
             {
+                RequestResponseObject requestResponseObject = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = nrex
+                };
+
+                _logger.AddErrorLog(requestResponseObject);
                 return new BaseResponse
                 {
                     Code = Code.DataError,
@@ -265,6 +370,14 @@ namespace EMS.Core.API.Services
             }
             catch(ArgumentException aex)
             {
+                RequestResponseObject requestResponseObject = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = aex
+                };
+
+                _logger.AddErrorLog(requestResponseObject);
                 return new BaseResponse
                 {
                     Code = Code.DataError,
@@ -273,6 +386,14 @@ namespace EMS.Core.API.Services
             }
             catch(DbUpdateException duex)
             {
+                RequestResponseObject requestResponseObject = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = duex
+                };
+
+                _logger.AddErrorLog(requestResponseObject);
                 return new BaseResponse
                 {
                     Code = Code.DbError,
@@ -281,6 +402,14 @@ namespace EMS.Core.API.Services
             }
             catch(Exception ex)
             {
+                RequestResponseObject requestResponseObject = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = ex
+                };
+
+                _logger.AddErrorLog(requestResponseObject);
                 return new BaseResponse
                 {
                     Code = Code.UnknownError,
@@ -306,14 +435,33 @@ namespace EMS.Core.API.Services
                 {
                     throw new Exception("Photo has not been saved");
                 }
-                return new BaseResponse
+                BaseResponse response = new BaseResponse
                 {
                     Code = Code.Success,
                     ErrorMessage = string.Empty
                 };
+
+                RequestResponseObject requestResponseObject = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = response
+                };
+
+                _logger.AddLog(requestResponseObject);
+
+                return response;
             }
             catch (NullReferenceException nrex)
             {
+                RequestResponseObject requestResponseObject = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = nrex
+                };
+
+                _logger.AddErrorLog(requestResponseObject);
                 return new BaseResponse
                 {
                     Code = Code.DataError,
@@ -322,6 +470,14 @@ namespace EMS.Core.API.Services
             }
             catch (ArgumentException aex)
             {
+                RequestResponseObject requestResponseObject = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = aex
+                };
+
+                _logger.AddErrorLog(requestResponseObject);
                 return new BaseResponse
                 {
                     Code = Code.DataError,
@@ -330,6 +486,14 @@ namespace EMS.Core.API.Services
             }
             catch (DbUpdateException duex)
             {
+                RequestResponseObject requestResponseObject = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = duex
+                };
+
+                _logger.AddErrorLog(requestResponseObject);
                 return new BaseResponse
                 {
                     Code = Code.DbError,
@@ -338,6 +502,14 @@ namespace EMS.Core.API.Services
             }
             catch (Exception ex)
             {
+                RequestResponseObject requestResponseObject = new RequestResponseObject
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = ex
+                };
+
+                _logger.AddErrorLog(requestResponseObject);
                 return new BaseResponse
                 {
                     Code = Code.UnknownError,
