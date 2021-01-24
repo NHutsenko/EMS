@@ -104,6 +104,51 @@ namespace EMS.Core.API.Tests
         }
 
         [Test]
+        public void GetSalary_should_return_month_salary_for_preson_who_started_work_later_than_start_period_date()
+        {
+            // Arrange
+            _staff1.CreatedOn = new DateTime(2021, 1, 15, 12, 00, 00);
+            _dbContext.Staff.Update(_staff1);
+            SalaryResponse expected = new SalaryResponse
+            {
+                CurrentPosition = _position1.Id,
+                PersonId = _staff1.PersonId.GetValueOrDefault(),
+                Salary = 800,
+                StartedOn = Timestamp.FromDateTime(new DateTime(2021, 1, 15, 12, 00, 00).ToUniversalTime())
+            };
+
+            ISalaryResponse salaryResponse = new ISalaryResponse
+            {
+                Response = new BaseResponse
+                {
+                    Code = Code.Success,
+                    ErrorMessage = string.Empty
+                }
+            };
+            salaryResponse.SalaryResponse.Add(expected);
+
+            SalaryRequest request = new SalaryRequest
+            {
+                StartDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc)),
+                EndDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1).AddDays(-1))
+            };
+
+            RequestResponseObject requestResponseObject = new RequestResponseObject
+            {
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = request,
+                Response = salaryResponse
+            };
+
+            // Act
+            ISalaryResponse response = _salaryService.GetSalary(request, null).Result;
+
+            // Assert
+            Assert.AreEqual(salaryResponse, response, "Calculated as expected");
+            _loggerMock.Verify(m => m.AddLog(requestResponseObject), "Data logged");
+        }
+
+        [Test]
         public void GetSalary_should_return_month_salary_with_paid_holidays()
         {
             // Arrange
