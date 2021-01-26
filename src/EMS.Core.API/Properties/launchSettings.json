@@ -12,7 +12,7 @@
     "EMS.Core.API": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "swagger",
+      "launchUrl": "alive",
       "environmentVariables": {
         "MaxWorkHours": "8",
         "DbConnectionString": "Data Source=localhost;Initial Catalog=EMS;Integrated Security=True",

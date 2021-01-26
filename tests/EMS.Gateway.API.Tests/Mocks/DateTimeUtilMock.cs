@@ -9,7 +9,7 @@ namespace EMS.Core.API.Tests.Mock
     {
         public DateTimeUtilMock()
         {
-            _currentDate = new DateTime(2020, 01, 01, 12, 00, 00);
+            _currentDate = new DateTime(2020, 01, 01, 12, 00, 00, DateTimeKind.Utc);
         }
     }
 }

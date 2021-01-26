@@ -4,7 +4,7 @@ namespace EMS.Common.Utils.DateTimeUtil
 {
     public class DateTimeUtil: IDateTimeUtil
 	{
-        protected DateTime _currentDate = DateTime.Now;
+        protected DateTime _currentDate = DateTime.UtcNow;
 
         public DateTime GetCurrentDateTime()
         {

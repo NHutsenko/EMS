@@ -8,6 +8,7 @@ using EMS.Core.API.Models;
 using EMS.Core.API.Services;
 using EMS.Core.API.Tests.Mock;
 using Google.Protobuf.WellKnownTypes;
+using Moq;
 using NUnit.Framework;
 
 namespace EMS.Core.API.Tests
@@ -131,7 +132,7 @@ namespace EMS.Core.API.Tests
             Assert.AreEqual(expected.Response.Code, actual.Response.Code, "Code as expected");
             Assert.AreEqual(expected.Response.ErrorMessage, actual.Response.ErrorMessage, "Error message as expected");
             CollectionAssert.AreEqual(expected.Data, actual.Data, "Data as expected");
-            _loggerMock.Verify(mocks => mocks.AddLog(expectedLog), "Data logged");
+            _loggerMock.Verify(mocks => mocks.AddLog(expectedLog), Times.Once);
         }
 
         [Test]
@@ -188,7 +189,7 @@ namespace EMS.Core.API.Tests
             Assert.AreEqual(expected.Response.Code, actual.Response.Code, "Code as expected");
             Assert.AreEqual(expected.Response.ErrorMessage, actual.Response.ErrorMessage, "Error message as expected");
             Assert.AreEqual(expected.Data, actual.Data, "Data as expected");
-            _loggerMock.Verify(mocks => mocks.AddLog(expectedLog), "Data logged");
+            _loggerMock.Verify(mocks => mocks.AddLog(expectedLog), Times.Once);
         }
 
         [Test]
@@ -223,7 +224,7 @@ namespace EMS.Core.API.Tests
             Assert.AreEqual(expected.Response.Code, actual.Response.Code, "Code as expected");
             Assert.AreEqual(expected.Response.ErrorMessage, actual.Response.ErrorMessage, "Error message as expected");
             Assert.AreEqual(expected.Data, actual.Data, "Data as expected");
-            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), "Error logged");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
         }
 
         [Test]
@@ -264,7 +265,7 @@ namespace EMS.Core.API.Tests
             Assert.AreEqual(expected.Response.Code, actual.Response.Code, "Code as expected");
             Assert.AreEqual(expected.Response.ErrorMessage, actual.Response.ErrorMessage, "Error message as expected");
             Assert.AreEqual(expected.Data, actual.Data, "Data as expected");
-            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), "Error logged");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
         }
 
         [Test]
@@ -300,7 +301,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected, actual, "Response as expected");
-            _loggerMock.Verify(mocks => mocks.AddLog(expectedLog), "Error logged");
+            _loggerMock.Verify(mocks => mocks.AddLog(expectedLog), Times.Once);
         }
 
         [Test]
@@ -327,7 +328,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected, actual, "Null reference exception handled as expected");
-            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), "Error logged");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
         }
 
         [Test]
@@ -361,7 +362,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected, actual, "Argument exception handled as expected");
-            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), "Error logged");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
         }
 
         [Test]
@@ -398,7 +399,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected, actual, "Db update exception handled as expected");
-            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), "Error logged");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
         }
 
         [Test]
@@ -435,7 +436,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected, actual, "Response as expected");
-            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), "Error logged");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
         }
 
         [Test]
@@ -472,7 +473,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected, actual, "Response as expected");
-            _loggerMock.Verify(mocks => mocks.AddLog(expectedLog), "Data logged");
+            _loggerMock.Verify(mocks => mocks.AddLog(expectedLog), Times.Once);
         }
 
         [Test]
@@ -509,7 +510,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected, actual, "Response as expected");
-            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), "Error logged");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
         }
 
         [Test]
@@ -536,7 +537,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected, actual, "Null reference exception handled as expected");
-            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), "Error logged");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
         }
 
         [Test]
@@ -571,7 +572,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected, actual, "Argument exception handled as expected");
-            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), "Error logged");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
         }
 
         [Test]
@@ -607,7 +608,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected, actual, "Db update exception handled as expected");
-            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), "Error logged");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
         }
 
         [Test]
@@ -641,7 +642,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected, actual, "Saved via people repository as expected");
-            _loggerMock.Verify(mocks => mocks.AddLog(expectedLog), "Data logged");
+            _loggerMock.Verify(mocks => mocks.AddLog(expectedLog), Times.Once);
         }
 
         [Test]
@@ -667,7 +668,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected, actual, "Handled NullReferenceException from people repository as expected");
-            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), "Error logged");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
         }
 
         [Test]
@@ -701,7 +702,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected, actual, "Handled ArgumentException from people repository as expected");
-            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), "Error logged");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
         }
 
         [Test]
@@ -737,7 +738,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected, actual, "Handled DbUpdateException from people repository as expected");
-            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), "Error logged");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
         }
 
         [Test]
@@ -772,7 +773,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected, actual, "Handled exception from people repository as expected");
-            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), "Error logged");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
         }
 
         [Test]
@@ -806,7 +807,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected, actual, "Saved via people repository as expected");
-            _loggerMock.Verify(mocks => mocks.AddLog(expectedLog), "Data logged");
+            _loggerMock.Verify(mocks => mocks.AddLog(expectedLog), Times.Once);
         }
 
         [Test]
@@ -833,7 +834,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected, actual, "Handled NullReferenceException from people repository as expected");
-            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), "Error logged");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
         }
 
         [Test]
@@ -867,7 +868,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected, actual, "Handled ArgumentException from people repository as expected");
-            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), "Error logged");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
         }
 
         [Test]
@@ -902,7 +903,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected, actual, "Handled DbUpdateException from people repository as expected");
-            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), "Error logged");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
         }
 
         [Test]
@@ -937,7 +938,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected, actual, "Handled exception from people repository as expected");
-            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), "Error logged");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
         }
     }
 }

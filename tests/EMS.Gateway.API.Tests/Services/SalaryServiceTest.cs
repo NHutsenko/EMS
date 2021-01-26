@@ -8,6 +8,7 @@ using EMS.Core.API.Models;
 using EMS.Core.API.Services;
 using EMS.Core.API.Tests.Mock;
 using Google.Protobuf.WellKnownTypes;
+using Moq;
 using NUnit.Framework;
 
 namespace EMS.Core.API.Tests
@@ -103,7 +104,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(salaryResponse, response, "Calculated as expected");
-            _loggerMock.Verify(m => m.AddLog(expectedLog), "Data logged");
+            _loggerMock.Verify(m => m.AddLog(expectedLog), Times.Once);
         }
 
         [Test]
@@ -150,7 +151,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(salaryResponse, response, "Calculated as expected");
-            _loggerMock.Verify(m => m.AddLog(expectedLog), "Data logged");
+            _loggerMock.Verify(m => m.AddLog(expectedLog), Times.Once);
         }
 
         [Test]
@@ -553,7 +554,7 @@ namespace EMS.Core.API.Tests
             // Assert
             Assert.AreEqual(Code.DataError, actual.Response.Code, "Code returned as expected");
             Assert.AreEqual("Some data has not found (type: NullReferenceException)", actual.Response.ErrorMessage, "Error message as expected");
-            _loggerMock.Verify(m => m.AddErrorLog(expectedLog), "Response logged");
+            _loggerMock.Verify(m => m.AddErrorLog(expectedLog), Times.Once);
         }
 
         [Test]
@@ -579,7 +580,7 @@ namespace EMS.Core.API.Tests
             // Assert
             Assert.AreEqual(Code.UnknownError, actual.Response.Code, "Code returned as expected");
             Assert.AreEqual("Value cannot be null. (Parameter 'source')", actual.Response.ErrorMessage, "Error message as expected");
-            _loggerMock.Verify(m => m.AddErrorLog(expectedLog), "Response logged");
+            _loggerMock.Verify(m => m.AddErrorLog(expectedLog), Times.Once);
         }
     }
 }

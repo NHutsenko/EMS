@@ -1,0 +1,53 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "response.proto";
+
+option csharp_namespace = "EMS.Core.API";
+
+package positions;
+
+service Positions {
+	rpc GetAll(google.protobuf.Empty) returns (PositionsResponse) {
+
+	}
+
+	rpc GetById(PositionRequest) returns (PositionResponse) {
+
+	}
+
+	rpc AddAsync(PositionData) returns (response.BaseResponse) {
+
+	}
+
+	rpc UpdateAsync(PositionData) returns (response.BaseResponse) {
+
+	}
+
+	rpc DeleteAsync(PositionData) returns (response.BaseResponse) {
+
+	}
+}
+
+message PositionRequest{
+	int64 position_id = 1;
+}
+
+message PositionResponse{
+	response.BaseResponse response = 1;
+	PositionData data = 2;
+}
+
+message PositionsResponse{
+	response.BaseResponse response = 1;
+	repeated PositionData data = 2;
+}
+
+message PositionData{
+	int64 id = 1;
+	google.protobuf.Timestamp createdOn = 2;
+	string name = 3;
+	double hour_rate = 4;
+	int64 team_id = 5;
+}

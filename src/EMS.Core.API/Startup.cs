@@ -72,8 +72,9 @@ namespace EMS.Core.API
 				endpoints.MapGrpcService<SalaryService>();
                 endpoints.MapGrpcService<TeamsService>();
                 endpoints.MapGrpcService<PeopleService>();
+                endpoints.MapGrpcService<PositionsService>();
 
-                endpoints.MapGet("/", async context =>
+                endpoints.MapGet("/alive", async context =>
 				{
 					await context.Response.WriteAsync("Core API is alive");
 				});

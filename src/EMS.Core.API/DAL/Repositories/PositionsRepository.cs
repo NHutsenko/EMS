@@ -20,16 +20,19 @@ namespace EMS.Core.API.DAL.Repositories
             }
             if (string.IsNullOrWhiteSpace(position.Name))
             {
-                throw new ArgumentNullException("Position name cannot be empty");
+                throw new ArgumentException("Position name cannot be empty");
+            }
+            if(_context.Positions.Any(e => e.Name == position.Name))
+            {
+                throw new ArgumentException("Position with the same name already exists");
             }
             if(position.HourRate <= 0)
             {
                 throw new ArgumentException("Hour rate cannot be 0 or less");
             }
-            if (position.TeamId == 0 || _context.Teams.FirstOrDefault(t => t.Id == position.TeamId) is null ||
-                _context.Teams.First(t => t.Id == position.TeamId) != position.Team)
+            if (position.TeamId == 0 || !_context.Teams.Any(t => t.Id == position.TeamId))
             {
-                throw new ArgumentException("Cannot add position with non exists team");
+                throw new ArgumentException("Cannot add position with non specified team");
             }
             position.CreatedOn = _dateTimeUtil.GetCurrentDateTime();
             _context.Positions.Add(position);
@@ -44,16 +47,19 @@ namespace EMS.Core.API.DAL.Repositories
             }
             if (string.IsNullOrWhiteSpace(position.Name))
             {
-                throw new ArgumentNullException("Position name cannot be empty");
+                throw new ArgumentException("Position name cannot be empty");
+            }
+            if (_context.Positions.Any(e => e.Name == position.Name))
+            {
+                throw new ArgumentException("Position with the same name already exists");
             }
             if (position.HourRate <= 0)
             {
                 throw new ArgumentException("Hour rate cannot be 0 or less");
             }
-            if (position.TeamId == 0 || _context.Teams.FirstOrDefault(t => t.Id == position.TeamId) is null ||
-                _context.Teams.First(t => t.Id == position.TeamId) != position.Team)
+            if (position.TeamId == 0 || !_context.Teams.Any(t => t.Id == position.TeamId))
             {
-                throw new ArgumentException("Cannot add position with non exists team");
+                throw new ArgumentException("Cannot update position with non exists team");
             }
             _context.Positions.Update(position);
             return await _context.SaveChangesAsync();
@@ -61,13 +67,17 @@ namespace EMS.Core.API.DAL.Repositories
 
         public async Task<int> DeleteAsync(Position position)
         {
+            if(position is null)
+            {
+                throw new NullReferenceException("Position cannot be empty");
+            }
             if (_context.Teams.Any(e => e.Id == position.TeamId))
             {
-                throw new DbUpdateException("Cannot delete position related to team");
+                throw new InvalidOperationException("Cannot delete position related to team");
             }
             if (_context.Staff.Any(e => e.PositionId == position.Id))
             {
-                throw new DbUpdateException("Cannot delete position related to staff");
+                throw new InvalidOperationException("Cannot delete position related to staff");
             }
             _context.Positions.Remove(position);
             return await _context.SaveChangesAsync();
