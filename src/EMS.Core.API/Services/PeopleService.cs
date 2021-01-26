@@ -10,7 +10,7 @@ using EMS.Common.Protos;
 using EMS.Core.API.Enums;
 using EMS.Common.Logger;
 using EMS.Common.Utils.DateTimeUtil;
-using EMS.Common.Models.BaseModel;
+using EMS.Common.Logger.Models;
 
 namespace EMS.Core.API.Services
 {
@@ -45,13 +45,15 @@ namespace EMS.Core.API.Services
                 response.Data.Add(ConvertData(person));
             }
 
-            RequestResponseObject requestResponseObject = new RequestResponseObject
+            LogData logData = new LogData
             {
+                CallSide = nameof(PeopleService),
+                CallerMethodName = nameof(GetAll),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = request,
                 Response = response
             };
-            _logger.AddLog(requestResponseObject);
+            _logger.AddLog(logData);
 
             return Task.FromResult(response);
         }
@@ -73,13 +75,15 @@ namespace EMS.Core.API.Services
                 PersonData data = ConvertData(person);
                 response.Data = data;
                 response.Response.Code = Code.Success;
-                RequestResponseObject requestResponseObject = new RequestResponseObject
+                LogData logData = new LogData
                 {
+                    CallSide = nameof(PeopleService),
+                    CallerMethodName = nameof(GetById),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = response
                 };
-                _logger.AddLog(requestResponseObject);
+                _logger.AddLog(logData);
                 return Task.FromResult(response);
             }
             catch (NullReferenceException nrex)
@@ -87,26 +91,30 @@ namespace EMS.Core.API.Services
                 string error = $"Some data has not found (type: {nrex.GetType().Name})";
                 response.Response.ErrorMessage = error;
                 response.Response.Code = Code.DataError;
-                RequestResponseObject requestResponseObject = new RequestResponseObject
+                LogData logData = new LogData
                 {
+                    CallSide = nameof(PeopleService),
+                    CallerMethodName = nameof(GetById),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = nrex
                 };
-                _logger.AddErrorLog(requestResponseObject);
+                _logger.AddErrorLog(logData);
                 return Task.FromResult(response);
             }
             catch (Exception ex)
             {
                 response.Response.ErrorMessage = ex.Message;
                 response.Response.Code = Code.UnknownError;
-                RequestResponseObject requestResponseObject = new RequestResponseObject
+                LogData logData = new LogData
                 {
+                    CallSide = nameof(PeopleService),
+                    CallerMethodName = nameof(GetById),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = ex
                 };
-                _logger.AddErrorLog(requestResponseObject);
+                _logger.AddErrorLog(logData);
                 return Task.FromResult(response);
             }
         }
@@ -136,27 +144,31 @@ namespace EMS.Core.API.Services
                     ErrorMessage = string.Empty
                 };
 
-                RequestResponseObject requestResponseObject = new RequestResponseObject
+                LogData logData = new LogData
                 {
+                    CallSide = nameof(PeopleService),
+                    CallerMethodName = nameof(AddAsync),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = response
                 };
 
-                _logger.AddLog(requestResponseObject);
+                _logger.AddLog(logData);
 
                 return response;
             }
             catch (NullReferenceException nrex)
             {
-                RequestResponseObject requestResponseObject = new RequestResponseObject
+                LogData logData = new LogData
                 {
+                    CallSide = nameof(PeopleService),
+                    CallerMethodName = nameof(AddAsync),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = nrex
                 };
 
-                _logger.AddErrorLog(requestResponseObject);
+                _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
                     Code = Code.DataError,
@@ -165,14 +177,16 @@ namespace EMS.Core.API.Services
             }
             catch (ArgumentException aex)
             {
-                RequestResponseObject requestResponseObject = new RequestResponseObject
+                LogData logData = new LogData
                 {
+                    CallSide = nameof(PeopleService),
+                    CallerMethodName = nameof(AddAsync),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = aex
                 };
 
-                _logger.AddErrorLog(requestResponseObject);
+                _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
                     Code = Code.DataError,
@@ -181,14 +195,16 @@ namespace EMS.Core.API.Services
             }
             catch (DbUpdateException duex)
             {
-                RequestResponseObject requestResponseObject = new RequestResponseObject
+                LogData logData = new LogData
                 {
+                    CallSide = nameof(PeopleService),
+                    CallerMethodName = nameof(AddAsync),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = duex
                 };
 
-                _logger.AddErrorLog(requestResponseObject);
+                _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
                     Code = Code.DbError,
@@ -197,14 +213,16 @@ namespace EMS.Core.API.Services
             }
             catch(Exception ex)
             {
-                RequestResponseObject requestResponseObject = new RequestResponseObject
+                LogData logData = new LogData
                 {
+                    CallSide = nameof(PeopleService),
+                    CallerMethodName = nameof(AddAsync),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = ex
                 };
 
-                _logger.AddErrorLog(requestResponseObject);
+                _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
                     Code = Code.UnknownError,
@@ -239,27 +257,31 @@ namespace EMS.Core.API.Services
                     ErrorMessage = string.Empty
                 };
 
-                RequestResponseObject requestResponseObject = new RequestResponseObject
+                LogData logData = new LogData
                 {
+                    CallSide = nameof(PeopleService),
+                    CallerMethodName = nameof(UpdateAsync),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = response
                 };
 
-                _logger.AddLog(requestResponseObject);
+                _logger.AddLog(logData);
 
                 return response;
             }
             catch (NullReferenceException nrex)
             {
-                RequestResponseObject requestResponseObject = new RequestResponseObject
+                LogData logData = new LogData
                 {
+                    CallSide = nameof(PeopleService),
+                    CallerMethodName = nameof(UpdateAsync),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = nrex
                 };
 
-                _logger.AddErrorLog(requestResponseObject);
+                _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
                     Code = Code.DataError,
@@ -268,14 +290,16 @@ namespace EMS.Core.API.Services
             }
             catch (ArgumentException aex)
             {
-                RequestResponseObject requestResponseObject = new RequestResponseObject
+                LogData logData = new LogData
                 {
+                    CallSide = nameof(PeopleService),
+                    CallerMethodName = nameof(UpdateAsync),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = aex
                 };
 
-                _logger.AddErrorLog(requestResponseObject);
+                _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
                     Code = Code.DataError,
@@ -284,14 +308,16 @@ namespace EMS.Core.API.Services
             }
             catch (DbUpdateException duex)
             {
-                RequestResponseObject requestResponseObject = new RequestResponseObject
+                LogData logData = new LogData
                 {
+                    CallSide = nameof(PeopleService),
+                    CallerMethodName = nameof(UpdateAsync),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = duex
                 };
 
-                _logger.AddErrorLog(requestResponseObject);
+                _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
                     Code = Code.DbError,
@@ -300,14 +326,16 @@ namespace EMS.Core.API.Services
             }
             catch (Exception ex)
             {
-                RequestResponseObject requestResponseObject = new RequestResponseObject
+                LogData logData = new LogData
                 {
+                    CallSide = nameof(PeopleService),
+                    CallerMethodName = nameof(UpdateAsync),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = ex
                 };
 
-                _logger.AddErrorLog(requestResponseObject);
+                _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
                     Code = Code.UnknownError,
@@ -341,27 +369,31 @@ namespace EMS.Core.API.Services
                     ErrorMessage = string.Empty
                 };
 
-                RequestResponseObject requestResponseObject = new RequestResponseObject
+                LogData logData = new LogData
                 {
+                    CallSide = nameof(PeopleService),
+                    CallerMethodName = nameof(AddContactAsync),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = response
                 };
 
-                _logger.AddLog(requestResponseObject);
+                _logger.AddLog(logData);
 
                 return response;
             }
             catch(NullReferenceException nrex)
             {
-                RequestResponseObject requestResponseObject = new RequestResponseObject
+                LogData logData = new LogData
                 {
+                    CallSide = nameof(PeopleService),
+                    CallerMethodName = nameof(AddContactAsync),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = nrex
                 };
 
-                _logger.AddErrorLog(requestResponseObject);
+                _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
                     Code = Code.DataError,
@@ -370,14 +402,16 @@ namespace EMS.Core.API.Services
             }
             catch(ArgumentException aex)
             {
-                RequestResponseObject requestResponseObject = new RequestResponseObject
+                LogData logData = new LogData
                 {
+                    CallSide = nameof(PeopleService),
+                    CallerMethodName = nameof(AddContactAsync),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = aex
                 };
 
-                _logger.AddErrorLog(requestResponseObject);
+                _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
                     Code = Code.DataError,
@@ -386,14 +420,16 @@ namespace EMS.Core.API.Services
             }
             catch(DbUpdateException duex)
             {
-                RequestResponseObject requestResponseObject = new RequestResponseObject
+                LogData logData = new LogData
                 {
+                    CallSide = nameof(PeopleService),
+                    CallerMethodName = nameof(AddContactAsync),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = duex
                 };
 
-                _logger.AddErrorLog(requestResponseObject);
+                _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
                     Code = Code.DbError,
@@ -402,14 +438,16 @@ namespace EMS.Core.API.Services
             }
             catch(Exception ex)
             {
-                RequestResponseObject requestResponseObject = new RequestResponseObject
+                LogData logData = new LogData
                 {
+                    CallSide = nameof(PeopleService),
+                    CallerMethodName = nameof(AddContactAsync),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = ex
                 };
 
-                _logger.AddErrorLog(requestResponseObject);
+                _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
                     Code = Code.UnknownError,
@@ -441,27 +479,31 @@ namespace EMS.Core.API.Services
                     ErrorMessage = string.Empty
                 };
 
-                RequestResponseObject requestResponseObject = new RequestResponseObject
+                LogData logData = new LogData
                 {
+                    CallSide = nameof(PeopleService),
+                    CallerMethodName = nameof(AddPhotoAsync),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = response
                 };
 
-                _logger.AddLog(requestResponseObject);
+                _logger.AddLog(logData);
 
                 return response;
             }
             catch (NullReferenceException nrex)
             {
-                RequestResponseObject requestResponseObject = new RequestResponseObject
+                LogData logData = new LogData
                 {
+                    CallSide = nameof(PeopleService),
+                    CallerMethodName = nameof(AddPhotoAsync),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = nrex
                 };
 
-                _logger.AddErrorLog(requestResponseObject);
+                _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
                     Code = Code.DataError,
@@ -470,14 +512,16 @@ namespace EMS.Core.API.Services
             }
             catch (ArgumentException aex)
             {
-                RequestResponseObject requestResponseObject = new RequestResponseObject
+                LogData logData = new LogData
                 {
+                    CallSide = nameof(PeopleService),
+                    CallerMethodName = nameof(AddPhotoAsync),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = aex
                 };
 
-                _logger.AddErrorLog(requestResponseObject);
+                _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
                     Code = Code.DataError,
@@ -486,14 +530,16 @@ namespace EMS.Core.API.Services
             }
             catch (DbUpdateException duex)
             {
-                RequestResponseObject requestResponseObject = new RequestResponseObject
+                LogData logData = new LogData
                 {
+                    CallSide = nameof(PeopleService),
+                    CallerMethodName = nameof(AddPhotoAsync),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = duex
                 };
 
-                _logger.AddErrorLog(requestResponseObject);
+                _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
                     Code = Code.DbError,
@@ -502,14 +548,16 @@ namespace EMS.Core.API.Services
             }
             catch (Exception ex)
             {
-                RequestResponseObject requestResponseObject = new RequestResponseObject
+                LogData logData = new LogData
                 {
+                    CallSide = nameof(PeopleService),
+                    CallerMethodName = nameof(AddPhotoAsync),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = ex
                 };
 
-                _logger.AddErrorLog(requestResponseObject);
+                _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
                     Code = Code.UnknownError,

@@ -15,8 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="../src/common/Protos/teams.proto" Link="Protos/teams.proto" GrpcServices="Client" />
-    <Protobuf Include="../src/common/Protos/response.proto" Link="Protos/response.proto" />
+    <Protobuf Include="../common/Protos/teams.proto" Link="Protos/teams.proto" GrpcServices="Client" />
+    <Protobuf Include="../common/Protos/response.proto" Link="Protos/response.proto" />
   </ItemGroup>
 
 </Project>

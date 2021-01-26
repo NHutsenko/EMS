@@ -8,9 +8,8 @@ using EMS.Core.API.Models;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Microsoft.Extensions.Configuration;
-using EMS.Common.Logger;
-using EMS.Common.Models.BaseModel;
 using EMS.Common.Utils.DateTimeUtil;
+using EMS.Common.Logger.Models;
 
 namespace EMS.Core.API.Services
 {
@@ -64,45 +63,49 @@ namespace EMS.Core.API.Services
             }
             catch (NullReferenceException nrex)
             {
-                RequestResponseObject error = new RequestResponseObject
+                LogData logData = new LogData
                 {
+                    CallSide = nameof(SalaryService),
+                    CallerMethodName = nameof(GetSalary),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = nrex
                 };
 
-                _logger.AddErrorLog(error);
+                _logger.AddErrorLog(logData);
                 response.Response.ErrorMessage = $"Some data has not found (type: {nrex.GetType().Name})";
                 response.Response.Code = Code.DataError;
             }
             catch (Exception ex)
             {
-                RequestResponseObject error = new RequestResponseObject
+                LogData logData = new LogData
                 {
+                    CallSide = nameof(SalaryService),
+                    CallerMethodName = nameof(GetSalary),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = ex
                 };
 
-                _logger.AddErrorLog(error);
+                _logger.AddErrorLog(logData);
                 response.Response.ErrorMessage = ex.Message;
                 response.Response.Code = Code.UnknownError;
             }
 
-            RequestResponseObject requestResponseObject = new RequestResponseObject
+            LogData log = new LogData
             {
+                CallSide = nameof(SalaryService),
+                CallerMethodName = nameof(GetSalary),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = request,
                 Response = response
             };
 
-            _logger.AddLog(requestResponseObject);
+            _logger.AddLog(log);
 
             return Task.FromResult(response);
         }
 
-
-        // TODO: Add to calculation other payments
         private SalaryResponse CalculateCurrentSalary(IGrouping<long?, Staff> staff, DateTime startDate, DateTime endDate)
         {
             IQueryable<DayOff> dayOffs = _dayOffRepository.GetByDateRangeAndPersonId(startDate, endDate, staff.First().PersonId.Value);

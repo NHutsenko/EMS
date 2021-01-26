@@ -1,6 +1,5 @@
-﻿using System;
-using EMS.Common.Logger.Extensions;
-using EMS.Common.Models.BaseModel;
+﻿using EMS.Common.Logger.Extensions;
+using EMS.Common.Logger.Models;
 using Microsoft.Extensions.Logging;
 
 namespace EMS.Common.Logger
@@ -12,12 +11,12 @@ namespace EMS.Common.Logger
         {
             _logger = logger;
         }
-        public virtual void AddErrorLog(RequestResponseObject requestResponseObject)
+        public virtual void AddErrorLog(LogData requestResponseObject)
         {
             _logger.AddLog(requestResponseObject);
         }
 
-        public virtual void AddLog(RequestResponseObject requestResponseObject)
+        public virtual void AddLog(LogData requestResponseObject)
         {
             _logger.AddErrorLog(requestResponseObject);
         }

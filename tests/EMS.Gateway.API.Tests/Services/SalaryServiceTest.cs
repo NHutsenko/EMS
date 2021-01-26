@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using EMS.Common.Logger.Models;
 using EMS.Common.Models.BaseModel;
 using EMS.Common.Protos;
 using EMS.Core.API.Models;
@@ -88,8 +89,10 @@ namespace EMS.Core.API.Tests
                 EndDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1).AddDays(-1))
             };
 
-            RequestResponseObject requestResponseObject = new RequestResponseObject
+            LogData expectedLog = new LogData
             {
+                CallSide = nameof(SalaryService),
+                CallerMethodName = nameof(_salaryService.GetSalary),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = request,
                 Response = salaryResponse
@@ -100,7 +103,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(salaryResponse, response, "Calculated as expected");
-            _loggerMock.Verify(m => m.AddLog(requestResponseObject), "Data logged");
+            _loggerMock.Verify(m => m.AddLog(expectedLog), "Data logged");
         }
 
         [Test]
@@ -133,8 +136,10 @@ namespace EMS.Core.API.Tests
                 EndDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1).AddDays(-1))
             };
 
-            RequestResponseObject requestResponseObject = new RequestResponseObject
+            LogData expectedLog = new LogData
             {
+                CallSide = nameof(SalaryService),
+                CallerMethodName = nameof(_salaryService.GetSalary),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = request,
                 Response = salaryResponse
@@ -145,7 +150,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(salaryResponse, response, "Calculated as expected");
-            _loggerMock.Verify(m => m.AddLog(requestResponseObject), "Data logged");
+            _loggerMock.Verify(m => m.AddLog(expectedLog), "Data logged");
         }
 
         [Test]
@@ -517,7 +522,6 @@ namespace EMS.Core.API.Tests
 
             // Act
             ISalaryResponse response = _salaryService.GetSalary(request, null).Result;
-            SalaryResponse actual = response.SalaryResponse.First();
 
             // Assert
             Assert.AreEqual(salaryResponse, response, "Calculated as expected");
@@ -534,8 +538,10 @@ namespace EMS.Core.API.Tests
                 EndDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1).AddDays(-1))
             };
 
-            RequestResponseObject requestResponseObject = new RequestResponseObject
+            LogData expectedLog = new LogData
             {
+                CallSide = nameof(SalaryService),
+                CallerMethodName = nameof(_salaryService.GetSalary),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = request,
                 Response = new Exception("Object reference not set to an instance of an object.")
@@ -547,7 +553,7 @@ namespace EMS.Core.API.Tests
             // Assert
             Assert.AreEqual(Code.DataError, actual.Response.Code, "Code returned as expected");
             Assert.AreEqual("Some data has not found (type: NullReferenceException)", actual.Response.ErrorMessage, "Error message as expected");
-            _loggerMock.Verify(m => m.AddErrorLog(requestResponseObject), "Response logged");
+            _loggerMock.Verify(m => m.AddErrorLog(expectedLog), "Response logged");
         }
 
         [Test]
@@ -558,8 +564,10 @@ namespace EMS.Core.API.Tests
             SalaryRequest request = new SalaryRequest();
             request.StartDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc));
             request.EndDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1).AddDays(-1));
-            RequestResponseObject requestResponseObject = new RequestResponseObject
+            LogData expectedLog = new LogData
             {
+                CallSide = nameof(SalaryService),
+                CallerMethodName = nameof(_salaryService.GetSalary),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = request,
                 Response = new Exception("Value cannot be null. (Parameter 'source')")
@@ -571,7 +579,7 @@ namespace EMS.Core.API.Tests
             // Assert
             Assert.AreEqual(Code.UnknownError, actual.Response.Code, "Code returned as expected");
             Assert.AreEqual("Value cannot be null. (Parameter 'source')", actual.Response.ErrorMessage, "Error message as expected");
-            _loggerMock.Verify(m => m.AddErrorLog(requestResponseObject), "Response logged");
+            _loggerMock.Verify(m => m.AddErrorLog(expectedLog), "Response logged");
         }
     }
 }

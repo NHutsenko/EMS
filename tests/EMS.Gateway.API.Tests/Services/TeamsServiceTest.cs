@@ -9,6 +9,7 @@ using EMS.Common.Models.BaseModel;
 using Moq;
 using System;
 using Microsoft.EntityFrameworkCore;
+using EMS.Common.Logger.Models;
 
 namespace EMS.Core.API.Tests
 {
@@ -73,8 +74,10 @@ namespace EMS.Core.API.Tests
                 Code = Code.Success,
                 ErrorMessage = string.Empty
             };
-            RequestResponseObject expectedRrObject = new RequestResponseObject
+            LogData expectedLog = new LogData
             {
+                CallSide = nameof(TeamsService),
+                CallerMethodName = nameof(_teamsService.AddAsync),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = team,
                 Response = expected
@@ -85,7 +88,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected, actual, "Added to DB via TeamsRepository as expected");
-            _loggerMock.Verify(m => m.AddLog(expectedRrObject), "OperationLogged");
+            _loggerMock.Verify(m => m.AddLog(expectedLog), "OperationLogged");
         }
 
         [Test]
@@ -98,8 +101,10 @@ namespace EMS.Core.API.Tests
                 ErrorMessage = "Team cannot be empty"
             };
 
-            RequestResponseObject expectedRrObject = new RequestResponseObject
+            LogData expectedLog = new LogData
             {
+                CallSide = nameof(TeamsService),
+                CallerMethodName = nameof(_teamsService.AddAsync),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = null,
                 Response = new Exception(expected.ErrorMessage)
@@ -110,7 +115,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected, actual, "Handled null reference exception");
-            _loggerMock.Verify(m => m.AddErrorLog(expectedRrObject), "OperationLogged");
+            _loggerMock.Verify(m => m.AddErrorLog(expectedLog), "OperationLogged");
         }
 
         [Test]
@@ -129,8 +134,10 @@ namespace EMS.Core.API.Tests
                 Code = Code.DataError,
                 ErrorMessage = "Team with the same name already exists"
             };
-            RequestResponseObject expectedRrObject = new RequestResponseObject
+            LogData expectedLog = new LogData
             {
+                CallSide = nameof(TeamsService),
+                CallerMethodName = nameof(_teamsService.AddAsync),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = team,
                 Response = new Exception(expected.ErrorMessage)
@@ -141,7 +148,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected, actual, "Handled argument exception");
-            _loggerMock.Verify(m => m.AddErrorLog(expectedRrObject), "OperationLogged");
+            _loggerMock.Verify(m => m.AddErrorLog(expectedLog), "OperationLogged");
         }
 
         [Test]
@@ -161,8 +168,10 @@ namespace EMS.Core.API.Tests
                 Code = Code.DbError,
                 ErrorMessage = "An error occured while saving team"
             };
-            RequestResponseObject expectedRrObject = new RequestResponseObject
+            LogData expectedLog = new LogData
             {
+                CallSide = nameof(TeamsService),
+                CallerMethodName = nameof(_teamsService.AddAsync),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = team,
                 Response = new Exception("DbContext test Exception")
@@ -173,7 +182,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected, actual, "Handled DB Update exception");
-            _loggerMock.Verify(m => m.AddErrorLog(expectedRrObject), "OperationLogged");
+            _loggerMock.Verify(m => m.AddErrorLog(expectedLog), "OperationLogged");
         }
 
         [Test]
@@ -193,8 +202,10 @@ namespace EMS.Core.API.Tests
                 Code = Code.UnknownError,
                 ErrorMessage = "Team has not been saved"
             };
-            RequestResponseObject expectedRrObject = new RequestResponseObject
+            LogData expectedLog = new LogData
             {
+                CallSide = nameof(TeamsService),
+                CallerMethodName = nameof(_teamsService.AddAsync),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = team,
                 Response = new Exception(expected.ErrorMessage)
@@ -205,7 +216,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected, actual, "Handled exception");
-            _loggerMock.Verify(m => m.AddErrorLog(expectedRrObject), "OperationLogged");
+            _loggerMock.Verify(m => m.AddErrorLog(expectedLog), "OperationLogged");
         }
 
         [Test]
@@ -226,8 +237,10 @@ namespace EMS.Core.API.Tests
                 ErrorMessage = string.Empty
             };
 
-            RequestResponseObject expectedRrObject = new RequestResponseObject
+            LogData expectedLog = new LogData
             {
+                CallSide = nameof(TeamsService),
+                CallerMethodName = nameof(_teamsService.UpdateAsync),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = team,
                 Response = expected
@@ -238,7 +251,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected, actual, "Added to DB via TeamsRepository as expected");
-            _loggerMock.Verify(mocks => mocks.AddLog(expectedRrObject), "Data logged");
+            _loggerMock.Verify(mocks => mocks.AddLog(expectedLog), "Data logged");
         }
 
         [Test]
@@ -250,8 +263,10 @@ namespace EMS.Core.API.Tests
                 Code = Code.DataError,
                 ErrorMessage = "Team cannot be empty"
             };
-            RequestResponseObject expectedRrObject = new RequestResponseObject
+            LogData expectedLog = new LogData
             {
+                CallSide = nameof(TeamsService),
+                CallerMethodName = nameof(_teamsService.UpdateAsync),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = null,
                 Response = new Exception(expected.ErrorMessage)
@@ -262,7 +277,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected, actual, "Handled null reference exception");
-            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedRrObject), "Data logged");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), "Data logged");
         }
 
         [Test]
@@ -283,8 +298,10 @@ namespace EMS.Core.API.Tests
                 ErrorMessage = "Team with the same name already exists"
             };
 
-            RequestResponseObject expectedRrObject = new RequestResponseObject
+            LogData expectedLog = new LogData
             {
+                CallSide = nameof(TeamsService),
+                CallerMethodName = nameof(_teamsService.UpdateAsync),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = team,
                 Response = new Exception(expected.ErrorMessage)
@@ -295,7 +312,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected, actual, "Handled argument exception");
-            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedRrObject), "Data logged");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), "Data logged");
         }
 
         [Test]
@@ -317,8 +334,10 @@ namespace EMS.Core.API.Tests
                 ErrorMessage = "An error occured while saving team"
             };
 
-            RequestResponseObject expectedRrObject = new RequestResponseObject
+            LogData expectedLog = new LogData
             {
+                CallSide = nameof(TeamsService),
+                CallerMethodName = nameof(_teamsService.UpdateAsync),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = team,
                 Response = new Exception("DbContext test Exception")
@@ -329,7 +348,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected, actual, "Handled DB Update exception");
-            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedRrObject), "Data logged");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), "Data logged");
         }
 
         [Test]
@@ -351,8 +370,10 @@ namespace EMS.Core.API.Tests
                 ErrorMessage = "Team has not been updated"
             };
 
-            RequestResponseObject expectedRrObject = new RequestResponseObject
+            LogData expectedLog = new LogData
             {
+                CallSide = nameof(TeamsService),
+                CallerMethodName = nameof(_teamsService.UpdateAsync),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = team,
                 Response = new Exception(expected.ErrorMessage)
@@ -363,7 +384,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected, actual, "Handled exception");
-            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedRrObject), "Data logged");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), "Data logged");
         }
 
         [Test]
@@ -382,8 +403,10 @@ namespace EMS.Core.API.Tests
                 Name = _team2.Name,
                 Description = _team2.Description
             };
-            RequestResponseObject expectedRrObject = new RequestResponseObject
+            LogData expectedLog = new LogData
             {
+                CallSide = nameof(TeamsService),
+                CallerMethodName = nameof(_teamsService.DeleteAsync),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = teamData,
                 Response = expected
@@ -394,7 +417,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected, actual, "Deleted via teams repository");
-            _loggerMock.Verify(mocks => mocks.AddLog(expectedRrObject), "Data logged");
+            _loggerMock.Verify(mocks => mocks.AddLog(expectedLog), "Data logged");
         }
 
         [Test]
@@ -406,8 +429,10 @@ namespace EMS.Core.API.Tests
                 Code = Code.DataError,
                 ErrorMessage = "Team cannot be empty"
             };
-            RequestResponseObject expectedRrObject = new RequestResponseObject
+            LogData expectedLog = new LogData
             {
+                CallSide = nameof(TeamsService),
+                CallerMethodName = nameof(_teamsService.DeleteAsync),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = null,
                 Response = new Exception(expected.ErrorMessage)
@@ -418,7 +443,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected, actual, "Handled  null reference exception");
-            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedRrObject), "Data logged");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), "Data logged");
         }
 
         [Test]
@@ -437,8 +462,10 @@ namespace EMS.Core.API.Tests
                 Name = _team1.Name,
                 Description = _team1.Description
             };
-            RequestResponseObject expectedRrObject = new RequestResponseObject
+            LogData expectedLog = new LogData
             {
+                CallSide = nameof(TeamsService),
+                CallerMethodName = nameof(_teamsService.DeleteAsync),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = teamData,
                 Response = new Exception(expected.ErrorMessage)
@@ -449,7 +476,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected, actual, "Handled invalid operation exception");
-            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedRrObject), "Data logged");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), "Data logged");
         }
 
         [Test]
@@ -469,8 +496,10 @@ namespace EMS.Core.API.Tests
                 Name = _team2.Name,
                 Description = _team2.Description
             };
-            RequestResponseObject expectedRrObject = new RequestResponseObject
+            LogData expectedLog = new LogData
             {
+                CallSide = nameof(TeamsService),
+                CallerMethodName = nameof(_teamsService.DeleteAsync),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = teamData,
                 Response = new Exception("DbContext test Exception")
@@ -481,7 +510,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected, actual, "Handled db update exception");
-            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedRrObject), "Data logged");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), "Data logged");
         }
 
         [Test]
@@ -501,8 +530,10 @@ namespace EMS.Core.API.Tests
                 Name = _team2.Name,
                 Description = _team2.Description
             };
-            RequestResponseObject expectedRrObject = new RequestResponseObject
+            LogData expectedLog = new LogData
             {
+                CallSide = nameof(TeamsService),
+                CallerMethodName = nameof(_teamsService.DeleteAsync),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = teamData,
                 Response = new Exception(expected.ErrorMessage)
@@ -513,7 +544,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected, actual, "Handled exception");
-            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedRrObject), "Data logged");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), "Data logged");
         }
 
         [Test]
@@ -541,8 +572,10 @@ namespace EMS.Core.API.Tests
                 }
             };
 
-            RequestResponseObject expectedRequestResponse = new RequestResponseObject
+            LogData expectedLog = new LogData
             {
+                CallSide = nameof(TeamsService),
+                CallerMethodName = nameof(_teamsService.GetById),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = request,
                 Response = expected
@@ -553,7 +586,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected, actual, "Team data returned as expected");
-            _loggerMock.Verify(m => m.AddLog(expectedRequestResponse), "Data logged");
+            _loggerMock.Verify(m => m.AddLog(expectedLog), "Data logged");
         }
 
         [Test]
@@ -574,8 +607,10 @@ namespace EMS.Core.API.Tests
                 }
             };
 
-            RequestResponseObject expectedRequestResponse = new RequestResponseObject
+            LogData expectedLog = new LogData
             {
+                CallSide = nameof(TeamsService),
+                CallerMethodName = nameof(_teamsService.GetById),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = request,
                 Response = expected
@@ -586,7 +621,7 @@ namespace EMS.Core.API.Tests
 
             // Assert
             Assert.AreEqual(expected, actual, "Not found team response handled");
-            _loggerMock.Verify(m => m.AddLog(expectedRequestResponse), "Data logged");
+            _loggerMock.Verify(m => m.AddLog(expectedLog), "Data logged");
         }
 
         [Test]
@@ -620,8 +655,10 @@ namespace EMS.Core.API.Tests
 
             Empty request = new Empty();
 
-            RequestResponseObject expectedRequestResponse = new RequestResponseObject
+            LogData expectedLog = new LogData
             {
+                CallSide = nameof(TeamsService),
+                CallerMethodName = nameof(_teamsService.GetAll),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = request,
                 Response = expected
@@ -633,7 +670,7 @@ namespace EMS.Core.API.Tests
             // Assert
             Assert.AreEqual(expected.Response, actual.Response, "Response status as expected");
             Assert.AreEqual(expected.Data, actual.Data, "Response status as expected");
-            _loggerMock.Verify(m => m.AddLog(expectedRequestResponse), "Data logged");
+            _loggerMock.Verify(m => m.AddLog(expectedLog), "Data logged");
         }
     }
 }
