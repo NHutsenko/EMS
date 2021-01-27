@@ -8,9 +8,7 @@ option csharp_namespace = "EMS.Core.API";
 package salary;
 
 service Salary{
-	rpc GetSalary(SalaryRequest) returns (ISalaryResponse) {
-
-	}
+	rpc GetSalary(SalaryRequest) returns (ISalaryResponse) { }
 }
 
 message SalaryRequest{
@@ -20,7 +18,7 @@ message SalaryRequest{
 }
 
 message ISalaryResponse {
-	response.BaseResponse response = 1;
+	response.BaseResponse status = 1;
 	repeated SalaryResponse salary_response = 2;
 }
 

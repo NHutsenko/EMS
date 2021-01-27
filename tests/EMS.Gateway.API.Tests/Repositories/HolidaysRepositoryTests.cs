@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;
 
-namespace EMS.Core.API.Tests
+namespace EMS.Core.API.Tests.Repositories
 {
     [ExcludeFromCodeCoverage]
     public class HolidaysRepositoryTests: BaseUnitTest<HolidaysRepository>
@@ -114,7 +114,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => _holidaysRepository.AddAsync(holiday), "Throws argument null exception as expected");
+            Assert.ThrowsAsync<ArgumentException>(() => _holidaysRepository.AddAsync(holiday), "Throws argument null exception as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -176,7 +176,7 @@ namespace EMS.Core.API.Tests
             };
 
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(() => _holidaysRepository.UpdateAsync(holiday), "Throws argument null exception as expected");
+            Assert.ThrowsAsync<ArgumentException>(() => _holidaysRepository.UpdateAsync(holiday), "Throws argument null exception as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 

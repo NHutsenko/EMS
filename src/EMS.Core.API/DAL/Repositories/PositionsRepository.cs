@@ -1,7 +1,6 @@
 ﻿using EMS.Common.Utils.DateTimeUtil;
 using EMS.Core.API.DAL.Repositories.Interfaces;
 using EMS.Core.API.Models;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;

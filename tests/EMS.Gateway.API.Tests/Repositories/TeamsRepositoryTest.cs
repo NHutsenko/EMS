@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;
 
-namespace EMS.Core.API.Tests
+namespace EMS.Core.API.Tests.Repositories
 {
     [ExcludeFromCodeCoverage]
     public class TeamsRepositoryTest : BaseUnitTest<TeamsRepository>

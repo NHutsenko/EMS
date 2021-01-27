@@ -31,7 +31,7 @@ namespace EMS.Core.API.Services
         {
             PeopleResponse response = new PeopleResponse
             {
-                Response = new BaseResponse
+                Status = new BaseResponse
                 {
                     Code = Code.Success,
                     ErrorMessage = string.Empty
@@ -62,7 +62,7 @@ namespace EMS.Core.API.Services
         {
             PersonResponse response = new PersonResponse
             {
-                Response = new BaseResponse
+                Status = new BaseResponse
                 {
                     Code = Code.UnknownError,
                     ErrorMessage = string.Empty
@@ -74,7 +74,7 @@ namespace EMS.Core.API.Services
                 Person person = _peopleRepository.GetById(request.Id);
                 PersonData data = ConvertData(person);
                 response.Data = data;
-                response.Response.Code = Code.Success;
+                response.Status.Code = Code.Success;
                 LogData logData = new LogData
                 {
                     CallSide = nameof(PeopleService),
@@ -89,8 +89,8 @@ namespace EMS.Core.API.Services
             catch (NullReferenceException nrex)
             {
                 string error = $"Some data has not found (type: {nrex.GetType().Name})";
-                response.Response.ErrorMessage = error;
-                response.Response.Code = Code.DataError;
+                response.Status.ErrorMessage = error;
+                response.Status.Code = Code.DataError;
                 LogData logData = new LogData
                 {
                     CallSide = nameof(PeopleService),
@@ -104,8 +104,8 @@ namespace EMS.Core.API.Services
             }
             catch (Exception ex)
             {
-                response.Response.ErrorMessage = ex.Message;
-                response.Response.Code = Code.UnknownError;
+                response.Status.ErrorMessage = ex.Message;
+                response.Status.Code = Code.UnknownError;
                 LogData logData = new LogData
                 {
                     CallSide = nameof(PeopleService),

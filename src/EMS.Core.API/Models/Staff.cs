@@ -1,7 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Runtime.Serialization;
 using EMS.Common.Models.BaseModel;
 
 namespace EMS.Core.API.Models

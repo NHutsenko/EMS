@@ -9,7 +9,7 @@ using EMS.Core.API.Tests.Mock;
 using Moq;
 using NUnit.Framework;
 
-namespace EMS.Core.API.Tests
+namespace EMS.Core.API.Tests.Repositories
 {
     [ExcludeFromCodeCoverage]
     public class MotivationModificatorRepositoryTests : BaseUnitTest<MotivationModificatorRepository>

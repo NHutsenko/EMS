@@ -10,29 +10,17 @@ package people;
 
 
 service People {
-	rpc GetAll(google.protobuf.Empty) returns (PeopleResponse) {
+	rpc GetAll(google.protobuf.Empty) returns (PeopleResponse) { }
 
-	}
+	rpc GetById(PersonRequest) returns (PersonResponse) { }
 
-	rpc GetById(PersonRequest) returns (PersonResponse) {
+	rpc AddAsync(PersonData) returns (response.BaseResponse) { }
 
-	}
+	rpc UpdateAsync(PersonData) returns (response.BaseResponse) { }
 
-	rpc AddAsync(PersonData) returns (response.BaseResponse) {
+	rpc AddContactAsync(ContactData)  returns (response.BaseResponse) { }
 
-	}
-
-	rpc UpdateAsync(PersonData) returns (response.BaseResponse) {
-
-	}
-
-	rpc AddContactAsync(ContactData)  returns (response.BaseResponse) {
-
-	}
-
-	rpc AddPhotoAsync(PhotoData) returns (response.BaseResponse) {
-
-	}
+	rpc AddPhotoAsync(PhotoData) returns (response.BaseResponse) { }
 }
 
 message PersonRequest{
@@ -65,11 +53,11 @@ message PhotoData {
 }
 
 message PersonResponse {
-	response.BaseResponse response = 1;
+	response.BaseResponse status = 1;
 	PersonData data = 2;
 }
 
 message PeopleResponse {
-	response.BaseResponse response = 1;
+	response.BaseResponse status = 1;
 	repeated PersonData data = 2;
 }

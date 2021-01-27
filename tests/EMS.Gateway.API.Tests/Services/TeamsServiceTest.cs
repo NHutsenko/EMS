@@ -5,13 +5,11 @@ using EMS.Core.API.Services;
 using EMS.Core.API.Tests.Mock;
 using Google.Protobuf.WellKnownTypes;
 using NUnit.Framework;
-using EMS.Common.Models.BaseModel;
 using Moq;
 using System;
-using Microsoft.EntityFrameworkCore;
 using EMS.Common.Logger.Models;
 
-namespace EMS.Core.API.Tests
+namespace EMS.Core.API.Tests.Services
 {
     [ExcludeFromCodeCoverage]
     public class TeamsServiceTest : BaseUnitTest<TeamsService>
@@ -558,7 +556,7 @@ namespace EMS.Core.API.Tests
 
             TeamResponse expected = new TeamResponse
             {
-                Response = new BaseResponse
+                Status = new BaseResponse
                 {
                     Code = Code.Success,
                     ErrorMessage = string.Empty
@@ -600,7 +598,7 @@ namespace EMS.Core.API.Tests
 
             TeamResponse expected = new TeamResponse
             {
-                Response = new BaseResponse
+                Status = new BaseResponse
                 {
                     Code = Code.DataError,
                     ErrorMessage = "Requested team not found"
@@ -630,7 +628,7 @@ namespace EMS.Core.API.Tests
             // Arrange
             TeamsResponse expected = new TeamsResponse
             {
-                Response = new BaseResponse
+                Status = new BaseResponse
                 {
                     Code = Code.Success,
                     ErrorMessage = string.Empty
@@ -668,7 +666,7 @@ namespace EMS.Core.API.Tests
             TeamsResponse actual = _teamsService.GetAll(request, null).Result;
 
             // Assert
-            Assert.AreEqual(expected.Response, actual.Response, "Response status as expected");
+            Assert.AreEqual(expected.Status, actual.Status, "Response status as expected");
             Assert.AreEqual(expected.Data, actual.Data, "Response status as expected");
             _loggerMock.Verify(m => m.AddLog(expectedLog), Times.Once);
         }

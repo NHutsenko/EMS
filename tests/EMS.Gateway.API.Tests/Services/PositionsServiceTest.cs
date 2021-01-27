@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using EMS.Common.Logger.Models;
 using EMS.Common.Protos;
 using EMS.Core.API.Models;
@@ -13,7 +9,7 @@ using Google.Protobuf.WellKnownTypes;
 using Moq;
 using NUnit.Framework;
 
-namespace EMS.Core.API.Tests
+namespace EMS.Core.API.Tests.Services
 {
     [ExcludeFromCodeCoverage]
     public class PositionsServiceTest: BaseUnitTest<PositionsService>
@@ -582,7 +578,7 @@ namespace EMS.Core.API.Tests
             // Arrange
             PositionsResponse expectedResponse = new PositionsResponse
             {
-                Response = new BaseResponse
+                Status = new BaseResponse
                 {
                     Code = Code.Success,
                     ErrorMessage = string.Empty
@@ -629,7 +625,7 @@ namespace EMS.Core.API.Tests
             // Arrange
             PositionResponse expectedResponse = new PositionResponse
             {
-                Response = new BaseResponse
+                Status = new BaseResponse
                 {
                     Code = Code.Success,
                     ErrorMessage = string.Empty
@@ -672,7 +668,7 @@ namespace EMS.Core.API.Tests
             // Arrange
             PositionResponse expectedResponse = new PositionResponse
             {
-                Response = new BaseResponse
+                Status = new BaseResponse
                 {
                     Code = Code.DataError,
                     ErrorMessage = "Requested position not found"

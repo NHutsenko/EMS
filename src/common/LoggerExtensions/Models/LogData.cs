@@ -9,7 +9,7 @@ namespace EMS.Common.Logger.Models
     {
         public string CallSide { get; set; }
         public string CallerMethodName { get; set; }
-        public string AppName => Assembly.GetCallingAssembly().ManifestModule.Name;
+        public static string AppName => Assembly.GetCallingAssembly().ManifestModule.Name;
         public DateTime CreatedOn { get; set; }
         public object Request { get; set; }
         public object Response { get; set; }

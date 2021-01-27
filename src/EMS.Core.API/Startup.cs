@@ -73,6 +73,7 @@ namespace EMS.Core.API
                 endpoints.MapGrpcService<TeamsService>();
                 endpoints.MapGrpcService<PeopleService>();
                 endpoints.MapGrpcService<PositionsService>();
+                endpoints.MapGrpcService<HolidaysService>();
 
                 endpoints.MapGet("/alive", async context =>
 				{

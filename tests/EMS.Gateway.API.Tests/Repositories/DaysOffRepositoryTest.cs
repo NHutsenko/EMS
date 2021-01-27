@@ -11,7 +11,7 @@ using Moq;
 using NUnit.Framework;
 using EMS.Core.API.Tests.Mock;
 
-namespace EMS.Core.API.Tests
+namespace EMS.Core.API.Tests.Repositories
 {
     [ExcludeFromCodeCoverage]
     public class DaysOffRepositoryTest : BaseUnitTest<DayOffRepository>

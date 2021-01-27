@@ -9,25 +9,15 @@ option csharp_namespace = "EMS.Core.API";
 package positions;
 
 service Positions {
-	rpc GetAll(google.protobuf.Empty) returns (PositionsResponse) {
+	rpc GetAll(google.protobuf.Empty) returns (PositionsResponse) { }
 
-	}
+	rpc GetById(PositionRequest) returns (PositionResponse) { }
 
-	rpc GetById(PositionRequest) returns (PositionResponse) {
+	rpc AddAsync(PositionData) returns (response.BaseResponse) { }
 
-	}
+	rpc UpdateAsync(PositionData) returns (response.BaseResponse) { }
 
-	rpc AddAsync(PositionData) returns (response.BaseResponse) {
-
-	}
-
-	rpc UpdateAsync(PositionData) returns (response.BaseResponse) {
-
-	}
-
-	rpc DeleteAsync(PositionData) returns (response.BaseResponse) {
-
-	}
+	rpc DeleteAsync(PositionData) returns (response.BaseResponse) { }
 }
 
 message PositionRequest{
@@ -35,12 +25,12 @@ message PositionRequest{
 }
 
 message PositionResponse{
-	response.BaseResponse response = 1;
+	response.BaseResponse status = 1;
 	PositionData data = 2;
 }
 
 message PositionsResponse{
-	response.BaseResponse response = 1;
+	response.BaseResponse status = 1;
 	repeated PositionData data = 2;
 }
 

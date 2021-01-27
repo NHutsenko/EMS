@@ -9,25 +9,15 @@ option csharp_namespace = "EMS.Core.API";
 package teams;
 
 service Teams{
-	rpc GetAll(google.protobuf.Empty) returns (TeamsResponse) {
+	rpc GetAll(google.protobuf.Empty) returns (TeamsResponse) { }
 
-	}
+	rpc GetById(TeamRequest) returns (TeamResponse) { }
 
-	rpc GetById(TeamRequest) returns(TeamResponse) {
+	rpc AddAsync(TeamData) returns (response.BaseResponse) { }
 
-	}
+	rpc UpdateAsync(TeamData) returns (response.BaseResponse) { }
 
-	rpc AddAsync(TeamData) returns (response.BaseResponse) {
-
-	}
-
-	rpc UpdateAsync(TeamData) returns (response.BaseResponse) {
-
-	}
-
-	rpc DeleteAsync(TeamData) returns (response.BaseResponse) {
-
-	}
+	rpc DeleteAsync(TeamData) returns (response.BaseResponse) { }
 }
 
 message TeamData {
@@ -42,11 +32,11 @@ message TeamRequest {
 }
 
 message TeamsResponse{
-	response.BaseResponse response = 1;
+	response.BaseResponse status = 1;
 	repeated TeamData data = 2;
 }
 
 message TeamResponse{
-	response.BaseResponse response = 1;
+	response.BaseResponse status = 1;
 	TeamData data = 2;
 }

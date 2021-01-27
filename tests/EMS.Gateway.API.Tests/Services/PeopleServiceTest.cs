@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using EMS.Common.Logger.Models;
-using EMS.Common.Models.BaseModel;
 using EMS.Common.Protos;
 using EMS.Core.API.Models;
 using EMS.Core.API.Services;
@@ -11,7 +10,7 @@ using Google.Protobuf.WellKnownTypes;
 using Moq;
 using NUnit.Framework;
 
-namespace EMS.Core.API.Tests
+namespace EMS.Core.API.Tests.Services
 {
     [ExcludeFromCodeCoverage]
     public class PeopleServiceTest : BaseUnitTest<PeopleService>
@@ -88,7 +87,7 @@ namespace EMS.Core.API.Tests
             // Arrange
             PeopleResponse expected = new PeopleResponse
             {
-                Response = new BaseResponse
+                Status = new BaseResponse
                 {
                     Code = Code.Success,
                     ErrorMessage = string.Empty
@@ -129,8 +128,8 @@ namespace EMS.Core.API.Tests
             PeopleResponse actual = _peopleService.GetAll(new Empty(), null).Result;
 
             // Assert
-            Assert.AreEqual(expected.Response.Code, actual.Response.Code, "Code as expected");
-            Assert.AreEqual(expected.Response.ErrorMessage, actual.Response.ErrorMessage, "Error message as expected");
+            Assert.AreEqual(expected.Status.Code, actual.Status.Code, "Code as expected");
+            Assert.AreEqual(expected.Status.ErrorMessage, actual.Status.ErrorMessage, "Error message as expected");
             CollectionAssert.AreEqual(expected.Data, actual.Data, "Data as expected");
             _loggerMock.Verify(mocks => mocks.AddLog(expectedLog), Times.Once);
         }
@@ -141,7 +140,7 @@ namespace EMS.Core.API.Tests
             // Arrange
             PersonResponse expected = new PersonResponse
             {
-                Response = new BaseResponse
+                Status = new BaseResponse
                 {
                     Code = Code.Success,
                     ErrorMessage = string.Empty
@@ -186,8 +185,8 @@ namespace EMS.Core.API.Tests
             PersonResponse actual = _peopleService.GetById(request, null).Result;
 
             // Assert
-            Assert.AreEqual(expected.Response.Code, actual.Response.Code, "Code as expected");
-            Assert.AreEqual(expected.Response.ErrorMessage, actual.Response.ErrorMessage, "Error message as expected");
+            Assert.AreEqual(expected.Status.Code, actual.Status.Code, "Code as expected");
+            Assert.AreEqual(expected.Status.ErrorMessage, actual.Status.ErrorMessage, "Error message as expected");
             Assert.AreEqual(expected.Data, actual.Data, "Data as expected");
             _loggerMock.Verify(mocks => mocks.AddLog(expectedLog), Times.Once);
         }
@@ -198,7 +197,7 @@ namespace EMS.Core.API.Tests
             // Arrange
             PersonResponse expected = new PersonResponse
             {
-                Response = new BaseResponse
+                Status = new BaseResponse
                 {
                     Code = Code.DataError,
                     ErrorMessage = "Some data has not found (type: NullReferenceException)"
@@ -221,8 +220,8 @@ namespace EMS.Core.API.Tests
             PersonResponse actual = _peopleService.GetById(request, null).Result;
 
             // Assert
-            Assert.AreEqual(expected.Response.Code, actual.Response.Code, "Code as expected");
-            Assert.AreEqual(expected.Response.ErrorMessage, actual.Response.ErrorMessage, "Error message as expected");
+            Assert.AreEqual(expected.Status.Code, actual.Status.Code, "Code as expected");
+            Assert.AreEqual(expected.Status.ErrorMessage, actual.Status.ErrorMessage, "Error message as expected");
             Assert.AreEqual(expected.Data, actual.Data, "Data as expected");
             _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
         }
@@ -233,7 +232,7 @@ namespace EMS.Core.API.Tests
             // Arrange
             PersonResponse expected = new PersonResponse
             {
-                Response = new BaseResponse
+                Status = new BaseResponse
                 {
                     Code = Code.UnknownError,
                     ErrorMessage = "Value cannot be null. (Parameter 'value')"
@@ -262,8 +261,8 @@ namespace EMS.Core.API.Tests
             PersonResponse actual = _peopleService.GetById(request, null).Result;
 
             // Assert
-            Assert.AreEqual(expected.Response.Code, actual.Response.Code, "Code as expected");
-            Assert.AreEqual(expected.Response.ErrorMessage, actual.Response.ErrorMessage, "Error message as expected");
+            Assert.AreEqual(expected.Status.Code, actual.Status.Code, "Code as expected");
+            Assert.AreEqual(expected.Status.ErrorMessage, actual.Status.ErrorMessage, "Error message as expected");
             Assert.AreEqual(expected.Data, actual.Data, "Data as expected");
             _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
         }

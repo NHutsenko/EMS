@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using EMS.Common.Logger.Models;
-using EMS.Common.Models.BaseModel;
 using EMS.Common.Protos;
 using EMS.Core.API.Models;
 using EMS.Core.API.Services;
@@ -11,7 +9,7 @@ using Google.Protobuf.WellKnownTypes;
 using Moq;
 using NUnit.Framework;
 
-namespace EMS.Core.API.Tests
+namespace EMS.Core.API.Tests.Repositories
 {
     [ExcludeFromCodeCoverage]
     public class SalaryServiceTest : BaseUnitTest<SalaryService>
@@ -76,7 +74,7 @@ namespace EMS.Core.API.Tests
 
             ISalaryResponse salaryResponse = new ISalaryResponse
             {
-                Response = new BaseResponse
+                Status = new BaseResponse
                 {
                     Code = Code.Success,
                     ErrorMessage = string.Empty
@@ -123,7 +121,7 @@ namespace EMS.Core.API.Tests
 
             ISalaryResponse salaryResponse = new ISalaryResponse
             {
-                Response = new BaseResponse
+                Status = new BaseResponse
                 {
                     Code = Code.Success,
                     ErrorMessage = string.Empty
@@ -174,7 +172,7 @@ namespace EMS.Core.API.Tests
             _dbContext.Holidays.Add(holiday);
             ISalaryResponse salaryResponse = new ISalaryResponse
             {
-                Response = new BaseResponse
+                Status = new BaseResponse
                 {
                     Code = Code.Success,
                     ErrorMessage = string.Empty
@@ -218,7 +216,7 @@ namespace EMS.Core.API.Tests
 
             ISalaryResponse salaryResponse = new ISalaryResponse
             {
-                Response = new BaseResponse
+                Status = new BaseResponse
                 {
                     Code = Code.Success,
                     ErrorMessage = string.Empty
@@ -274,7 +272,7 @@ namespace EMS.Core.API.Tests
             };
             ISalaryResponse salaryResponse = new ISalaryResponse
             {
-                Response = new BaseResponse
+                Status = new BaseResponse
                 {
                     Code = Code.Success,
                     ErrorMessage = string.Empty
@@ -325,7 +323,7 @@ namespace EMS.Core.API.Tests
 
             ISalaryResponse salaryResponse = new ISalaryResponse
             {
-                Response = new BaseResponse
+                Status = new BaseResponse
                 {
                     Code = Code.Success,
                     ErrorMessage = string.Empty
@@ -376,7 +374,7 @@ namespace EMS.Core.API.Tests
 
             ISalaryResponse salaryResponse = new ISalaryResponse
             {
-                Response = new BaseResponse
+                Status = new BaseResponse
                 {
                     Code = Code.Success,
                     ErrorMessage = string.Empty
@@ -426,7 +424,7 @@ namespace EMS.Core.API.Tests
             };
             ISalaryResponse salaryResponse = new ISalaryResponse
             {
-                Response = new BaseResponse
+                Status = new BaseResponse
                 {
                     Code = Code.Success,
                     ErrorMessage = string.Empty
@@ -470,7 +468,7 @@ namespace EMS.Core.API.Tests
 
             ISalaryResponse salaryResponse = new ISalaryResponse
             {
-                Response = new BaseResponse
+                Status = new BaseResponse
                 {
                     Code = Code.Success,
                     ErrorMessage = string.Empty
@@ -513,7 +511,7 @@ namespace EMS.Core.API.Tests
 
             ISalaryResponse salaryResponse = new ISalaryResponse
             {
-                Response = new BaseResponse
+                Status = new BaseResponse
                 {
                     Code = Code.Success,
                     ErrorMessage = string.Empty
@@ -552,8 +550,8 @@ namespace EMS.Core.API.Tests
             ISalaryResponse actual = _salaryService.GetSalary(request, null).Result;
 
             // Assert
-            Assert.AreEqual(Code.DataError, actual.Response.Code, "Code returned as expected");
-            Assert.AreEqual("Some data has not found (type: NullReferenceException)", actual.Response.ErrorMessage, "Error message as expected");
+            Assert.AreEqual(Code.DataError, actual.Status.Code, "Code returned as expected");
+            Assert.AreEqual("Some data has not found (type: NullReferenceException)", actual.Status.ErrorMessage, "Error message as expected");
             _loggerMock.Verify(m => m.AddErrorLog(expectedLog), Times.Once);
         }
 
@@ -562,9 +560,11 @@ namespace EMS.Core.API.Tests
         {
             // Arrange
             _dbContext.Positions = null;
-            SalaryRequest request = new SalaryRequest();
-            request.StartDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc));
-            request.EndDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1).AddDays(-1));
+            SalaryRequest request = new SalaryRequest
+            {
+                StartDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc)),
+                EndDate = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1).AddDays(-1))
+            };
             LogData expectedLog = new LogData
             {
                 CallSide = nameof(SalaryService),
@@ -578,8 +578,8 @@ namespace EMS.Core.API.Tests
             ISalaryResponse actual = _salaryService.GetSalary(request, null).Result;
 
             // Assert
-            Assert.AreEqual(Code.UnknownError, actual.Response.Code, "Code returned as expected");
-            Assert.AreEqual("Value cannot be null. (Parameter 'source')", actual.Response.ErrorMessage, "Error message as expected");
+            Assert.AreEqual(Code.UnknownError, actual.Status.Code, "Code returned as expected");
+            Assert.AreEqual("Value cannot be null. (Parameter 'source')", actual.Status.ErrorMessage, "Error message as expected");
             _loggerMock.Verify(m => m.AddErrorLog(expectedLog), Times.Once);
         }
     }

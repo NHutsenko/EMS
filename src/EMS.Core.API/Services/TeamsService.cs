@@ -356,7 +356,7 @@ namespace EMS.Core.API.Services
 
             TeamsResponse response = new TeamsResponse
             {
-                Response = new BaseResponse
+                Status = new BaseResponse
                 {
                     Code = Code.Success,
                     ErrorMessage = string.Empty
@@ -391,7 +391,7 @@ namespace EMS.Core.API.Services
             Team team = _teamsRepository.Get(request.Id);
             TeamResponse response = new TeamResponse
             {
-                Response = new BaseResponse
+                Status = new BaseResponse
                 {
                     Code = Code.Success,
                     ErrorMessage = string.Empty
@@ -400,8 +400,8 @@ namespace EMS.Core.API.Services
 
             if (team is null)
             {
-                response.Response.Code = Code.DataError;
-                response.Response.ErrorMessage = "Requested team not found";
+                response.Status.Code = Code.DataError;
+                response.Status.ErrorMessage = "Requested team not found";
             }
             else
             {

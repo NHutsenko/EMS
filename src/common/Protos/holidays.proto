@@ -1,0 +1,39 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "response.proto";
+
+option csharp_namespace = "EMS.Core.API";
+
+package holidays;
+
+service Holidays {
+	rpc AddAsync(HolidayData) returns (response.BaseResponse) { }
+
+	rpc UpdateAsync(HolidayData) returns (response.BaseResponse) { }
+
+	rpc DeleteAsync(HolidayData) returns (response.BaseResponse) { }
+
+	rpc GetAll(google.protobuf.Empty) returns (HolidaysResponse) { }
+
+	rpc GetByDateRange(DateRangeRequest) returns (HolidaysResponse) { }
+}
+
+message DateRangeRequest {
+	google.protobuf.Timestamp from = 1;
+	google.protobuf.Timestamp to = 2;
+}
+
+message HolidaysResponse {
+	response.BaseResponse status = 1;
+	repeated HolidayData data = 2;
+}
+
+message HolidayData {
+	int64 id = 1;
+	google.protobuf.Timestamp created_on = 2;
+	google.protobuf.Timestamp holiday_date = 3;
+	google.protobuf.Timestamp to_do_date = 4;
+	string description = 5;
+}

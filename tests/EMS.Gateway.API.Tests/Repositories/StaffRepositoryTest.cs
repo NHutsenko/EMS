@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using EMS.Core.API.Tests.Mock;
 
-namespace EMS.Core.API.Tests
+namespace EMS.Core.API.Tests.Repositories
 {
     [ExcludeFromCodeCoverage]
     public class StaffRepositoryTest : BaseUnitTest<StaffRepository>

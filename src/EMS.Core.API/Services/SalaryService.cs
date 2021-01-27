@@ -47,7 +47,7 @@ namespace EMS.Core.API.Services
         {
             ISalaryResponse response = new ISalaryResponse()
             {
-                Response = new BaseResponse { Code = Code.Success, ErrorMessage = string.Empty }
+                Status = new BaseResponse { Code = Code.Success, ErrorMessage = string.Empty }
             };
             try
             {
@@ -73,8 +73,8 @@ namespace EMS.Core.API.Services
                 };
 
                 _logger.AddErrorLog(logData);
-                response.Response.ErrorMessage = $"Some data has not found (type: {nrex.GetType().Name})";
-                response.Response.Code = Code.DataError;
+                response.Status.ErrorMessage = $"Some data has not found (type: {nrex.GetType().Name})";
+                response.Status.Code = Code.DataError;
             }
             catch (Exception ex)
             {
@@ -88,8 +88,8 @@ namespace EMS.Core.API.Services
                 };
 
                 _logger.AddErrorLog(logData);
-                response.Response.ErrorMessage = ex.Message;
-                response.Response.Code = Code.UnknownError;
+                response.Status.ErrorMessage = ex.Message;
+                response.Status.Code = Code.UnknownError;
             }
 
             LogData log = new LogData
@@ -110,8 +110,10 @@ namespace EMS.Core.API.Services
         {
             IQueryable<DayOff> dayOffs = _dayOffRepository.GetByDateRangeAndPersonId(startDate, endDate, staff.First().PersonId.Value);
             IQueryable<Holiday> holidays = _holidaysRepository.GetByDateRange(startDate, endDate);
-            SalaryResponse response = new SalaryResponse();
-            response.StartedOn = Timestamp.FromDateTime(staff.First().CreatedOn.ToUniversalTime());
+            SalaryResponse response = new SalaryResponse
+            {
+                StartedOn = Timestamp.FromDateTime(staff.First().CreatedOn.ToUniversalTime())
+            };
             double workHours = GetWorkHours();
 
             for (DateTime current = startDate; current <= endDate; current = current.AddDays(1))

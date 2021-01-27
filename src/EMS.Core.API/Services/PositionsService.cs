@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EMS.Common.Logger;
@@ -347,7 +346,7 @@ namespace EMS.Core.API.Services
             IQueryable<Position> positions = _positionsRepository.GetAll();
             PositionsResponse response = new PositionsResponse
             {
-                Response = new BaseResponse
+                Status = new BaseResponse
                 {
                     Code = Code.Success,
                     ErrorMessage = string.Empty
@@ -383,7 +382,7 @@ namespace EMS.Core.API.Services
             Position position = _positionsRepository.Get(request.PositionId);
             PositionResponse response = new PositionResponse
             {
-                Response = new BaseResponse
+                Status = new BaseResponse
                 {
                     Code = Code.Success,
                     ErrorMessage = string.Empty
@@ -391,8 +390,8 @@ namespace EMS.Core.API.Services
             };
             if (position is null)
             {
-                response.Response.Code = Code.DataError;
-                response.Response.ErrorMessage = "Requested position not found";
+                response.Status.Code = Code.DataError;
+                response.Status.ErrorMessage = "Requested position not found";
             }
             else
             {
