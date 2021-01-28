@@ -28,10 +28,10 @@ message SalaryResponse {
 	double manager_id = 3;
 	int64 current_position = 4;
 	google.protobuf.Timestamp started_on = 5;
-	repeated DayOffData day_offs = 6;
+	repeated DayOffInfo day_offs = 6;
 }
 
-message DayOffData{
+message DayOffInfo{
 	int32 day_off_type = 1;
 	float hours = 2;
 }

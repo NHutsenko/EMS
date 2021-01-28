@@ -114,7 +114,7 @@ namespace EMS.Core.API.Tests.Repositories
             };
 
             // Assert
-            Assert.ThrowsAsync<DbUpdateException>(() => _dayOffRepository.AddAsync(dayOff), "Throws exception as expected");
+            Assert.ThrowsAsync<ArgumentException>(() => _dayOffRepository.AddAsync(dayOff), "Throws exception as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -131,7 +131,7 @@ namespace EMS.Core.API.Tests.Repositories
             };
 
             // Assert
-            Assert.ThrowsAsync<DbUpdateException>(() => _dayOffRepository.AddAsync(dayOff), "Throws exception as expected");
+            Assert.ThrowsAsync<ArgumentException>(() => _dayOffRepository.AddAsync(dayOff), "Throws exception as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -148,7 +148,7 @@ namespace EMS.Core.API.Tests.Repositories
             };
 
             // Assert
-            Assert.ThrowsAsync<DbUpdateException>(() => _dayOffRepository.AddAsync(dayOff), "Throws exception as expected");
+            Assert.ThrowsAsync<ArgumentException>(() => _dayOffRepository.AddAsync(dayOff), "Throws exception as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -165,7 +165,7 @@ namespace EMS.Core.API.Tests.Repositories
             };
 
             // Assert
-            Assert.ThrowsAsync<DbUpdateException>(() => _dayOffRepository.AddAsync(dayOff), "Throws exception as expected");
+            Assert.ThrowsAsync<ArgumentException>(() => _dayOffRepository.AddAsync(dayOff), "Throws exception as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -250,7 +250,7 @@ namespace EMS.Core.API.Tests.Repositories
             };
 
             // Assert
-            Assert.ThrowsAsync<DbUpdateException>(() => _dayOffRepository.UpdateAsync(dayOff), "Throws exception as expected");
+            Assert.ThrowsAsync<ArgumentException>(() => _dayOffRepository.UpdateAsync(dayOff), "Throws exception as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -268,7 +268,7 @@ namespace EMS.Core.API.Tests.Repositories
             };
 
             // Assert
-            Assert.ThrowsAsync<DbUpdateException>(() => _dayOffRepository.UpdateAsync(dayOff), "Throws exception as expected");
+            Assert.ThrowsAsync<ArgumentException>(() => _dayOffRepository.UpdateAsync(dayOff), "Throws exception as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
@@ -286,7 +286,7 @@ namespace EMS.Core.API.Tests.Repositories
             };
 
             // Assert
-            Assert.ThrowsAsync<DbUpdateException>(() => _dayOffRepository.UpdateAsync(dayOff), "Throws exception as expected");
+            Assert.ThrowsAsync<ArgumentException>(() => _dayOffRepository.UpdateAsync(dayOff), "Throws exception as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 

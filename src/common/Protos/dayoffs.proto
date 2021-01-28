@@ -1,0 +1,22 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "response.proto";
+
+option csharp_namespace = "EMS.Core.API";
+
+package day_offs;
+
+service DayOffs {
+
+}
+
+message DayOffData {
+	int64 id = 1;
+	google.protobuf.Timestamp createdOn = 2;
+	int32 day_off_type = 3;
+	double hours = 4;
+	bool is_paid = 5;
+	int64 person_id = 6;
+}

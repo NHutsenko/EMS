@@ -21,15 +21,15 @@ namespace EMS.Core.API.DAL.Repositories
             }
             if(dayOff.PersonId == 0)
             {
-                throw new DbUpdateException("Cannot add day off record without specified person");
+                throw new ArgumentException("Cannot add day off record without specified person");
             }
             if(!IsRelevantTime(dayOff.Hours))
             {
-                throw new DbUpdateException("Cannot add day off record without specified time");
+                throw new ArgumentException("Cannot add day off record without specified time");
             }
             if(dayOff.CreatedOn == DateTime.MinValue)
             {
-                throw new DbUpdateException("Cannot add day off record without specified date");
+                throw new ArgumentException("Cannot add day off record without specified date");
             }
             if (_context.DaysOff.Any(e => e.CreatedOn.Date == dayOff.CreatedOn.Date && e.PersonId == dayOff.PersonId))
             {
@@ -47,11 +47,11 @@ namespace EMS.Core.API.DAL.Repositories
             }
             if (!IsRelevantTime(dayOff.Hours))
             {
-                throw new DbUpdateException("Cannot update day off record without specified time");
+                throw new ArgumentException("Cannot update day off record without specified time");
             }
             if (dayOff.CreatedOn == DateTime.MinValue)
             {
-                throw new DbUpdateException("Cannot add day off record without specified date");
+                throw new ArgumentException("Cannot add day off record without specified date");
             }
             _context.DaysOff.Update(dayOff);
             return await _context.SaveChangesAsync();

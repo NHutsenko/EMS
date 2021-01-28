@@ -142,7 +142,7 @@ namespace EMS.Core.API.Services
                         else
                         {
                             DayOff dayOff = dayOffs.First(e => e.CreatedOn.Date == current.Date);
-                            response.DayOffs.Add(new DayOffData
+                            response.DayOffs.Add(new DayOffInfo
                             {
                                 DayOffType = (int)dayOff.DayOffType,
                                 Hours = dayOff.Hours

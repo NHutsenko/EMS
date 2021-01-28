@@ -162,12 +162,30 @@ namespace EMS.Core.API.Services
 
                 return response;
             }
+            catch (NullReferenceException nrex)
+            {
+                LogData logData = new LogData
+                {
+                    CallSide = nameof(HolidaysService),
+                    CallerMethodName = nameof(DeleteAsync),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = nrex
+                };
+                _logger.AddErrorLog(logData);
+
+                return new BaseResponse
+                {
+                    Code = Code.DataError,
+                    ErrorMessage = nrex.Message
+                };
+            }
             catch (InvalidOperationException ioex)
             {
                 LogData logData = new LogData
                 {
                     CallSide = nameof(HolidaysService),
-                    CallerMethodName = nameof(UpdateAsync),
+                    CallerMethodName = nameof(DeleteAsync),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = ioex
@@ -185,7 +203,7 @@ namespace EMS.Core.API.Services
                 LogData logData = new LogData
                 {
                     CallSide = nameof(HolidaysService),
-                    CallerMethodName = nameof(UpdateAsync),
+                    CallerMethodName = nameof(DeleteAsync),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = duex
@@ -194,8 +212,8 @@ namespace EMS.Core.API.Services
 
                 return new BaseResponse
                 {
-                    Code = Code.DataError,
-                    ErrorMessage = "An error occured while deleting team" 
+                    Code = Code.DbError,
+                    ErrorMessage = "An error occured while deleting holiday" 
                 };
             }
             catch (Exception ex)
@@ -203,7 +221,7 @@ namespace EMS.Core.API.Services
                 LogData logData = new LogData
                 {
                     CallSide = nameof(HolidaysService),
-                    CallerMethodName = nameof(UpdateAsync),
+                    CallerMethodName = nameof(DeleteAsync),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = ex
@@ -212,7 +230,7 @@ namespace EMS.Core.API.Services
 
                 return new BaseResponse
                 {
-                    Code = Code.DataError,
+                    Code = Code.UnknownError,
                     ErrorMessage = ex.Message
                 };
             }

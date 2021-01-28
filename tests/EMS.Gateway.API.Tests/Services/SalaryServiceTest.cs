@@ -257,7 +257,7 @@ namespace EMS.Core.API.Tests.Services
                 Id = 1,
                 CreatedOn = new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc)
             };
-            expected.DayOffs.Add(new DayOffData
+            expected.DayOffs.Add(new DayOffInfo
             {
                 DayOffType = (int)dayOff.DayOffType,
                 Hours = dayOff.Hours
@@ -307,7 +307,7 @@ namespace EMS.Core.API.Tests.Services
                 Id = 1,
                 CreatedOn = new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc)
             };
-            expected.DayOffs.Add(new DayOffData
+            expected.DayOffs.Add(new DayOffInfo
             {
                 DayOffType = (int)dayOff.DayOffType,
                 Hours = dayOff.Hours
@@ -358,7 +358,7 @@ namespace EMS.Core.API.Tests.Services
                 Id = 1,
                 CreatedOn = new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc)
             };
-            expected.DayOffs.Add(new DayOffData
+            expected.DayOffs.Add(new DayOffInfo
             {
                 DayOffType = (int)dayOff.DayOffType,
                 Hours = dayOff.Hours
@@ -409,7 +409,7 @@ namespace EMS.Core.API.Tests.Services
                 Id = 1,
                 CreatedOn = new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc)
             };
-            expected.DayOffs.Add(new DayOffData
+            expected.DayOffs.Add(new DayOffInfo
             {
                 DayOffType = (int)dayOff.DayOffType,
                 Hours = dayOff.Hours

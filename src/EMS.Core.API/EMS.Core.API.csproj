@@ -30,6 +30,7 @@
     <Protobuf Include="../common/Protos/teams.proto" Link="Protos/teams.proto" GrpcServices="Server" />
     <Protobuf Include="../common/Protos/positions.proto" Link="Protos/positions.proto" GrpcServices="Server" />
     <Protobuf Include="../common/Protos/holidays.proto" Link="Protos/holidays.proto" GrpcServices="Server" />
+    <Protobuf Include="../common/Protos/dayoffs.proto" Link="Protos/dayoffs.proto" GrpcServices="Server" />
   </ItemGroup>
 
 </Project>

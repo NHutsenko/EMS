@@ -574,7 +574,7 @@ namespace EMS.Core.API.Tests.Services
                 CallerMethodName = nameof(_holidaysService.DeleteAsync),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = request,
-                Response = new Exception(expectedResponse.ErrorMessage)
+                Response = expectedResponse
             };
 
             // Act
