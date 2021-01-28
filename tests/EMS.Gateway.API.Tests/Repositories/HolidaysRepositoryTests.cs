@@ -6,7 +6,6 @@ using System.Threading;
 using EMS.Core.API.DAL.Repositories;
 using EMS.Core.API.Models;
 using EMS.Core.API.Tests.Mock;
-using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;
 
@@ -29,7 +28,7 @@ namespace EMS.Core.API.Tests.Repositories
                 Id = 1,
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Description = "Test 1",
-                HolidayDate = new DateTime(2020, 1, 7)
+                HolidayDate = new DateTime(2021, 1, 7)
             };
 
             _holiday2 = new Holiday
@@ -37,7 +36,7 @@ namespace EMS.Core.API.Tests.Repositories
                 Id = 2,
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Description = "Test 2",
-                HolidayDate = new DateTime(2020, 4, 20)
+                HolidayDate = new DateTime(2021, 4, 20)
             };
             _dbContext.Holidays.Add(_holiday1);
             _dbContext.Holidays.Add(_holiday2);
@@ -56,8 +55,8 @@ namespace EMS.Core.API.Tests.Repositories
         public void GetByDateRange_should_return_all_holidays_from_db_by_date_range()
         {
             // Arrange
-            DateTime startDate = new DateTime(2020, 4, 1);
-            DateTime endDate = new DateTime(2020, 4, 25);
+            DateTime startDate = new DateTime(2021, 4, 1);
+            DateTime endDate = new DateTime(2021, 4, 25);
 
             // Assert
             CollectionAssert.AreEqual(new List<Holiday> {_holiday2 }, _holidaysRepository.GetByDateRange(startDate, endDate), "Returned holidays as expected");
@@ -208,6 +207,14 @@ namespace EMS.Core.API.Tests.Repositories
         }
 
         [Test]
+        public void DeleteAsync_should_throws_exception_because_of_holiday_entity_is_null()
+        {
+            // Assert
+            Assert.ThrowsAsync<NullReferenceException>(() => _holidaysRepository.DeleteAsync(null), "Throws null reference exception as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
         public void DeleteAsync_throw_exception_because_record_from_history()
         {
             // Arrange
@@ -220,7 +227,7 @@ namespace EMS.Core.API.Tests.Repositories
             _dbContext.Holidays.Add(holiday);
 
             // Assert
-            Assert.ThrowsAsync<DbUpdateException>(() => _holidaysRepository.DeleteAsync(holiday), "Throws argument exception as expected");
+            Assert.ThrowsAsync<InvalidOperationException>(() => _holidaysRepository.DeleteAsync(holiday), "Throws argument exception as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
     }

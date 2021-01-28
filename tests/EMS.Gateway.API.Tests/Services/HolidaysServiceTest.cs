@@ -30,15 +30,15 @@ namespace EMS.Core.API.Tests.Services
                 Id = 1,
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Description = "Test holiday one",
-                HolidayDate = new DateTime(2021, 1, 1, 12, 0, 0, DateTimeKind.Utc),
-                ToDoDate = new DateTime(2021, 1, 2, 12, 0, 0, DateTimeKind.Utc)
+                HolidayDate = new DateTime(2021, 2, 1, 12, 0, 0, DateTimeKind.Utc),
+                ToDoDate = new DateTime(2021, 1, 3, 12, 0, 0, DateTimeKind.Utc)
             };
             _holiday2 = new Holiday
             {
                 Id = 2,
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Description = "Test holiday one",
-                HolidayDate = new DateTime(2021, 7, 1, 12, 0, 0, DateTimeKind.Utc)
+                HolidayDate = new DateTime(2021, 1, 7, 12, 0, 0, DateTimeKind.Utc)
             };
 
             _dbContext.Holidays.Add(_holiday1);
@@ -69,7 +69,7 @@ namespace EMS.Core.API.Tests.Services
                 CreatedOn = Timestamp.FromDateTime(_holiday1.CreatedOn),
                 Description = _holiday1.Description,
                 HolidayDate = Timestamp.FromDateTime(_holiday1.HolidayDate),
-                ToDoDate = _holiday1.ToDoDate.HasValue ? Timestamp.FromDateTime(_holiday1.ToDoDate.Value): Timestamp.FromDateTime(DateTime.MinValue) 
+                ToDoDate = _holiday1.ToDoDate.HasValue ? Timestamp.FromDateTime(_holiday1.ToDoDate.Value): Timestamp.FromDateTime(DateTime.MinValue.ToUniversalTime()) 
             });
             expectedResponse.Data.Add(new HolidayData
             {
@@ -77,7 +77,7 @@ namespace EMS.Core.API.Tests.Services
                 CreatedOn = Timestamp.FromDateTime(_holiday2.CreatedOn),
                 Description = _holiday2.Description,
                 HolidayDate = Timestamp.FromDateTime(_holiday2.HolidayDate),
-                ToDoDate = _holiday2.ToDoDate.HasValue ? Timestamp.FromDateTime(_holiday2.ToDoDate.Value) : Timestamp.FromDateTime(DateTime.MinValue)
+                ToDoDate = _holiday2.ToDoDate.HasValue ? Timestamp.FromDateTime(_holiday2.ToDoDate.Value) : Timestamp.FromDateTime(DateTime.MinValue.ToUniversalTime())
             });
 
             LogData expectedLog = new LogData
@@ -104,7 +104,7 @@ namespace EMS.Core.API.Tests.Services
             DateRangeRequest request = new DateRangeRequest
             {
                 From = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc)),
-                To = Timestamp.FromDateTime(new DateTime(2021, 1, 3, 0, 0, 0, DateTimeKind.Utc))
+                To = Timestamp.FromDateTime(new DateTime(2021, 1, 10, 0, 0, 0, DateTimeKind.Utc))
             };
 
             HolidaysResponse expectedResponse = new HolidaysResponse
@@ -118,11 +118,11 @@ namespace EMS.Core.API.Tests.Services
 
             expectedResponse.Data.Add(new HolidayData
             {
-                Id = _holiday1.Id,
-                CreatedOn = Timestamp.FromDateTime(_holiday1.CreatedOn),
-                Description = _holiday1.Description,
-                HolidayDate = Timestamp.FromDateTime(_holiday1.HolidayDate),
-                ToDoDate = _holiday1.ToDoDate.HasValue ? Timestamp.FromDateTime(_holiday1.ToDoDate.Value) : Timestamp.FromDateTime(DateTime.MinValue.ToUniversalTime())
+                Id = _holiday2.Id,
+                CreatedOn = Timestamp.FromDateTime(_holiday2.CreatedOn),
+                Description = _holiday2.Description,
+                HolidayDate = Timestamp.FromDateTime(_holiday2.HolidayDate),
+                ToDoDate = _holiday2.ToDoDate.HasValue ? Timestamp.FromDateTime(_holiday2.ToDoDate.Value) : Timestamp.FromDateTime(DateTime.MinValue.ToUniversalTime())
             });
 
             LogData expectedLog = new LogData
@@ -149,8 +149,9 @@ namespace EMS.Core.API.Tests.Services
             HolidayData request = new HolidayData
             {
                 Description = "test",
+                CreatedOn = Timestamp.FromDateTime(DateTime.MinValue.ToUniversalTime()),
                 HolidayDate = Timestamp.FromDateTime(new DateTime(2021, 1, 15, 0, 0, 0, DateTimeKind.Utc)),
-                ToDoDate = Timestamp.FromDateTime(DateTime.MinValue)
+                ToDoDate = Timestamp.FromDateTime(DateTime.MinValue.ToUniversalTime())
             };
 
             BaseResponse expectedResponse = new BaseResponse
@@ -244,7 +245,8 @@ namespace EMS.Core.API.Tests.Services
             HolidayData request = new HolidayData
             {
                 Description = "test",
-                HolidayDate = Timestamp.FromDateTime(DateTime.MinValue),
+                CreatedOn = Timestamp.FromDateTime(DateTime.MinValue.ToUniversalTime()),
+                HolidayDate = Timestamp.FromDateTime(DateTime.MinValue.ToUniversalTime()),
                 ToDoDate = Timestamp.FromDateTime(new DateTime(2021, 1, 16, 0, 0, 0, DateTimeKind.Utc))
             };
 
@@ -310,7 +312,7 @@ namespace EMS.Core.API.Tests.Services
         public void AddAsync_should_handle_exception()
         {
             // Arrange
-            DbContextMock.ShouldThrowException = true;
+            DbContextMock.SaveChangesResult = 0;
             HolidayData request = new HolidayData
             {
                 Description = "test",
@@ -348,9 +350,10 @@ namespace EMS.Core.API.Tests.Services
             HolidayData request = new HolidayData
             {
                 Id = _holiday1.Id,
+                CreatedOn = Timestamp.FromDateTime(_holiday1.CreatedOn),
                 Description = "test",
                 HolidayDate = Timestamp.FromDateTime(new DateTime(2021, 1, 15, 0, 0, 0, DateTimeKind.Utc)),
-                ToDoDate = Timestamp.FromDateTime(DateTime.MinValue)
+                ToDoDate = Timestamp.FromDateTime(DateTime.MinValue.ToUniversalTime())
             };
 
             BaseResponse expectedResponse = new BaseResponse
@@ -445,8 +448,9 @@ namespace EMS.Core.API.Tests.Services
             HolidayData request = new HolidayData
             {
                 Id = _holiday1.Id,
+                CreatedOn = Timestamp.FromDateTime(_holiday1.CreatedOn),
                 Description = "test",
-                HolidayDate = Timestamp.FromDateTime(DateTime.MinValue),
+                HolidayDate = Timestamp.FromDateTime(DateTime.MinValue.ToUniversalTime()),
                 ToDoDate = Timestamp.FromDateTime(new DateTime(2021, 1, 16, 0, 0, 0, DateTimeKind.Utc))
             };
 
@@ -579,6 +583,143 @@ namespace EMS.Core.API.Tests.Services
             // Assert
             Assert.AreEqual(expectedResponse, actual, "Response as expected");
             _loggerMock.Verify(m => m.AddLog(expectedLog), Times.Once);
+        }
+
+        [Test]
+        public void DeleteAsync_should_handle_null_reference_exception()
+        {
+            // Arrange
+            BaseResponse expectedResponse = new BaseResponse
+            {
+                Code = Code.DataError,
+                ErrorMessage = "Holiday cannot be empty"
+            };
+
+            LogData expectedLog = new LogData
+            {
+                CallSide = nameof(HolidaysService),
+                CallerMethodName = nameof(_holidaysService.DeleteAsync),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = null,
+                Response = new Exception(expectedResponse.ErrorMessage)
+            };
+
+            // Act
+            BaseResponse actual = _holidaysService.DeleteAsync(null, null).Result;
+
+            // Assert
+            Assert.AreEqual(expectedResponse, actual, "Response as expected");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
+        }
+
+        [Test]
+        public void DeleteAsync_should_invalid_operation_exception()
+        {
+            // Arrange
+            BaseResponse expectedResponse = new BaseResponse
+            {
+                Code = Code.DataError,
+                ErrorMessage = "Cannot delete history record"
+            };
+
+            HolidayData request = new HolidayData
+            {
+                Id = _holiday2.Id,
+                CreatedOn = Timestamp.FromDateTime(_holiday2.CreatedOn),
+                Description = _holiday2.Description,
+                HolidayDate = Timestamp.FromDateTime(_holiday2.HolidayDate),
+                ToDoDate = Timestamp.FromDateTime(DateTime.MinValue.ToUniversalTime())
+            };
+
+            LogData expectedLog = new LogData
+            {
+                CallSide = nameof(HolidaysService),
+                CallerMethodName = nameof(_holidaysService.DeleteAsync),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = request,
+                Response = new Exception(expectedResponse.ErrorMessage)
+            };
+
+            // Act
+            BaseResponse actual = _holidaysService.DeleteAsync(request, null).Result;
+
+            // Assert
+            Assert.AreEqual(expectedResponse, actual, "Response as expected");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
+        }
+
+        [Test]
+        public void DeleteAsync_should_db_update_exception()
+        {
+            // Arrange
+            DbContextMock.ShouldThrowException = true;
+            BaseResponse expectedResponse = new BaseResponse
+            {
+                Code = Code.DbError,
+                ErrorMessage = "An error occured while deleting holiday"
+            };
+
+            HolidayData request = new HolidayData
+            {
+                Id = _holiday1.Id,
+                CreatedOn = Timestamp.FromDateTime(_holiday1.CreatedOn),
+                Description = _holiday1.Description,
+                HolidayDate = Timestamp.FromDateTime(_holiday1.HolidayDate),
+                ToDoDate = Timestamp.FromDateTime(_holiday1.ToDoDate.GetValueOrDefault())
+            };
+
+            LogData expectedLog = new LogData
+            {
+                CallSide = nameof(HolidaysService),
+                CallerMethodName = nameof(_holidaysService.DeleteAsync),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = request,
+                Response = new Exception("DbContext test Exception")
+            };
+
+            // Act
+            BaseResponse actual = _holidaysService.DeleteAsync(request, null).Result;
+
+            // Assert
+            Assert.AreEqual(expectedResponse, actual, "Response as expected");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
+        }
+
+        [Test]
+        public void DeleteAsync_should_exception()
+        {
+            // Arrange
+            DbContextMock.SaveChangesResult = 0;
+            BaseResponse expectedResponse = new BaseResponse
+            {
+                Code = Code.UnknownError,
+                ErrorMessage = "Holiday has not been deleted"
+            };
+
+            HolidayData request = new HolidayData
+            {
+                Id = _holiday1.Id,
+                CreatedOn = Timestamp.FromDateTime(_holiday1.CreatedOn),
+                Description = _holiday1.Description,
+                HolidayDate = Timestamp.FromDateTime(_holiday1.HolidayDate),
+                ToDoDate = Timestamp.FromDateTime(_holiday1.ToDoDate.GetValueOrDefault())
+            };
+
+            LogData expectedLog = new LogData
+            {
+                CallSide = nameof(HolidaysService),
+                CallerMethodName = nameof(_holidaysService.DeleteAsync),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = request,
+                Response = new Exception(expectedResponse.ErrorMessage)
+            };
+
+            // Act
+            BaseResponse actual = _holidaysService.DeleteAsync(request, null).Result;
+
+            // Assert
+            Assert.AreEqual(expectedResponse, actual, "Response as expected");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
         }
     }
 }

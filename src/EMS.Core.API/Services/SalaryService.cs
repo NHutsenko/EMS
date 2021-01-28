@@ -116,7 +116,7 @@ namespace EMS.Core.API.Services
             };
             double workHours = GetWorkHours();
 
-            for (DateTime current = startDate; current <= endDate; current = current.AddDays(1))
+            for (DateTime current = startDate.Date; current.Date <= endDate.Date; current = current.AddDays(1))
             {
                 bool todoDay = (current.DayOfWeek == DayOfWeek.Saturday || current.DayOfWeek == DayOfWeek.Sunday)
                     && holidays.Any(e => e.ToDoDate.HasValue && e.ToDoDate.Value.Date == current.Date);
@@ -125,7 +125,7 @@ namespace EMS.Core.API.Services
                     && current.DayOfWeek != DayOfWeek.Sunday
                     && !holidays.Any(e => e.HolidayDate.Date == current.Date);
 
-                Staff currentStaff = staff.OrderByDescending(e => e.CreatedOn).FirstOrDefault(e => e.CreatedOn <= current);
+                Staff currentStaff = staff.OrderByDescending(e => e.CreatedOn).FirstOrDefault(e => e.CreatedOn.Date <= current.Date);
                 if (currentStaff is not null)
                 {
                     Position position = _positionsRepository.Get(currentStaff.PositionId);

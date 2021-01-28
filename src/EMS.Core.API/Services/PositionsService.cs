@@ -33,7 +33,7 @@ namespace EMS.Core.API.Services
                 if (request is null)
                     await _positionsRepository.AddAsync(null);
 
-                int result = await _positionsRepository.AddAsync(ConvertPosition(request));
+                int result = await _positionsRepository.AddAsync(FromRpcModel(request));
                 if (result == 0)
                 {
                     throw new Exception("Position has not been saved");
@@ -138,7 +138,7 @@ namespace EMS.Core.API.Services
                 if (request is null)
                     await _positionsRepository.DeleteAsync(null);
                
-                int result = await _positionsRepository.DeleteAsync(ConvertPosition(request));
+                int result = await _positionsRepository.DeleteAsync(FromRpcModel(request));
                 if (result == 0)
                 {
                     throw new Exception("Position has not been deleted");
@@ -243,7 +243,7 @@ namespace EMS.Core.API.Services
                 if (request is null)
                     await _positionsRepository.UpdateAsync(null);
                 
-                int result = await _positionsRepository.UpdateAsync(ConvertPosition(request));
+                int result = await _positionsRepository.UpdateAsync(FromRpcModel(request));
                 if (result == 0)
                 {
                     throw new Exception("Position has not been updated");
@@ -354,14 +354,7 @@ namespace EMS.Core.API.Services
             };
             foreach (Position position in positions)
             {
-                response.Data.Add(new PositionData
-                {
-                    Id = position.Id,
-                    CreatedOn = Timestamp.FromDateTime(position.CreatedOn),
-                    Name = position.Name,
-                    HourRate = position.HourRate,
-                    TeamId = position.TeamId
-                });
+                response.Data.Add(ToRpcModel(position));
             }
 
             LogData logData = new LogData
@@ -395,14 +388,7 @@ namespace EMS.Core.API.Services
             }
             else
             {
-                response.Data = new PositionData
-                {
-                    Id = position.Id,
-                    CreatedOn = Timestamp.FromDateTime(position.CreatedOn),
-                    Name = position.Name,
-                    HourRate = position.HourRate,
-                    TeamId = position.TeamId
-                };
+                response.Data = ToRpcModel(position);
             }
 
             LogData logData = new LogData
@@ -418,12 +404,24 @@ namespace EMS.Core.API.Services
             return Task.FromResult(response);
         }
 
-        private static Position ConvertPosition(PositionData position)
+        private static Position FromRpcModel(PositionData position)
         {
             return new Position
             {
                 Id = position.Id,
                 CreatedOn = position.CreatedOn.ToDateTime(),
+                Name = position.Name,
+                HourRate = position.HourRate,
+                TeamId = position.TeamId
+            };
+        }
+
+        private static PositionData ToRpcModel(Position position)
+        {
+            return new PositionData
+            {
+                Id = position.Id,
+                CreatedOn = Timestamp.FromDateTime(position.CreatedOn),
                 Name = position.Name,
                 HourRate = position.HourRate,
                 TeamId = position.TeamId

@@ -29,10 +29,14 @@ namespace EMS.Core.API.DAL.Repositories
 
         public async Task<int> DeleteAsync(Holiday holiday)
         {
+            if(holiday is null)
+            {
+                throw new NullReferenceException("Holiday cannot be empty");
+            }
             DateTime nextMonth = new DateTime(_dateTimeUtil.GetCurrentDateTime().Year, _dateTimeUtil.GetCurrentDateTime().Month + 1, 1);
             if(holiday.HolidayDate < nextMonth)
             {
-                throw new DbUpdateException("Cannot delete history record");
+                throw new InvalidOperationException("Cannot delete history record");
             }
             _context.Holidays.Remove(holiday);
             return await _context.SaveChangesAsync();

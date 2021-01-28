@@ -9,7 +9,7 @@ using Google.Protobuf.WellKnownTypes;
 using Moq;
 using NUnit.Framework;
 
-namespace EMS.Core.API.Tests.Repositories
+namespace EMS.Core.API.Tests.Services
 {
     [ExcludeFromCodeCoverage]
     public class SalaryServiceTest : BaseUnitTest<SalaryService>
@@ -115,7 +115,7 @@ namespace EMS.Core.API.Tests.Repositories
             {
                 CurrentPosition = _position1.Id,
                 PersonId = _staff1.PersonId.GetValueOrDefault(),
-                Salary = 800,
+                Salary = 880,
                 StartedOn = Timestamp.FromDateTime(new DateTime(2021, 1, 15, 12, 00, 00).ToUniversalTime())
             };
 

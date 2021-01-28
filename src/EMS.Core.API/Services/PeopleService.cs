@@ -42,7 +42,7 @@ namespace EMS.Core.API.Services
 
             foreach (Person person in people)
             {
-                response.Data.Add(ConvertData(person));
+                response.Data.Add(ToRpcModel(person));
             }
 
             LogData logData = new LogData
@@ -72,7 +72,7 @@ namespace EMS.Core.API.Services
             try
             {
                 Person person = _peopleRepository.GetById(request.Id);
-                PersonData data = ConvertData(person);
+                PersonData data = ToRpcModel(person);
                 response.Data = data;
                 response.Status.Code = Code.Success;
                 LogData logData = new LogData
@@ -566,7 +566,7 @@ namespace EMS.Core.API.Services
             }
         }
 
-        private static PersonData ConvertData(Person person)
+        private static PersonData ToRpcModel(Person person)
         {
             PersonData converted = new PersonData
             {
