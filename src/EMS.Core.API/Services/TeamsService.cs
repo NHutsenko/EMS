@@ -45,7 +45,8 @@ namespace EMS.Core.API.Services
                 BaseResponse response = new BaseResponse
                 {
                     Code = Code.Success,
-                    ErrorMessage = string.Empty
+                    ErrorMessage = string.Empty,
+                    DataId = team.Id
                 };
 
                 LogData logData = new LogData
@@ -157,7 +158,8 @@ namespace EMS.Core.API.Services
                 BaseResponse response = new BaseResponse
                 {
                     Code = Code.Success,
-                    ErrorMessage = string.Empty
+                    ErrorMessage = string.Empty,
+                    DataId = team.Id
                 };
                 LogData logData = new LogData
                 {
@@ -267,7 +269,8 @@ namespace EMS.Core.API.Services
                 BaseResponse response = new BaseResponse
                 {
                     Code = Code.Success,
-                    ErrorMessage = string.Empty
+                    ErrorMessage = string.Empty,
+                    DataId = team.Id
                 };
                 LogData logData = new LogData
                 {

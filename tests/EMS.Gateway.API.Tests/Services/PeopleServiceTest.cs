@@ -283,7 +283,8 @@ namespace EMS.Core.API.Tests.Services
             BaseResponse expected = new BaseResponse
             {
                 Code = Code.Success,
-                ErrorMessage = string.Empty
+                ErrorMessage = string.Empty,
+                DataId = 3
             };
 
             LogData expectedLog = new LogData
@@ -455,7 +456,8 @@ namespace EMS.Core.API.Tests.Services
             BaseResponse expected = new BaseResponse
             {
                 Code = Code.Success,
-                ErrorMessage = string.Empty
+                ErrorMessage = string.Empty,
+                DataId = person.Id
             };
 
             LogData expectedLog = new LogData
@@ -625,7 +627,8 @@ namespace EMS.Core.API.Tests.Services
             BaseResponse expected = new BaseResponse
             {
                 Code = Code.Success,
-                ErrorMessage = string.Empty
+                ErrorMessage = string.Empty,
+                DataId = 2
             };
             LogData expectedLog = new LogData
             {
@@ -790,7 +793,8 @@ namespace EMS.Core.API.Tests.Services
             BaseResponse expected = new BaseResponse
             {
                 Code = Code.Success,
-                ErrorMessage = string.Empty
+                ErrorMessage = string.Empty,
+                DataId = 2
             };
             LogData expectedLog = new LogData
             {

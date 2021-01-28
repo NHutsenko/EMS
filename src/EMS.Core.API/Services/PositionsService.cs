@@ -33,7 +33,8 @@ namespace EMS.Core.API.Services
                 if (request is null)
                     await _positionsRepository.AddAsync(null);
 
-                int result = await _positionsRepository.AddAsync(FromRpcModel(request));
+                Position position = FromRpcModel(request);
+                int result = await _positionsRepository.AddAsync(position);
                 if (result == 0)
                 {
                     throw new Exception("Position has not been saved");
@@ -42,7 +43,8 @@ namespace EMS.Core.API.Services
                 BaseResponse response = new BaseResponse
                 {
                     Code = Code.Success,
-                    ErrorMessage = string.Empty
+                    ErrorMessage = string.Empty,
+                    DataId = position.Id
                 };
 
                 LogData logData = new LogData
@@ -137,8 +139,9 @@ namespace EMS.Core.API.Services
             {
                 if (request is null)
                     await _positionsRepository.DeleteAsync(null);
-               
-                int result = await _positionsRepository.DeleteAsync(FromRpcModel(request));
+
+                Position position = FromRpcModel(request);
+                int result = await _positionsRepository.DeleteAsync(position);
                 if (result == 0)
                 {
                     throw new Exception("Position has not been deleted");
@@ -147,7 +150,8 @@ namespace EMS.Core.API.Services
                 BaseResponse response = new BaseResponse
                 {
                     Code = Code.Success,
-                    ErrorMessage = string.Empty
+                    ErrorMessage = string.Empty,
+                    DataId = position.Id
                 };
 
                 LogData logData = new LogData
@@ -242,8 +246,9 @@ namespace EMS.Core.API.Services
             {
                 if (request is null)
                     await _positionsRepository.UpdateAsync(null);
-                
-                int result = await _positionsRepository.UpdateAsync(FromRpcModel(request));
+
+                Position position = FromRpcModel(request);
+                int result = await _positionsRepository.UpdateAsync(position);
                 if (result == 0)
                 {
                     throw new Exception("Position has not been updated");
@@ -252,7 +257,8 @@ namespace EMS.Core.API.Services
                 BaseResponse response = new BaseResponse
                 {
                     Code = Code.Success,
-                    ErrorMessage = string.Empty
+                    ErrorMessage = string.Empty,
+                    DataId = position.Id
                 };
 
                 LogData logData = new LogData

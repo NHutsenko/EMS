@@ -70,7 +70,8 @@ namespace EMS.Core.API.Tests.Services
             BaseResponse expected = new BaseResponse
             {
                 Code = Code.Success,
-                ErrorMessage = string.Empty
+                ErrorMessage = string.Empty,
+                DataId = 3
             };
             LogData expectedLog = new LogData
             {
@@ -232,7 +233,8 @@ namespace EMS.Core.API.Tests.Services
             BaseResponse expected = new BaseResponse
             {
                 Code = Code.Success,
-                ErrorMessage = string.Empty
+                ErrorMessage = string.Empty,
+                DataId = team.Id
             };
 
             LogData expectedLog = new LogData
@@ -389,17 +391,18 @@ namespace EMS.Core.API.Tests.Services
         public void DeleteAsync_should_delete_team_via_teams_repository()
         {
             // Arrange
-            BaseResponse expected = new BaseResponse
-            {
-                Code = Code.Success,
-                ErrorMessage = string.Empty
-            };
             TeamData teamData = new TeamData
             {
                 Id = _team2.Id,
                 CreatedOn = Timestamp.FromDateTime(_team2.CreatedOn.ToUniversalTime()),
                 Name = _team2.Name,
                 Description = _team2.Description
+            };
+            BaseResponse expected = new BaseResponse
+            {
+                Code = Code.Success,
+                ErrorMessage = string.Empty,
+                DataId = teamData.Id
             };
             LogData expectedLog = new LogData
             {

@@ -12,6 +12,7 @@ enum Code {
 }
 
 message BaseResponse {
-	Code code=1;
-	string error_message=2;
+	Code code = 1;
+	string error_message = 2;
+	int64 data_id = 3;
 }

@@ -33,7 +33,8 @@ namespace EMS.Core.API.Services
             {
                 if (request is null)
                     await _holidaysRepository.AddAsync(null);
-                int result = await _holidaysRepository.AddAsync(FromRpcModel(request));
+                Holiday holiday = FromRpcModel(request);
+                int result = await _holidaysRepository.AddAsync(holiday);
                 if (result == 0)
                 {
                     throw new Exception("Holiday has not been saved");
@@ -42,7 +43,8 @@ namespace EMS.Core.API.Services
                 BaseResponse response = new BaseResponse
                 {
                     Code = Code.Success,
-                    ErrorMessage = string.Empty
+                    ErrorMessage = string.Empty,
+                    DataId = holiday.Id
                 };
 
                 LogData logData = new LogData
@@ -138,7 +140,8 @@ namespace EMS.Core.API.Services
                 if (request is null)
                     await _holidaysRepository.DeleteAsync(null);
 
-                int result = await _holidaysRepository.DeleteAsync(FromRpcModel(request));
+                Holiday holiday = FromRpcModel(request);
+                int result = await _holidaysRepository.DeleteAsync(holiday);
                 if(result == 0)
                 {
                     throw new Exception("Holiday has not been deleted");
@@ -147,7 +150,8 @@ namespace EMS.Core.API.Services
                 BaseResponse response = new BaseResponse
                 {
                     Code = Code.Success,
-                    ErrorMessage = string.Empty
+                    ErrorMessage = string.Empty,
+                    DataId = holiday.Id
                 };
 
                 LogData logData = new LogData
@@ -242,7 +246,9 @@ namespace EMS.Core.API.Services
             {
                 if (request is null)
                     await _holidaysRepository.UpdateAsync(null);
-                int result = await _holidaysRepository.UpdateAsync(FromRpcModel(request));
+
+                Holiday holiday = FromRpcModel(request);
+                int result = await _holidaysRepository.UpdateAsync(holiday);
                 if (result == 0)
                 {
                     throw new Exception("Holiday has not been updated");
@@ -251,7 +257,8 @@ namespace EMS.Core.API.Services
                 BaseResponse response = new BaseResponse
                 {
                     Code = Code.Success,
-                    ErrorMessage = string.Empty
+                    ErrorMessage = string.Empty,
+                    DataId = holiday.Id
                 };
 
                 LogData logData = new LogData
