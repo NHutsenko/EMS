@@ -36,6 +36,7 @@ namespace EMS.Core.API.Tests
         protected TeamsService _teamsService;
         protected PositionsService _positionsService;
         protected HolidaysService _holidaysService;
+        protected DayOffsService _dayOffsService;
 
         // Logger
         protected Mock<IEMSLogger<T>> _loggerMock;

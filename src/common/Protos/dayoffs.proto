@@ -9,9 +9,11 @@ option csharp_namespace = "EMS.Core.API";
 package day_offs;
 
 service DayOffs {
-	rpc AddAsync(DayOffData) returns (response.BaseResponse) {}
-	rpc UpdateAsync(DayOffData) returns (response.BaseResponse) {}
-	rpc DeleteAsync(DayOffData) returns (response.BaseResponse) {}
+	rpc AddAsync(DayOffData) returns (response.BaseResponse) { }
+	rpc UpdateAsync(DayOffData) returns (response.BaseResponse) { }
+	rpc DeleteAsync(DayOffData) returns (response.BaseResponse) { }
+	rpc GetByPersonId(DayOffsByPersonRequest) returns (DayOffsResponse) { }
+	rpc GetByPersonIdAndDateRange(DayOffsByDateRangeRequestRequest) returns (DayOffsResponse) { }
 }
 
 message DayOffsByPersonRequest {
@@ -21,11 +23,6 @@ message DayOffsByPersonRequest {
 message DayOffsByDateRangeRequestRequest {
 	google.protobuf.Timestamp from = 1;
 	google.protobuf.Timestamp to = 2;
-}
-
-message DayOffsByPersonAndDateRangeRequest {
-	DayOffsByPersonRequest person = 1;
-	DayOffsByDateRangeRequestRequest date_range = 2;
 }
 
 message DayOffsResponse {
