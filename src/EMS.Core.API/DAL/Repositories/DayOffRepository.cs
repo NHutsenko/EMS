@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using EMS.Common.Utils.DateTimeUtil;
 using EMS.Core.API.DAL.Repositories.Interfaces;
 using EMS.Core.API.Models;
 using Microsoft.EntityFrameworkCore;
@@ -11,13 +12,13 @@ namespace EMS.Core.API.DAL.Repositories
 {
     public class DayOffRepository : BaseRepository, IDayOffRepository
     {
-        public DayOffRepository(IApplicationDbContext context) : base(context, null) { }
+        public DayOffRepository(IApplicationDbContext context, IDateTimeUtil dateTimeUtil) : base(context, dateTimeUtil) { }
 
         public async Task<int> AddAsync(DayOff dayOff)
         {
             if(dayOff is null)
             {
-                throw new NullReferenceException("Dayoff entity cannot be null");
+                throw new NullReferenceException("Day off cannot be empty");
             }
             if(dayOff.PersonId == 0)
             {
@@ -43,7 +44,11 @@ namespace EMS.Core.API.DAL.Repositories
         {
             if (dayOff is null)
             {
-                throw new NullReferenceException("Dayoff entity cannot be null");
+                throw new NullReferenceException("Day off cannot be empty");
+            }
+            if (dayOff.PersonId == 0)
+            {
+                throw new ArgumentException("Cannot add day off record without specified person");
             }
             if (!IsRelevantTime(dayOff.Hours))
             {
@@ -59,13 +64,17 @@ namespace EMS.Core.API.DAL.Repositories
 
         public async Task<int> DeleteAsync(DayOff dayOff)
         {
+            if(dayOff is null)
+            {
+                throw new NullReferenceException("Day off cannot be empty");
+            }
+            DateTime currentMonth = new DateTime(_dateTimeUtil.GetCurrentDateTime().Year, _dateTimeUtil.GetCurrentDateTime().Month, 1);
+            if(dayOff.CreatedOn < currentMonth)
+            {
+                throw new InvalidOperationException("Cannot delete history record");
+            }
             _context.DaysOff.Remove(dayOff);
             return await _context.SaveChangesAsync();
-        }
-
-        public IQueryable<DayOff> GetAll()
-        {
-            return _context.DaysOff.Select(e => e);
         }
 
         public IQueryable<DayOff> GetByPersonId(long personId)
@@ -96,15 +105,15 @@ namespace EMS.Core.API.DAL.Repositories
         }
 
         [ExcludeFromCodeCoverage]
-        private static bool IsRelevantTime(float hours)
+        private static bool IsRelevantTime(double hours)
         {
-            bool parsed = float.TryParse(Environment.GetEnvironmentVariable("MaxWorkHours"), out float maxVlaue);
+            bool parsed = double.TryParse(Environment.GetEnvironmentVariable("MaxWorkHours"), out double maxVlaue);
             if (!parsed)
             {
                 IConfiguration configuration = new ConfigurationBuilder()
                     .AddJsonFile("appsettings.json")
                     .Build();
-                _ = float.TryParse(configuration["Settings:MaxWorkHours"], out maxVlaue);
+                _ = double.TryParse(configuration["Settings:MaxWorkHours"], out maxVlaue);
             }
             return hours > 0 && hours <= maxVlaue;
         }

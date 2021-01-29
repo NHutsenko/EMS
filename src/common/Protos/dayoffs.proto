@@ -1,7 +1,6 @@
 ﻿syntax = "proto3";
 
 import "google/protobuf/timestamp.proto";
-import "google/protobuf/empty.proto";
 import "response.proto";
 
 option csharp_namespace = "EMS.Core.API";
@@ -13,7 +12,7 @@ service DayOffs {
 	rpc UpdateAsync(DayOffData) returns (response.BaseResponse) { }
 	rpc DeleteAsync(DayOffData) returns (response.BaseResponse) { }
 	rpc GetByPersonId(DayOffsByPersonRequest) returns (DayOffsResponse) { }
-	rpc GetByPersonIdAndDateRange(DayOffsByDateRangeRequestRequest) returns (DayOffsResponse) { }
+	rpc GetByPersonIdAndDateRange(DayOffsByPersonIdDateRangeRequestRequest) returns (DayOffsResponse) { }
 }
 
 message DayOffsByPersonRequest {
@@ -23,6 +22,11 @@ message DayOffsByPersonRequest {
 message DayOffsByDateRangeRequestRequest {
 	google.protobuf.Timestamp from = 1;
 	google.protobuf.Timestamp to = 2;
+}
+
+message DayOffsByPersonIdDateRangeRequestRequest{
+	DayOffsByPersonRequest person = 1;
+	DayOffsByDateRangeRequestRequest range = 2;
 }
 
 message DayOffsResponse {

@@ -45,7 +45,7 @@ namespace EMS.Core.API.Tests.Services
 
             _positionsRepository = new DAL.Repositories.PositionsRepository(_dbContext, _dateTimeUtil);
             _staffRepository = new DAL.Repositories.StaffRepository(_dbContext);
-            _dayOffRepository = new DAL.Repositories.DayOffRepository(_dbContext);
+            _dayOffRepository = new DAL.Repositories.DayOffRepository(_dbContext, _dateTimeUtil);
             _holidaysRepository = new DAL.Repositories.HolidaysRepository(_dbContext, _dateTimeUtil);
             _motivationModificatorRepository = new DAL.Repositories.MotivationModificatorRepository(_dbContext, _dateTimeUtil);
             _otherPaymentsRepository = new DAL.Repositories.OtherPaymentsRepository(_dbContext, _dateTimeUtil); 

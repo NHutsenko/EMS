@@ -52,7 +52,7 @@ namespace EMS.Core.API.Tests.Repositories
             _dbContext.DaysOff.Add(_dayOff1);
             _dbContext.DaysOff.Add(_dayOff2);
 
-            _dayOffRepository = new DayOffRepository(_dbContext);
+            _dayOffRepository = new DayOffRepository(_dbContext, _dateTimeUtil);
         }
 
         [Test]
@@ -237,6 +237,22 @@ namespace EMS.Core.API.Tests.Repositories
         }
 
         [Test]
+        public void UpdateAsync_should_throws_exception_because_person_Id_is_not_specified()
+        {
+            // Arrange
+            DayOff dayOff = new DayOff
+            {
+                Hours = 8,
+                CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
+                DayOffType = DayOffType.SickLeave,
+            };
+
+            // Assert
+            Assert.ThrowsAsync<ArgumentException>(() => _dayOffRepository.UpdateAsync(dayOff), "Throws exception as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
         public void UpdateAsync_should_throws_exception_because_hours_is_less_or_equal_to_zero()
         {
             // Arrange
@@ -298,7 +314,7 @@ namespace EMS.Core.API.Tests.Repositories
             {
                 Id = 3,
                 Hours = 8,
-                CreatedOn = DateTime.MinValue,
+                CreatedOn = new DateTime(2021, 4, 20),
                 DayOffType = DayOffType.SickLeave,
                 PersonId = _person.Id,
             };
@@ -320,7 +336,7 @@ namespace EMS.Core.API.Tests.Repositories
             DayOff dayOff = new DayOff
             {
                 Hours = 8,
-                CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
+                CreatedOn = new DateTime(2021, 01, 15, 12, 00, 00),
                 DayOffType = DayOffType.SickLeave,
                 PersonId = _person.Id,
             };
@@ -331,24 +347,19 @@ namespace EMS.Core.API.Tests.Repositories
         }
 
         [Test]
-        public void GetAll_should_return_all_records_from_db()
+        public void DeleteAsync_should_throws_exception_because_dayoff_entity_is_null()
         {
-            // Arrange
-            DayOff dayOff = new DayOff
-            {
-                Id = 3,
-                Hours = 8,
-                CreatedOn = DateTime.MinValue,
-                DayOffType = DayOffType.SickLeave,
-                PersonId = _person.Id,
-            };
-            _dbContext.DaysOff.Add(dayOff);
-
-            // Act
-            IQueryable<DayOff> result = _dayOffRepository.GetAll();
-
             // Assert
-            CollectionAssert.AreEqual(new List<DayOff> { _dayOff1, _dayOff2, dayOff }, result, "Result as expected");
+            Assert.ThrowsAsync<NullReferenceException>(() => _dayOffRepository.DeleteAsync(null), "Throws exception as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
+        public void DeleteAsync_should_throws_invalid_operation_exception()
+        {
+            // Assert
+            Assert.ThrowsAsync<InvalidOperationException>(() => _dayOffRepository.DeleteAsync(_dayOff1), "DeleteAsync throws exception as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
         [Test]
