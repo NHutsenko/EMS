@@ -1,0 +1,21 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+package requests;
+
+option csharp_namespace = "EMS.Common.Protos";
+
+message ByPersonIdRequest {
+	int64 person_id = 1;
+}
+
+message ByDateRangeRequestRequest {
+	google.protobuf.Timestamp from = 1;
+	google.protobuf.Timestamp to = 2;
+}
+
+message ByPersonIdDateRangeRequestRequest {
+	ByPersonIdRequest person = 1;
+	ByDateRangeRequestRequest range = 2;
+}

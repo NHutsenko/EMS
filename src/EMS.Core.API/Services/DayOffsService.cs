@@ -332,7 +332,7 @@ namespace EMS.Core.API.Services
             }
         }
 
-        public override Task<DayOffsResponse> GetByPersonId(DayOffsByPersonRequest request, ServerCallContext context)
+        public override Task<DayOffsResponse> GetByPersonId(ByPersonIdRequest request, ServerCallContext context)
         {
             DayOffsResponse response = new DayOffsResponse
             {
@@ -363,7 +363,7 @@ namespace EMS.Core.API.Services
             return Task.FromResult(response);
         }
 
-        public override Task<DayOffsResponse> GetByPersonIdAndDateRange(DayOffsByPersonIdDateRangeRequestRequest request, ServerCallContext context)
+        public override Task<DayOffsResponse> GetByPersonIdAndDateRange(ByPersonIdDateRangeRequestRequest request, ServerCallContext context)
         {
             DayOffsResponse response = new DayOffsResponse
             {

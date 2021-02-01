@@ -55,7 +55,7 @@ namespace EMS.Core.API.Tests.Services
         public void GetByPersionId_should_return_all_day_offs_by_specified_person()
         {
             // Arrange
-            DayOffsByPersonRequest request = new DayOffsByPersonRequest
+            ByPersonIdRequest request = new ByPersonIdRequest
             {
                 PersonId = _dayOff1.PersonId
             };
@@ -109,10 +109,10 @@ namespace EMS.Core.API.Tests.Services
         public void GetByPersionIdAndDateRange_should_return_all_day_offs_by_specified_person()
         {
             // Arrange
-            DayOffsByPersonIdDateRangeRequestRequest request = new DayOffsByPersonIdDateRangeRequestRequest
+            ByPersonIdDateRangeRequestRequest request = new ByPersonIdDateRangeRequestRequest
             {
-                Person = new DayOffsByPersonRequest { PersonId = 1 },
-                Range = new DayOffsByDateRangeRequestRequest
+                Person = new ByPersonIdRequest { PersonId = 1 },
+                Range = new ByDateRangeRequestRequest
                 {
                     From = Timestamp.FromDateTime(new DateTime(2020, 12, 15, 0, 0,0, DateTimeKind.Utc)),
                     To = Timestamp.FromDateTime(new DateTime(2021, 1, 15, 0, 0, 0, DateTimeKind.Utc))
