@@ -363,7 +363,7 @@ namespace EMS.Core.API.Services
             return Task.FromResult(response);
         }
 
-        public override Task<DayOffsResponse> GetByPersonIdAndDateRange(ByPersonIdDateRangeRequestRequest request, ServerCallContext context)
+        public override Task<DayOffsResponse> GetByPersonIdAndDateRange(ByPersonIdAndDateRangeRequest request, ServerCallContext context)
         {
             DayOffsResponse response = new DayOffsResponse
             {

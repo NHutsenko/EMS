@@ -13,7 +13,7 @@ service DayOffs {
 	rpc UpdateAsync(DayOffData) returns (response.BaseResponse) { }
 	rpc DeleteAsync(DayOffData) returns (response.BaseResponse) { }
 	rpc GetByPersonId(requests.ByPersonIdRequest) returns (DayOffsResponse) { }
-	rpc GetByPersonIdAndDateRange(requests.ByPersonIdDateRangeRequestRequest) returns (DayOffsResponse) { }
+	rpc GetByPersonIdAndDateRange(requests.ByPersonIdAndDateRangeRequest) returns (DayOffsResponse) { }
 }
 
 message DayOffsByPersonRequest {

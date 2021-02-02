@@ -28,11 +28,15 @@ namespace EMS.Core.API.DAL.Repositories
 
         public async Task<int> DeleteAsync(OtherPayment otherPayment)
         {
+            if(otherPayment is null)
+            {
+                throw new NullReferenceException("Other payment data cannot be empty");
+            }
             DateTime currentDate = _dateTimeUtil.GetCurrentDateTime();
             DateTime currentMonth = new DateTime(currentDate.Year, currentDate.Month + 1, 1);
             if(otherPayment.CreatedOn < currentMonth)
             {
-                throw new DbUpdateException("Cannot delete history record");
+                throw new InvalidOperationException("Cannot delete history record");
             }
             _context.OtherPayments.Remove(otherPayment);
             return await _context.SaveChangesAsync();
@@ -58,9 +62,9 @@ namespace EMS.Core.API.DAL.Repositories
             {
                 throw new NullReferenceException("Other payment data cannot be empty");
             }
-            if (otherPayment.Value <= 0)
+            if (otherPayment.Value == 0)
             {
-                throw new ArgumentException("Summ of payment cannot be less than zero");
+                throw new ArgumentException("Summ of payment cannot be equal to zero");
             }
             if (string.IsNullOrWhiteSpace(otherPayment.Comment))
             {

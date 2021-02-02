@@ -6,14 +6,13 @@ using System.Threading;
 using EMS.Core.API.DAL.Repositories;
 using EMS.Core.API.Models;
 using EMS.Core.API.Tests.Mock;
-using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;
 
 namespace EMS.Core.API.Tests.Repositories
 {
     [ExcludeFromCodeCoverage]
-    public class OtherPaymentsTest: BaseUnitTest<OtherPaymentsRepository>
+    public class OtherPaymentsRepositoryTest: BaseUnitTest<OtherPaymentsRepository>
     {
         private Person _person;
         private OtherPayment _otherPayment1;
@@ -118,7 +117,7 @@ namespace EMS.Core.API.Tests.Repositories
             // Arrange
             OtherPayment otherPayment = new OtherPayment
             {
-                Value = -10,
+                Value = 0,
                 Comment = "Test",
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 PersonId = _person.Id
@@ -215,7 +214,7 @@ namespace EMS.Core.API.Tests.Repositories
             // Arrange
             OtherPayment otherPayment = new OtherPayment
             {
-                Value = -10,
+                Value = 0,
                 Comment = "Test",
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 PersonId = _person.Id,
@@ -298,7 +297,18 @@ namespace EMS.Core.API.Tests.Repositories
             _otherPayment2.CreatedOn = _otherPayment2.CreatedOn.AddMonths(-3);
 
             // Assert
-            Assert.ThrowsAsync<DbUpdateException>(() => _otherPaymentsRepository.DeleteAsync(_otherPayment2), "exception throws as expected");
+            Assert.ThrowsAsync<InvalidOperationException>(() => _otherPaymentsRepository.DeleteAsync(_otherPayment2), "exception throws as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
+        public void DeleteAsync_should_throw_exception_because_of_record_null()
+        {
+            // Arrange
+            _otherPayment2.CreatedOn = _otherPayment2.CreatedOn.AddMonths(-3);
+
+            // Assert
+            Assert.ThrowsAsync<NullReferenceException>(() => _otherPaymentsRepository.DeleteAsync(null), "exception throws as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
     }

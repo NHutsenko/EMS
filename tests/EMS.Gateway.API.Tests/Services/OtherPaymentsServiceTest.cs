@@ -12,55 +12,50 @@ using NUnit.Framework;
 namespace EMS.Core.API.Tests.Services
 {
     [ExcludeFromCodeCoverage]
-    public class DayOffsServiceTest: BaseUnitTest<DayOffsService>
+    public class OtherPaymentsServiceTest: BaseUnitTest<OtherPaymentsService>
     {
-        private DayOff _dayOff1;
-        private DayOff _dayOff2;
-
+        private OtherPayment _otherPayment1;
+        private OtherPayment _otherPayment2;
         [SetUp]
         public void Setup()
         {
             InitializeMocks();
-            InitializeLoggerMock(new DayOffsService(null, null, null));
+            InitializeLoggerMock(new OtherPaymentsService(null, null, null));
+            DbContextMock.SaveChangesResult = 0;
             DbContextMock.ShouldThrowException = false;
-            DbContextMock.SaveChangesResult = 1;
 
-            _dayOff1 = new DayOff
+            _otherPayment1 = new OtherPayment
             {
                 Id = 1,
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                DayOffType = Enums.DayOffType.Vacation,
-                Hours = 8,
-                IsPaid = true,
+                Value = 10,
+                Comment = "test1",
                 PersonId = 1
             };
-            _dayOff2 = new DayOff
+            _otherPayment2 = new OtherPayment
             {
                 Id = 2,
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime().AddMonths(1),
-                DayOffType = Enums.DayOffType.Vacation,
-                Hours = 8,
-                IsPaid = true,
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime().AddDays(20),
+                Value = 10,
+                Comment = "test2",
                 PersonId = 1
             };
-
-            _dbContext.DaysOff.Add(_dayOff1);
-            _dbContext.DaysOff.Add(_dayOff2);
-
-            _dayOffRepository = new DAL.Repositories.DayOffRepository(_dbContext, _dateTimeUtil);
-            _dayOffsService = new DayOffsService(_dayOffRepository, _logger, _dateTimeUtil);
+            _dbContext.OtherPayments.Add(_otherPayment1);
+            _dbContext.OtherPayments.Add(_otherPayment2);
+            _otherPaymentsRepository = new DAL.Repositories.OtherPaymentsRepository(_dbContext, _dateTimeUtil);
+            _otherPaymentsService = new OtherPaymentsService(_otherPaymentsRepository, _logger, _dateTimeUtil);
         }
 
         [Test]
-        public void GetByPersionId_should_return_all_day_offs_by_specified_person()
+        public void GetByPersonId_should_return_all_other_payments_by_specified_person()
         {
             // Arrange
             ByPersonIdRequest request = new ByPersonIdRequest
             {
-                PersonId = _dayOff1.PersonId
+                PersonId = 1
             };
 
-            DayOffsResponse expectedResponse = new DayOffsResponse
+            OtherPaymentsResponse expectedResponse = new OtherPaymentsResponse
             {
                 Status = new BaseResponse
                 {
@@ -69,36 +64,34 @@ namespace EMS.Core.API.Tests.Services
                 }
             };
 
-            expectedResponse.Data.Add(new DayOffData
+            expectedResponse.Data.Add(new OtherPaymentData
             {
-                Id = _dayOff1.Id,
-                CreatedOn = Timestamp.FromDateTime(_dayOff1.CreatedOn),
-                DayOffType = (int)_dayOff1.DayOffType,
-                Hours = _dayOff1.Hours,
-                IsPaid = _dayOff1.IsPaid,
-                PersonId = _dayOff1.PersonId
+                Id = _otherPayment1.Id,
+                Comment = _otherPayment1.Comment,
+                CreatedOn = Timestamp.FromDateTime(_otherPayment1.CreatedOn),
+                PersonId = _otherPayment1.PersonId,
+                Value = _otherPayment1.Value
             });
-            expectedResponse.Data.Add(new DayOffData
+            expectedResponse.Data.Add(new OtherPaymentData
             {
-                Id = _dayOff2.Id,
-                CreatedOn = Timestamp.FromDateTime(_dayOff2.CreatedOn),
-                DayOffType = (int)_dayOff2.DayOffType,
-                Hours = _dayOff2.Hours,
-                IsPaid = _dayOff2.IsPaid,
-                PersonId = _dayOff2.PersonId
+                Id = _otherPayment2.Id,
+                Comment = _otherPayment2.Comment,
+                CreatedOn = Timestamp.FromDateTime(_otherPayment2.CreatedOn),
+                PersonId = _otherPayment2.PersonId,
+                Value = _otherPayment2.Value
             });
 
             LogData expectedLog = new LogData
             {
-                CallSide = nameof(DayOffsService),
-                CallerMethodName = nameof(_dayOffsService.GetByPersonId),
+                CallSide = nameof(OtherPaymentsService),
+                CallerMethodName = nameof(_otherPaymentsService.GetByPersonId),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = request,
                 Response = expectedResponse
             };
 
             // Act
-            DayOffsResponse actual = _dayOffsService.GetByPersonId(request, null).Result;
+            OtherPaymentsResponse actual = _otherPaymentsService.GetByPersonId(request, null).Result;
 
             // Assert
             Assert.AreEqual(expectedResponse, actual, "Response as expected");
@@ -106,20 +99,23 @@ namespace EMS.Core.API.Tests.Services
         }
 
         [Test]
-        public void GetByPersionIdAndDateRange_should_return_all_day_offs_by_specified_person()
+        public void GetByPersonIdAndDateRange_should_return_all_other_payments_by_specified_person_and_date_range()
         {
             // Arrange
             ByPersonIdAndDateRangeRequest request = new ByPersonIdAndDateRangeRequest
             {
-                Person = new ByPersonIdRequest { PersonId = 1 },
+                Person = new ByPersonIdRequest
+                {
+                    PersonId = 1
+                },
                 Range = new ByDateRangeRequestRequest
                 {
-                    From = Timestamp.FromDateTime(new DateTime(2020, 12, 15, 0, 0,0, DateTimeKind.Utc)),
-                    To = Timestamp.FromDateTime(new DateTime(2021, 1, 15, 0, 0, 0, DateTimeKind.Utc))
+                    From = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
+                    To = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().AddDays(5))
                 }
             };
 
-            DayOffsResponse expectedResponse = new DayOffsResponse
+            OtherPaymentsResponse expectedResponse = new OtherPaymentsResponse
             {
                 Status = new BaseResponse
                 {
@@ -128,27 +124,26 @@ namespace EMS.Core.API.Tests.Services
                 }
             };
 
-            expectedResponse.Data.Add(new DayOffData
+            expectedResponse.Data.Add(new OtherPaymentData
             {
-                Id = _dayOff1.Id,
-                CreatedOn = Timestamp.FromDateTime(_dayOff1.CreatedOn),
-                DayOffType = (int)_dayOff1.DayOffType,
-                Hours = _dayOff1.Hours,
-                IsPaid = _dayOff1.IsPaid,
-                PersonId = _dayOff1.PersonId
+                Id = _otherPayment1.Id,
+                Comment = _otherPayment1.Comment,
+                CreatedOn = Timestamp.FromDateTime(_otherPayment1.CreatedOn),
+                PersonId = _otherPayment1.PersonId,
+                Value = _otherPayment1.Value
             });
 
             LogData expectedLog = new LogData
             {
-                CallSide = nameof(DayOffsService),
-                CallerMethodName = nameof(_dayOffsService.GetByPersonIdAndDateRange),
+                CallSide = nameof(OtherPaymentsService),
+                CallerMethodName = nameof(_otherPaymentsService.GetByPersonIdAndDateRange),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = request,
                 Response = expectedResponse
             };
 
             // Act
-            DayOffsResponse actual = _dayOffsService.GetByPersonIdAndDateRange(request, null).Result;
+            OtherPaymentsResponse actual = _otherPaymentsService.GetByPersonIdAndDateRange(request, null).Result;
 
             // Assert
             Assert.AreEqual(expectedResponse, actual, "Response as expected");
@@ -156,36 +151,35 @@ namespace EMS.Core.API.Tests.Services
         }
 
         [Test]
-        public void AddAsync_should_add_day_off_to_db()
+        public void AddAsync_should_add_other_payment_to_db()
         {
             // Arrange
-            DayOffData request = new DayOffData
+            OtherPaymentData request = new OtherPaymentData
             {
-                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().AddDays(5)),
-                DayOffType = 1,
-                Hours = 5,
-                IsPaid = true,
-                PersonId = 1
+                CreatedOn = Timestamp.FromDateTime(new DateTime(2021, 01, 16, 12, 0, 0, DateTimeKind.Utc)),
+                Comment = "test",
+                PersonId = 1,
+                Value = 100
             };
 
             BaseResponse expectedResponse = new BaseResponse
             {
                 Code = Code.Success,
-                ErrorMessage = string.Empty,
-                DataId = 3
+                DataId = 3,
+                ErrorMessage = string.Empty
             };
 
             LogData expectedLog = new LogData
             {
-                CallSide = nameof(DayOffsService),
-                CallerMethodName = nameof(_dayOffsService.AddAsync),
+                CallSide = nameof(OtherPaymentsService),
+                CallerMethodName = nameof(_otherPaymentsService.AddAsync),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = request,
                 Response = expectedResponse
             };
 
             // Act
-            BaseResponse actual = _dayOffsService.AddAsync(request, null).Result;
+            BaseResponse actual = _otherPaymentsService.AddAsync(request, null).Result;
 
             // Assert
             Assert.AreEqual(expectedResponse, actual, "Response as expected");
@@ -199,20 +193,21 @@ namespace EMS.Core.API.Tests.Services
             BaseResponse expectedResponse = new BaseResponse
             {
                 Code = Code.DataError,
-                ErrorMessage = "Day off cannot be empty"
+                DataId = 0,
+                ErrorMessage = "Other payment data cannot be empty"
             };
 
             LogData expectedLog = new LogData
             {
-                CallSide = nameof(DayOffsService),
-                CallerMethodName = nameof(_dayOffsService.AddAsync),
+                CallSide = nameof(OtherPaymentsService),
+                CallerMethodName = nameof(_otherPaymentsService.AddAsync),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = null,
                 Response = new Exception(expectedResponse.ErrorMessage)
             };
 
             // Act
-            BaseResponse actual = _dayOffsService.AddAsync(null, null).Result;
+            BaseResponse actual = _otherPaymentsService.AddAsync(null, null).Result;
 
             // Assert
             Assert.AreEqual(expectedResponse, actual, "Response as expected");
@@ -223,31 +218,32 @@ namespace EMS.Core.API.Tests.Services
         public void AddAsync_should_handle_argument_exception()
         {
             // Arrange
-            DayOffData request = new DayOffData
+            OtherPaymentData request = new OtherPaymentData
             {
-                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
-                DayOffType = 1,
-                Hours = 5,
-                IsPaid = true
+                CreatedOn = Timestamp.FromDateTime(new DateTime(2021, 01, 16, 12, 0, 0, DateTimeKind.Utc)),
+                Comment = "test",
+                PersonId = 1,
+                Value = 0
             };
 
             BaseResponse expectedResponse = new BaseResponse
             {
                 Code = Code.DataError,
-                ErrorMessage = "Cannot add day off record without specified person"
+                DataId = 0,
+                ErrorMessage = "Summ of payment cannot be equal to zero"
             };
 
             LogData expectedLog = new LogData
             {
-                CallSide = nameof(DayOffsService),
-                CallerMethodName = nameof(_dayOffsService.AddAsync),
+                CallSide = nameof(OtherPaymentsService),
+                CallerMethodName = nameof(_otherPaymentsService.AddAsync),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = request,
                 Response = new Exception(expectedResponse.ErrorMessage)
             };
 
             // Act
-            BaseResponse actual = _dayOffsService.AddAsync(request, null).Result;
+            BaseResponse actual = _otherPaymentsService.AddAsync(request, null).Result;
 
             // Assert
             Assert.AreEqual(expectedResponse, actual, "Response as expected");
@@ -255,36 +251,36 @@ namespace EMS.Core.API.Tests.Services
         }
 
         [Test]
-        public void AddAsync_should_handle_DbUpdate_exception()
+        public void AddAsync_should_handle_db_update_exception()
         {
             // Arrange
             DbContextMock.ShouldThrowException = true;
-            DayOffData request = new DayOffData
+            OtherPaymentData request = new OtherPaymentData
             {
-                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().AddDays(5)),
-                DayOffType = 1,
-                Hours = 5,
-                IsPaid = true,
-                PersonId = 1
+                CreatedOn = Timestamp.FromDateTime(new DateTime(2021, 01, 16, 12, 0, 0, DateTimeKind.Utc)),
+                Comment = "test",
+                PersonId = 1,
+                Value = 10
             };
 
             BaseResponse expectedResponse = new BaseResponse
             {
                 Code = Code.DbError,
-                ErrorMessage = "An error occured while saving day off"
+                DataId = 0,
+                ErrorMessage = "An error occured while saving other payment"
             };
 
             LogData expectedLog = new LogData
             {
-                CallSide = nameof(DayOffsService),
-                CallerMethodName = nameof(_dayOffsService.AddAsync),
+                CallSide = nameof(OtherPaymentsService),
+                CallerMethodName = nameof(_otherPaymentsService.AddAsync),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = request,
                 Response = new Exception("DbContext test Exception")
             };
 
             // Act
-            BaseResponse actual = _dayOffsService.AddAsync(request, null).Result;
+            BaseResponse actual = _otherPaymentsService.AddAsync(request, null).Result;
 
             // Assert
             Assert.AreEqual(expectedResponse, actual, "Response as expected");
@@ -296,32 +292,32 @@ namespace EMS.Core.API.Tests.Services
         {
             // Arrange
             DbContextMock.SaveChangesResult = 0;
-            DayOffData request = new DayOffData
+            OtherPaymentData request = new OtherPaymentData
             {
-                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
-                DayOffType = 1,
-                Hours = 5,
-                IsPaid = true,
-                PersonId = 1
+                CreatedOn = Timestamp.FromDateTime(new DateTime(2021, 01, 16, 12, 0, 0, DateTimeKind.Utc)),
+                Comment = "test",
+                PersonId = 1,
+                Value = 10
             };
 
             BaseResponse expectedResponse = new BaseResponse
             {
                 Code = Code.UnknownError,
-                ErrorMessage = "Day off has not been saved"
+                DataId = 0,
+                ErrorMessage = "Other payment has not been saved"
             };
 
             LogData expectedLog = new LogData
             {
-                CallSide = nameof(DayOffsService),
-                CallerMethodName = nameof(_dayOffsService.AddAsync),
+                CallSide = nameof(OtherPaymentsService),
+                CallerMethodName = nameof(_otherPaymentsService.AddAsync),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = request,
                 Response = new Exception(expectedResponse.ErrorMessage)
             };
 
             // Act
-            BaseResponse actual = _dayOffsService.AddAsync(request, null).Result;
+            BaseResponse actual = _otherPaymentsService.AddAsync(request, null).Result;
 
             // Assert
             Assert.AreEqual(expectedResponse, actual, "Response as expected");
@@ -329,37 +325,36 @@ namespace EMS.Core.API.Tests.Services
         }
 
         [Test]
-        public void UpdateAsync_should_update_day_off_into_db()
+        public void UpdateAsync_should_update_other_payment_into_db()
         {
             // Arrange
-            DayOffData request = new DayOffData
+            OtherPaymentData request = new OtherPaymentData
             {
-                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
-                DayOffType = 1,
-                Hours = 5,
-                IsPaid = true,
+                CreatedOn = Timestamp.FromDateTime(new DateTime(2021, 01, 16, 12, 0, 0, DateTimeKind.Utc)),
+                Comment = "test",
                 PersonId = 1,
-                Id = _dayOff1.Id
+                Value = 100,
+                Id = _otherPayment1.Id
             };
 
             BaseResponse expectedResponse = new BaseResponse
             {
                 Code = Code.Success,
-                ErrorMessage = string.Empty,
-                DataId = 1
+                DataId = 1,
+                ErrorMessage = string.Empty
             };
 
             LogData expectedLog = new LogData
             {
-                CallSide = nameof(DayOffsService),
-                CallerMethodName = nameof(_dayOffsService.UpdateAsync),
+                CallSide = nameof(OtherPaymentsService),
+                CallerMethodName = nameof(_otherPaymentsService.UpdateAsync),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = request,
                 Response = expectedResponse
             };
 
             // Act
-            BaseResponse actual = _dayOffsService.UpdateAsync(request, null).Result;
+            BaseResponse actual = _otherPaymentsService.UpdateAsync(request, null).Result;
 
             // Assert
             Assert.AreEqual(expectedResponse, actual, "Response as expected");
@@ -373,20 +368,21 @@ namespace EMS.Core.API.Tests.Services
             BaseResponse expectedResponse = new BaseResponse
             {
                 Code = Code.DataError,
-                ErrorMessage = "Day off cannot be empty"
+                DataId = 0,
+                ErrorMessage = "Other payment data cannot be empty"
             };
 
             LogData expectedLog = new LogData
             {
-                CallSide = nameof(DayOffsService),
-                CallerMethodName = nameof(_dayOffsService.UpdateAsync),
+                CallSide = nameof(OtherPaymentsService),
+                CallerMethodName = nameof(_otherPaymentsService.UpdateAsync),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = null,
                 Response = new Exception(expectedResponse.ErrorMessage)
             };
 
             // Act
-            BaseResponse actual = _dayOffsService.UpdateAsync(null, null).Result;
+            BaseResponse actual = _otherPaymentsService.UpdateAsync(null, null).Result;
 
             // Assert
             Assert.AreEqual(expectedResponse, actual, "Response as expected");
@@ -397,32 +393,33 @@ namespace EMS.Core.API.Tests.Services
         public void UpdateAsync_should_handle_argument_exception()
         {
             // Arrange
-            DayOffData request = new DayOffData
+            OtherPaymentData request = new OtherPaymentData
             {
-                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
-                DayOffType = 1,
-                Hours = 5,
-                IsPaid = true,
-                Id = _dayOff1.Id
+                CreatedOn = Timestamp.FromDateTime(new DateTime(2021, 01, 16, 12, 0, 0, DateTimeKind.Utc)),
+                Comment = "test",
+                PersonId = 1,
+                Value = 0,
+                Id = _otherPayment1.Id
             };
 
             BaseResponse expectedResponse = new BaseResponse
             {
                 Code = Code.DataError,
-                ErrorMessage = "Cannot add day off record without specified person"
+                DataId = 0,
+                ErrorMessage = "Summ of payment cannot be equal to zero"
             };
 
             LogData expectedLog = new LogData
             {
-                CallSide = nameof(DayOffsService),
-                CallerMethodName = nameof(_dayOffsService.UpdateAsync),
+                CallSide = nameof(OtherPaymentsService),
+                CallerMethodName = nameof(_otherPaymentsService.UpdateAsync),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = request,
                 Response = new Exception(expectedResponse.ErrorMessage)
             };
 
             // Act
-            BaseResponse actual = _dayOffsService.UpdateAsync(request, null).Result;
+            BaseResponse actual = _otherPaymentsService.UpdateAsync(request, null).Result;
 
             // Assert
             Assert.AreEqual(expectedResponse, actual, "Response as expected");
@@ -430,37 +427,37 @@ namespace EMS.Core.API.Tests.Services
         }
 
         [Test]
-        public void UpdateAsync_should_handle_DbUpdate_exception()
+        public void UpdateAsync_should_handle_db_update_exception()
         {
             // Arrange
             DbContextMock.ShouldThrowException = true;
-            DayOffData request = new DayOffData
+            OtherPaymentData request = new OtherPaymentData
             {
-                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
-                DayOffType = 1,
-                Hours = 5,
-                IsPaid = true,
+                CreatedOn = Timestamp.FromDateTime(new DateTime(2021, 01, 16, 12, 0, 0, DateTimeKind.Utc)),
+                Comment = "test",
                 PersonId = 1,
-                Id = _dayOff1.Id
+                Value = 10,
+                Id = _otherPayment1.Id
             };
 
             BaseResponse expectedResponse = new BaseResponse
             {
                 Code = Code.DbError,
-                ErrorMessage = "An error occured while updating day off"
+                DataId = 0,
+                ErrorMessage = "An error occured while updating other payment"
             };
 
             LogData expectedLog = new LogData
             {
-                CallSide = nameof(DayOffsService),
-                CallerMethodName = nameof(_dayOffsService.UpdateAsync),
+                CallSide = nameof(OtherPaymentsService),
+                CallerMethodName = nameof(_otherPaymentsService.UpdateAsync),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = request,
                 Response = new Exception("DbContext test Exception")
             };
 
             // Act
-            BaseResponse actual = _dayOffsService.UpdateAsync(request, null).Result;
+            BaseResponse actual = _otherPaymentsService.AddAsync(request, null).Result;
 
             // Assert
             Assert.AreEqual(expectedResponse, actual, "Response as expected");
@@ -472,33 +469,33 @@ namespace EMS.Core.API.Tests.Services
         {
             // Arrange
             DbContextMock.SaveChangesResult = 0;
-            DayOffData request = new DayOffData
+            OtherPaymentData request = new OtherPaymentData
             {
-                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
-                DayOffType = 1,
-                Hours = 5,
-                IsPaid = true,
+                CreatedOn = Timestamp.FromDateTime(new DateTime(2021, 01, 16, 12, 0, 0, DateTimeKind.Utc)),
+                Comment = "test",
                 PersonId = 1,
-                Id = _dayOff1.Id
+                Value = 10,
+                Id = _otherPayment1.Id
             };
 
             BaseResponse expectedResponse = new BaseResponse
             {
                 Code = Code.UnknownError,
-                ErrorMessage = "Day off has not been saved"
+                DataId = 0,
+                ErrorMessage = "Other payment has not been updated"
             };
 
             LogData expectedLog = new LogData
             {
-                CallSide = nameof(DayOffsService),
-                CallerMethodName = nameof(_dayOffsService.UpdateAsync),
+                CallSide = nameof(OtherPaymentsService),
+                CallerMethodName = nameof(_otherPaymentsService.UpdateAsync),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = request,
                 Response = new Exception(expectedResponse.ErrorMessage)
             };
 
             // Act
-            BaseResponse actual = _dayOffsService.UpdateAsync(request, null).Result;
+            BaseResponse actual = _otherPaymentsService.UpdateAsync(request, null).Result;
 
             // Assert
             Assert.AreEqual(expectedResponse, actual, "Response as expected");
@@ -506,37 +503,38 @@ namespace EMS.Core.API.Tests.Services
         }
 
         [Test]
-        public void DeleteAsync_should_delete_record_from_db()
+        public void DeleteAsync_should_delete_other_payment_from_db()
         {
+            _otherPayment1.CreatedOn = _otherPayment1.CreatedOn.AddMonths(4);
+            _dbContext.OtherPayments.Update(_otherPayment1);
             // Arrange
-            DayOffData request = new DayOffData
+            OtherPaymentData request = new OtherPaymentData
             {
-                CreatedOn = Timestamp.FromDateTime(_dayOff1.CreatedOn),
-                DayOffType = (int)_dayOff1.DayOffType,
-                Hours = _dayOff1.Hours,
-                IsPaid = _dayOff1.IsPaid,
-                PersonId = _dayOff1.PersonId,
-                Id = _dayOff1.Id
+                CreatedOn = Timestamp.FromDateTime(_otherPayment1.CreatedOn),
+                Comment = _otherPayment1.Comment,
+                PersonId = _otherPayment1.PersonId,
+                Value = _otherPayment1.Value,
+                Id = _otherPayment1.Id
             };
 
             BaseResponse expectedResponse = new BaseResponse
             {
                 Code = Code.Success,
-                ErrorMessage = string.Empty,
-                DataId = _dayOff1.Id
+                DataId = _otherPayment1.Id,
+                ErrorMessage = string.Empty
             };
 
             LogData expectedLog = new LogData
             {
-                CallSide = nameof(DayOffsService),
-                CallerMethodName = nameof(_dayOffsService.DeleteAsync),
+                CallSide = nameof(OtherPaymentsService),
+                CallerMethodName = nameof(_otherPaymentsService.DeleteAsync),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = request,
                 Response = expectedResponse
             };
 
             // Act
-            BaseResponse actual = _dayOffsService.DeleteAsync(request, null).Result;
+            BaseResponse actual = _otherPaymentsService.DeleteAsync(request, null).Result;
 
             // Assert
             Assert.AreEqual(expectedResponse, actual, "Response as expected");
@@ -544,46 +542,16 @@ namespace EMS.Core.API.Tests.Services
         }
 
         [Test]
-        public void DeleteAsync_should_handle_null_reference_exception()
-        {
-            // Arrange
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.DataError,
-                ErrorMessage = "Day off cannot be empty"
-            };
-
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(DayOffsService),
-                CallerMethodName = nameof(_dayOffsService.DeleteAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = null,
-                Response = new Exception(expectedResponse.ErrorMessage)
-            };
-
-            // Act
-            BaseResponse actual = _dayOffsService.DeleteAsync(null, null).Result;
-
-            // Assert
-            Assert.AreEqual(expectedResponse, actual, "Response as expected");
-            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
-        }
-
-        [Test]
         public void DeleteAsync_should_handle_invalid_operation_exception()
         {
             // Arrange
-            _dayOff1.CreatedOn = _dayOff1.CreatedOn.AddMonths(-5);
-            _dbContext.DaysOff.Update(_dayOff1);
-            DayOffData request = new DayOffData
+            OtherPaymentData request = new OtherPaymentData
             {
-                CreatedOn = Timestamp.FromDateTime(_dayOff1.CreatedOn),
-                DayOffType = (int)_dayOff1.DayOffType,
-                Hours = _dayOff1.Hours,
-                IsPaid = _dayOff1.IsPaid,
-                PersonId = _dayOff1.PersonId,
-                Id = _dayOff1.Id
+                CreatedOn = Timestamp.FromDateTime(_otherPayment1.CreatedOn),
+                Comment = _otherPayment1.Comment,
+                PersonId = _otherPayment1.PersonId,
+                Value = _otherPayment1.Value,
+                Id = _otherPayment1.Id
             };
 
             BaseResponse expectedResponse = new BaseResponse
@@ -594,95 +562,97 @@ namespace EMS.Core.API.Tests.Services
 
             LogData expectedLog = new LogData
             {
-                CallSide = nameof(DayOffsService),
-                CallerMethodName = nameof(_dayOffsService.DeleteAsync),
+                CallSide = nameof(OtherPaymentsService),
+                CallerMethodName = nameof(_otherPaymentsService.DeleteAsync),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = request,
                 Response = new Exception(expectedResponse.ErrorMessage)
             };
 
             // Act
-            BaseResponse actual = _dayOffsService.DeleteAsync(request, null).Result;
+            BaseResponse actual = _otherPaymentsService.DeleteAsync(request, null).Result;
 
             // Assert
             Assert.AreEqual(expectedResponse, actual, "Response as expected");
-            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
+            _loggerMock.Verify(mocks => mocks.AddLog(expectedLog), Times.Once);
         }
 
         [Test]
-        public void DeleteAsync_should_handle_DbUpdate_exception()
+        public void DeleteAsync_should_handle_db_update_exception()
         {
             // Arrange
+            _otherPayment1.CreatedOn = _otherPayment1.CreatedOn.AddMonths(4);
+            _dbContext.OtherPayments.Update(_otherPayment1);
             DbContextMock.ShouldThrowException = true;
-            DayOffData request = new DayOffData
+            OtherPaymentData request = new OtherPaymentData
             {
-                CreatedOn = Timestamp.FromDateTime(_dayOff1.CreatedOn),
-                DayOffType = (int)_dayOff1.DayOffType,
-                Hours = _dayOff1.Hours,
-                IsPaid = _dayOff1.IsPaid,
-                PersonId = _dayOff1.PersonId,
-                Id = _dayOff1.Id
+                CreatedOn = Timestamp.FromDateTime(_otherPayment1.CreatedOn),
+                Comment = _otherPayment1.Comment,
+                PersonId = _otherPayment1.PersonId,
+                Value = _otherPayment1.Value,
+                Id = _otherPayment1.Id
             };
 
             BaseResponse expectedResponse = new BaseResponse
             {
                 Code = Code.DbError,
-                ErrorMessage = "An error occured while deleting day off"
+                ErrorMessage = "An error occured while deleting other payment"
             };
 
             LogData expectedLog = new LogData
             {
-                CallSide = nameof(DayOffsService),
-                CallerMethodName = nameof(_dayOffsService.DeleteAsync),
+                CallSide = nameof(OtherPaymentsService),
+                CallerMethodName = nameof(_otherPaymentsService.DeleteAsync),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = request,
                 Response = new Exception("DbContext test Exception")
             };
 
             // Act
-            BaseResponse actual = _dayOffsService.DeleteAsync(request, null).Result;
+            BaseResponse actual = _otherPaymentsService.DeleteAsync(request, null).Result;
 
             // Assert
             Assert.AreEqual(expectedResponse, actual, "Response as expected");
-            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
+            _loggerMock.Verify(mocks => mocks.AddLog(expectedLog), Times.Once);
         }
 
         [Test]
         public void DeleteAsync_should_handle_exception()
         {
             // Arrange
+            _otherPayment1.CreatedOn = _otherPayment1.CreatedOn.AddMonths(4);
+            _dbContext.OtherPayments.Update(_otherPayment1);
             DbContextMock.SaveChangesResult = 0;
-            DayOffData request = new DayOffData
+            OtherPaymentData request = new OtherPaymentData
             {
-                CreatedOn = Timestamp.FromDateTime(_dayOff1.CreatedOn),
-                DayOffType = (int)_dayOff1.DayOffType,
-                Hours = _dayOff1.Hours,
-                IsPaid = _dayOff1.IsPaid,
-                PersonId = _dayOff1.PersonId,
-                Id = _dayOff1.Id
+                CreatedOn = Timestamp.FromDateTime(_otherPayment1.CreatedOn),
+                Comment = _otherPayment1.Comment,
+                PersonId = _otherPayment1.PersonId,
+                Value = _otherPayment1.Value,
+                Id = _otherPayment1.Id
             };
 
             BaseResponse expectedResponse = new BaseResponse
             {
                 Code = Code.UnknownError,
-                ErrorMessage = "Day off has not been deleted"
+                ErrorMessage = "Other payment has not been deleted"
             };
 
             LogData expectedLog = new LogData
             {
-                CallSide = nameof(DayOffsService),
-                CallerMethodName = nameof(_dayOffsService.DeleteAsync),
+                CallSide = nameof(OtherPaymentsService),
+                CallerMethodName = nameof(_otherPaymentsService.DeleteAsync),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = request,
                 Response = new Exception(expectedResponse.ErrorMessage)
             };
 
             // Act
-            BaseResponse actual = _dayOffsService.DeleteAsync(request, null).Result;
+            BaseResponse actual = _otherPaymentsService.DeleteAsync(request, null).Result;
 
             // Assert
             Assert.AreEqual(expectedResponse, actual, "Response as expected");
-            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
+            _loggerMock.Verify(mocks => mocks.AddLog(expectedLog), Times.Once);
         }
     }
 }

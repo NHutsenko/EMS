@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using EMS.Common.Utils.DateTimeUtil;
 using EMS.Core.API.DAL.Repositories.Interfaces;
 using EMS.Core.API.Models;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace EMS.Core.API.DAL.Repositories

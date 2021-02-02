@@ -15,7 +15,7 @@ message ByDateRangeRequestRequest {
 	google.protobuf.Timestamp to = 2;
 }
 
-message ByPersonIdDateRangeRequestRequest {
+message ByPersonIdAndDateRangeRequest {
 	ByPersonIdRequest person = 1;
 	ByDateRangeRequestRequest range = 2;
 }
