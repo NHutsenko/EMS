@@ -21,7 +21,7 @@ namespace EMS.Core.API.Tests.Services
         {
             InitializeMocks();
             InitializeLoggerMock(new OtherPaymentsService(null, null, null));
-            DbContextMock.SaveChangesResult = 0;
+            DbContextMock.SaveChangesResult = 1;
             DbContextMock.ShouldThrowException = false;
 
             _otherPayment1 = new OtherPayment
@@ -457,7 +457,7 @@ namespace EMS.Core.API.Tests.Services
             };
 
             // Act
-            BaseResponse actual = _otherPaymentsService.AddAsync(request, null).Result;
+            BaseResponse actual = _otherPaymentsService.UpdateAsync(request, null).Result;
 
             // Assert
             Assert.AreEqual(expectedResponse, actual, "Response as expected");
@@ -574,7 +574,7 @@ namespace EMS.Core.API.Tests.Services
 
             // Assert
             Assert.AreEqual(expectedResponse, actual, "Response as expected");
-            _loggerMock.Verify(mocks => mocks.AddLog(expectedLog), Times.Once);
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
         }
 
         [Test]
@@ -613,7 +613,7 @@ namespace EMS.Core.API.Tests.Services
 
             // Assert
             Assert.AreEqual(expectedResponse, actual, "Response as expected");
-            _loggerMock.Verify(mocks => mocks.AddLog(expectedLog), Times.Once);
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
         }
 
         [Test]
@@ -652,7 +652,7 @@ namespace EMS.Core.API.Tests.Services
 
             // Assert
             Assert.AreEqual(expectedResponse, actual, "Response as expected");
-            _loggerMock.Verify(mocks => mocks.AddLog(expectedLog), Times.Once);
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
         }
     }
 }
