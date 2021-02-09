@@ -1,0 +1,28 @@
+﻿syntax = "proto3";
+
+import "response.proto";
+
+option csharp_namespace = "EMS.Core.API";
+
+package motivation_modificator;
+
+service MotivationModificators {
+	rpc AddAsync(MotivationModificatorData) returns (response.BaseResponse) { }
+	rpc UpdateAsync(MotivationModificatorData) returns (response.BaseResponse) { }
+	rpc GetByStaffId(ByStaffIdRequest) returns (MotivationModificatorsResponse) { }
+}
+
+message MotivationModificatorsResponse {
+	response.BaseResponse status = 1;
+	repeated MotivationModificatorData data = 2;
+}
+
+message MotivationModificatorData {
+	int64 id = 1;
+	double mod_value = 2;
+	int64 staff_id = 3;
+}
+
+message ByStaffIdRequest {
+	int64 staff_id = 1;
+}

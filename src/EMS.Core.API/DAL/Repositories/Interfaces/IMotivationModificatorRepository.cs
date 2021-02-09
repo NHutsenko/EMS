@@ -8,7 +8,6 @@ namespace EMS.Core.API.DAL.Repositories.Interfaces
     {
         Task<int> AddAsync(MotivationModificator modificator);
         Task<int> UpdateAsync(MotivationModificator modificator);
-        IQueryable<MotivationModificator> GetAll();
         MotivationModificator GetByStaffId(long staffId);
 
     }

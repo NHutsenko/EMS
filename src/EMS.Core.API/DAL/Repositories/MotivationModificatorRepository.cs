@@ -14,14 +14,13 @@ namespace EMS.Core.API.DAL.Repositories
         public async Task<int> AddAsync(MotivationModificator modificator)
         {
             CheckData(modificator);
+            if(_context.MotivationModificators.Any(e => e.StaffId == modificator.StaffId))
+            {
+                throw new InvalidOperationException("Motivation modificator already exists");
+            }
             modificator.CreatedOn = _dateTimeUtil.GetCurrentDateTime();
             _context.MotivationModificators.Add(modificator);
             return await _context.SaveChangesAsync();
-        }
-
-        public IQueryable<MotivationModificator> GetAll()
-        {
-            return _context.MotivationModificators.Select(e => e);
         }
 
         public MotivationModificator GetByStaffId(long staffId)
@@ -40,7 +39,7 @@ namespace EMS.Core.API.DAL.Repositories
         {
             if (modificator is null)
             {
-                throw new NullReferenceException("MOtificator cannot be empty");
+                throw new NullReferenceException("Motificator cannot be empty");
             }
             if(modificator.StaffId == 0)
             {

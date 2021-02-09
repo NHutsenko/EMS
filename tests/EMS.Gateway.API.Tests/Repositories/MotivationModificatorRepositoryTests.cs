@@ -62,22 +62,6 @@ namespace EMS.Core.API.Tests.Repositories
         }
 
         [Test]
-        public void GetAll_should_return_all_modificators_from_db()
-        {
-            // Arrange
-            List<MotivationModificator> expected = new List<MotivationModificator>
-            {
-                _motivationModificator1, _motivationModificator2
-            };
-
-            // Act
-            IQueryable<MotivationModificator> actual = _motivationModificatorRepository.GetAll();
-
-            // Assert
-            CollectionAssert.AreEqual(expected, actual, "Data returnted as expected");
-        }
-
-        [Test]
         public void GetByStaffId_should_return_modificator_with_specified_staffId()
         {
             // Act
@@ -133,6 +117,21 @@ namespace EMS.Core.API.Tests.Repositories
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _motivationModificatorRepository.AddAsync(motivationModificator), "Throws ArgumentException as expected");
+            _dbContextMock.Verify(m => m.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
+        public void AddAsync_should_throw_because_modificator_already_exists()
+        {
+            // Arrange
+            MotivationModificator motivationModificator = new MotivationModificator
+            {
+                ModValue = 0.5,
+                StaffId = _staff1.Id
+            };
+
+            // Assert
+            Assert.ThrowsAsync<InvalidOperationException>(() => _motivationModificatorRepository.AddAsync(motivationModificator), "Throws InvalidOperationException as expected");
             _dbContextMock.Verify(m => m.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
