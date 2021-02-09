@@ -9,12 +9,12 @@ package motivation_modificator;
 service MotivationModificators {
 	rpc AddAsync(MotivationModificatorData) returns (response.BaseResponse) { }
 	rpc UpdateAsync(MotivationModificatorData) returns (response.BaseResponse) { }
-	rpc GetByStaffId(ByStaffIdRequest) returns (MotivationModificatorsResponse) { }
+	rpc GetByStaffId(ByStaffIdRequest) returns (MotivationModificatorResponse) { }
 }
 
-message MotivationModificatorsResponse {
+message MotivationModificatorResponse {
 	response.BaseResponse status = 1;
-	repeated MotivationModificatorData data = 2;
+	MotivationModificatorData data = 2;
 }
 
 message MotivationModificatorData {

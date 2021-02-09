@@ -35,7 +35,7 @@ namespace EMS.Core.API.Services
             return base.UpdateAsync(request, context);
         }
 
-        public override Task<MotivationModificatorsResponse> GetByStaffId(ByStaffIdRequest request, ServerCallContext context)
+        public override Task<MotivationModificatorResponse> GetByStaffId(ByStaffIdRequest request, ServerCallContext context)
         {
             return base.GetByStaffId(request, context);
         }

@@ -16,7 +16,7 @@ namespace EMS.Core.API.DAL.Repositories
             CheckData(modificator);
             if(_context.MotivationModificators.Any(e => e.StaffId == modificator.StaffId))
             {
-                throw new InvalidOperationException("Motivation modificator already exists");
+                throw new InvalidOperationException("Motivation modificator already exists for specified work period");
             }
             modificator.CreatedOn = _dateTimeUtil.GetCurrentDateTime();
             _context.MotivationModificators.Add(modificator);
@@ -43,11 +43,11 @@ namespace EMS.Core.API.DAL.Repositories
             }
             if(modificator.StaffId == 0)
             {
-                throw new ArgumentException("Staff is not specified");
+                throw new ArgumentException("Work period is not specified");
             }
             if(!_context.Staff.Any(e => e.Id == modificator.StaffId))
             {
-                throw new ArgumentException("Staff does not exists");
+                throw new ArgumentException("Cannot modify motivation for work period which does not exists");
             }
             if(modificator.ModValue <= 0)
             {
