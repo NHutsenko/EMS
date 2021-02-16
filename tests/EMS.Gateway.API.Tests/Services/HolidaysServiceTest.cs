@@ -22,8 +22,6 @@ namespace EMS.Core.API.Tests.Services
         {
             InitializeMocks();
             InitializeLoggerMock(new HolidaysService(null, null, null));
-            DbContextMock.SaveChangesResult = 1;
-            DbContextMock.ShouldThrowException = false;
 
             _holiday1 = new Holiday
             {

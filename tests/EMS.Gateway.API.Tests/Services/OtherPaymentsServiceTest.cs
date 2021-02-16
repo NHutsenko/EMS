@@ -21,8 +21,6 @@ namespace EMS.Core.API.Tests.Services
         {
             InitializeMocks();
             InitializeLoggerMock(new OtherPaymentsService(null, null, null));
-            DbContextMock.SaveChangesResult = 1;
-            DbContextMock.ShouldThrowException = false;
 
             _otherPayment1 = new OtherPayment
             {

@@ -27,8 +27,6 @@ namespace EMS.Core.API.Tests.Services
         {
             InitializeMocks();
             InitializeLoggerMock(new MotivationModificatorsService(null, null, null));
-            DbContextMock.ShouldThrowException = false;
-            DbContextMock.SaveChangesResult = 1;
 
             _staff1 = new Staff
             {

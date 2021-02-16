@@ -25,8 +25,6 @@ namespace EMS.Core.API.Tests.Services
         {
             InitializeMocks();
             InitializeLoggerMock(new PeopleService(null, null, null));
-            DbContextMock.ShouldThrowException = false;
-            DbContextMock.SaveChangesResult = 1;
 
             int idPersonOne = 1;
             _contact = new Contact

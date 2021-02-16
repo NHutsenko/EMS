@@ -22,7 +22,7 @@ namespace EMS.Core.API.Tests.Services
         {
             InitializeMocks();
             InitializeLoggerMock(new SalaryService(null, null, null, null, null, null, null, null));
-            DbContextMock.ShouldThrowException = false;
+
             _position1 = new Position
             {
                 Id = 1,

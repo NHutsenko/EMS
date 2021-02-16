@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using EMS.Common.Utils.DateTimeUtil;
 using EMS.Core.API.DAL.Repositories.Interfaces;
 using EMS.Core.API.Models;
 using Microsoft.EntityFrameworkCore;
@@ -9,13 +10,13 @@ namespace EMS.Core.API.DAL.Repositories
 {
     public class StaffRepository: BaseRepository, IStaffRepository
     {
-        public StaffRepository(IApplicationDbContext context) : base(context, null) { }
+        public StaffRepository(IApplicationDbContext context, IDateTimeUtil dateTimeUtil) : base(context, dateTimeUtil) { }
 
         public async Task<int> AddAsync(Staff staff)
         {
             if(staff is null)
             {
-                throw new NullReferenceException("Staff entity cannot be null");
+                throw new NullReferenceException("Staff entity cannot be empty");
             }
 
             if(staff.ManagerId == 0)
@@ -41,7 +42,7 @@ namespace EMS.Core.API.DAL.Repositories
         {
             if (staff is null)
             {
-                throw new NullReferenceException("Staff entity cannot be null");
+                throw new NullReferenceException("Staff entity cannot be empty");
             }
 
             if (staff.ManagerId == 0)
@@ -67,9 +68,13 @@ namespace EMS.Core.API.DAL.Repositories
 
         public async Task<int> DeleteAsync(Staff staff)
         {
-            if(staff.CreatedOn <= DateTime.Now.Date)
+            if(staff is null)
             {
-                throw new DbUpdateException("Cannot delete history record");
+                throw new ArgumentException("Staff data cannot be empty");
+            }
+            if(staff.CreatedOn <= _dateTimeUtil.GetCurrentDateTime())
+            {
+                throw new InvalidOperationException("Cannot delete history record");
             }
             _context.Staff.Remove(staff);
             return await _context.SaveChangesAsync();

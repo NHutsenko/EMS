@@ -22,8 +22,6 @@ namespace EMS.Core.API.Tests.Services
         {
             InitializeMocks();
             InitializeLoggerMock(new DayOffsService(null, null, null));
-            DbContextMock.ShouldThrowException = false;
-            DbContextMock.SaveChangesResult = 1;
 
             _dayOff1 = new DayOff
             {

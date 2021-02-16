@@ -39,6 +39,7 @@ namespace EMS.Core.API.Tests
         protected DayOffsService _dayOffsService;
         protected OtherPaymentsService _otherPaymentsService;
         protected MotivationModificatorsService _motivationModificatorsService;
+        protected StaffService _staffService;
 
         // Logger
         protected Mock<IEMSLogger<T>> _loggerMock;
@@ -47,6 +48,8 @@ namespace EMS.Core.API.Tests
         protected void InitializeMocks()
         {
             // DB context
+            DbContextMock.ShouldThrowException = false;
+            DbContextMock.SaveChangesResult = 1;
             _dbContextMock = DbContextMock.SetupDbContext<IApplicationDbContext>();
             _dbContext = _dbContextMock.Object;
 

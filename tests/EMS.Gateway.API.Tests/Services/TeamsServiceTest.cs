@@ -23,8 +23,6 @@ namespace EMS.Core.API.Tests.Services
         {
             InitializeMocks();
             InitializeLoggerMock(new TeamsService(null, null, null));
-            DbContextMock.ShouldThrowException = false;
-            DbContextMock.SaveChangesResult = 1;
 
             _team1 = new Team
             {

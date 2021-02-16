@@ -58,7 +58,7 @@ namespace EMS.Core.API.Tests.Repositories
             _dbContext.Positions.Add(_position1);
             _dbContext.Positions.Add(_position2);
 
-            _staffRepository = new StaffRepository(_dbContext);
+            _staffRepository = new StaffRepository(_dbContext, _dateTimeUtil);
         }
 
         [Test]
@@ -318,6 +318,14 @@ namespace EMS.Core.API.Tests.Repositories
         }
 
         [Test]
+        public void DeletAsync_should_throw_null_reference_exception_because_staff_data_has_not_been_provided()
+        {
+            // Assert
+            Assert.ThrowsAsync<NullReferenceException>(() => _staffRepository.DeleteAsync(null), "NullReferenceException from throws as expected");
+            _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
         public void DeleteAsync_should_throw_exception_from_db()
         {
             // Arrange
@@ -351,7 +359,7 @@ namespace EMS.Core.API.Tests.Repositories
             _dbContext.Staff.Add(toDelete);
 
             // Assert
-            Assert.ThrowsAsync<DbUpdateException>(() => _staffRepository.DeleteAsync(toDelete), "DeleteAsync throws exception as expected");
+            Assert.ThrowsAsync<InvalidOperationException>(() => _staffRepository.DeleteAsync(toDelete), "DeleteAsync throws exception as expected");
             _dbContextMock.Verify(a => a.SaveChangesAsync(true, new CancellationToken()), Times.Never);
         }
 
