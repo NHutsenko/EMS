@@ -9,6 +9,7 @@ using EMS.Common.Protos;
 using EMS.Core.API.Models;
 using EMS.Core.API.Services;
 using EMS.Core.API.Tests.Mock;
+using Google.Protobuf.WellKnownTypes;
 using Moq;
 using NUnit.Framework;
 
@@ -260,13 +261,14 @@ namespace EMS.Core.API.Tests.Services
             {
                 Id = _motivationModificator1.Id,
                 StaffId = _motivationModificator1.StaffId,
-                ModValue = 0.3
+                ModValue = 0.3,
+                CreatedOn = Timestamp.FromDateTime(_motivationModificator1.CreatedOn)
             };
 
             BaseResponse expectedResponse = new BaseResponse
             {
                 Code = Code.Success,
-                DataId = 2,
+                DataId = _motivationModificator1.Id,
                 ErrorMessage = string.Empty
             };
 
@@ -324,7 +326,8 @@ namespace EMS.Core.API.Tests.Services
             {
                 Id = _motivationModificator1.Id,
                 StaffId = _motivationModificator1.StaffId,
-                ModValue = -1
+                ModValue = -1,
+                CreatedOn = Timestamp.FromDateTime(_motivationModificator1.CreatedOn)
             };
 
             BaseResponse expectedResponse = new BaseResponse
@@ -435,7 +438,8 @@ namespace EMS.Core.API.Tests.Services
                 {
                     Id = _motivationModificator1.Id,
                     ModValue = _motivationModificator1.ModValue,
-                    StaffId = _motivationModificator1.StaffId
+                    StaffId = _motivationModificator1.StaffId,
+                    CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime())
                 }
             };
 

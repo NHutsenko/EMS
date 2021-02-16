@@ -1,6 +1,7 @@
 ﻿syntax = "proto3";
 
 import "response.proto";
+import "google/protobuf/timestamp.proto";
 
 option csharp_namespace = "EMS.Core.API";
 
@@ -21,6 +22,7 @@ message MotivationModificatorData {
 	int64 id = 1;
 	double mod_value = 2;
 	int64 staff_id = 3;
+	google.protobuf.Timestamp created_on = 4;
 }
 
 message ByStaffIdRequest {

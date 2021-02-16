@@ -542,6 +542,33 @@ namespace EMS.Core.API.Tests.Services
         }
 
         [Test]
+        public void DeleteAsync_should_handle_null_reference_exception()
+        {
+            // Arrange
+            BaseResponse expectedResponse = new BaseResponse
+            {
+                Code = Code.DataError,
+                ErrorMessage = "Other payment cannot be empty"
+            };
+
+            LogData expectedLog = new LogData
+            {
+                CallSide = nameof(OtherPaymentsService),
+                CallerMethodName = nameof(_otherPaymentsService.DeleteAsync),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = null,
+                Response = new Exception(expectedResponse.ErrorMessage)
+            };
+
+            // Act
+            BaseResponse actual = _otherPaymentsService.DeleteAsync(null, null).Result;
+
+            // Assert
+            Assert.AreEqual(expectedResponse, actual, "Response as expected");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
+        }
+
+        [Test]
         public void DeleteAsync_should_handle_invalid_operation_exception()
         {
             // Arrange

@@ -30,7 +30,7 @@ namespace EMS.Core.API.DAL.Repositories
         {
             if(otherPayment is null)
             {
-                throw new NullReferenceException("Other payment data cannot be empty");
+                throw new NullReferenceException("Other payment cannot be empty");
             }
             DateTime currentDate = _dateTimeUtil.GetCurrentDateTime();
             DateTime currentMonth = new DateTime(currentDate.Year, currentDate.Month + 1, 1);
