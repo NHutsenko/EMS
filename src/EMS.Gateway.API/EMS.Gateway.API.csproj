@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.14.0" />
+    <PackageReference Include="Grpc.Net.Client" Version="2.35.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.35.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.3" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.0.7" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.0.7" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="../common/Protos/response.proto" Link="Protos/response.proto" />
+    <Protobuf Include="../common/Protos/requests.proto" Link="Protos/requests.proto" />
+    <Protobuf Include="../common/Protos/salary.proto" Link="Protos/salary.proto" GrpcServices="Client" />
+    <Protobuf Include="../common/Protos/people.proto" Link="Protos/people.proto" GrpcServices="Client" />
+    <Protobuf Include="../common/Protos/teams.proto" Link="Protos/teams.proto" GrpcServices="Client" />
+    <Protobuf Include="../common/Protos/positions.proto" Link="Protos/positions.proto" GrpcServices="Client" />
+    <Protobuf Include="../common/Protos/holidays.proto" Link="Protos/holidays.proto" GrpcServices="Client" />
+    <Protobuf Include="../common/Protos/day_offs.proto" Link="Protos/day_offs.proto" GrpcServices="Client" />
+    <Protobuf Include="../common/Protos/other_payments.proto" Link="Protos/other_payments.proto" GrpcServices="Client" />
+    <Protobuf Include="../common/Protos/motivation_modificator.proto" Link="Protos/motivation_modificator.proto" GrpcServices="Client" />
+    <Protobuf Include="../common/Protos/staff.proto" Link="Protos/staff.proto" GrpcServices="Client" />
+  </ItemGroup>
+
+</Project>
