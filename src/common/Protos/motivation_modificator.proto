@@ -3,7 +3,7 @@
 import "response.proto";
 import "google/protobuf/timestamp.proto";
 
-option csharp_namespace = "EMS.Core.API";
+option csharp_namespace = "EMS.Common.Protos";
 
 package motivation_modificator;
 

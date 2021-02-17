@@ -85,21 +85,23 @@ namespace EMS.Core.API
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGrpcService<SalaryService>()
+                endpoints.MapGrpcService<DayOffsService>()
                     .RequireCors("GatewayCorsPolicy");
-                endpoints.MapGrpcService<TeamsService>()
+                endpoints.MapGrpcService<HolidaysService>()
+                    .RequireCors("GatewayCorsPolicy");
+                endpoints.MapGrpcService<MotivationModificatorsService>()
+                    .RequireCors("GatewayCorsPolicy");
+                endpoints.MapGrpcService<OtherPaymentsService>()
                     .RequireCors("GatewayCorsPolicy");
                 endpoints.MapGrpcService<PeopleService>()
                     .RequireCors("GatewayCorsPolicy");
                 endpoints.MapGrpcService<PositionsService>()
                     .RequireCors("GatewayCorsPolicy");
-                endpoints.MapGrpcService<HolidaysService>()
-                    .RequireCors("GatewayCorsPolicy");
-                endpoints.MapGrpcService<DayOffsService>()
-                    .RequireCors("GatewayCorsPolicy");
-                endpoints.MapGrpcService<HolidaysService>()
+                endpoints.MapGrpcService<SalaryService>()
                     .RequireCors("GatewayCorsPolicy");
                 endpoints.MapGrpcService<StaffService>()
+                    .RequireCors("GatewayCorsPolicy");
+                endpoints.MapGrpcService<TeamsService>()
                     .RequireCors("GatewayCorsPolicy");
 
                 endpoints.MapGet("/alive", async context =>

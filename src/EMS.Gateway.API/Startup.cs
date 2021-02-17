@@ -4,6 +4,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Grpc.Core;
+using EMS.Common.Protos;
+using System;
 
 namespace EMS.Gateway.API
 {
@@ -29,6 +32,47 @@ namespace EMS.Gateway.API
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "EMS.Gateway.API", Version = "v1" });
+            });
+        }
+
+        private void InjectCoreGrpcClients(IServiceCollection services)
+        {
+            string coreApiUrl = Environment.GetEnvironmentVariable("CoreApiUrl");
+            services.AddGrpcClient<DayOffs.DayOffsClient>(o =>
+            {
+                o.Address = new Uri(coreApiUrl);
+            });
+            services.AddGrpcClient<Holidays.HolidaysClient>(o =>
+            {
+                o.Address = new Uri(coreApiUrl);
+            });
+            services.AddGrpcClient<MotivationModificators.MotivationModificatorsClient>(o =>
+            {
+                o.Address = new Uri(coreApiUrl);
+            });
+            services.AddGrpcClient<OtherPayments.OtherPaymentsClient>(o =>
+            {
+                o.Address = new Uri(coreApiUrl);
+            });
+            services.AddGrpcClient<People.PeopleClient>(o =>
+            {
+                o.Address = new Uri(coreApiUrl);
+            });
+            services.AddGrpcClient<Positions.PositionsClient>(o =>
+            {
+                o.Address = new Uri(coreApiUrl);
+            });
+            services.AddGrpcClient<Salary.SalaryClient>(o =>
+            {
+                o.Address = new Uri(coreApiUrl);
+            });
+            services.AddGrpcClient<Staffs.StaffsClient>(o =>
+            {
+                o.Address = new Uri(coreApiUrl);
+            });
+            services.AddGrpcClient<Teams.TeamsClient>(o =>
+            {
+                o.Address = new Uri(coreApiUrl);
             });
         }
 
