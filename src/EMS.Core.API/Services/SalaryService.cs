@@ -129,7 +129,11 @@ namespace EMS.Core.API.Services
                 if (currentStaff is not null)
                 {
                     Position position = _positionsRepository.Get(currentStaff.PositionId);
-                    MotivationModificator modificator = _motivationModificatorRepository.GetByStaffId(currentStaff.MotivationModificatorId);
+                    MotivationModificator modificator = null;
+                    if (currentStaff.MotivationModificatorId.HasValue)
+                    {
+                        modificator = _motivationModificatorRepository.GetByStaffId(currentStaff.MotivationModificatorId.Value);
+                    }
                     double rate = modificator != null ? position.HourRate * modificator.ModValue : position.HourRate;
                     response.CurrentPosition = position.Id;
                     response.PersonId = currentStaff.PersonId.GetValueOrDefault();

@@ -55,7 +55,7 @@ namespace EMS.Core.API.DAL.Repositories
                 throw new ArgumentException("PositionId in staff entity cannot be 0");
             }
 
-            bool hasUpdateDateError = _context.Staff.Where(e => e.Id < staff.Id && e.PersonId == staff.PersonId)
+            bool hasUpdateDateError = _context.Staff.Where(e => e.PersonId == staff.PersonId && e.Id != staff.Id)
                 .OrderBy(e => e.CreatedOn)
                 .Any(e => e.CreatedOn >= staff.CreatedOn);
             if (hasUpdateDateError)
@@ -70,7 +70,7 @@ namespace EMS.Core.API.DAL.Repositories
         {
             if(staff is null)
             {
-                throw new ArgumentException("Staff data cannot be empty");
+                throw new NullReferenceException("Staff data cannot be empty");
             }
             if(staff.CreatedOn <= _dateTimeUtil.GetCurrentDateTime())
             {

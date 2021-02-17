@@ -16,10 +16,10 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace EMS.Core.API
 {
-	[ExcludeFromCodeCoverage]
-	public class Startup
-	{
-		private IConfiguration Configuration { get; }
+    [ExcludeFromCodeCoverage]
+    public class Startup
+    {
+        private IConfiguration Configuration { get; }
 
         public Startup(IConfiguration configuration)
         {
@@ -27,17 +27,17 @@ namespace EMS.Core.API
         }
 
         public void ConfigureServices(IServiceCollection services)
-		{
+        {
 
             services.AddAuthorization();
 
-			string connectionString = Environment.GetEnvironmentVariable("DbConnectionString");
-			if (string.IsNullOrEmpty(connectionString))
-			{
-				// for manual db migration creating
-				connectionString = Configuration.GetConnectionString("DbConnectionString");
-			}
-			services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+            string connectionString = Environment.GetEnvironmentVariable("DbConnectionString");
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                // for manual db migration creating
+                connectionString = Configuration.GetConnectionString("DbConnectionString");
+            }
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
             services.AddSingleton(typeof(IEMSLogger<>), typeof(EMSLogger<>));
             services.AddSingleton<IDateTimeUtil, DateTimeUtil>();
@@ -50,44 +50,71 @@ namespace EMS.Core.API
             services.AddTransient<IStaffRepository, StaffRepository>();
             services.AddTransient<ITeamsRepository, TeamsRepository>();
 
-			services.AddGrpc();
-		}
+            services.AddCors(c => c.AddDefaultPolicy(builder =>
+            {
+                builder.WithOrigins(Environment.GetEnvironmentVariable("GatewayApiUrl"))
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            }));
 
-		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-		{
-			if (env.IsDevelopment())
-			{
-				app.UseDeveloperExceptionPage();
-			}
+            services.AddCors(c => c.AddPolicy("GatewayCorsPolicy", builder =>
+            {
+                builder.WithOrigins(Environment.GetEnvironmentVariable("GatewayApiUrl"))
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            }));
 
-			app.UseHttpsRedirection();
+            services.AddGrpc();
+        }
 
-			app.UseRouting();
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
 
-			app.UseAuthorization();
+            app.UseHttpsRedirection();
 
-			app.UseEndpoints(endpoints =>
-			{
-				endpoints.MapGrpcService<SalaryService>();
-                endpoints.MapGrpcService<TeamsService>();
-                endpoints.MapGrpcService<PeopleService>();
-                endpoints.MapGrpcService<PositionsService>();
-                endpoints.MapGrpcService<HolidaysService>();
+            app.UseRouting();
+
+            app.UseCors();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapGrpcService<SalaryService>()
+                    .RequireCors("GatewayCorsPolicy");
+                endpoints.MapGrpcService<TeamsService>()
+                    .RequireCors("GatewayCorsPolicy");
+                endpoints.MapGrpcService<PeopleService>()
+                    .RequireCors("GatewayCorsPolicy");
+                endpoints.MapGrpcService<PositionsService>()
+                    .RequireCors("GatewayCorsPolicy");
+                endpoints.MapGrpcService<HolidaysService>()
+                    .RequireCors("GatewayCorsPolicy");
+                endpoints.MapGrpcService<DayOffsService>()
+                    .RequireCors("GatewayCorsPolicy");
+                endpoints.MapGrpcService<HolidaysService>()
+                    .RequireCors("GatewayCorsPolicy");
+                endpoints.MapGrpcService<StaffService>()
+                    .RequireCors("GatewayCorsPolicy");
 
                 endpoints.MapGet("/alive", async context =>
-				{
-					await context.Response.WriteAsync("Core API is alive");
-				});
-			});
+                {
+                    await context.Response.WriteAsync("Core API is alive");
+                });
+            });
 
-			using IServiceScope serviceScope = app.ApplicationServices
-				.GetRequiredService<IServiceScopeFactory>()
-				.CreateScope();
+            using IServiceScope serviceScope = app.ApplicationServices
+                .GetRequiredService<IServiceScopeFactory>()
+                .CreateScope();
 
-			DbContext context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
-			context.Database.EnsureDeleted();
-			context.Database.EnsureCreated();
-		}
-	}
+            DbContext context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
+            context.Database.EnsureDeleted();
+            context.Database.EnsureCreated();
+        }
+    }
 }

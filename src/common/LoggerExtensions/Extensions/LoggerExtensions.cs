@@ -1,9 +1,11 @@
-﻿using EMS.Common.Logger.Models;
+﻿using System.Diagnostics.CodeAnalysis;
+using EMS.Common.Logger.Models;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace EMS.Common.Logger.Extensions
 {
+    [ExcludeFromCodeCoverage]
     internal static class LoggerExtensions
 	{
         public static void AddLog<T>(this ILogger<T> logger, LogData requestResponseObject)

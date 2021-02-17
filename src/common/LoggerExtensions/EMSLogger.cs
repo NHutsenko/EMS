@@ -1,9 +1,11 @@
-﻿using EMS.Common.Logger.Extensions;
+﻿using System.Diagnostics.CodeAnalysis;
+using EMS.Common.Logger.Extensions;
 using EMS.Common.Logger.Models;
 using Microsoft.Extensions.Logging;
 
 namespace EMS.Common.Logger
 {
+    [ExcludeFromCodeCoverage]
     public class EMSLogger<T> : IEMSLogger<T>
     {
         private readonly ILogger<T> _logger;
