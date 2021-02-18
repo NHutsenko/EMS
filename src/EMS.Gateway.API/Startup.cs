@@ -33,6 +33,7 @@ namespace EMS.Gateway.API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "EMS.Gateway.API", Version = "v1" });
             });
+            InjectCoreGrpcClients(services);
         }
 
         private void InjectCoreGrpcClients(IServiceCollection services)

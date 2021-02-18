@@ -15,12 +15,12 @@ namespace EMS.Common.Logger
         }
         public virtual void AddErrorLog(LogData requestResponseObject)
         {
-            _logger.AddLog(requestResponseObject);
+            _logger.AddErrorLog(requestResponseObject);
         }
 
         public virtual void AddLog(LogData requestResponseObject)
         {
-            _logger.AddErrorLog(requestResponseObject);
+            _logger.AddLog(requestResponseObject);
         }
     }
 }
