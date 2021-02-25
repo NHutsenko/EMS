@@ -15,13 +15,9 @@ namespace EMS.Gateway.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddAsync()
+        public IActionResult AddAsync([FromBody] TeamData teamData)
         {
-            BaseResponse response = _teamsClient.AddAsync(new TeamData
-            {
-                Name = "Test",
-                Description = "test description"
-            });
+            BaseResponse response = _teamsClient.AddAsync(teamData);
             return Ok(response);
         }
     }

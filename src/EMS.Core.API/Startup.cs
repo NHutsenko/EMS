@@ -115,7 +115,6 @@ namespace EMS.Core.API
                 .CreateScope();
 
             DbContext context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
-            context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
         }
     }
