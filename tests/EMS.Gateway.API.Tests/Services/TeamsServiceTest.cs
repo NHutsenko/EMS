@@ -8,6 +8,7 @@ using NUnit.Framework;
 using Moq;
 using System;
 using EMS.Common.Logger.Models;
+using EMS.Core.API.Tests.Mocks;
 
 namespace EMS.Core.API.Tests.Services
 {
@@ -50,7 +51,6 @@ namespace EMS.Core.API.Tests.Services
             };
             _dbContext.Positions.Add(_position);
 
-            _teamsRepository = new DAL.Repositories.TeamsRepository(_dbContext, _dateTimeUtil);
             _teamsService = new TeamsService(_teamsRepository, _dateTimeUtil, _logger);;
         }
 
@@ -624,6 +624,42 @@ namespace EMS.Core.API.Tests.Services
         }
 
         [Test]
+        public void GetById_should_handle_exception()
+        {
+            // Arrange
+            BaseMock.ShouldThrowException = true;
+            TeamRequest request = new TeamRequest
+            {
+                Id = 3
+            };
+
+            TeamResponse expected = new TeamResponse
+            {
+                Status = new BaseResponse
+                {
+                    Code = Code.UnknownError,
+                    ErrorMessage = "Test exception"
+                }
+            };
+
+            LogData expectedLog = new LogData
+            {
+                CallSide = nameof(TeamsService),
+                CallerMethodName = nameof(_teamsService.GetById),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = request,
+                Response = new Exception(expected.Status.ErrorMessage)
+            };
+
+            // Act
+            TeamResponse actual = _teamsService.GetById(request, null).Result;
+
+            // Assert
+            Assert.AreEqual(expected, actual, "Excpetion handled");
+            _loggerMock.Verify(m => m.AddErrorLog(expectedLog), Times.Once);
+        }
+
+        [Test]
         public void GetAll_should_return_all_teams()
         {
             // Arrange
@@ -670,6 +706,38 @@ namespace EMS.Core.API.Tests.Services
             Assert.AreEqual(expected.Status, actual.Status, "Response status as expected");
             Assert.AreEqual(expected.Data, actual.Data, "Response status as expected");
             _loggerMock.Verify(m => m.AddLog(expectedLog), Times.Once);
+        }
+
+        [Test]
+        public void GetAll_should_handle_exception()
+        {
+            // Arrange
+            BaseMock.ShouldThrowException = true;
+            TeamsResponse expected = new TeamsResponse
+            {
+                Status = new BaseResponse
+                {
+                    Code = Code.UnknownError,
+                    ErrorMessage = "Test exception"
+                }
+            };
+            Empty request = new Empty();
+            LogData expectedLog = new LogData
+            {
+                CallSide = nameof(TeamsService),
+                CallerMethodName = nameof(_teamsService.GetAll),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = request,
+                Response = new Exception(expected.Status.ErrorMessage)
+            };
+
+            // Act
+            TeamsResponse actual = _teamsService.GetAll(request, null).Result;
+
+            // Assert
+            Assert.AreEqual(expected.Status, actual.Status, "Response status as expected");
+            Assert.AreEqual(expected.Data, actual.Data, "Response status as expected");
+            _loggerMock.Verify(m => m.AddErrorLog(expectedLog), Times.Once);
         }
     }
 }

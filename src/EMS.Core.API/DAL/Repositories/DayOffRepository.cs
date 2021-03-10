@@ -13,7 +13,7 @@ namespace EMS.Core.API.DAL.Repositories
     {
         public DayOffRepository(IApplicationDbContext context, IDateTimeUtil dateTimeUtil) : base(context, dateTimeUtil) { }
 
-        public async Task<int> AddAsync(DayOff dayOff)
+        public virtual async Task<int> AddAsync(DayOff dayOff)
         {
             if(dayOff is null)
             {
@@ -39,7 +39,7 @@ namespace EMS.Core.API.DAL.Repositories
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<int> UpdateAsync(DayOff dayOff)
+        public virtual async Task<int> UpdateAsync(DayOff dayOff)
         {
             if (dayOff is null)
             {
@@ -61,7 +61,7 @@ namespace EMS.Core.API.DAL.Repositories
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<int> DeleteAsync(DayOff dayOff)
+        public virtual async Task<int> DeleteAsync(DayOff dayOff)
         {
             if(dayOff is null)
             {
@@ -76,7 +76,7 @@ namespace EMS.Core.API.DAL.Repositories
             return await _context.SaveChangesAsync();
         }
 
-        public IQueryable<DayOff> GetByPersonId(long personId)
+        public virtual IQueryable<DayOff> GetByPersonId(long personId)
         {
             if(personId == 0)
             {
@@ -85,7 +85,7 @@ namespace EMS.Core.API.DAL.Repositories
             return _context.DaysOff.Where(e => e.PersonId == personId);
         }
 
-        public IQueryable<DayOff> GetByDateRange(DateTime start, DateTime end)
+        public virtual IQueryable<DayOff> GetByDateRange(DateTime start, DateTime end)
         {
             if(end < start)
             {
@@ -94,7 +94,7 @@ namespace EMS.Core.API.DAL.Repositories
             return _context.DaysOff.Where(e => e.CreatedOn >= start && e.CreatedOn <= end).OrderBy(e => e.CreatedOn);
         }
 
-        public IQueryable<DayOff> GetByDateRangeAndPersonId(DateTime start, DateTime end, long personId)
+        public virtual IQueryable<DayOff> GetByDateRangeAndPersonId(DateTime start, DateTime end, long personId)
         {
             if (personId == 0)
             {
@@ -103,7 +103,6 @@ namespace EMS.Core.API.DAL.Repositories
             return GetByDateRange(start, end).Where(e => e.PersonId == personId);
         }
 
-        [ExcludeFromCodeCoverage]
         private static bool IsRelevantTime(double hours)
         {
             bool parsed = double.TryParse(Environment.GetEnvironmentVariable("MaxWorkHours"), out double maxVlaue);

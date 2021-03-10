@@ -11,7 +11,7 @@ namespace EMS.Core.API.DAL.Repositories
     {
         public TeamsRepository(IApplicationDbContext context, IDateTimeUtil dateTimeUtil) : base(context, dateTimeUtil) { }
 
-        public async Task<int> AddAsync(Team team)
+        public virtual async Task<int> AddAsync(Team team)
         {
             if (team is null)
             {
@@ -31,7 +31,7 @@ namespace EMS.Core.API.DAL.Repositories
         }
 
 
-        public async Task<int> UpdateAsync(Team team)
+        public virtual async Task<int> UpdateAsync(Team team)
         {
             if (team is null)
             {
@@ -49,7 +49,7 @@ namespace EMS.Core.API.DAL.Repositories
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<int> DeleteAsync(Team team)
+        public virtual async Task<int> DeleteAsync(Team team)
         {
             if (team is null)
             {
@@ -63,12 +63,12 @@ namespace EMS.Core.API.DAL.Repositories
             return await _context.SaveChangesAsync();
         }
 
-        public Team Get(long teamId)
+        public virtual Team Get(long teamId)
         {
             return _context.Teams.FirstOrDefault(t => t.Id == teamId);
         }
 
-        public IQueryable<Team> GetAll()
+        public virtual IQueryable<Team> GetAll()
         {
             return _context.Teams.Select(e => e);
         }

@@ -11,7 +11,7 @@ namespace EMS.Core.API.DAL.Repositories
     {
         public MotivationModificatorRepository(IApplicationDbContext context, IDateTimeUtil dateTimeUtil) : base(context, dateTimeUtil) { }
 
-        public async Task<int> AddAsync(MotivationModificator modificator)
+        public virtual async Task<int> AddAsync(MotivationModificator modificator)
         {
             CheckData(modificator);
             if(_context.MotivationModificators.Any(e => e.StaffId == modificator.StaffId))
@@ -23,12 +23,12 @@ namespace EMS.Core.API.DAL.Repositories
             return await _context.SaveChangesAsync();
         }
 
-        public MotivationModificator GetByStaffId(long staffId)
+        public virtual MotivationModificator GetByStaffId(long staffId)
         {
             return _context.MotivationModificators.FirstOrDefault(e => e.StaffId == staffId);
         }
 
-        public async Task<int> UpdateAsync(MotivationModificator modificator)
+        public virtual async Task<int> UpdateAsync(MotivationModificator modificator)
         {
             CheckData(modificator);
             _context.MotivationModificators.Update(modificator);

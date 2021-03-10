@@ -349,7 +349,7 @@ namespace EMS.Core.API.Services
 
         public override Task<PositionsResponse> GetAll(Empty request, ServerCallContext context)
         {
-            IQueryable<Position> positions = _positionsRepository.GetAll();
+            
             PositionsResponse response = new PositionsResponse
             {
                 Status = new BaseResponse
@@ -358,27 +358,45 @@ namespace EMS.Core.API.Services
                     ErrorMessage = string.Empty
                 }
             };
-            foreach (Position position in positions)
-            {
-                response.Data.Add(ToRpcModel(position));
-            }
 
-            LogData logData = new LogData
+            try
             {
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                CallerMethodName = nameof(GetAll),
-                CallSide = nameof(PositionsService),
-                Request = request,
-                Response = response
-            };
-            _logger.AddLog(logData);
+                IQueryable<Position> positions = _positionsRepository.GetAll();
+                foreach (Position position in positions)
+                {
+                    response.Data.Add(ToRpcModel(position));
+                }
+
+                LogData logData = new LogData
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    CallerMethodName = nameof(GetAll),
+                    CallSide = nameof(PositionsService),
+                    Request = request,
+                    Response = response
+                };
+                _logger.AddLog(logData);
+            }
+            catch(Exception ex)
+            {
+                LogData logData = new LogData
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    CallerMethodName = nameof(GetAll),
+                    CallSide = nameof(PositionsService),
+                    Request = request,
+                    Response = ex
+                };
+                _logger.AddErrorLog(logData);
+                response.Status.Code = Code.UnknownError;
+                response.Status.ErrorMessage = ex.Message;
+            }
 
             return Task.FromResult(response);
         }
 
         public override Task<PositionResponse> GetById(PositionRequest request, ServerCallContext context)
         {
-            Position position = _positionsRepository.Get(request.PositionId);
             PositionResponse response = new PositionResponse
             {
                 Status = new BaseResponse
@@ -387,26 +405,43 @@ namespace EMS.Core.API.Services
                     ErrorMessage = string.Empty
                 }
             };
-            if (position is null)
+            try
             {
-                response.Status.Code = Code.DataError;
-                response.Status.ErrorMessage = "Requested position not found";
-            }
-            else
-            {
-                response.Data = ToRpcModel(position);
-            }
+                Position position = _positionsRepository.Get(request.PositionId);
+                if (position is null)
+                {
+                    response.Status.Code = Code.DataError;
+                    response.Status.ErrorMessage = "Requested position not found";
+                }
+                else
+                {
+                    response.Data = ToRpcModel(position);
+                }
 
-            LogData logData = new LogData
+                LogData logData = new LogData
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    CallerMethodName = nameof(GetById),
+                    CallSide = nameof(PositionsService),
+                    Request = request,
+                    Response = response
+                };
+                _logger.AddLog(logData);
+            }
+            catch(Exception ex)
             {
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                CallerMethodName = nameof(GetById),
-                CallSide = nameof(PositionsService),
-                Request = request,
-                Response = response
-            };
-            _logger.AddLog(logData);
-
+                LogData logData = new LogData
+                {
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    CallerMethodName = nameof(GetById),
+                    CallSide = nameof(PositionsService),
+                    Request = request,
+                    Response = ex
+                };
+                _logger.AddErrorLog(logData);
+                response.Status.Code = Code.UnknownError;
+                response.Status.ErrorMessage = ex.Message;
+            }
             return Task.FromResult(response);
         }
 

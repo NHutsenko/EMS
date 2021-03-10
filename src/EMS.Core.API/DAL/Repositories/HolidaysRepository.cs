@@ -12,7 +12,7 @@ namespace EMS.Core.API.DAL.Repositories
     {
         public HolidaysRepository(IApplicationDbContext applicationDbContext, IDateTimeUtil dateTimeUtil) : base(applicationDbContext, dateTimeUtil) { }
 
-        public async Task<int> AddAsync(Holiday holiday)
+        public virtual async Task<int> AddAsync(Holiday holiday)
         {
             ValidateData(holiday);
             holiday.CreatedOn = _dateTimeUtil.GetCurrentDateTime();
@@ -20,14 +20,14 @@ namespace EMS.Core.API.DAL.Repositories
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<int> UpdateAsync(Holiday holiday)
+        public virtual async Task<int> UpdateAsync(Holiday holiday)
         {
             ValidateData(holiday);
             _context.Holidays.Update(holiday);
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<int> DeleteAsync(Holiday holiday)
+        public virtual async Task<int> DeleteAsync(Holiday holiday)
         {
             if(holiday is null)
             {
@@ -42,12 +42,12 @@ namespace EMS.Core.API.DAL.Repositories
             return await _context.SaveChangesAsync();
         }
 
-        public IQueryable<Holiday> GetAll()
+        public virtual IQueryable<Holiday> GetAll()
         {
             return _context.Holidays.Select(e => e);
         }
 
-        public IQueryable<Holiday> GetByDateRange(DateTime startRange, DateTime endRange)
+        public virtual IQueryable<Holiday> GetByDateRange(DateTime startRange, DateTime endRange)
         {
             if(startRange > endRange)
             {

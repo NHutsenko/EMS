@@ -5,6 +5,7 @@ using EMS.Common.Protos;
 using EMS.Core.API.Models;
 using EMS.Core.API.Services;
 using EMS.Core.API.Tests.Mock;
+using EMS.Core.API.Tests.Mocks;
 using Google.Protobuf.WellKnownTypes;
 using Moq;
 using NUnit.Framework;
@@ -52,7 +53,6 @@ namespace EMS.Core.API.Tests.Services
 
             _dbContext.Positions.Add(_position1);
             _dbContext.Positions.Add(_position2);
-            _positionsRepository = new DAL.Repositories.PositionsRepository(_dbContext, _dateTimeUtil);
             _positionsService = new PositionsService(_positionsRepository, _logger, _dateTimeUtil);
         }
 
@@ -621,6 +621,37 @@ namespace EMS.Core.API.Tests.Services
         }
 
         [Test]
+        public void GetAll_should_handle_exception()
+        {
+            // Arrange
+            BaseMock.ShouldThrowException = true;
+            PositionsResponse expectedResponse = new PositionsResponse
+            {
+                Status = new BaseResponse
+                {
+                    Code = Code.UnknownError,
+                    ErrorMessage = "Test exception"
+                }
+            };
+            Empty request = new Empty();
+            LogData expectedLog = new LogData
+            {
+                CallSide = nameof(PositionsService),
+                CallerMethodName = nameof(_positionsService.GetAll),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = request,
+                Response = new Exception(expectedResponse.Status.ErrorMessage)
+            };
+
+            // Act
+            PositionsResponse actual = _positionsService.GetAll(request, null).Result;
+
+            // Assert
+            Assert.AreEqual(expectedResponse, actual, "Data as expected");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
+        }
+
+        [Test]
         public void GetbyId_should_return_position_by_id_from_db()
         {
             // Arrange
@@ -696,6 +727,42 @@ namespace EMS.Core.API.Tests.Services
             // Assert
             Assert.AreEqual(expectedResponse, actual, "Data as expected");
             _loggerMock.Verify(mocks => mocks.AddLog(expectedLog), Times.Once);
+        }
+
+        [Test]
+        public void GetbyId_handle_exception()
+        {
+            // Arrange
+            BaseMock.ShouldThrowException = true;
+            PositionResponse expectedResponse = new PositionResponse
+            {
+                Status = new BaseResponse
+                {
+                    Code = Code.UnknownError,
+                    ErrorMessage = "Test exception"
+                }
+            };
+
+            PositionRequest request = new PositionRequest
+            {
+                PositionId = 3
+            };
+
+            LogData expectedLog = new LogData
+            {
+                CallSide = nameof(PositionsService),
+                CallerMethodName = nameof(_positionsService.GetById),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = request,
+                Response = new Exception(expectedResponse.Status.ErrorMessage)
+            };
+
+            // Act
+            PositionResponse actual = _positionsService.GetById(request, null).Result;
+
+            // Assert
+            Assert.AreEqual(expectedResponse, actual, "Data as expected");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
         }
     }
 }

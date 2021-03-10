@@ -11,7 +11,7 @@ namespace EMS.Core.API.DAL.Repositories
     {
         public PositionsRepository(IApplicationDbContext context, IDateTimeUtil dateTimeUtil) : base(context, dateTimeUtil) { }
 
-        public async Task<int> AddAsync(Position position)
+        public virtual async Task<int> AddAsync(Position position)
         {
             if (position is null)
             {
@@ -38,7 +38,7 @@ namespace EMS.Core.API.DAL.Repositories
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<int> UpdateAsync(Position position)
+        public virtual async Task<int> UpdateAsync(Position position)
         {
             if (position is null)
             {
@@ -64,7 +64,7 @@ namespace EMS.Core.API.DAL.Repositories
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<int> DeleteAsync(Position position)
+        public virtual async Task<int> DeleteAsync(Position position)
         {
             if(position is null)
             {
@@ -82,12 +82,12 @@ namespace EMS.Core.API.DAL.Repositories
             return await _context.SaveChangesAsync();
         }
 
-        public Position Get(long id)
+        public virtual Position Get(long id)
         {
             return _context.Positions.FirstOrDefault(p => p.Id == id);
         }
 
-        public IQueryable<Position> GetAll()
+        public virtual IQueryable<Position> GetAll()
         {
             return _context.Positions.Select(e => e);
         }

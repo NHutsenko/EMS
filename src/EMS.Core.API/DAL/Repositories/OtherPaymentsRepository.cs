@@ -12,21 +12,21 @@ namespace EMS.Core.API.DAL.Repositories
     {
         public  OtherPaymentsRepository(IApplicationDbContext applicationDbContext, IDateTimeUtil dateTimeUtil) : base(applicationDbContext, dateTimeUtil) { }
 
-        public async Task<int> AddAsync(OtherPayment otherPayment)
+        public virtual async Task<int> AddAsync(OtherPayment otherPayment)
         {
             ValidateData(otherPayment);
             _context.OtherPayments.Add(otherPayment);
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<int> UpdateAsync(OtherPayment otherPayment)
+        public virtual async Task<int> UpdateAsync(OtherPayment otherPayment)
         {
             ValidateData(otherPayment);
             _context.OtherPayments.Update(otherPayment);
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<int> DeleteAsync(OtherPayment otherPayment)
+        public virtual async Task<int> DeleteAsync(OtherPayment otherPayment)
         {
             if(otherPayment is null)
             {
@@ -42,12 +42,12 @@ namespace EMS.Core.API.DAL.Repositories
             return await _context.SaveChangesAsync();
         }
 
-        public IQueryable<OtherPayment> GetByPersonId(long personId)
+        public virtual IQueryable<OtherPayment> GetByPersonId(long personId)
         {
             return _context.OtherPayments.Where(e => e.PersonId == personId);
         }
 
-        public IQueryable<OtherPayment> GetByPersonIdAndDateRange(long personId, DateTime startRange, DateTime endRange)
+        public virtual IQueryable<OtherPayment> GetByPersonIdAndDateRange(long personId, DateTime startRange, DateTime endRange)
         {
             if(startRange > endRange)
             {

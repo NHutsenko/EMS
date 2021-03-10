@@ -5,6 +5,7 @@ using EMS.Core.API.DAL;
 using EMS.Core.API.DAL.Repositories;
 using EMS.Core.API.Services;
 using EMS.Core.API.Tests.Mock;
+using EMS.Core.API.Tests.Mocks;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -23,8 +24,10 @@ namespace EMS.Core.API.Tests
         // Repos
         protected DayOffRepository _dayOffRepository;
         protected PeopleRepository _peopleRepository;
+        protected Mock<PositionsRepository> _positionsRepositoryMock;
         protected PositionsRepository _positionsRepository;
         protected StaffRepository _staffRepository;
+        protected Mock<TeamsRepository> _teamsRepositoryMock;
         protected TeamsRepository _teamsRepository;
         protected OtherPaymentsRepository _otherPaymentsRepository;
         protected HolidaysRepository _holidaysRepository;
@@ -55,6 +58,15 @@ namespace EMS.Core.API.Tests
 
             // Utils
             _dateTimeUtil = new DateTimeUtilMock();
+
+            // Repositories
+            BaseMock.ShouldThrowException = false;
+
+            _teamsRepositoryMock = TeamsRepositoryMock.SetupMock(_dbContext, _dateTimeUtil);
+            _teamsRepository = _teamsRepositoryMock.Object;
+
+            _positionsRepositoryMock = PositionsRepositoryMock.SetupMock(_dbContext, _dateTimeUtil);
+            _positionsRepository = _positionsRepositoryMock.Object;
         }
 
         protected void InitializeLoggerMock(T loggerClass)

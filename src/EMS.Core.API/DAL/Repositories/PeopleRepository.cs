@@ -15,12 +15,12 @@ namespace EMS.Core.API.DAL.Repositories
     {
         public PeopleRepository(IApplicationDbContext context, IDateTimeUtil dateTimeUtil) : base(context, dateTimeUtil) { }
 
-        public IQueryable<Person> GetAll()
+        public virtual IQueryable<Person> GetAll()
         {
             return _context.People.Select(e => e);
         }
 
-        public Person GetById(long personId)
+        public virtual Person GetById(long personId)
         {
             var person = _context.People
                 .Include(e => e.Contacts)
@@ -54,7 +54,7 @@ namespace EMS.Core.API.DAL.Repositories
             };
         }
 
-        public async Task<int> AddAsync(Person person)
+        public virtual async Task<int> AddAsync(Person person)
         {
             if(person is null)
             {
@@ -73,7 +73,7 @@ namespace EMS.Core.API.DAL.Repositories
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<int> UpdateAsync(Person person)
+        public virtual async Task<int> UpdateAsync(Person person)
         {
             if (person is null)
             {
@@ -91,7 +91,7 @@ namespace EMS.Core.API.DAL.Repositories
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<int> AddPhotoAsync(PersonPhoto photo)
+        public virtual async Task<int> AddPhotoAsync(PersonPhoto photo)
         {
             if(photo is null)
             {
@@ -122,7 +122,7 @@ namespace EMS.Core.API.DAL.Repositories
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<int> AddContactAsync(Contact contact)
+        public virtual async Task<int> AddContactAsync(Contact contact)
         {
             if(contact is null)
             {

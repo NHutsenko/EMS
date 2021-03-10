@@ -12,7 +12,7 @@ namespace EMS.Core.API.DAL.Repositories
     {
         public StaffRepository(IApplicationDbContext context, IDateTimeUtil dateTimeUtil) : base(context, dateTimeUtil) { }
 
-        public async Task<int> AddAsync(Staff staff)
+        public virtual async Task<int> AddAsync(Staff staff)
         {
             if(staff is null)
             {
@@ -38,7 +38,7 @@ namespace EMS.Core.API.DAL.Repositories
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<int> UpdateAsync(Staff staff)
+        public virtual async Task<int> UpdateAsync(Staff staff)
         {
             if (staff is null)
             {
@@ -66,7 +66,7 @@ namespace EMS.Core.API.DAL.Repositories
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<int> DeleteAsync(Staff staff)
+        public virtual async Task<int> DeleteAsync(Staff staff)
         {
             if(staff is null)
             {
@@ -80,17 +80,17 @@ namespace EMS.Core.API.DAL.Repositories
             return await _context.SaveChangesAsync();
         }
 
-        public IQueryable<Staff> GetAll()
+        public virtual IQueryable<Staff> GetAll()
         {
             return _context.Staff.Select(e => e);
         }
 
-        public IQueryable<Staff> GetByPersonId(long personId)
+        public virtual IQueryable<Staff> GetByPersonId(long personId)
         {
             return _context.Staff.Where(s => s.PersonId == personId);
         }
 
-        public IQueryable<Staff> GetByManagerId(long managerId)
+        public virtual IQueryable<Staff> GetByManagerId(long managerId)
         {
             return _context.Staff.Where(s => s.ManagerId == managerId);
         }

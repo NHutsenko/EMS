@@ -355,8 +355,6 @@ namespace EMS.Core.API.Services
 
         public override Task<TeamsResponse> GetAll(Empty request, ServerCallContext context)
         {
-            IQueryable<Team> teams = _teamsRepository.GetAll();
-
             TeamsResponse response = new TeamsResponse
             {
                 Status = new BaseResponse
@@ -365,33 +363,52 @@ namespace EMS.Core.API.Services
                     ErrorMessage = string.Empty
                 }
             };
+            try
+            {
+                IQueryable<Team> teams = _teamsRepository.GetAll();
 
-            foreach (Team team in teams)
-            {
-                TeamData data = new TeamData
+
+                foreach (Team team in teams)
                 {
-                    Id = team.Id,
-                    CreatedOn = Timestamp.FromDateTime(team.CreatedOn.ToUniversalTime()),
-                    Name = team.Name,
-                    Description = team.Description
+                    TeamData data = new TeamData
+                    {
+                        Id = team.Id,
+                        CreatedOn = Timestamp.FromDateTime(team.CreatedOn.ToUniversalTime()),
+                        Name = team.Name,
+                        Description = team.Description
+                    };
+                    response.Data.Add(data);
+                }
+                LogData logData = new LogData
+                {
+                    CallSide = nameof(TeamsService),
+                    CallerMethodName = nameof(GetAll),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = response
                 };
-                response.Data.Add(data);
+                _logger.AddLog(logData);
+                return Task.FromResult(response);
             }
-            LogData logData = new LogData
+            catch (Exception ex)
             {
-                CallSide = nameof(TeamsService),
-                CallerMethodName = nameof(GetAll),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = response
-            };
-            _logger.AddLog(logData);
+                LogData logData = new LogData
+                {
+                    CallSide = nameof(TeamsService),
+                    CallerMethodName = nameof(GetAll),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = ex
+                };
+                _logger.AddErrorLog(logData);
+                response.Status.Code = Code.UnknownError;
+                response.Status.ErrorMessage = ex.Message;
+            }
             return Task.FromResult(response);
         }
 
         public override Task<TeamResponse> GetById(TeamRequest request, ServerCallContext context)
         {
-            Team team = _teamsRepository.Get(request.Id);
             TeamResponse response = new TeamResponse
             {
                 Status = new BaseResponse
@@ -400,32 +417,50 @@ namespace EMS.Core.API.Services
                     ErrorMessage = string.Empty
                 }
             };
+            try
+            {
+                Team team = _teamsRepository.Get(request.Id);
 
-            if (team is null)
-            {
-                response.Status.Code = Code.DataError;
-                response.Status.ErrorMessage = "Requested team not found";
-            }
-            else
-            {
-                response.Data = new TeamData
+                if (team is null)
                 {
-                    Id = team.Id,
-                    CreatedOn = Timestamp.FromDateTime(team.CreatedOn.ToUniversalTime()),
-                    Name = team.Name,
-                    Description = team.Description
-                };
-            }
+                    response.Status.Code = Code.DataError;
+                    response.Status.ErrorMessage = "Requested team not found";
+                }
+                else
+                {
+                    response.Data = new TeamData
+                    {
+                        Id = team.Id,
+                        CreatedOn = Timestamp.FromDateTime(team.CreatedOn.ToUniversalTime()),
+                        Name = team.Name,
+                        Description = team.Description
+                    };
+                }
 
-            LogData logData = new LogData
+                LogData logData = new LogData
+                {
+                    CallSide = nameof(TeamsService),
+                    CallerMethodName = nameof(GetById),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = response
+                };
+                _logger.AddLog(logData);
+            }
+            catch (Exception ex)
             {
-                CallSide = nameof(TeamsService),
-                CallerMethodName = nameof(GetById),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = response
-            };
-            _logger.AddLog(logData);
+                LogData logData = new LogData
+                {
+                    CallSide = nameof(TeamsService),
+                    CallerMethodName = nameof(GetById),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = ex
+                };
+                _logger.AddErrorLog(logData);
+                response.Status.Code = Code.UnknownError;
+                response.Status.ErrorMessage = ex.Message;
+            }
             return Task.FromResult(response);
         }
     }
