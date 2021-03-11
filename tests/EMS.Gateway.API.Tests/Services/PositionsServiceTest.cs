@@ -630,7 +630,7 @@ namespace EMS.Core.API.Tests.Services
                 Status = new BaseResponse
                 {
                     Code = Code.UnknownError,
-                    ErrorMessage = "Test exception"
+                    ErrorMessage = "An error occured while loading positions data"
                 }
             };
             Empty request = new Empty();
@@ -640,7 +640,7 @@ namespace EMS.Core.API.Tests.Services
                 CallerMethodName = nameof(_positionsService.GetAll),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = request,
-                Response = new Exception(expectedResponse.Status.ErrorMessage)
+                Response = new Exception("Test exception")
             };
 
             // Act
@@ -739,7 +739,7 @@ namespace EMS.Core.API.Tests.Services
                 Status = new BaseResponse
                 {
                     Code = Code.UnknownError,
-                    ErrorMessage = "Test exception"
+                    ErrorMessage = "An error occured while loading position data"
                 }
             };
 
@@ -754,7 +754,7 @@ namespace EMS.Core.API.Tests.Services
                 CallerMethodName = nameof(_positionsService.GetById),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = request,
-                Response = new Exception(expectedResponse.Status.ErrorMessage)
+                Response = new Exception("Test exception")
             };
 
             // Act

@@ -389,7 +389,7 @@ namespace EMS.Core.API.Services
                 };
                 _logger.AddErrorLog(logData);
                 response.Status.Code = Code.UnknownError;
-                response.Status.ErrorMessage = ex.Message;
+                response.Status.ErrorMessage = "An error occured while loading positions data";
             }
 
             return Task.FromResult(response);
@@ -440,7 +440,7 @@ namespace EMS.Core.API.Services
                 };
                 _logger.AddErrorLog(logData);
                 response.Status.Code = Code.UnknownError;
-                response.Status.ErrorMessage = ex.Message;
+                response.Status.ErrorMessage = "An error occured while loading position data";
             }
             return Task.FromResult(response);
         }

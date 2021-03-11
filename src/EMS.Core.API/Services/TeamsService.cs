@@ -402,7 +402,7 @@ namespace EMS.Core.API.Services
                 };
                 _logger.AddErrorLog(logData);
                 response.Status.Code = Code.UnknownError;
-                response.Status.ErrorMessage = ex.Message;
+                response.Status.ErrorMessage = "An error occured while loading teams data";
             }
             return Task.FromResult(response);
         }
@@ -459,7 +459,7 @@ namespace EMS.Core.API.Services
                 };
                 _logger.AddErrorLog(logData);
                 response.Status.Code = Code.UnknownError;
-                response.Status.ErrorMessage = ex.Message;
+                response.Status.ErrorMessage = "An error occured while loading team data";
             }
             return Task.FromResult(response);
         }

@@ -9,6 +9,7 @@ using EMS.Common.Protos;
 using EMS.Core.API.Models;
 using EMS.Core.API.Services;
 using EMS.Core.API.Tests.Mock;
+using EMS.Core.API.Tests.Mocks;
 using Google.Protobuf.WellKnownTypes;
 using Moq;
 using NUnit.Framework;
@@ -50,7 +51,6 @@ namespace EMS.Core.API.Tests.Services
 
             _dbContext.MotivationModificators.Add(_motivationModificator1);
 
-            _motivationModificatorRepository = new DAL.Repositories.MotivationModificatorRepository(_dbContext, _dateTimeUtil);
             _motivationModificatorsService = new MotivationModificatorsService(_motivationModificatorRepository, _logger, _dateTimeUtil);
         }
 
@@ -497,6 +497,43 @@ namespace EMS.Core.API.Tests.Services
             // Assert
             Assert.AreEqual(expectedResponse, actual, "Response as expected");
             _loggerMock.Verify(mocks => mocks.AddLog(expectedLog), Times.Once);
+        }
+
+        [Test]
+        public void GetByStaffId_should_handle_exception()
+        {
+            // Arrange
+            BaseMock.ShouldThrowException = true;
+            MotivationModificatorResponse expectedResponse = new MotivationModificatorResponse
+            {
+                Status = new BaseResponse
+                {
+                    Code = Code.UnknownError,
+                    ErrorMessage = "An error occured while loading motivation modificator data"
+                },
+                Data = null
+            };
+
+            ByStaffIdRequest request = new ByStaffIdRequest
+            {
+                StaffId = _staff2.Id
+            };
+
+            LogData expectedLog = new LogData
+            {
+                CallSide = nameof(MotivationModificatorsService),
+                CallerMethodName = nameof(_motivationModificatorsService.GetByStaffId),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = request,
+                Response = new Exception("Test exception")
+            };
+
+            // Act
+            MotivationModificatorResponse actual = _motivationModificatorsService.GetByStaffId(request, null).Result;
+
+            // Assert
+            Assert.AreEqual(expectedResponse, actual, "Response as expected");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
         }
     }
 }

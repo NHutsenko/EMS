@@ -343,23 +343,39 @@ namespace EMS.Core.API.Services
                 }
             };
 
-            IQueryable<DayOff> dayOffs = _dayOffRepository.GetByPersonId(request.PersonId);
-
-            foreach(DayOff dayOff in dayOffs)
+            try
             {
-                response.Data.Add(ToRpcModel(dayOff));
+                IQueryable<DayOff> dayOffs = _dayOffRepository.GetByPersonId(request.PersonId);
+
+                foreach(DayOff dayOff in dayOffs)
+                {
+                    response.Data.Add(ToRpcModel(dayOff));
+                }
+
+                LogData logData = new LogData
+                {
+                    CallSide = nameof(DayOffsService),
+                    CallerMethodName = nameof(GetByPersonId),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = response
+                };
+                _logger.AddLog(logData);
             }
-
-            LogData logData = new LogData
+            catch(Exception ex)
             {
-                CallSide = nameof(DayOffsService),
-                CallerMethodName = nameof(GetByPersonId),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = response
-            };
-            _logger.AddLog(logData);
-
+                LogData logData = new LogData
+                {
+                    CallSide = nameof(DayOffsService),
+                    CallerMethodName = nameof(GetByPersonId),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = ex
+                };
+                _logger.AddErrorLog(logData);
+                response.Status.Code = Code.UnknownError;
+                response.Status.ErrorMessage = "An error occured while loading day offs data";
+            }
             return Task.FromResult(response);
         }
 
@@ -373,24 +389,39 @@ namespace EMS.Core.API.Services
                     ErrorMessage = string.Empty
                 }
             };
-
-            IQueryable<DayOff> dayOffs = _dayOffRepository.GetByDateRangeAndPersonId(request.Range.From.ToDateTime(), request.Range.To.ToDateTime(), request.Person.PersonId);
-
-            foreach (DayOff dayOff in dayOffs)
+            try
             {
-                response.Data.Add(ToRpcModel(dayOff));
+                IQueryable<DayOff> dayOffs = _dayOffRepository.GetByDateRangeAndPersonId(request.Range.From.ToDateTime(), request.Range.To.ToDateTime(), request.Person.PersonId);
+
+                foreach (DayOff dayOff in dayOffs)
+                {
+                    response.Data.Add(ToRpcModel(dayOff));
+                }
+
+                LogData logData = new LogData
+                {
+                    CallSide = nameof(DayOffsService),
+                    CallerMethodName = nameof(GetByPersonIdAndDateRange),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = response
+                };
+                _logger.AddLog(logData);
             }
-
-            LogData logData = new LogData
+            catch(Exception ex)
             {
-                CallSide = nameof(DayOffsService),
-                CallerMethodName = nameof(GetByPersonIdAndDateRange),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = response
-            };
-            _logger.AddLog(logData);
-
+                LogData logData = new LogData
+                {
+                    CallSide = nameof(DayOffsService),
+                    CallerMethodName = nameof(GetByPersonIdAndDateRange),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = ex
+                };
+                _logger.AddErrorLog(logData);
+                response.Status.Code = Code.UnknownError;
+                response.Status.ErrorMessage = "An error occured while loading day offs data";
+            }
             return Task.FromResult(response);
         }
 

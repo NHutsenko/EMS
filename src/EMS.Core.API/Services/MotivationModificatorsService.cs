@@ -260,18 +260,35 @@ namespace EMS.Core.API.Services
                     ErrorMessage = string.Empty
                 }
             };
-            MotivationModificator motivationModificator = _motivationModificatorRepository.GetByStaffId(request.StaffId);
-            response.Data = motivationModificator is null ? null: ToRpcModel(motivationModificator);
+            try
+            { 
+                MotivationModificator motivationModificator = _motivationModificatorRepository.GetByStaffId(request.StaffId);
+                response.Data = motivationModificator is null ? null: ToRpcModel(motivationModificator);
 
-            LogData logData = new LogData
+                LogData logData = new LogData
+                {
+                    CallSide = nameof(MotivationModificatorsService),
+                    CallerMethodName = nameof(GetByStaffId),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = response
+                };
+                _logger.AddLog(logData);
+            }
+            catch(Exception ex)
             {
-                CallSide = nameof(MotivationModificatorsService),
-                CallerMethodName = nameof(GetByStaffId),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = response
-            };
-            _logger.AddLog(logData);
+                LogData logData = new LogData
+                {
+                    CallSide = nameof(MotivationModificatorsService),
+                    CallerMethodName = nameof(GetByStaffId),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = ex
+                };
+                _logger.AddErrorLog(logData);
+                response.Status.Code = Code.UnknownError;
+                response.Status.ErrorMessage = "An error occured while loading motivation modificator data";
+            }
             return Task.FromResult(response);
         }
 

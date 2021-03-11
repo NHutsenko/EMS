@@ -638,7 +638,7 @@ namespace EMS.Core.API.Tests.Services
                 Status = new BaseResponse
                 {
                     Code = Code.UnknownError,
-                    ErrorMessage = "Test exception"
+                    ErrorMessage = "An error occured while loading team data"
                 }
             };
 
@@ -648,7 +648,7 @@ namespace EMS.Core.API.Tests.Services
                 CallerMethodName = nameof(_teamsService.GetById),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = request,
-                Response = new Exception(expected.Status.ErrorMessage)
+                Response = new Exception("Test exception")
             };
 
             // Act
@@ -718,7 +718,7 @@ namespace EMS.Core.API.Tests.Services
                 Status = new BaseResponse
                 {
                     Code = Code.UnknownError,
-                    ErrorMessage = "Test exception"
+                    ErrorMessage = "An error occured while loading teams data"
                 }
             };
             Empty request = new Empty();
@@ -728,7 +728,7 @@ namespace EMS.Core.API.Tests.Services
                 CallerMethodName = nameof(_teamsService.GetAll),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = request,
-                Response = new Exception(expected.Status.ErrorMessage)
+                Response = new Exception("Test exception")
             };
 
             // Act

@@ -22,6 +22,7 @@ namespace EMS.Core.API.Tests
         protected IDateTimeUtil _dateTimeUtil;
 
         // Repos
+        protected Mock<DayOffRepository> _dayOffRepositoryMock;
         protected DayOffRepository _dayOffRepository;
         protected PeopleRepository _peopleRepository;
         protected Mock<PositionsRepository> _positionsRepositoryMock;
@@ -30,7 +31,9 @@ namespace EMS.Core.API.Tests
         protected Mock<TeamsRepository> _teamsRepositoryMock;
         protected TeamsRepository _teamsRepository;
         protected OtherPaymentsRepository _otherPaymentsRepository;
+        protected Mock<HolidaysRepository> _holidaysRepositoryMock;
         protected HolidaysRepository _holidaysRepository;
+        protected Mock<MotivationModificatorRepository> _motivationModificatorRepositoryMock;
         protected MotivationModificatorRepository _motivationModificatorRepository;
 
         // Services
@@ -67,6 +70,15 @@ namespace EMS.Core.API.Tests
 
             _positionsRepositoryMock = PositionsRepositoryMock.SetupMock(_dbContext, _dateTimeUtil);
             _positionsRepository = _positionsRepositoryMock.Object;
+
+            _dayOffRepositoryMock = DayOffsRepositoryMock.SetupMock(_dbContext, _dateTimeUtil);
+            _dayOffRepository = _dayOffRepositoryMock.Object;
+
+            _holidaysRepositoryMock = HolidaysRepositoryMock.SetupMock(_dbContext, _dateTimeUtil);
+            _holidaysRepository = _holidaysRepositoryMock.Object;
+
+            _motivationModificatorRepositoryMock = MotivationModificatorRepositoryMock.SetupMock(_dbContext, _dateTimeUtil);
+            _motivationModificatorRepository = _motivationModificatorRepositoryMock.Object;
         }
 
         protected void InitializeLoggerMock(T loggerClass)

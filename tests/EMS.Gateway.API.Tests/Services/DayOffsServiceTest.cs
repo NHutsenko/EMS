@@ -5,6 +5,7 @@ using EMS.Common.Protos;
 using EMS.Core.API.Models;
 using EMS.Core.API.Services;
 using EMS.Core.API.Tests.Mock;
+using EMS.Core.API.Tests.Mocks;
 using Google.Protobuf.WellKnownTypes;
 using Moq;
 using NUnit.Framework;
@@ -45,12 +46,11 @@ namespace EMS.Core.API.Tests.Services
             _dbContext.DaysOff.Add(_dayOff1);
             _dbContext.DaysOff.Add(_dayOff2);
 
-            _dayOffRepository = new DAL.Repositories.DayOffRepository(_dbContext, _dateTimeUtil);
             _dayOffsService = new DayOffsService(_dayOffRepository, _logger, _dateTimeUtil);
         }
 
         [Test]
-        public void GetByPersionId_should_return_all_day_offs_by_specified_person()
+        public void GetByPersonId_should_return_all_day_offs_by_specified_person()
         {
             // Arrange
             ByPersonIdRequest request = new ByPersonIdRequest
@@ -104,6 +104,42 @@ namespace EMS.Core.API.Tests.Services
         }
 
         [Test]
+        public void GetByPersonId_should_handle_exception()
+        {
+            // Arrange
+            BaseMock.ShouldThrowException = true;
+            ByPersonIdRequest request = new ByPersonIdRequest
+            {
+                PersonId = _dayOff1.PersonId
+            };
+
+            DayOffsResponse expectedResponse = new DayOffsResponse
+            {
+                Status = new BaseResponse
+                {
+                    Code = Code.UnknownError,
+                    ErrorMessage = "An error occured while loading day offs data"
+                }
+            };
+
+            LogData expectedLog = new LogData
+            {
+                CallSide = nameof(DayOffsService),
+                CallerMethodName = nameof(_dayOffsService.GetByPersonId),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = request,
+                Response = new Exception("Test exception")
+            };
+
+            // Act
+            DayOffsResponse actual = _dayOffsService.GetByPersonId(request, null).Result;
+
+            // Assert
+            Assert.AreEqual(expectedResponse, actual, "Response as expected");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
+        }
+
+        [Test]
         public void GetByPersionIdAndDateRange_should_return_all_day_offs_by_specified_person()
         {
             // Arrange
@@ -151,6 +187,47 @@ namespace EMS.Core.API.Tests.Services
             // Assert
             Assert.AreEqual(expectedResponse, actual, "Response as expected");
             _loggerMock.Verify(mocks => mocks.AddLog(expectedLog), Times.Once);
+        }
+
+        [Test]
+        public void GetByPersionIdAndDateRange_should_handle_exception()
+        {
+            // Arrange
+            BaseMock.ShouldThrowException = true;
+            ByPersonIdAndDateRangeRequest request = new ByPersonIdAndDateRangeRequest
+            {
+                Person = new ByPersonIdRequest { PersonId = 1 },
+                Range = new ByDateRangeRequestRequest
+                {
+                    From = Timestamp.FromDateTime(new DateTime(2020, 12, 15, 0, 0, 0, DateTimeKind.Utc)),
+                    To = Timestamp.FromDateTime(new DateTime(2021, 1, 15, 0, 0, 0, DateTimeKind.Utc))
+                }
+            };
+
+            DayOffsResponse expectedResponse = new DayOffsResponse
+            {
+                Status = new BaseResponse
+                {
+                    Code = Code.UnknownError,
+                    ErrorMessage = "An error occured while loading day offs data"
+                }
+            };
+
+            LogData expectedLog = new LogData
+            {
+                CallSide = nameof(DayOffsService),
+                CallerMethodName = nameof(_dayOffsService.GetByPersonIdAndDateRange),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = request,
+                Response = new Exception("Test exception")
+            };
+
+            // Act
+            DayOffsResponse actual = _dayOffsService.GetByPersonIdAndDateRange(request, null).Result;
+
+            // Assert
+            Assert.AreEqual(expectedResponse, actual, "Response as expected");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
         }
 
         [Test]

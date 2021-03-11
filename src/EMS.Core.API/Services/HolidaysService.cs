@@ -349,7 +349,6 @@ namespace EMS.Core.API.Services
 
         public override Task<HolidaysResponse> GetAll(Empty request, ServerCallContext context)
         {
-            IQueryable<Holiday> holidays = _holidaysRepository.GetAll();
             HolidaysResponse response = new HolidaysResponse
             {
                 Status = new BaseResponse
@@ -358,28 +357,45 @@ namespace EMS.Core.API.Services
                     ErrorMessage = string.Empty
                 }
             };
-
-            foreach (Holiday holiday in holidays)
+            try
             {
-                response.Data.Add(ToRpcModel(holiday));
+                IQueryable<Holiday> holidays = _holidaysRepository.GetAll();
+
+                foreach (Holiday holiday in holidays)
+                {
+                    response.Data.Add(ToRpcModel(holiday));
+                }
+
+                LogData logData = new LogData
+                {
+                    CallSide = nameof(HolidaysService),
+                    CallerMethodName = nameof(GetAll),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = response
+                };
+                _logger.AddLog(logData);
             }
-
-            LogData logData = new LogData
+            catch(Exception ex)
             {
-                CallSide = nameof(HolidaysService),
-                CallerMethodName = nameof(GetAll),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = response
-            };
-            _logger.AddLog(logData);
+                LogData logData = new LogData
+                {
+                    CallSide = nameof(HolidaysService),
+                    CallerMethodName = nameof(GetAll),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = ex
+                };
+                _logger.AddErrorLog(logData);
+                response.Status.Code = Code.UnknownError;
+                response.Status.ErrorMessage = "An error occured while loading holidays data";
+            }
 
             return Task.FromResult(response);
         }
 
         public override Task<HolidaysResponse> GetByDateRange(DateRangeRequest request, ServerCallContext context)
         {
-            IQueryable<Holiday> holidays = _holidaysRepository.GetByDateRange(request.From.ToDateTime().Date, request.To.ToDateTime().Date);
             HolidaysResponse response = new HolidaysResponse
             {
                 Status = new BaseResponse
@@ -388,21 +404,39 @@ namespace EMS.Core.API.Services
                     ErrorMessage = string.Empty
                 }
             };
-
-            foreach (Holiday holiday in holidays)
+            try
             {
-                response.Data.Add(ToRpcModel(holiday));
+                IQueryable<Holiday> holidays = _holidaysRepository.GetByDateRange(request.From.ToDateTime().Date, request.To.ToDateTime().Date);
+
+                foreach (Holiday holiday in holidays)
+                {
+                    response.Data.Add(ToRpcModel(holiday));
+                }
+
+                LogData logData = new LogData
+                {
+                    CallSide = nameof(HolidaysService),
+                    CallerMethodName = nameof(GetByDateRange),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = response
+                };
+                _logger.AddLog(logData);
             }
-
-            LogData logData = new LogData
+            catch (Exception ex)
             {
-                CallSide = nameof(HolidaysService),
-                CallerMethodName = nameof(GetByDateRange),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = response
-            };
-            _logger.AddLog(logData);
+                LogData logData = new LogData
+                {
+                    CallSide = nameof(HolidaysService),
+                    CallerMethodName = nameof(GetByDateRange),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = ex
+                };
+                _logger.AddErrorLog(logData);
+                response.Status.Code = Code.UnknownError;
+                response.Status.ErrorMessage = "An error occured while loading holidays data";
+            }
 
             return Task.FromResult(response);
         }

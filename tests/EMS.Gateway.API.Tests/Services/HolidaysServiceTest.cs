@@ -5,6 +5,7 @@ using EMS.Common.Protos;
 using EMS.Core.API.Models;
 using EMS.Core.API.Services;
 using EMS.Core.API.Tests.Mock;
+using EMS.Core.API.Tests.Mocks;
 using Google.Protobuf.WellKnownTypes;
 using Moq;
 using NUnit.Framework;
@@ -42,7 +43,6 @@ namespace EMS.Core.API.Tests.Services
             _dbContext.Holidays.Add(_holiday1);
             _dbContext.Holidays.Add(_holiday2);
 
-            _holidaysRepository = new DAL.Repositories.HolidaysRepository(_dbContext, _dateTimeUtil);
             _holidaysService = new HolidaysService(_holidaysRepository, _logger, _dateTimeUtil);
         }
 
@@ -96,6 +96,39 @@ namespace EMS.Core.API.Tests.Services
         }
 
         [Test]
+        public void GetAll_should_handle_exception()
+        {
+            // Arrange
+            BaseMock.ShouldThrowException = true;
+            Empty request = new Empty();
+
+            HolidaysResponse expectedResponse = new HolidaysResponse
+            {
+                Status = new BaseResponse
+                {
+                    Code = Code.UnknownError,
+                    ErrorMessage = "An error occured while loading holidays data"
+                }
+            };
+
+            LogData expectedLog = new LogData
+            {
+                CallSide = nameof(HolidaysService),
+                CallerMethodName = nameof(_holidaysService.GetAll),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = request,
+                Response = new Exception("Test exception")
+            };
+
+            // Act
+            HolidaysResponse actual = _holidaysService.GetAll(request, null).Result;
+
+            // Assert
+            Assert.AreEqual(expectedResponse, actual, "Handled exception as expected");
+            _loggerMock.Verify(m => m.AddErrorLog(expectedLog), Times.Once);
+        }
+
+        [Test]
         public void GetByDateRange_should_return_hoildays_by_date_range_from_db()
         {
             // Arrange
@@ -138,6 +171,43 @@ namespace EMS.Core.API.Tests.Services
             // Assert
             Assert.AreEqual(expectedResponse, actual, "Returned holidays as expected");
             _loggerMock.Verify(m => m.AddLog(expectedLog), Times.Once);
+        }
+
+        [Test]
+        public void GetByDateRange_should_handle_exception()
+        {
+            // Arrange
+            BaseMock.ShouldThrowException = true;
+            DateRangeRequest request = new DateRangeRequest
+            {
+                From = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc)),
+                To = Timestamp.FromDateTime(new DateTime(2021, 1, 10, 0, 0, 0, DateTimeKind.Utc))
+            };
+
+            HolidaysResponse expectedResponse = new HolidaysResponse
+            {
+                Status = new BaseResponse
+                {
+                    Code = Code.UnknownError,
+                    ErrorMessage = "An error occured while loading holidays data"
+                }
+            };
+
+            LogData expectedLog = new LogData
+            {
+                CallSide = nameof(HolidaysService),
+                CallerMethodName = nameof(_holidaysService.GetByDateRange),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = request,
+                Response = new Exception("Test exception")
+            };
+
+            // Act
+            HolidaysResponse actual = _holidaysService.GetByDateRange(request, null).Result;
+
+            // Assert
+            Assert.AreEqual(expectedResponse, actual, "Handled exception as expected");
+            _loggerMock.Verify(m => m.AddErrorLog(expectedLog), Times.Once);
         }
 
         [Test]
