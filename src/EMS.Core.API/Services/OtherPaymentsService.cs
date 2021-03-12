@@ -329,7 +329,6 @@ namespace EMS.Core.API.Services
 
         public override Task<OtherPaymentsResponse> GetByPersonId(ByPersonIdRequest request, ServerCallContext context)
         {
-            IQueryable<OtherPayment> otherPayments = _otherPaymentsRepository.GetByPersonId(request.PersonId);
             OtherPaymentsResponse response = new OtherPaymentsResponse
             {
                 Status = new BaseResponse
@@ -338,28 +337,44 @@ namespace EMS.Core.API.Services
                     ErrorMessage = string.Empty
                 }
             };
-
-            foreach(OtherPayment otherPayment in otherPayments)
+            try
             {
-                response.Data.Add(ToRpcModel(otherPayment));
+                IQueryable<OtherPayment> otherPayments = _otherPaymentsRepository.GetByPersonId(request.PersonId);
+
+                foreach(OtherPayment otherPayment in otherPayments)
+                {
+                    response.Data.Add(ToRpcModel(otherPayment));
+                }
+
+                LogData logData = new LogData
+                {
+                    CallSide = nameof(OtherPaymentsService),
+                    CallerMethodName = nameof(GetByPersonId),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = response
+                };
+                _logger.AddLog(logData);
             }
-
-            LogData logData = new LogData
+            catch(Exception ex)
             {
-                CallSide = nameof(OtherPaymentsService),
-                CallerMethodName = nameof(GetByPersonId),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = response
-            };
-            _logger.AddLog(logData);
-
+                LogData logData = new LogData
+                {
+                    CallSide = nameof(OtherPaymentsService),
+                    CallerMethodName = nameof(GetByPersonId),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = ex
+                };
+                _logger.AddErrorLog(logData);
+                response.Status.Code = Code.UnknownError;
+                response.Status.ErrorMessage = "An error ocured while loading other payments";
+            }
             return Task.FromResult(response);
         }
 
         public override Task<OtherPaymentsResponse> GetByPersonIdAndDateRange(ByPersonIdAndDateRangeRequest request, ServerCallContext context)
         {
-            IQueryable<OtherPayment> otherPayments = _otherPaymentsRepository.GetByPersonIdAndDateRange(request.Person.PersonId, request.Range.From.ToDateTime(), request.Range.To.ToDateTime());
             OtherPaymentsResponse response = new OtherPaymentsResponse
             {
                 Status = new BaseResponse
@@ -369,21 +384,40 @@ namespace EMS.Core.API.Services
                 }
             };
 
-            foreach (OtherPayment otherPayment in otherPayments)
+            try
             {
-                response.Data.Add(ToRpcModel(otherPayment));
+                IQueryable<OtherPayment> otherPayments = _otherPaymentsRepository.GetByPersonIdAndDateRange(request.Person.PersonId, request.Range.From.ToDateTime(), request.Range.To.ToDateTime());
+
+                foreach (OtherPayment otherPayment in otherPayments)
+                {
+                    response.Data.Add(ToRpcModel(otherPayment));
+                }
+
+                LogData logData = new LogData
+                {
+                    CallSide = nameof(OtherPaymentsService),
+                    CallerMethodName = nameof(GetByPersonIdAndDateRange),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = response
+                };
+                _logger.AddLog(logData);
+
             }
-
-            LogData logData = new LogData
+            catch(Exception ex)
             {
-                CallSide = nameof(OtherPaymentsService),
-                CallerMethodName = nameof(GetByPersonIdAndDateRange),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = response
-            };
-            _logger.AddLog(logData);
-
+                LogData logData = new LogData
+                {
+                    CallSide = nameof(OtherPaymentsService),
+                    CallerMethodName = nameof(GetByPersonIdAndDateRange),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = ex
+                };
+                _logger.AddErrorLog(logData);
+                response.Status.Code = Code.UnknownError;
+                response.Status.ErrorMessage = "An error ocured while loading other payments";
+            }
             return Task.FromResult(response);
         }
 

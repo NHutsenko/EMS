@@ -6,6 +6,7 @@ using EMS.Common.Protos;
 using EMS.Core.API.Models;
 using EMS.Core.API.Services;
 using EMS.Core.API.Tests.Mock;
+using EMS.Core.API.Tests.Mocks;
 using Google.Protobuf.WellKnownTypes;
 using Moq;
 using NUnit.Framework;
@@ -73,9 +74,6 @@ namespace EMS.Core.API.Tests.Services
             _dbContext.People.Add(_person1);
             _dbContext.People.Add(_person2);
 
-
-            _peopleRepository = new DAL.Repositories.PeopleRepository(_dbContext, _dateTimeUtil);
-            
             _peopleService = new PeopleService(_peopleRepository, _logger, _dateTimeUtil);
         }
 
@@ -93,15 +91,15 @@ namespace EMS.Core.API.Tests.Services
             };
             _person1.Contacts = null;
             _person1.Photos = null;
-            expected.Data.Add(new PersonData 
-            { 
-                Id = _person1.Id, 
-                LastName = _person1.LastName, 
-                Name = _person1.Name, 
+            expected.Data.Add(new PersonData
+            {
+                Id = _person1.Id,
+                LastName = _person1.LastName,
+                Name = _person1.Name,
                 SecondName = _person1.SecondName,
                 BornedOn = Timestamp.FromDateTime(_person1.BornedOn.ToUniversalTime()),
                 CreatedOn = Timestamp.FromDateTime(_person1.CreatedOn.ToUniversalTime()),
-                
+
             });
             expected.Data.Add(new PersonData
             {
@@ -130,6 +128,38 @@ namespace EMS.Core.API.Tests.Services
             Assert.AreEqual(expected.Status.ErrorMessage, actual.Status.ErrorMessage, "Error message as expected");
             CollectionAssert.AreEqual(expected.Data, actual.Data, "Data as expected");
             _loggerMock.Verify(mocks => mocks.AddLog(expectedLog), Times.Once);
+        }
+
+        [Test]
+        public void GetAll_should_handle_exception()
+        {
+            // Arrange
+            BaseMock.ShouldThrowException = true;
+            PeopleResponse expected = new PeopleResponse
+            {
+                Status = new BaseResponse
+                {
+                    Code = Code.UnknownError,
+                    ErrorMessage = "An error orccured while loading people data"
+                }
+            };
+            LogData expectedLog = new LogData
+            {
+                CallSide = nameof(PeopleService),
+                CallerMethodName = nameof(_peopleService.GetAll),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = new Empty(),
+                Response = new Exception("Test exception")
+            };
+
+            // Act
+            PeopleResponse actual = _peopleService.GetAll(new Empty(), null).Result;
+
+            // Assert
+            Assert.AreEqual(expected.Status.Code, actual.Status.Code, "Code as expected");
+            Assert.AreEqual(expected.Status.ErrorMessage, actual.Status.ErrorMessage, "Error message as expected");
+            CollectionAssert.AreEqual(expected.Data, actual.Data, "Data as expected");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
         }
 
         [Test]
@@ -198,7 +228,7 @@ namespace EMS.Core.API.Tests.Services
                 Status = new BaseResponse
                 {
                     Code = Code.DataError,
-                    ErrorMessage = "Some data has not found (type: NullReferenceException)"
+                    ErrorMessage = "An error occured while loading person data"
                 },
                 Data = null
             };
@@ -228,23 +258,18 @@ namespace EMS.Core.API.Tests.Services
         public void GetById_should_throw_exception()
         {
             // Arrange
+            BaseMock.ShouldThrowException = true;
             PersonResponse expected = new PersonResponse
             {
                 Status = new BaseResponse
                 {
                     Code = Code.UnknownError,
-                    ErrorMessage = "Value cannot be null. (Parameter 'value')"
+                    ErrorMessage = "An error occured while loading person data"
                 },
                 Data = null
             };
 
-            Person person = new Person
-            {
-                Id = 3
-            };
-            _dbContext.People.Add(person);
-
-            PersonRequest request = new PersonRequest { Id = person.Id };
+            PersonRequest request = new PersonRequest { Id = _person1.Id };
 
             LogData expectedLog = new LogData
             {
@@ -252,7 +277,7 @@ namespace EMS.Core.API.Tests.Services
                 CallerMethodName = nameof(_peopleService.GetById),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = request,
-                Response = new Exception("Value cannot be null. (Parameter 'value')")
+                Response = new Exception("Test exception")
             };
 
             // Act

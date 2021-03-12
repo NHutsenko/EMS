@@ -38,23 +38,39 @@ namespace EMS.Core.API.Services
                 }
             };
 
-            IQueryable<Person> people = _peopleRepository.GetAll();
-
-            foreach (Person person in people)
+            try
             {
-                response.Data.Add(ToRpcModel(person));
+                IQueryable<Person> people = _peopleRepository.GetAll();
+
+                foreach (Person person in people)
+                {
+                    response.Data.Add(ToRpcModel(person));
+                }
+
+                LogData logData = new LogData
+                {
+                    CallSide = nameof(PeopleService),
+                    CallerMethodName = nameof(GetAll),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = response
+                };
+                _logger.AddLog(logData);
             }
-
-            LogData logData = new LogData
+            catch(Exception ex)
             {
-                CallSide = nameof(PeopleService),
-                CallerMethodName = nameof(GetAll),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = response
-            };
-            _logger.AddLog(logData);
-
+                LogData logData = new LogData
+                {
+                    CallSide = nameof(PeopleService),
+                    CallerMethodName = nameof(GetAll),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = ex
+                };
+                _logger.AddErrorLog(logData);
+                response.Status.Code = Code.UnknownError;
+                response.Status.ErrorMessage = "An error orccured while loading people data";
+            }
             return Task.FromResult(response);
         }
 
@@ -88,8 +104,7 @@ namespace EMS.Core.API.Services
             }
             catch (NullReferenceException nrex)
             {
-                string error = $"Some data has not found (type: {nrex.GetType().Name})";
-                response.Status.ErrorMessage = error;
+                response.Status.ErrorMessage = "An error occured while loading person data";
                 response.Status.Code = Code.DataError;
                 LogData logData = new LogData
                 {
@@ -104,7 +119,7 @@ namespace EMS.Core.API.Services
             }
             catch (Exception ex)
             {
-                response.Status.ErrorMessage = ex.Message;
+                response.Status.ErrorMessage = "An error occured while loading person data";
                 response.Status.Code = Code.UnknownError;
                 LogData logData = new LogData
                 {

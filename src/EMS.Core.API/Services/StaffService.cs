@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EMS.Common.Logger;
@@ -340,24 +339,41 @@ namespace EMS.Core.API.Services
                     ErrorMessage = string.Empty
                 }
             };
-
-            IQueryable<Staff> staff = _staffRepository.GetAll();
-
-            foreach(Staff s in staff)
+            try
             {
-                response.Data.Add(ToRpcModel(s));
+                IQueryable<Staff> staff = _staffRepository.GetAll();
+
+                foreach(Staff s in staff)
+                {
+                    response.Data.Add(ToRpcModel(s));
+                }
+
+                LogData logData = new LogData
+                {
+
+                    CallSide = nameof(StaffService),
+                    CallerMethodName = nameof(GetAll),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = response
+                };
+                _logger.AddLog(logData);
             }
-
-            LogData logData = new LogData
+            catch(Exception ex)
             {
+                LogData logData = new LogData
+                {
 
-                CallSide = nameof(StaffService),
-                CallerMethodName = nameof(GetAll),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = response
-            };
-            _logger.AddLog(logData);
+                    CallSide = nameof(StaffService),
+                    CallerMethodName = nameof(GetAll),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = ex
+                };
+                _logger.AddErrorLog(logData);
+                response.Status.Code = Code.UnknownError;
+                response.Status.ErrorMessage = "An error occured while loading work periods data";
+            }
 
             return Task.FromResult(response);
         }
@@ -373,23 +389,41 @@ namespace EMS.Core.API.Services
                 }
             };
 
-            IQueryable<Staff> staff = _staffRepository.GetByManagerId(request.PersonId);
-
-            foreach (Staff s in staff)
+            try
             {
-                response.Data.Add(ToRpcModel(s));
+                IQueryable<Staff> staff = _staffRepository.GetByManagerId(request.PersonId);
+
+                foreach (Staff s in staff)
+                {
+                    response.Data.Add(ToRpcModel(s));
+                }
+
+                LogData logData = new LogData
+                {
+
+                    CallSide = nameof(StaffService),
+                    CallerMethodName = nameof(GetByManagerId),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = response
+                };
+                _logger.AddLog(logData);
             }
-
-            LogData logData = new LogData
+            catch(Exception ex)
             {
+                LogData logData = new LogData
+                {
 
-                CallSide = nameof(StaffService),
-                CallerMethodName = nameof(GetByManagerId),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = response
-            };
-            _logger.AddLog(logData);
+                    CallSide = nameof(StaffService),
+                    CallerMethodName = nameof(GetByManagerId),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = ex
+                };
+                _logger.AddErrorLog(logData);
+                response.Status.Code = Code.UnknownError;
+                response.Status.ErrorMessage = "An error occured while loading work periods data";
+            }
 
             return Task.FromResult(response);
         }
@@ -405,23 +439,41 @@ namespace EMS.Core.API.Services
                 }
             };
 
-            IQueryable<Staff> staff = _staffRepository.GetByPersonId(request.PersonId);
-
-            foreach (Staff s in staff)
+            try
             {
-                response.Data.Add(ToRpcModel(s));
+                IQueryable<Staff> staff = _staffRepository.GetByPersonId(request.PersonId);
+
+                foreach (Staff s in staff)
+                {
+                    response.Data.Add(ToRpcModel(s));
+                }
+
+                LogData logData = new LogData
+                {
+
+                    CallSide = nameof(StaffService),
+                    CallerMethodName = nameof(GetByPersonId),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = response
+                };
+                _logger.AddLog(logData);
             }
-
-            LogData logData = new LogData
+            catch (Exception ex)
             {
+                LogData logData = new LogData
+                {
 
-                CallSide = nameof(StaffService),
-                CallerMethodName = nameof(GetByPersonId),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = response
-            };
-            _logger.AddLog(logData);
+                    CallSide = nameof(StaffService),
+                    CallerMethodName = nameof(GetByPersonId),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = ex
+                };
+                _logger.AddErrorLog(logData);
+                response.Status.Code = Code.UnknownError;
+                response.Status.ErrorMessage = "An error occured while loading work periods data";
+            }
 
             return Task.FromResult(response);
         }

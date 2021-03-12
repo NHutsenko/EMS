@@ -24,15 +24,25 @@ namespace EMS.Core.API.Tests
         // Repos
         protected Mock<DayOffRepository> _dayOffRepositoryMock;
         protected DayOffRepository _dayOffRepository;
+
+        protected Mock<PeopleRepository> _peopleRepositoryMock;
         protected PeopleRepository _peopleRepository;
+
         protected Mock<PositionsRepository> _positionsRepositoryMock;
         protected PositionsRepository _positionsRepository;
+
+        protected Mock<StaffRepository> _staffRepositoryMock;
         protected StaffRepository _staffRepository;
+
         protected Mock<TeamsRepository> _teamsRepositoryMock;
         protected TeamsRepository _teamsRepository;
+
+        protected Mock<OtherPaymentsRepository> _otherPaymentsRepositoryMock;
         protected OtherPaymentsRepository _otherPaymentsRepository;
+
         protected Mock<HolidaysRepository> _holidaysRepositoryMock;
         protected HolidaysRepository _holidaysRepository;
+
         protected Mock<MotivationModificatorRepository> _motivationModificatorRepositoryMock;
         protected MotivationModificatorRepository _motivationModificatorRepository;
 
@@ -79,6 +89,15 @@ namespace EMS.Core.API.Tests
 
             _motivationModificatorRepositoryMock = MotivationModificatorRepositoryMock.SetupMock(_dbContext, _dateTimeUtil);
             _motivationModificatorRepository = _motivationModificatorRepositoryMock.Object;
+
+            _otherPaymentsRepositoryMock = OtherPaymentsRepositoryMock.SetupMock(_dbContext, _dateTimeUtil);
+            _otherPaymentsRepository = _otherPaymentsRepositoryMock.Object;
+
+            _peopleRepositoryMock = PeopleRepositoryMock.SetupMock(_dbContext, _dateTimeUtil);
+            _peopleRepository = _peopleRepositoryMock.Object;
+
+            _staffRepositoryMock = StaffRepositoryMock.SetupMock(_dbContext, _dateTimeUtil);
+            _staffRepository = _staffRepositoryMock.Object;
         }
 
         protected void InitializeLoggerMock(T loggerClass)

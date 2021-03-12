@@ -6,6 +6,7 @@ using EMS.Common.Protos;
 using EMS.Core.API.Models;
 using EMS.Core.API.Services;
 using EMS.Core.API.Tests.Mock;
+using EMS.Core.API.Tests.Mocks;
 using Google.Protobuf.WellKnownTypes;
 using Moq;
 using NUnit.Framework;
@@ -57,7 +58,6 @@ namespace EMS.Core.API.Tests.Services
             _dbContext.Staff.Add(_staff1);
             _dbContext.Staff.Add(_staff2);
 
-            _staffRepository = new DAL.Repositories.StaffRepository(_dbContext, _dateTimeUtil);
             _staffService = new StaffService(_staffRepository, _logger, _dateTimeUtil);
         }
 
@@ -113,6 +113,39 @@ namespace EMS.Core.API.Tests.Services
         }
 
         [Test]
+        public void GetAll_should_handle_exception()
+        {
+            // Arrange
+            BaseMock.ShouldThrowException = true;
+            StaffResponse expectedResponse = new StaffResponse
+            {
+                Status = new BaseResponse
+                {
+                    Code = Code.UnknownError,
+                    ErrorMessage = "An error occured while loading work periods data"
+                }
+            };
+
+            Empty request = new Empty();
+
+            LogData expectedLog = new LogData
+            {
+                CallSide = nameof(StaffService),
+                CallerMethodName = nameof(_staffService.GetAll),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = request,
+                Response = new Exception("Test exception")
+            };
+
+            // Act
+            StaffResponse actual = _staffService.GetAll(request, null).Result;
+
+            // Assert
+            Assert.AreEqual(expectedResponse, actual, "Response as expected");
+            _loggerMock.Verify(m => m.AddErrorLog(expectedLog), Times.Once);
+        }
+
+        [Test]
         public void GetByPersonId_should_return_all_entities_from_db_by_specified_person()
         {
             // Arrange
@@ -158,7 +191,43 @@ namespace EMS.Core.API.Tests.Services
         }
 
         [Test]
-        public void GetByPmanagerId_should_return_all_entities_from_db_by_specified_manager()
+        public void GetByPersonId_should_handle_exception()
+        {
+            // Arrange
+            BaseMock.ShouldThrowException = true;
+            StaffResponse expectedResponse = new StaffResponse
+            {
+                Status = new BaseResponse
+                {
+                    Code = Code.UnknownError,
+                    ErrorMessage = "An error occured while loading work periods data"
+                }
+            };
+
+            ByPersonIdRequest request = new ByPersonIdRequest
+            {
+                PersonId = _staff1.PersonId.GetValueOrDefault()
+            };
+
+            LogData expectedLog = new LogData
+            {
+                CallSide = nameof(StaffService),
+                CallerMethodName = nameof(_staffService.GetByPersonId),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = request,
+                Response = new Exception("Test exception")
+            };
+
+            // Act
+            StaffResponse actual = _staffService.GetByPersonId(request, null).Result;
+
+            // Assert
+            Assert.AreEqual(expectedResponse, actual, "Response as expected");
+            _loggerMock.Verify(m => m.AddErrorLog(expectedLog), Times.Once);
+        }
+
+        [Test]
+        public void GetByManagerId_should_return_all_entities_from_db_by_specified_manager()
         {
             // Arrange
             StaffResponse expectedResponse = new StaffResponse
@@ -200,6 +269,42 @@ namespace EMS.Core.API.Tests.Services
             // Assert
             Assert.AreEqual(expectedResponse, actual, "Response as expected");
             _loggerMock.Verify(m => m.AddLog(expectedLog), Times.Once);
+        }
+
+        [Test]
+        public void GetByManagerId_should_handle_exception()
+        {
+            // Arrange
+            BaseMock.ShouldThrowException = true;
+            StaffResponse expectedResponse = new StaffResponse
+            {
+                Status = new BaseResponse
+                {
+                    Code = Code.UnknownError,
+                    ErrorMessage = "An error occured while loading work periods data"
+                }
+            };
+
+            ByPersonIdRequest request = new ByPersonIdRequest
+            {
+                PersonId = _staff2.ManagerId
+            };
+
+            LogData expectedLog = new LogData
+            {
+                CallSide = nameof(StaffService),
+                CallerMethodName = nameof(_staffService.GetByManagerId),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = request,
+                Response = new Exception("Test exception")
+            };
+
+            // Act
+            StaffResponse actual = _staffService.GetByManagerId(request, null).Result;
+
+            // Assert
+            Assert.AreEqual(expectedResponse, actual, "Response as expected");
+            _loggerMock.Verify(m => m.AddErrorLog(expectedLog), Times.Once);
         }
 
         [Test]

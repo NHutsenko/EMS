@@ -5,6 +5,7 @@ using EMS.Common.Protos;
 using EMS.Core.API.Models;
 using EMS.Core.API.Services;
 using EMS.Core.API.Tests.Mock;
+using EMS.Core.API.Tests.Mocks;
 using Google.Protobuf.WellKnownTypes;
 using Moq;
 using NUnit.Framework;
@@ -40,7 +41,6 @@ namespace EMS.Core.API.Tests.Services
             };
             _dbContext.OtherPayments.Add(_otherPayment1);
             _dbContext.OtherPayments.Add(_otherPayment2);
-            _otherPaymentsRepository = new DAL.Repositories.OtherPaymentsRepository(_dbContext, _dateTimeUtil);
             _otherPaymentsService = new OtherPaymentsService(_otherPaymentsRepository, _logger, _dateTimeUtil);
         }
 
@@ -97,6 +97,42 @@ namespace EMS.Core.API.Tests.Services
         }
 
         [Test]
+        public void GetByPersonId_should_handle_exception()
+        {
+            // Arrange
+            BaseMock.ShouldThrowException = true;
+            ByPersonIdRequest request = new ByPersonIdRequest
+            {
+                PersonId = 1
+            };
+
+            OtherPaymentsResponse expectedResponse = new OtherPaymentsResponse
+            {
+                Status = new BaseResponse
+                {
+                    Code = Code.UnknownError,
+                    ErrorMessage = "An error ocured while loading other payments"
+                }
+            };
+
+            LogData expectedLog = new LogData
+            {
+                CallSide = nameof(OtherPaymentsService),
+                CallerMethodName = nameof(_otherPaymentsService.GetByPersonId),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = request,
+                Response = new Exception("Test exception")
+            };
+
+            // Act
+            OtherPaymentsResponse actual = _otherPaymentsService.GetByPersonId(request, null).Result;
+
+            // Assert
+            Assert.AreEqual(expectedResponse, actual, "Response as expected");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
+        }
+
+        [Test]
         public void GetByPersonIdAndDateRange_should_return_all_other_payments_by_specified_person_and_date_range()
         {
             // Arrange
@@ -146,6 +182,50 @@ namespace EMS.Core.API.Tests.Services
             // Assert
             Assert.AreEqual(expectedResponse, actual, "Response as expected");
             _loggerMock.Verify(mocks => mocks.AddLog(expectedLog), Times.Once);
+        }
+
+        [Test]
+        public void GetByPersonIdAndDateRange_should_handle_exception()
+        {
+            // Arrange
+            BaseMock.ShouldThrowException = true;
+            ByPersonIdAndDateRangeRequest request = new ByPersonIdAndDateRangeRequest
+            {
+                Person = new ByPersonIdRequest
+                {
+                    PersonId = 1
+                },
+                Range = new ByDateRangeRequestRequest
+                {
+                    From = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
+                    To = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().AddDays(5))
+                }
+            };
+
+            OtherPaymentsResponse expectedResponse = new OtherPaymentsResponse
+            {
+                Status = new BaseResponse
+                {
+                    Code = Code.UnknownError,
+                    ErrorMessage = "An error ocured while loading other payments"
+                }
+            };
+
+            LogData expectedLog = new LogData
+            {
+                CallSide = nameof(OtherPaymentsService),
+                CallerMethodName = nameof(_otherPaymentsService.GetByPersonIdAndDateRange),
+                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                Request = request,
+                Response = new Exception("Test exception")
+            };
+
+            // Act
+            OtherPaymentsResponse actual = _otherPaymentsService.GetByPersonIdAndDateRange(request, null).Result;
+
+            // Assert
+            Assert.AreEqual(expectedResponse, actual, "Response as expected");
+            _loggerMock.Verify(mocks => mocks.AddErrorLog(expectedLog), Times.Once);
         }
 
         [Test]
