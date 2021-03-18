@@ -104,7 +104,7 @@ namespace EMS.Gateway.API.Controllers
                 _logger.AddLog(logData);
                 return Ok(response);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 LogData logData = new LogData
                 {
@@ -133,10 +133,10 @@ namespace EMS.Gateway.API.Controllers
                     Request = new Empty(),
                     Response = response
                 };
-                _logger.AddErrorLog(logData);
+                _logger.AddLog(logData);
                 return Ok(response);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 LogData logData = new LogData
                 {
@@ -154,28 +154,32 @@ namespace EMS.Gateway.API.Controllers
         [HttpGet]
         public IActionResult GetById([FromQuery] long teamId)
         {
+            TeamRequest request = new TeamRequest
+            {
+                Id = teamId
+            };
             try
             {
-                TeamsResponse response = _teamsClient.GetAll(new Empty());
+                TeamResponse response = _teamsClient.GetById(request);
                 LogData logData = new LogData
                 {
-                    CallerMethodName = nameof(GetAll),
+                    CallerMethodName = nameof(GetById),
                     CallSide = nameof(TeamsController),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = new Empty(),
+                    Request = request,
                     Response = response
                 };
-                _logger.AddErrorLog(logData);
+                _logger.AddLog(logData);
                 return Ok(response);
             }
             catch (Exception ex)
             {
                 LogData logData = new LogData
                 {
-                    CallerMethodName = nameof(GetAll),
+                    CallerMethodName = nameof(GetById),
                     CallSide = nameof(TeamsController),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = new Empty(),
+                    Request = request,
                     Response = ex
                 };
                 _logger.AddErrorLog(logData);

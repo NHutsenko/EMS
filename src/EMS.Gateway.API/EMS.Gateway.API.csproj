@@ -21,6 +21,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\common\DateTimeUtil\DateTimeUtil.csproj" />
+    <ProjectReference Include="..\common\LoggerExtensions\Logger.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Protobuf Include="../common/Protos/response.proto" Link="Protos/response.proto" />
     <Protobuf Include="../common/Protos/requests.proto" Link="Protos/requests.proto" />
     <Protobuf Include="../common/Protos/salary.proto" Link="Protos/salary.proto" GrpcServices="Client" />
