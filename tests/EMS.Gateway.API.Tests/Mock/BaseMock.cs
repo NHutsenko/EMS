@@ -8,12 +8,13 @@ namespace EMS.Gateway.API.Tests.Mock
 	{
         public static bool ShouldThrowException { get; set; }
         public static object Response { get; set; }
+        public static string ExceptionMessage => "Test exception";
 
         protected static void ThrowExceptionIfNeeded()
         {
             if (ShouldThrowException)
             {
-                throw new Exception("Test exception");
+                throw new Exception(ExceptionMessage);
             }
         }
 	}

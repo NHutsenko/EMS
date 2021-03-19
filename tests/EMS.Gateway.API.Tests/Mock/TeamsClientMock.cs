@@ -19,21 +19,21 @@ namespace EMS.Gateway.API.Tests.Mock
             Mock<TeamsClient> mock = new Mock<TeamsClient>(channel);
 
             mock.Setup(m => m.AddAsync(It.IsAny<TeamData>(), It.IsAny<Metadata>(), It.IsAny<DateTime?>(), It.IsAny<CancellationToken>()))
-                .Returns<TeamData, Metadata, DateTime?, CancellationToken>((teamData, metdata, timestamp, token) =>
+                .Returns<TeamData, Metadata, DateTime?, CancellationToken>((request, metdata, timestamp, token) =>
             {
                 ThrowExceptionIfNeeded();
                 return Response as BaseResponse;
             });
 
             mock.Setup(m => m.UpdateAsync(It.IsAny<TeamData>(), It.IsAny<Metadata>(), It.IsAny<DateTime?>(), It.IsAny<CancellationToken>()))
-                .Returns<TeamData, Metadata, DateTime?, CancellationToken>((teamData, metdata, timestamp, token) =>
+                .Returns<TeamData, Metadata, DateTime?, CancellationToken>((request, metdata, timestamp, token) =>
             {
                 ThrowExceptionIfNeeded();
                 return Response as BaseResponse;
             });
 
             mock.Setup(m => m.DeleteAsync(It.IsAny<TeamData>(), It.IsAny<Metadata>(), It.IsAny<DateTime?>(), It.IsAny<CancellationToken>()))
-                .Returns<TeamData, Metadata, DateTime?, CancellationToken>((teamData, metdata, timestamp, token) =>
+                .Returns<TeamData, Metadata, DateTime?, CancellationToken>((request, metdata, timestamp, token) =>
             {
                 ThrowExceptionIfNeeded();
                 return Response as BaseResponse;

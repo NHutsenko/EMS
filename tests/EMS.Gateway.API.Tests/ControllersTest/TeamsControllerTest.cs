@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading;
 using EMS.Common.Logger.Models;
 using EMS.Common.Protos;
 using EMS.Gateway.API.Controllers;
@@ -59,6 +60,7 @@ namespace EMS.Gateway.API.Tests
             Assert.AreEqual(200, actual.StatusCode, "StatusCode as expected");
             Assert.AreEqual(response, actualData, "Response data as expected");
             _loggerMock.Verify(m => m.AddLog(expectedLog), Times.Once);
+            _teamsClientMock.Verify(m => m.AddAsync(request, null, null, new CancellationToken()), Times.Once);
         }
 
         [Test]
@@ -79,7 +81,7 @@ namespace EMS.Gateway.API.Tests
                 CallerMethodName = nameof(_teamsController.Add),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = request,
-                Response = new Exception("Test exception")
+                Response = new Exception(BaseMock.ExceptionMessage)
             };
 
             // Act
@@ -89,6 +91,7 @@ namespace EMS.Gateway.API.Tests
             Assert.AreEqual(500, actual.StatusCode, "StatusCode as expected");
             Assert.AreEqual("An error occured while making request", actual.Value, "Response data as expected");
             _loggerMock.Verify(m => m.AddErrorLog(expectedLog), Times.Once);
+            _teamsClientMock.Verify(m => m.AddAsync(request, null, null, new CancellationToken()), Times.Once);
         }
 
         [Test]
@@ -126,6 +129,7 @@ namespace EMS.Gateway.API.Tests
             Assert.AreEqual(200, actual.StatusCode, "StatusCode as expected");
             Assert.AreEqual(response, actualData, "Response data as expected");
             _loggerMock.Verify(m => m.AddLog(expectedLog), Times.Once);
+            _teamsClientMock.Verify(m => m.UpdateAsync(request, null, null, new CancellationToken()), Times.Once);
         }
 
         [Test]
@@ -147,7 +151,7 @@ namespace EMS.Gateway.API.Tests
                 CallerMethodName = nameof(_teamsController.Update),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = request,
-                Response = new Exception("Test exception")
+                Response = new Exception(BaseMock.ExceptionMessage)
             };
 
             // Act
@@ -157,6 +161,7 @@ namespace EMS.Gateway.API.Tests
             Assert.AreEqual(500, actual.StatusCode, "StatusCode as expected");
             Assert.AreEqual("An error occured while making request", actual.Value, "Response data as expected");
             _loggerMock.Verify(m => m.AddErrorLog(expectedLog), Times.Once);
+            _teamsClientMock.Verify(m => m.UpdateAsync(request, null, null, new CancellationToken()), Times.Once);
         }
 
         [Test]
@@ -194,6 +199,7 @@ namespace EMS.Gateway.API.Tests
             Assert.AreEqual(200, actual.StatusCode, "StatusCode as expected");
             Assert.AreEqual(response, actualData, "Response data as expected");
             _loggerMock.Verify(m => m.AddLog(expectedLog), Times.Once);
+            _teamsClientMock.Verify(m => m.DeleteAsync(request, null, null, new CancellationToken()), Times.Once);
         }
 
         [Test]
@@ -215,7 +221,7 @@ namespace EMS.Gateway.API.Tests
                 CallerMethodName = nameof(_teamsController.Delete),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = request,
-                Response = new Exception("Test exception")
+                Response = new Exception(BaseMock.ExceptionMessage)
             };
 
             // Act
@@ -225,6 +231,7 @@ namespace EMS.Gateway.API.Tests
             Assert.AreEqual(500, actual.StatusCode, "StatusCode as expected");
             Assert.AreEqual("An error occured while making request", actual.Value, "Response data as expected");
             _loggerMock.Verify(m => m.AddErrorLog(expectedLog), Times.Once);
+            _teamsClientMock.Verify(m => m.DeleteAsync(request, null, null, new CancellationToken()), Times.Once);
         }
 
         [Test]
@@ -264,6 +271,7 @@ namespace EMS.Gateway.API.Tests
             Assert.AreEqual(200, actual.StatusCode, "StatusCode as expected");
             Assert.AreEqual(response, actualData, "Response data as expected");
             _loggerMock.Verify(m => m.AddLog(expectedLog), Times.Once);
+            _teamsClientMock.Verify(m => m.GetAll(new Empty(), null, null, new CancellationToken()), Times.Once);
         }
 
         [Test]
@@ -278,7 +286,7 @@ namespace EMS.Gateway.API.Tests
                 CallerMethodName = nameof(_teamsController.GetAll),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = new Empty(),
-                Response = new Exception("Test exception")
+                Response = new Exception(BaseMock.ExceptionMessage)
             };
 
             // Act
@@ -288,6 +296,7 @@ namespace EMS.Gateway.API.Tests
             Assert.AreEqual(500, actual.StatusCode, "StatusCode as expected");
             Assert.AreEqual("An error occured while making request", actual.Value, "Response data as expected");
             _loggerMock.Verify(m => m.AddErrorLog(expectedLog), Times.Once);
+            _teamsClientMock.Verify(m => m.GetAll(new Empty(), null, null, new CancellationToken()), Times.Once);
         }
 
         [Test]
@@ -331,6 +340,7 @@ namespace EMS.Gateway.API.Tests
             Assert.AreEqual(200, actual.StatusCode, "StatusCode as expected");
             Assert.AreEqual(response, actualData, "Response data as expected");
             _loggerMock.Verify(m => m.AddLog(expectedLog), Times.Once);
+            _teamsClientMock.Verify(m => m.GetById(request, null, null, new CancellationToken()), Times.Once);
         }
 
         [Test]
@@ -349,7 +359,7 @@ namespace EMS.Gateway.API.Tests
                 CallerMethodName = nameof(_teamsController.GetById),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = request,
-                Response = new Exception("Test exception")
+                Response = new Exception(BaseMock.ExceptionMessage)
             };
 
             // Act
@@ -359,6 +369,7 @@ namespace EMS.Gateway.API.Tests
             Assert.AreEqual(500, actual.StatusCode, "StatusCode as expected");
             Assert.AreEqual("An error occured while making request", actual.Value, "Response data as expected");
             _loggerMock.Verify(m => m.AddErrorLog(expectedLog), Times.Once);
+            _teamsClientMock.Verify(m => m.GetById(request, null, null, new CancellationToken()), Times.Once);
         }
     }
 }
