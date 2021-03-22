@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics.CodeAnalysis;
 using EMS.Common.Utils.DateTimeUtil;
 using EMS.Core.API.DAL;
 using EMS.Core.API.DAL.Repositories;
@@ -17,8 +12,8 @@ namespace EMS.Core.API.Tests.Mocks
     {
         public static Mock<MotivationModificatorRepository> SetupMock(IApplicationDbContext dbContext, IDateTimeUtil dateTimeUtil)
         {
-            Mock<MotivationModificatorRepository> mock = new Mock<MotivationModificatorRepository>(dbContext, dateTimeUtil);
-            MotivationModificatorRepository repository = new MotivationModificatorRepository(dbContext, dateTimeUtil);
+            Mock<MotivationModificatorRepository> mock = new(dbContext, dateTimeUtil);
+            MotivationModificatorRepository repository = new(dbContext, dateTimeUtil);
 
             mock.Setup(m => m.AddAsync(It.IsAny<MotivationModificator>())).Returns<MotivationModificator>((modificator) =>
             {

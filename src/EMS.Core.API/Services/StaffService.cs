@@ -39,34 +39,34 @@ namespace EMS.Core.API.Services
                     throw new Exception("Staff has not been saved");
                 }
 
-                BaseResponse response = new BaseResponse
+                BaseResponse response = new()
                 {
                     Code = Code.Success,
                     DataId = staff.Id,
                     ErrorMessage = string.Empty
                 };
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(StaffService),
-                    CallerMethodName = nameof(AddAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = response
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(StaffService),
+					CallerMethodName = nameof(AddAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = response
+				};
                 _logger.AddLog(logData);
 
                 return response;
             }
             catch(NullReferenceException nrex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(StaffService),
-                    CallerMethodName = nameof(AddAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = nrex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(StaffService),
+					CallerMethodName = nameof(AddAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = nrex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -76,14 +76,14 @@ namespace EMS.Core.API.Services
             }
             catch(ArgumentException aex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(StaffService),
-                    CallerMethodName = nameof(AddAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = aex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(StaffService),
+					CallerMethodName = nameof(AddAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = aex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -93,14 +93,14 @@ namespace EMS.Core.API.Services
             }
             catch(DbUpdateException duex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(StaffService),
-                    CallerMethodName = nameof(AddAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = duex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(StaffService),
+					CallerMethodName = nameof(AddAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = duex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -110,14 +110,14 @@ namespace EMS.Core.API.Services
             }
             catch(Exception ex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(StaffService),
-                    CallerMethodName = nameof(AddAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(StaffService),
+					CallerMethodName = nameof(AddAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -140,34 +140,34 @@ namespace EMS.Core.API.Services
                     throw new Exception("Staff has not been updated");
                 }
 
-                BaseResponse response = new BaseResponse
-                {
-                    Code = Code.Success,
-                    DataId = staff.Id,
-                    ErrorMessage = string.Empty
-                };
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(StaffService),
-                    CallerMethodName = nameof(UpdateAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = response
-                };
+                BaseResponse response = new()
+				{
+					Code = Code.Success,
+					DataId = staff.Id,
+					ErrorMessage = string.Empty
+				};
+                LogData logData = new()
+				{
+					CallSide = nameof(StaffService),
+					CallerMethodName = nameof(UpdateAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = response
+				};
                 _logger.AddLog(logData);
 
                 return response;
             }
             catch (NullReferenceException nrex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(StaffService),
-                    CallerMethodName = nameof(UpdateAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = nrex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(StaffService),
+					CallerMethodName = nameof(UpdateAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = nrex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -177,14 +177,14 @@ namespace EMS.Core.API.Services
             }
             catch (ArgumentException aex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(StaffService),
-                    CallerMethodName = nameof(UpdateAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = aex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(StaffService),
+					CallerMethodName = nameof(UpdateAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = aex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -194,14 +194,14 @@ namespace EMS.Core.API.Services
             }
             catch (DbUpdateException duex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(StaffService),
-                    CallerMethodName = nameof(UpdateAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = duex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(StaffService),
+					CallerMethodName = nameof(UpdateAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = duex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -211,14 +211,14 @@ namespace EMS.Core.API.Services
             }
             catch (Exception ex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(StaffService),
-                    CallerMethodName = nameof(UpdateAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(StaffService),
+					CallerMethodName = nameof(UpdateAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -241,34 +241,34 @@ namespace EMS.Core.API.Services
                     throw new Exception("Staff has not been deleted");
                 }
 
-                BaseResponse response = new BaseResponse
-                {
-                    Code = Code.Success,
-                    DataId = staff.Id,
-                    ErrorMessage = string.Empty
-                };
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(StaffService),
-                    CallerMethodName = nameof(DeleteAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = response
-                };
+                BaseResponse response = new()
+				{
+					Code = Code.Success,
+					DataId = staff.Id,
+					ErrorMessage = string.Empty
+				};
+                LogData logData = new()
+				{
+					CallSide = nameof(StaffService),
+					CallerMethodName = nameof(DeleteAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = response
+				};
                 _logger.AddLog(logData);
 
                 return response;
             }
             catch (NullReferenceException nrex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(StaffService),
-                    CallerMethodName = nameof(DeleteAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = nrex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(StaffService),
+					CallerMethodName = nameof(DeleteAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = nrex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -278,14 +278,14 @@ namespace EMS.Core.API.Services
             }
             catch (InvalidOperationException ioex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(StaffService),
-                    CallerMethodName = nameof(DeleteAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ioex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(StaffService),
+					CallerMethodName = nameof(DeleteAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ioex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -295,14 +295,14 @@ namespace EMS.Core.API.Services
             }
             catch (DbUpdateException duex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(StaffService),
-                    CallerMethodName = nameof(DeleteAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = duex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(StaffService),
+					CallerMethodName = nameof(DeleteAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = duex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -312,14 +312,14 @@ namespace EMS.Core.API.Services
             }
             catch (Exception ex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(StaffService),
-                    CallerMethodName = nameof(DeleteAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(StaffService),
+					CallerMethodName = nameof(DeleteAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -331,14 +331,10 @@ namespace EMS.Core.API.Services
 
         public override Task<StaffResponse> GetAll(Empty request, ServerCallContext context)
         {
-            StaffResponse response = new StaffResponse
-            {
-                Status = new BaseResponse
-                {
-                    Code = Code.Success,
-                    ErrorMessage = string.Empty
-                }
-            };
+            StaffResponse response = new()
+			{
+				Status = new BaseResponse { Code = Code.Success, ErrorMessage = string.Empty }
+			};
             try
             {
                 IQueryable<Staff> staff = _staffRepository.GetAll();
@@ -348,28 +344,26 @@ namespace EMS.Core.API.Services
                     response.Data.Add(ToRpcModel(s));
                 }
 
-                LogData logData = new LogData
-                {
-
-                    CallSide = nameof(StaffService),
-                    CallerMethodName = nameof(GetAll),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = response
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(StaffService),
+					CallerMethodName = nameof(GetAll),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = response
+				};
                 _logger.AddLog(logData);
             }
             catch(Exception ex)
             {
-                LogData logData = new LogData
-                {
-
-                    CallSide = nameof(StaffService),
-                    CallerMethodName = nameof(GetAll),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(StaffService),
+					CallerMethodName = nameof(GetAll),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ex
+				};
                 _logger.AddErrorLog(logData);
                 response.Status.Code = Code.UnknownError;
                 response.Status.ErrorMessage = "An error occured while loading work periods data";
@@ -380,14 +374,10 @@ namespace EMS.Core.API.Services
 
         public override Task<StaffResponse> GetByManagerId(ByPersonIdRequest request, ServerCallContext context)
         {
-            StaffResponse response = new StaffResponse
-            {
-                Status = new BaseResponse
-                {
-                    Code = Code.Success,
-                    ErrorMessage = string.Empty
-                }
-            };
+            StaffResponse response = new()
+			{
+				Status = new BaseResponse { Code = Code.Success, ErrorMessage = string.Empty }
+			};
 
             try
             {
@@ -398,28 +388,26 @@ namespace EMS.Core.API.Services
                     response.Data.Add(ToRpcModel(s));
                 }
 
-                LogData logData = new LogData
-                {
-
-                    CallSide = nameof(StaffService),
-                    CallerMethodName = nameof(GetByManagerId),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = response
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(StaffService),
+					CallerMethodName = nameof(GetByManagerId),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = response
+				};
                 _logger.AddLog(logData);
             }
             catch(Exception ex)
             {
-                LogData logData = new LogData
-                {
-
-                    CallSide = nameof(StaffService),
-                    CallerMethodName = nameof(GetByManagerId),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(StaffService),
+					CallerMethodName = nameof(GetByManagerId),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ex
+				};
                 _logger.AddErrorLog(logData);
                 response.Status.Code = Code.UnknownError;
                 response.Status.ErrorMessage = "An error occured while loading work periods data";
@@ -430,14 +418,10 @@ namespace EMS.Core.API.Services
 
         public override Task<StaffResponse> GetByPersonId(ByPersonIdRequest request, ServerCallContext context)
         {
-            StaffResponse response = new StaffResponse
-            {
-                Status = new BaseResponse
-                {
-                    Code = Code.Success,
-                    ErrorMessage = string.Empty
-                }
-            };
+            StaffResponse response = new()
+			{
+				Status = new BaseResponse { Code = Code.Success, ErrorMessage = string.Empty }
+			};
 
             try
             {
@@ -448,28 +432,26 @@ namespace EMS.Core.API.Services
                     response.Data.Add(ToRpcModel(s));
                 }
 
-                LogData logData = new LogData
-                {
-
-                    CallSide = nameof(StaffService),
-                    CallerMethodName = nameof(GetByPersonId),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = response
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(StaffService),
+					CallerMethodName = nameof(GetByPersonId),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = response
+				};
                 _logger.AddLog(logData);
             }
             catch (Exception ex)
             {
-                LogData logData = new LogData
-                {
-
-                    CallSide = nameof(StaffService),
-                    CallerMethodName = nameof(GetByPersonId),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(StaffService),
+					CallerMethodName = nameof(GetByPersonId),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ex
+				};
                 _logger.AddErrorLog(logData);
                 response.Status.Code = Code.UnknownError;
                 response.Status.ErrorMessage = "An error occured while loading work periods data";

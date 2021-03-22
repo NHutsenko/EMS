@@ -43,34 +43,34 @@ namespace EMS.Core.API.Services
                     throw new Exception("Motivation modificator has not been saved");
                 }
 
-                BaseResponse response = new BaseResponse
+                BaseResponse response = new()
                 {
                     Code = Code.Success,
                     DataId = motivationModificator.Id,
                     ErrorMessage = string.Empty
                 };
 
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(MotivationModificatorsService),
-                    CallerMethodName = nameof(AddAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = response
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(MotivationModificatorsService),
+					CallerMethodName = nameof(AddAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = response
+				};
                 _logger.AddLog(logData);
                 return response;
             }
             catch(NullReferenceException nrex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(MotivationModificatorsService),
-                    CallerMethodName = nameof(AddAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = nrex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(MotivationModificatorsService),
+					CallerMethodName = nameof(AddAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = nrex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -80,14 +80,14 @@ namespace EMS.Core.API.Services
             }
             catch(ArgumentException aex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(MotivationModificatorsService),
-                    CallerMethodName = nameof(AddAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = aex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(MotivationModificatorsService),
+					CallerMethodName = nameof(AddAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = aex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -97,14 +97,14 @@ namespace EMS.Core.API.Services
             }
             catch(InvalidOperationException ioex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(MotivationModificatorsService),
-                    CallerMethodName = nameof(AddAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ioex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(MotivationModificatorsService),
+					CallerMethodName = nameof(AddAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ioex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -114,14 +114,14 @@ namespace EMS.Core.API.Services
             }
             catch(DbUpdateException duex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(MotivationModificatorsService),
-                    CallerMethodName = nameof(AddAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = duex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(MotivationModificatorsService),
+					CallerMethodName = nameof(AddAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = duex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -131,14 +131,14 @@ namespace EMS.Core.API.Services
             }
             catch(Exception ex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(MotivationModificatorsService),
-                    CallerMethodName = nameof(AddAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(MotivationModificatorsService),
+					CallerMethodName = nameof(AddAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -162,34 +162,34 @@ namespace EMS.Core.API.Services
                     throw new Exception("Motivation modificator has not been updated");
                 }
 
-                BaseResponse response = new BaseResponse
-                {
-                    Code = Code.Success,
-                    DataId = motivationModificator.Id,
-                    ErrorMessage = string.Empty
-                };
+                BaseResponse response = new()
+				{
+					Code = Code.Success,
+					DataId = motivationModificator.Id,
+					ErrorMessage = string.Empty
+				};
 
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(MotivationModificatorsService),
-                    CallerMethodName = nameof(UpdateAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = response
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(MotivationModificatorsService),
+					CallerMethodName = nameof(UpdateAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = response
+				};
                 _logger.AddLog(logData);
                 return response;
             }
             catch (NullReferenceException nrex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(MotivationModificatorsService),
-                    CallerMethodName = nameof(UpdateAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = nrex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(MotivationModificatorsService),
+					CallerMethodName = nameof(UpdateAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = nrex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -199,14 +199,14 @@ namespace EMS.Core.API.Services
             }
             catch (ArgumentException aex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(MotivationModificatorsService),
-                    CallerMethodName = nameof(UpdateAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = aex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(MotivationModificatorsService),
+					CallerMethodName = nameof(UpdateAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = aex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -216,14 +216,14 @@ namespace EMS.Core.API.Services
             }
             catch (DbUpdateException duex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(MotivationModificatorsService),
-                    CallerMethodName = nameof(UpdateAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = duex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(MotivationModificatorsService),
+					CallerMethodName = nameof(UpdateAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = duex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -233,14 +233,14 @@ namespace EMS.Core.API.Services
             }
             catch (Exception ex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(MotivationModificatorsService),
-                    CallerMethodName = nameof(UpdateAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(MotivationModificatorsService),
+					CallerMethodName = nameof(UpdateAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -252,39 +252,35 @@ namespace EMS.Core.API.Services
 
         public override Task<MotivationModificatorResponse> GetByStaffId(ByStaffIdRequest request, ServerCallContext context)
         {
-            MotivationModificatorResponse response = new MotivationModificatorResponse
-            {
-                Status = new BaseResponse
-                {
-                    Code = Code.Success,
-                    ErrorMessage = string.Empty
-                }
-            };
+            MotivationModificatorResponse response = new()
+			{
+				Status = new BaseResponse { Code = Code.Success, ErrorMessage = string.Empty }
+			};
             try
             { 
                 MotivationModificator motivationModificator = _motivationModificatorRepository.GetByStaffId(request.StaffId);
                 response.Data = motivationModificator is null ? null: ToRpcModel(motivationModificator);
 
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(MotivationModificatorsService),
-                    CallerMethodName = nameof(GetByStaffId),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = response
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(MotivationModificatorsService),
+					CallerMethodName = nameof(GetByStaffId),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = response
+				};
                 _logger.AddLog(logData);
             }
             catch(Exception ex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(MotivationModificatorsService),
-                    CallerMethodName = nameof(GetByStaffId),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(MotivationModificatorsService),
+					CallerMethodName = nameof(GetByStaffId),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ex
+				};
                 _logger.AddErrorLog(logData);
                 response.Status.Code = Code.UnknownError;
                 response.Status.ErrorMessage = "An error occured while loading motivation modificator data";

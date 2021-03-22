@@ -65,16 +65,12 @@ namespace EMS.Core.API.Tests.Services
         public void GetAll_should_return_all_entities_from_db()
         {
             // Arrange
-            StaffResponse expectedResponse = new StaffResponse
-            {
-                Status = new BaseResponse
-                {
-                    Code = Code.Success,
-                    ErrorMessage = string.Empty
-                }
-            };
+            StaffResponse expectedResponse = new()
+			{
+				Status = new BaseResponse { Code = Code.Success, ErrorMessage = string.Empty }
+			};
 
-            Empty request = new Empty();
+            Empty request = new();
 
             expectedResponse.Data.Add(new StaffData
             {
@@ -95,14 +91,14 @@ namespace EMS.Core.API.Tests.Services
                 PositionId = _staff2.PositionId
             });
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(StaffService),
-                CallerMethodName = nameof(_staffService.GetAll),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = expectedResponse
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(StaffService),
+				CallerMethodName = nameof(_staffService.GetAll),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = expectedResponse
+			};
 
             // Act
             StaffResponse actual = _staffService.GetAll(request, null).Result;
@@ -117,25 +113,21 @@ namespace EMS.Core.API.Tests.Services
         {
             // Arrange
             BaseMock.ShouldThrowException = true;
-            StaffResponse expectedResponse = new StaffResponse
-            {
-                Status = new BaseResponse
-                {
-                    Code = Code.UnknownError,
-                    ErrorMessage = "An error occured while loading work periods data"
-                }
-            };
+            StaffResponse expectedResponse = new()
+			{
+				Status = new BaseResponse { Code = Code.UnknownError, ErrorMessage = "An error occured while loading work periods data" }
+			};
 
-            Empty request = new Empty();
+            Empty request = new();
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(StaffService),
-                CallerMethodName = nameof(_staffService.GetAll),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = new Exception("Test exception")
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(StaffService),
+				CallerMethodName = nameof(_staffService.GetAll),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = new Exception("Test exception")
+			};
 
             // Act
             StaffResponse actual = _staffService.GetAll(request, null).Result;
@@ -149,19 +141,15 @@ namespace EMS.Core.API.Tests.Services
         public void GetByPersonId_should_return_all_entities_from_db_by_specified_person()
         {
             // Arrange
-            StaffResponse expectedResponse = new StaffResponse
-            {
-                Status = new BaseResponse
-                {
-                    Code = Code.Success,
-                    ErrorMessage = string.Empty
-                }
-            };
+            StaffResponse expectedResponse = new()
+			{
+				Status = new BaseResponse { Code = Code.Success, ErrorMessage = string.Empty }
+			};
 
-            ByPersonIdRequest request = new ByPersonIdRequest
-            {
-                PersonId = _staff1.PersonId.GetValueOrDefault()
-            };
+            ByPersonIdRequest request = new()
+			{
+				PersonId = _staff1.PersonId.GetValueOrDefault()
+			};
 
             expectedResponse.Data.Add(new StaffData
             {
@@ -173,14 +161,14 @@ namespace EMS.Core.API.Tests.Services
                 PositionId = _staff1.PositionId
             });
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(StaffService),
-                CallerMethodName = nameof(_staffService.GetByPersonId),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = expectedResponse
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(StaffService),
+				CallerMethodName = nameof(_staffService.GetByPersonId),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = expectedResponse
+			};
 
             // Act
             StaffResponse actual = _staffService.GetByPersonId(request, null).Result;
@@ -195,28 +183,24 @@ namespace EMS.Core.API.Tests.Services
         {
             // Arrange
             BaseMock.ShouldThrowException = true;
-            StaffResponse expectedResponse = new StaffResponse
-            {
-                Status = new BaseResponse
-                {
-                    Code = Code.UnknownError,
-                    ErrorMessage = "An error occured while loading work periods data"
-                }
-            };
+            StaffResponse expectedResponse = new()
+			{
+				Status = new BaseResponse { Code = Code.UnknownError, ErrorMessage = "An error occured while loading work periods data" }
+			};
 
-            ByPersonIdRequest request = new ByPersonIdRequest
-            {
-                PersonId = _staff1.PersonId.GetValueOrDefault()
-            };
+            ByPersonIdRequest request = new()
+			{
+				PersonId = _staff1.PersonId.GetValueOrDefault()
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(StaffService),
-                CallerMethodName = nameof(_staffService.GetByPersonId),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = new Exception("Test exception")
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(StaffService),
+				CallerMethodName = nameof(_staffService.GetByPersonId),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = new Exception("Test exception")
+			};
 
             // Act
             StaffResponse actual = _staffService.GetByPersonId(request, null).Result;
@@ -230,19 +214,15 @@ namespace EMS.Core.API.Tests.Services
         public void GetByManagerId_should_return_all_entities_from_db_by_specified_manager()
         {
             // Arrange
-            StaffResponse expectedResponse = new StaffResponse
-            {
-                Status = new BaseResponse
-                {
-                    Code = Code.Success,
-                    ErrorMessage = string.Empty
-                }
-            };
+            StaffResponse expectedResponse = new()
+			{
+				Status = new BaseResponse { Code = Code.Success, ErrorMessage = string.Empty }
+			};
 
-            ByPersonIdRequest request = new ByPersonIdRequest
-            {
-                PersonId = _staff2.ManagerId
-            };
+            ByPersonIdRequest request = new()
+			{
+				PersonId = _staff2.ManagerId
+			};
 
             expectedResponse.Data.Add(new StaffData
             {
@@ -254,14 +234,14 @@ namespace EMS.Core.API.Tests.Services
                 PositionId = _staff2.PositionId
             });
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(StaffService),
-                CallerMethodName = nameof(_staffService.GetByManagerId),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = expectedResponse
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(StaffService),
+				CallerMethodName = nameof(_staffService.GetByManagerId),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = expectedResponse
+			};
 
             // Act
             StaffResponse actual = _staffService.GetByManagerId(request, null).Result;
@@ -276,28 +256,24 @@ namespace EMS.Core.API.Tests.Services
         {
             // Arrange
             BaseMock.ShouldThrowException = true;
-            StaffResponse expectedResponse = new StaffResponse
-            {
-                Status = new BaseResponse
-                {
-                    Code = Code.UnknownError,
-                    ErrorMessage = "An error occured while loading work periods data"
-                }
-            };
+            StaffResponse expectedResponse = new()
+			{
+				Status = new BaseResponse { Code = Code.UnknownError, ErrorMessage = "An error occured while loading work periods data" }
+			};
 
-            ByPersonIdRequest request = new ByPersonIdRequest
-            {
-                PersonId = _staff2.ManagerId
-            };
+            ByPersonIdRequest request = new()
+			{
+				PersonId = _staff2.ManagerId
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(StaffService),
-                CallerMethodName = nameof(_staffService.GetByManagerId),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = new Exception("Test exception")
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(StaffService),
+				CallerMethodName = nameof(_staffService.GetByManagerId),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = new Exception("Test exception")
+			};
 
             // Act
             StaffResponse actual = _staffService.GetByManagerId(request, null).Result;
@@ -311,29 +287,29 @@ namespace EMS.Core.API.Tests.Services
         public void AddAsync_should_add_new_staff_to_db()
         {
             // Arrange
-            StaffData request = new StaffData
-            {
-                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().AddMonths(1)),
-                ManagerId = _staff1.ManagerId,
-                PersonId = 0,
-                PositionId = _staff2.PositionId
-            };
+            StaffData request = new()
+			{
+				CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().AddMonths(1)),
+				ManagerId = _staff1.ManagerId,
+				PersonId = 0,
+				PositionId = _staff2.PositionId
+			};
 
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.Success,
-                DataId = 3,
-                ErrorMessage = string.Empty
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.Success,
+				DataId = 3,
+				ErrorMessage = string.Empty
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(StaffService),
-                CallerMethodName = nameof(_staffService.AddAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = expectedResponse
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(StaffService),
+				CallerMethodName = nameof(_staffService.AddAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = expectedResponse
+			};
 
             // Act
             BaseResponse actual = _staffService.AddAsync(request, null).Result;
@@ -347,20 +323,20 @@ namespace EMS.Core.API.Tests.Services
         public void AddAsync_should_handle_null_reference_exception()
         {
             // Arrange
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.DataError,
-                ErrorMessage = "Staff entity cannot be empty"
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.DataError,
+				ErrorMessage = "Staff entity cannot be empty"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(StaffService),
-                CallerMethodName = nameof(_staffService.AddAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = null,
-                Response = new Exception(expectedResponse.ErrorMessage)
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(StaffService),
+				CallerMethodName = nameof(_staffService.AddAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = null,
+				Response = new Exception(expectedResponse.ErrorMessage)
+			};
 
             // Act
             BaseResponse actual = _staffService.AddAsync(null, null).Result;
@@ -374,28 +350,28 @@ namespace EMS.Core.API.Tests.Services
         public void AddAsync_should_handle_argument_exception()
         {
             // Arrange
-            StaffData request = new StaffData
-            {
-                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().AddMonths(-1)),
-                ManagerId = _staff1.ManagerId,
-                PersonId = _staff1.PersonId.GetValueOrDefault(),
-                PositionId = _staff2.PositionId
-            };
+            StaffData request = new()
+			{
+				CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().AddMonths(-1)),
+				ManagerId = _staff1.ManagerId,
+				PersonId = _staff1.PersonId.GetValueOrDefault(),
+				PositionId = _staff2.PositionId
+			};
 
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.DataError,
-                ErrorMessage = "Cannot add new staff record into existing work period"
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.DataError,
+				ErrorMessage = "Cannot add new staff record into existing work period"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(StaffService),
-                CallerMethodName = nameof(_staffService.AddAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = new Exception(expectedResponse.ErrorMessage)
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(StaffService),
+				CallerMethodName = nameof(_staffService.AddAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = new Exception(expectedResponse.ErrorMessage)
+			};
 
             // Act
             BaseResponse actual = _staffService.AddAsync(request, null).Result;
@@ -410,28 +386,28 @@ namespace EMS.Core.API.Tests.Services
         {
             // Arrange
             DbContextMock.ShouldThrowException = true;
-            StaffData request = new StaffData
-            {
-                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().AddMonths(1)),
-                ManagerId = _staff1.ManagerId,
-                PersonId = _staff1.PersonId.GetValueOrDefault(),
-                PositionId = _staff2.PositionId
-            };
+            StaffData request = new()
+			{
+				CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().AddMonths(1)),
+				ManagerId = _staff1.ManagerId,
+				PersonId = _staff1.PersonId.GetValueOrDefault(),
+				PositionId = _staff2.PositionId
+			};
 
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.DbError,
-                ErrorMessage = "An error occured while saving staff data"
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.DbError,
+				ErrorMessage = "An error occured while saving staff data"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(StaffService),
-                CallerMethodName = nameof(_staffService.AddAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = new Exception("DbContext test Exception")
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(StaffService),
+				CallerMethodName = nameof(_staffService.AddAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = new Exception("DbContext test Exception")
+			};
 
             // Act
             BaseResponse actual = _staffService.AddAsync(request, null).Result;
@@ -446,28 +422,28 @@ namespace EMS.Core.API.Tests.Services
         {
             // Arrange
             DbContextMock.SaveChangesResult = 0;
-            StaffData request = new StaffData
-            {
-                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().AddMonths(1)),
-                ManagerId = _staff1.ManagerId,
-                PersonId = _staff1.PersonId.GetValueOrDefault(),
-                PositionId = _staff2.PositionId
-            };
+            StaffData request = new()
+			{
+				CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().AddMonths(1)),
+				ManagerId = _staff1.ManagerId,
+				PersonId = _staff1.PersonId.GetValueOrDefault(),
+				PositionId = _staff2.PositionId
+			};
 
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.UnknownError,
-                ErrorMessage = "Staff has not been saved"
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.UnknownError,
+				ErrorMessage = "Staff has not been saved"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(StaffService),
-                CallerMethodName = nameof(_staffService.AddAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = new Exception(expectedResponse.ErrorMessage)
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(StaffService),
+				CallerMethodName = nameof(_staffService.AddAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = new Exception(expectedResponse.ErrorMessage)
+			};
 
             // Act
             BaseResponse actual = _staffService.AddAsync(request, null).Result;
@@ -481,31 +457,31 @@ namespace EMS.Core.API.Tests.Services
         public void UpdateAsync_should_add_new_staff_to_db()
         {
             // Arrange
-            StaffData request = new StaffData
-            {
-                Id = _staff1.Id,
-                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().AddMonths(1)),
-                ManagerId = _staff1.ManagerId,
-                PersonId = _staff1.PersonId.GetValueOrDefault(),
-                PositionId = _staff2.PositionId,
-                MotivationModificatorId = 1
-            };
+            StaffData request = new()
+			{
+				Id = _staff1.Id,
+				CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().AddMonths(1)),
+				ManagerId = _staff1.ManagerId,
+				PersonId = _staff1.PersonId.GetValueOrDefault(),
+				PositionId = _staff2.PositionId,
+				MotivationModificatorId = 1
+			};
 
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.Success,
-                DataId = _staff1.Id,
-                ErrorMessage = string.Empty
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.Success,
+				DataId = _staff1.Id,
+				ErrorMessage = string.Empty
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(StaffService),
-                CallerMethodName = nameof(_staffService.UpdateAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = expectedResponse
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(StaffService),
+				CallerMethodName = nameof(_staffService.UpdateAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = expectedResponse
+			};
 
             // Act
             BaseResponse actual = _staffService.UpdateAsync(request, null).Result;
@@ -519,20 +495,20 @@ namespace EMS.Core.API.Tests.Services
         public void UpdateAsync_should_handle_null_reference_exception()
         {
             // Arrange
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.DataError,
-                ErrorMessage = "Staff entity cannot be empty"
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.DataError,
+				ErrorMessage = "Staff entity cannot be empty"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(StaffService),
-                CallerMethodName = nameof(_staffService.UpdateAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = null,
-                Response = new Exception(expectedResponse.ErrorMessage)
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(StaffService),
+				CallerMethodName = nameof(_staffService.UpdateAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = null,
+				Response = new Exception(expectedResponse.ErrorMessage)
+			};
 
             // Act
             BaseResponse actual = _staffService.UpdateAsync(null, null).Result;
@@ -546,37 +522,37 @@ namespace EMS.Core.API.Tests.Services
         public void UpdateAsync_should_handle_argument_exception()
         {
             // Arrange
-            Staff staff = new Staff
-            {
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                PersonId = _staff1.PersonId,
-                ManagerId = _staff1.ManagerId,
-                Id = 3
-            };
+            Staff staff = new()
+			{
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				PersonId = _staff1.PersonId,
+				ManagerId = _staff1.ManagerId,
+				Id = 3
+			};
             _dbContext.Staff.Add(staff);
-            StaffData request = new StaffData
-            {
-                Id = _staff1.Id,
-                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().AddMonths(-1)),
-                ManagerId = _staff1.ManagerId,
-                PersonId = _staff1.PersonId.GetValueOrDefault(),
-                PositionId = _staff2.PositionId
-            };
+            StaffData request = new()
+			{
+				Id = _staff1.Id,
+				CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().AddMonths(-1)),
+				ManagerId = _staff1.ManagerId,
+				PersonId = _staff1.PersonId.GetValueOrDefault(),
+				PositionId = _staff2.PositionId
+			};
 
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.DataError,
-                ErrorMessage = "Cannot update existing staff record into existing work period"
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.DataError,
+				ErrorMessage = "Cannot update existing staff record into existing work period"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(StaffService),
-                CallerMethodName = nameof(_staffService.UpdateAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = new Exception(expectedResponse.ErrorMessage)
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(StaffService),
+				CallerMethodName = nameof(_staffService.UpdateAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = new Exception(expectedResponse.ErrorMessage)
+			};
 
             // Act
             BaseResponse actual = _staffService.UpdateAsync(request, null).Result;
@@ -591,29 +567,29 @@ namespace EMS.Core.API.Tests.Services
         {
             // Arrange
             DbContextMock.ShouldThrowException = true;
-            StaffData request = new StaffData
-            {
-                Id = _staff1.Id,
-                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().AddMonths(1)),
-                ManagerId = _staff1.ManagerId,
-                PersonId = _staff1.PersonId.GetValueOrDefault(),
-                PositionId = _staff2.PositionId
-            };
+            StaffData request = new()
+			{
+				Id = _staff1.Id,
+				CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().AddMonths(1)),
+				ManagerId = _staff1.ManagerId,
+				PersonId = _staff1.PersonId.GetValueOrDefault(),
+				PositionId = _staff2.PositionId
+			};
 
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.DbError,
-                ErrorMessage = "An error occured while updating staff"
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.DbError,
+				ErrorMessage = "An error occured while updating staff"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(StaffService),
-                CallerMethodName = nameof(_staffService.UpdateAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = new Exception("DbContext test Exception")
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(StaffService),
+				CallerMethodName = nameof(_staffService.UpdateAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = new Exception("DbContext test Exception")
+			};
 
             // Act
             BaseResponse actual = _staffService.UpdateAsync(request, null).Result;
@@ -628,29 +604,29 @@ namespace EMS.Core.API.Tests.Services
         {
             // Arrange
             DbContextMock.SaveChangesResult = 0;
-            StaffData request = new StaffData
-            {
-                Id = _staff1.Id,
-                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().AddMonths(1)),
-                ManagerId = _staff1.ManagerId,
-                PersonId = _staff1.PersonId.GetValueOrDefault(),
-                PositionId = _staff2.PositionId
-            };
+            StaffData request = new()
+			{
+				Id = _staff1.Id,
+				CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().AddMonths(1)),
+				ManagerId = _staff1.ManagerId,
+				PersonId = _staff1.PersonId.GetValueOrDefault(),
+				PositionId = _staff2.PositionId
+			};
 
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.UnknownError,
-                ErrorMessage = "Staff has not been updated"
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.UnknownError,
+				ErrorMessage = "Staff has not been updated"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(StaffService),
-                CallerMethodName = nameof(_staffService.UpdateAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = new Exception(expectedResponse.ErrorMessage)
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(StaffService),
+				CallerMethodName = nameof(_staffService.UpdateAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = new Exception(expectedResponse.ErrorMessage)
+			};
 
             // Act
             BaseResponse actual = _staffService.UpdateAsync(request, null).Result;
@@ -667,30 +643,30 @@ namespace EMS.Core.API.Tests.Services
             _staff1.CreatedOn = _staff1.CreatedOn.AddDays(10);
             _dbContext.Staff.Update(_staff1);
 
-            StaffData request = new StaffData
-            {
-                Id = _staff1.Id,
-                CreatedOn = Timestamp.FromDateTime(_staff1.CreatedOn),
-                ManagerId = _staff1.ManagerId,
-                PersonId = _staff1.PersonId.GetValueOrDefault(),
-                PositionId = _staff1.PositionId
-            };
+            StaffData request = new()
+			{
+				Id = _staff1.Id,
+				CreatedOn = Timestamp.FromDateTime(_staff1.CreatedOn),
+				ManagerId = _staff1.ManagerId,
+				PersonId = _staff1.PersonId.GetValueOrDefault(),
+				PositionId = _staff1.PositionId
+			};
 
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.Success,
-                DataId = _staff1.Id,
-                ErrorMessage = string.Empty
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.Success,
+				DataId = _staff1.Id,
+				ErrorMessage = string.Empty
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(StaffService),
-                CallerMethodName = nameof(_staffService.DeleteAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = expectedResponse
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(StaffService),
+				CallerMethodName = nameof(_staffService.DeleteAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = expectedResponse
+			};
 
             // Act
             BaseResponse actual = _staffService.DeleteAsync(request, null).Result;
@@ -704,20 +680,20 @@ namespace EMS.Core.API.Tests.Services
         public void DeleteAsync_should_handle_null_reference_exception()
         {
             // Arrange
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.DataError,
-                ErrorMessage = "Staff data cannot be empty"
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.DataError,
+				ErrorMessage = "Staff data cannot be empty"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(StaffService),
-                CallerMethodName = nameof(_staffService.DeleteAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = null,
-                Response = new Exception(expectedResponse.ErrorMessage)
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(StaffService),
+				CallerMethodName = nameof(_staffService.DeleteAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = null,
+				Response = new Exception(expectedResponse.ErrorMessage)
+			};
 
             // Act
             BaseResponse actual = _staffService.DeleteAsync(null, null).Result;
@@ -734,29 +710,29 @@ namespace EMS.Core.API.Tests.Services
             _staff1.CreatedOn = _staff1.CreatedOn.AddDays(-15);
             _dbContext.Staff.Update(_staff1);
 
-            StaffData request = new StaffData
-            {
-                Id = _staff1.Id,
-                CreatedOn = Timestamp.FromDateTime(_staff1.CreatedOn),
-                ManagerId = _staff1.ManagerId,
-                PersonId = _staff1.PersonId.GetValueOrDefault(),
-                PositionId = _staff1.PositionId
-            };
+            StaffData request = new()
+			{
+				Id = _staff1.Id,
+				CreatedOn = Timestamp.FromDateTime(_staff1.CreatedOn),
+				ManagerId = _staff1.ManagerId,
+				PersonId = _staff1.PersonId.GetValueOrDefault(),
+				PositionId = _staff1.PositionId
+			};
 
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.DataError,
-                ErrorMessage = "Cannot delete history record"
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.DataError,
+				ErrorMessage = "Cannot delete history record"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(StaffService),
-                CallerMethodName = nameof(_staffService.DeleteAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = new Exception(expectedResponse.ErrorMessage)
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(StaffService),
+				CallerMethodName = nameof(_staffService.DeleteAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = new Exception(expectedResponse.ErrorMessage)
+			};
 
             // Act
             BaseResponse actual = _staffService.DeleteAsync(request, null).Result;
@@ -774,29 +750,29 @@ namespace EMS.Core.API.Tests.Services
             _staff1.CreatedOn = _staff1.CreatedOn.AddDays(10);
             _dbContext.Staff.Update(_staff1);
 
-            StaffData request = new StaffData
-            {
-                Id = _staff1.Id,
-                CreatedOn = Timestamp.FromDateTime(_staff1.CreatedOn),
-                ManagerId = _staff1.ManagerId,
-                PersonId = _staff1.PersonId.GetValueOrDefault(),
-                PositionId = _staff1.PositionId
-            };
+            StaffData request = new()
+			{
+				Id = _staff1.Id,
+				CreatedOn = Timestamp.FromDateTime(_staff1.CreatedOn),
+				ManagerId = _staff1.ManagerId,
+				PersonId = _staff1.PersonId.GetValueOrDefault(),
+				PositionId = _staff1.PositionId
+			};
 
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.DbError,
-                ErrorMessage = "An error occured while deleting staff"
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.DbError,
+				ErrorMessage = "An error occured while deleting staff"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(StaffService),
-                CallerMethodName = nameof(_staffService.DeleteAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = new Exception("DbContext test Exception")
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(StaffService),
+				CallerMethodName = nameof(_staffService.DeleteAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = new Exception("DbContext test Exception")
+			};
 
             // Act
             BaseResponse actual = _staffService.DeleteAsync(request, null).Result;
@@ -814,29 +790,29 @@ namespace EMS.Core.API.Tests.Services
             _staff1.CreatedOn = _staff1.CreatedOn.AddDays(10);
             _dbContext.Staff.Update(_staff1);
 
-            StaffData request = new StaffData
-            {
-                Id = _staff1.Id,
-                CreatedOn = Timestamp.FromDateTime(_staff1.CreatedOn),
-                ManagerId = _staff1.ManagerId,
-                PersonId = _staff1.PersonId.GetValueOrDefault(),
-                PositionId = _staff1.PositionId
-            };
+            StaffData request = new()
+			{
+				Id = _staff1.Id,
+				CreatedOn = Timestamp.FromDateTime(_staff1.CreatedOn),
+				ManagerId = _staff1.ManagerId,
+				PersonId = _staff1.PersonId.GetValueOrDefault(),
+				PositionId = _staff1.PositionId
+			};
 
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.UnknownError,
-                ErrorMessage = "Staff has not been deleted"
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.UnknownError,
+				ErrorMessage = "Staff has not been deleted"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(StaffService),
-                CallerMethodName = nameof(_staffService.DeleteAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = new Exception(expectedResponse.ErrorMessage)
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(StaffService),
+				CallerMethodName = nameof(_staffService.DeleteAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = new Exception(expectedResponse.ErrorMessage)
+			};
 
             // Act
             BaseResponse actual = _staffService.DeleteAsync(request, null).Result;

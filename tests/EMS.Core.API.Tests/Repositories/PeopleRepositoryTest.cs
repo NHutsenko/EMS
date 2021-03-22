@@ -119,17 +119,17 @@ namespace EMS.Core.API.Tests.Repositories
         public void GetById_should_return_person_info_with_actual_photo_and_contacts()
         {
             // Arrange
-            Person expected = new Person
-            {
-                Id = _person1.Id,
-                CreatedOn = _person1.CreatedOn,
-                BornedOn = _person1.BornedOn,
-                Name = _person1.Name,
-                LastName = _person1.LastName,
-                SecondName = _person1.SecondName,
-                Contacts = new List<Contact> { _contact2, _contact3 },
-                Photos = new List<PersonPhoto> { _photo2 }
-            };
+            Person expected = new()
+			{
+				Id = _person1.Id,
+				CreatedOn = _person1.CreatedOn,
+				BornedOn = _person1.BornedOn,
+				Name = _person1.Name,
+				LastName = _person1.LastName,
+				SecondName = _person1.SecondName,
+				Contacts = new List<Contact> { _contact2, _contact3 },
+				Photos = new List<PersonPhoto> { _photo2 }
+			};
 
 
             // Act
@@ -143,13 +143,13 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddAsync_should_add_person_data_to_db()
         {
             // Arrange
-            Person person = new Person
-            {
-                BornedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Name = "Test",
-                LastName = "Test",
-                SecondName = "Test"
-            };
+            Person person = new()
+			{
+				BornedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Name = "Test",
+				LastName = "Test",
+				SecondName = "Test"
+			};
 
             // Act
             int result = _peopleRepository.AddAsync(person).Result;
@@ -165,13 +165,13 @@ namespace EMS.Core.API.Tests.Repositories
         {
             // Arrange
             DbContextMock.ShouldThrowException = true;
-            Person person = new Person
-            {
-                BornedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Name = "Test",
-                LastName = "Test",
-                SecondName = "Test"
-            };
+            Person person = new()
+			{
+				BornedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Name = "Test",
+				LastName = "Test",
+				SecondName = "Test"
+			};
 
             // Assert
             Assert.ThrowsAsync<DbUpdateException>(() => _peopleRepository.AddAsync(person), "Exception from db throws as expected");
@@ -190,11 +190,11 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddAsync_should_throw_exception_because_last_name_is_invalid()
         {
             // Arrange
-            Person person = new Person
-            {
-                BornedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Name = "Test"
-            };
+            Person person = new()
+			{
+				BornedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Name = "Test"
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _peopleRepository.AddAsync(person), "Exception throws as expected");
@@ -205,11 +205,11 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddAsync_should_throw_exception_because_name_is_invalid()
         {
             // Arrange
-            Person person = new Person
-            {
-                BornedOn = _dateTimeUtil.GetCurrentDateTime(),
-                LastName = "Test"
-            };
+            Person person = new()
+			{
+				BornedOn = _dateTimeUtil.GetCurrentDateTime(),
+				LastName = "Test"
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _peopleRepository.AddAsync(person), "Exception throws as expected");
@@ -220,13 +220,13 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddAsync_should_throw_exception_because_born_date_is_invalid()
         {
             // Arrange
-            Person person = new Person
-            {
-                BornedOn = DateTime.MinValue,
-                LastName = "Test",
-                Name = "Test",
-                SecondName = "Test"
-            };
+            Person person = new()
+			{
+				BornedOn = DateTime.MinValue,
+				LastName = "Test",
+				Name = "Test",
+				SecondName = "Test"
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _peopleRepository.AddAsync(person), "Exception throws as expected");
@@ -237,14 +237,14 @@ namespace EMS.Core.API.Tests.Repositories
         public void Update_should_update_person_data_to_db()
         {
             // Arrange
-            Person person = new Person
-            {
-                BornedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Name = "Test",
-                LastName = "Test",
-                SecondName = "Test",
-                Id = 1
-            };
+            Person person = new()
+			{
+				BornedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Name = "Test",
+				LastName = "Test",
+				SecondName = "Test",
+				Id = 1
+			};
 
             // Act
             int result = _peopleRepository.UpdateAsync(person).Result;
@@ -259,14 +259,14 @@ namespace EMS.Core.API.Tests.Repositories
         {
             // Arrange
             DbContextMock.ShouldThrowException = true;
-            Person person = new Person
-            {
-                BornedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Name = "Test",
-                LastName = "Test",
-                SecondName = "Test",
-                Id = 1
-            };
+            Person person = new()
+			{
+				BornedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Name = "Test",
+				LastName = "Test",
+				SecondName = "Test",
+				Id = 1
+			};
 
             // Assert
             Assert.ThrowsAsync<DbUpdateException>(() => _peopleRepository.UpdateAsync(person), "Exception from db throws as expected");
@@ -285,11 +285,11 @@ namespace EMS.Core.API.Tests.Repositories
         public void UpdateAsync_should_throw_exception_because_last_name_is_invalid()
         {
             // Arrange
-            Person person = new Person
-            {
-                BornedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Name = "Test"
-            };
+            Person person = new()
+			{
+				BornedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Name = "Test"
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _peopleRepository.UpdateAsync(person), "Exception throws as expected");
@@ -300,11 +300,11 @@ namespace EMS.Core.API.Tests.Repositories
         public void UpdateAsync_should_throw_exception_because_name_is_invalid()
         {
             // Arrange
-            Person person = new Person
-            {
-                BornedOn = _dateTimeUtil.GetCurrentDateTime(),
-                LastName = "Test"
-            };
+            Person person = new()
+			{
+				BornedOn = _dateTimeUtil.GetCurrentDateTime(),
+				LastName = "Test"
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _peopleRepository.UpdateAsync(person), "Exception throws as expected");
@@ -316,13 +316,13 @@ namespace EMS.Core.API.Tests.Repositories
         {
             // Arrange
             DbContextMock.ShouldThrowException = true;
-            Person person = new Person
-            {
-                BornedOn = DateTime.MinValue,
-                LastName = "Test",
-                Name = "Test",
-                SecondName = "Test"
-            };
+            Person person = new()
+			{
+				BornedOn = DateTime.MinValue,
+				LastName = "Test",
+				Name = "Test",
+				SecondName = "Test"
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _peopleRepository.UpdateAsync(person), "Exception throws as expected");
@@ -333,13 +333,13 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddContactAsync_should_add_contact_to_db()
         {
             // Arrange
-            Contact contact = new Contact
-            {
-                ContactType = ContactType.Messenger,
-                Name = "Telegram",
-                PersonId = _person1.Id,
-                Value = "test"
-            };
+            Contact contact = new()
+			{
+				ContactType = ContactType.Messenger,
+				Name = "Telegram",
+				PersonId = _person1.Id,
+				Value = "test"
+			};
 
             // Act
             int result = _peopleRepository.AddContactAsync(contact).Result;
@@ -363,13 +363,13 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddContactAsync_should_throws_expection_because_contact_value_is_empty()
         {
             // Arrange
-            Contact contact = new Contact
-            {
-                ContactType = ContactType.Messenger,
-                Name = "Telegram",
-                PersonId = _person1.Id,
-                Value = string.Empty
-            };
+            Contact contact = new()
+			{
+				ContactType = ContactType.Messenger,
+				Name = "Telegram",
+				PersonId = _person1.Id,
+				Value = string.Empty
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _peopleRepository.AddContactAsync(contact), "Exception throws as expected");
@@ -380,13 +380,13 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddContactAsync_should_throws_expection_because_person_id_bot_found_in_db()
         {
             // Arrange
-            Contact contact = new Contact
-            {
-                ContactType = ContactType.Messenger,
-                Name = "Telegram",
-                PersonId = 2,
-                Value = "Test"
-            };
+            Contact contact = new()
+			{
+				ContactType = ContactType.Messenger,
+				Name = "Telegram",
+				PersonId = 2,
+				Value = "Test"
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _peopleRepository.AddContactAsync(contact), "Exception throws as expected");
@@ -397,12 +397,12 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddPhotoAsync_should_add_photo_entity_to_db()
         {
             // Arrange
-            PersonPhoto personPhoto = new PersonPhoto
-            {
-                PersonId = _person1.Id,
-                Name = "1.jpg",
-                Base64 = "dGVzdCBmaWxlIG9uZQ=="
-            };
+            PersonPhoto personPhoto = new()
+			{
+				PersonId = _person1.Id,
+				Name = "1.jpg",
+				Base64 = "dGVzdCBmaWxlIG9uZQ=="
+			};
 
             // Act
             int result = _peopleRepository.AddPhotoAsync(personPhoto).Result;
@@ -425,12 +425,12 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddPhotoAsync_should_throws_exception_because_photo_name_is_empty()
         {
             // Arrange
-            PersonPhoto personPhoto = new PersonPhoto
-            {
-                PersonId = _person1.Id,
-                Name = string.Empty,
-                Base64 = "dGVzdCBmaWxlIG9uZQ=="
-            };
+            PersonPhoto personPhoto = new()
+			{
+				PersonId = _person1.Id,
+				Name = string.Empty,
+				Base64 = "dGVzdCBmaWxlIG9uZQ=="
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _peopleRepository.AddPhotoAsync(personPhoto), "exception throws as expected");
@@ -441,12 +441,12 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddPhotoAsync_should_throws_exception_because_person_id_not_found_in_db()
         {
             // Arrange
-            PersonPhoto personPhoto = new PersonPhoto
-            {
-                PersonId = 2,
-                Name = "Test.jpg",
-                Base64 = "dGVzdCBmaWxlIG9uZQ=="
-            };
+            PersonPhoto personPhoto = new()
+			{
+				PersonId = 2,
+				Name = "Test.jpg",
+				Base64 = "dGVzdCBmaWxlIG9uZQ=="
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _peopleRepository.AddPhotoAsync(personPhoto), "exception throws as expected");
@@ -457,12 +457,12 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddPhotoAsync_should_throws_exception_because_photo_extension_mime_type_is_wrong()
         {
             // Arrange
-            PersonPhoto personPhoto = new PersonPhoto
-            {
-                PersonId = _person1.Id,
-                Name = "1.tst",
-                Base64 = "dGVzdCBmaWxlIG9uZQ=="
-            };
+            PersonPhoto personPhoto = new()
+			{
+				PersonId = _person1.Id,
+				Name = "1.tst",
+				Base64 = "dGVzdCBmaWxlIG9uZQ=="
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _peopleRepository.AddPhotoAsync(personPhoto), "exception throws as expected");
@@ -473,12 +473,12 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddPhotoAsync_should_throws_exception_because_base64_is_invalid()
         {
             // Arrange
-            PersonPhoto personPhoto = new PersonPhoto
-            {
-                PersonId = _person1.Id,
-                Name = "1.txt",
-                Base64 = "test"
-            };
+            PersonPhoto personPhoto = new()
+			{
+				PersonId = _person1.Id,
+				Name = "1.txt",
+				Base64 = "test"
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _peopleRepository.AddPhotoAsync(personPhoto), "exception throws as expected");

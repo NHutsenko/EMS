@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using EMS.Common.Utils.DateTimeUtil;
 using EMS.Core.API.DAL;
 using EMS.Core.API.DAL.Repositories;
@@ -17,8 +13,8 @@ namespace EMS.Core.API.Tests.Mocks
     {
         public static Mock<OtherPaymentsRepository> SetupMock(IApplicationDbContext dbContext, IDateTimeUtil dateTimeUtil)
         {
-            Mock<OtherPaymentsRepository> mock = new Mock<OtherPaymentsRepository>(dbContext, dateTimeUtil);
-            OtherPaymentsRepository repository = new OtherPaymentsRepository(dbContext, dateTimeUtil);
+            Mock<OtherPaymentsRepository> mock = new(dbContext, dateTimeUtil);
+            OtherPaymentsRepository repository = new(dbContext, dateTimeUtil);
 
             mock.Setup(m => m.AddAsync(It.IsAny<OtherPayment>())).Returns<OtherPayment>((payment) =>
             {

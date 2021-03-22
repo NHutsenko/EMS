@@ -81,14 +81,10 @@ namespace EMS.Core.API.Tests.Services
         public void GetAll_should_return_people_from_db()
         {
             // Arrange
-            PeopleResponse expected = new PeopleResponse
-            {
-                Status = new BaseResponse
-                {
-                    Code = Code.Success,
-                    ErrorMessage = string.Empty
-                }
-            };
+            PeopleResponse expected = new()
+			{
+				Status = new BaseResponse { Code = Code.Success, ErrorMessage = string.Empty }
+			};
             _person1.Contacts = null;
             _person1.Photos = null;
             expected.Data.Add(new PersonData
@@ -111,14 +107,14 @@ namespace EMS.Core.API.Tests.Services
                 CreatedOn = Timestamp.FromDateTime(_person2.CreatedOn.ToUniversalTime()),
             });
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PeopleService),
-                CallerMethodName = nameof(_peopleService.GetAll),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = new Empty(),
-                Response = expected
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PeopleService),
+				CallerMethodName = nameof(_peopleService.GetAll),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = new Empty(),
+				Response = expected
+			};
 
             // Act
             PeopleResponse actual = _peopleService.GetAll(new Empty(), null).Result;
@@ -135,22 +131,18 @@ namespace EMS.Core.API.Tests.Services
         {
             // Arrange
             BaseMock.ShouldThrowException = true;
-            PeopleResponse expected = new PeopleResponse
-            {
-                Status = new BaseResponse
-                {
-                    Code = Code.UnknownError,
-                    ErrorMessage = "An error orccured while loading people data"
-                }
-            };
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PeopleService),
-                CallerMethodName = nameof(_peopleService.GetAll),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = new Empty(),
-                Response = new Exception("Test exception")
-            };
+            PeopleResponse expected = new()
+			{
+				Status = new BaseResponse { Code = Code.UnknownError, ErrorMessage = "An error orccured while loading people data" }
+			};
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PeopleService),
+				CallerMethodName = nameof(_peopleService.GetAll),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = new Empty(),
+				Response = new Exception("Test exception")
+			};
 
             // Act
             PeopleResponse actual = _peopleService.GetAll(new Empty(), null).Result;
@@ -166,23 +158,11 @@ namespace EMS.Core.API.Tests.Services
         public void GetById_should_return_person_by_specified_id()
         {
             // Arrange
-            PersonResponse expected = new PersonResponse
-            {
-                Status = new BaseResponse
-                {
-                    Code = Code.Success,
-                    ErrorMessage = string.Empty
-                },
-                Data = new PersonData
-                {
-                    Id = _person1.Id,
-                    LastName = _person1.LastName,
-                    Name = _person1.Name,
-                    SecondName = _person1.SecondName,
-                    BornedOn = Timestamp.FromDateTime(_person1.BornedOn.ToUniversalTime()),
-                    CreatedOn = Timestamp.FromDateTime(_person1.CreatedOn.ToUniversalTime()),
-                }
-            };
+            PersonResponse expected = new()
+			{
+				Status = new BaseResponse { Code = Code.Success, ErrorMessage = string.Empty },
+				Data = new PersonData { Id = _person1.Id, LastName = _person1.LastName, Name = _person1.Name, SecondName = _person1.SecondName, BornedOn = Timestamp.FromDateTime(_person1.BornedOn.ToUniversalTime()), CreatedOn = Timestamp.FromDateTime(_person1.CreatedOn.ToUniversalTime()) }
+			};
             expected.Data.Contacts.Add(new ContactData
             {
                 PersonId = _contact.PersonId,
@@ -198,16 +178,19 @@ namespace EMS.Core.API.Tests.Services
                 Name = _photo.Name
             });
 
-            PersonRequest request = new PersonRequest { Id = _person1.Id };
+            PersonRequest request = new()
+			{
+				Id = _person1.Id
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PeopleService),
-                CallerMethodName = nameof(_peopleService.GetById),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = expected
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PeopleService),
+				CallerMethodName = nameof(_peopleService.GetById),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = expected
+			};
 
             // Act
             PersonResponse actual = _peopleService.GetById(request, null).Result;
@@ -223,26 +206,25 @@ namespace EMS.Core.API.Tests.Services
         public void GetById_should_throw_null_reference_exception()
         {
             // Arrange
-            PersonResponse expected = new PersonResponse
-            {
-                Status = new BaseResponse
-                {
-                    Code = Code.DataError,
-                    ErrorMessage = "An error occured while loading person data"
-                },
-                Data = null
-            };
+            PersonResponse expected = new()
+			{
+				Status = new BaseResponse { Code = Code.DataError, ErrorMessage = "An error occured while loading person data" },
+				Data = null
+			};
 
-            PersonRequest request = new PersonRequest { Id = 3 };
+            PersonRequest request = new()
+			{
+				Id = 3
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PeopleService),
-                CallerMethodName = nameof(_peopleService.GetById),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = new Exception("Object reference not set to an instance of an object.")
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PeopleService),
+				CallerMethodName = nameof(_peopleService.GetById),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = new Exception("Object reference not set to an instance of an object.")
+			};
 
             // Act
             PersonResponse actual = _peopleService.GetById(request, null).Result;
@@ -259,26 +241,25 @@ namespace EMS.Core.API.Tests.Services
         {
             // Arrange
             BaseMock.ShouldThrowException = true;
-            PersonResponse expected = new PersonResponse
-            {
-                Status = new BaseResponse
-                {
-                    Code = Code.UnknownError,
-                    ErrorMessage = "An error occured while loading person data"
-                },
-                Data = null
-            };
+            PersonResponse expected = new()
+			{
+				Status = new BaseResponse { Code = Code.UnknownError, ErrorMessage = "An error occured while loading person data" },
+				Data = null
+			};
 
-            PersonRequest request = new PersonRequest { Id = _person1.Id };
+            PersonRequest request = new()
+			{
+				Id = _person1.Id
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PeopleService),
-                CallerMethodName = nameof(_peopleService.GetById),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = new Exception("Test exception")
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PeopleService),
+				CallerMethodName = nameof(_peopleService.GetById),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = new Exception("Test exception")
+			};
 
             // Act
             PersonResponse actual = _peopleService.GetById(request, null).Result;
@@ -294,30 +275,30 @@ namespace EMS.Core.API.Tests.Services
         public void AddAsync_should_Add_person_to_db()
         {
             // Arrange
-            PersonData person = new PersonData
-            {
-                Name = "Test",
-                LastName = "Test",
-                SecondName = "Test",
-                BornedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
-                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime())
-            };
+            PersonData person = new()
+			{
+				Name = "Test",
+				LastName = "Test",
+				SecondName = "Test",
+				BornedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
+				CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime())
+			};
 
-            BaseResponse expected = new BaseResponse
-            {
-                Code = Code.Success,
-                ErrorMessage = string.Empty,
-                DataId = 3
-            };
+            BaseResponse expected = new()
+			{
+				Code = Code.Success,
+				ErrorMessage = string.Empty,
+				DataId = 3
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PeopleService),
-                CallerMethodName = nameof(_peopleService.AddAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = person,
-                Response = expected
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PeopleService),
+				CallerMethodName = nameof(_peopleService.AddAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = person,
+				Response = expected
+			};
 
             // Act
             BaseResponse actual = _peopleService.AddAsync(person, null).Result;
@@ -331,20 +312,20 @@ namespace EMS.Core.API.Tests.Services
         public void AddAsync_should_handle_null_reference_exception_from_people_repository()
         {
             // Arrange
-            BaseResponse expected = new BaseResponse
-            {
-                Code = Code.DataError,
-                ErrorMessage = "Person data cannot be empty"
-            };
+            BaseResponse expected = new()
+			{
+				Code = Code.DataError,
+				ErrorMessage = "Person data cannot be empty"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PeopleService),
-                CallerMethodName = nameof(_peopleService.AddAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = null,
-                Response = new Exception(expected.ErrorMessage)
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PeopleService),
+				CallerMethodName = nameof(_peopleService.AddAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = null,
+				Response = new Exception(expected.ErrorMessage)
+			};
 
             // Act
             BaseResponse actual = _peopleService.AddAsync(null, null).Result;
@@ -358,27 +339,27 @@ namespace EMS.Core.API.Tests.Services
         public void AddAsync_should_handle_argument_exception_from_people_repository()
         {
             // Arrange
-            BaseResponse expected = new BaseResponse
-            {
-                Code = Code.DataError,
-                ErrorMessage = "Person first name or last name cannot be empty"
-            };
-            PersonData person = new PersonData
-            {
-                Name = "Test",
-                LastName = string.Empty,
-                SecondName = "Test",
-                BornedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
-                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime())
-            };
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PeopleService),
-                CallerMethodName = nameof(_peopleService.AddAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = person,
-                Response = new Exception(expected.ErrorMessage)
-            };
+            BaseResponse expected = new()
+			{
+				Code = Code.DataError,
+				ErrorMessage = "Person first name or last name cannot be empty"
+			};
+            PersonData person = new()
+			{
+				Name = "Test",
+				LastName = string.Empty,
+				SecondName = "Test",
+				BornedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
+				CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime())
+			};
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PeopleService),
+				CallerMethodName = nameof(_peopleService.AddAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = person,
+				Response = new Exception(expected.ErrorMessage)
+			};
 
             // Act
             BaseResponse actual = _peopleService.AddAsync(person, null).Result;
@@ -393,29 +374,29 @@ namespace EMS.Core.API.Tests.Services
         {
             // Arrange
             DbContextMock.ShouldThrowException = true;
-            BaseResponse expected = new BaseResponse
-            {
-                Code = Code.DbError,
-                ErrorMessage = "An error occured while saving person data"
-            };
-            PersonData person = new PersonData
-            {
-                Name = "Test",
-                LastName = "Test",
-                SecondName = "Test",
-                BornedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
-                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime())
-            };
+            BaseResponse expected = new()
+			{
+				Code = Code.DbError,
+				ErrorMessage = "An error occured while saving person data"
+			};
+            PersonData person = new()
+			{
+				Name = "Test",
+				LastName = "Test",
+				SecondName = "Test",
+				BornedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
+				CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime())
+			};
             DbContextMock.ShouldThrowException = true;
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PeopleService),
-                CallerMethodName = nameof(_peopleService.AddAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = person,
-                Response = new Exception("DbContext test Exception")
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PeopleService),
+				CallerMethodName = nameof(_peopleService.AddAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = person,
+				Response = new Exception("DbContext test Exception")
+			};
 
             // Act
             BaseResponse actual = _peopleService.AddAsync(person, null).Result;
@@ -430,29 +411,29 @@ namespace EMS.Core.API.Tests.Services
         {
             // Arrange
             DbContextMock.SaveChangesResult = 0;
-            PersonData person = new PersonData
-            {
-                Name = "Test",
-                LastName = "Test",
-                SecondName = "Test",
-                BornedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
-                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
-                Id = 4
-            };
+            PersonData person = new()
+			{
+				Name = "Test",
+				LastName = "Test",
+				SecondName = "Test",
+				BornedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
+				CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
+				Id = 4
+			};
 
-            BaseResponse expected = new BaseResponse
-            {
-                Code = Code.UnknownError,
-                ErrorMessage = "Person data has not been saved"
-            };
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PeopleService),
-                CallerMethodName = nameof(_peopleService.AddAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = person,
-                Response = new Exception(expected.ErrorMessage)
-            };
+            BaseResponse expected = new()
+			{
+				Code = Code.UnknownError,
+				ErrorMessage = "Person data has not been saved"
+			};
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PeopleService),
+				CallerMethodName = nameof(_peopleService.AddAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = person,
+				Response = new Exception(expected.ErrorMessage)
+			};
 
             // Act
             BaseResponse actual = _peopleService.AddAsync(person, null).Result;
@@ -466,31 +447,31 @@ namespace EMS.Core.API.Tests.Services
         public void UpdateAsync_should_update_person_int_db()
         {
             // Arrange
-            PersonData person = new PersonData
-            {
-                Name = "Test",
-                LastName = "Test",
-                SecondName = "Test",
-                BornedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
-                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
-                Id = _person1.Id
-            };
+            PersonData person = new()
+			{
+				Name = "Test",
+				LastName = "Test",
+				SecondName = "Test",
+				BornedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
+				CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
+				Id = _person1.Id
+			};
 
-            BaseResponse expected = new BaseResponse
-            {
-                Code = Code.Success,
-                ErrorMessage = string.Empty,
-                DataId = person.Id
-            };
+            BaseResponse expected = new()
+			{
+				Code = Code.Success,
+				ErrorMessage = string.Empty,
+				DataId = person.Id
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PeopleService),
-                CallerMethodName = nameof(_peopleService.UpdateAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = person,
-                Response = expected
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PeopleService),
+				CallerMethodName = nameof(_peopleService.UpdateAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = person,
+				Response = expected
+			};
 
             // Act
             BaseResponse actual = _peopleService.UpdateAsync(person, null).Result;
@@ -505,29 +486,29 @@ namespace EMS.Core.API.Tests.Services
         {
             // Arrange
             DbContextMock.SaveChangesResult = 0;
-            PersonData person = new PersonData
-            {
-                Name = "Test",
-                LastName = "Test",
-                SecondName = "Test",
-                BornedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
-                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
-                Id = 4
-            };
+            PersonData person = new()
+			{
+				Name = "Test",
+				LastName = "Test",
+				SecondName = "Test",
+				BornedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
+				CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
+				Id = 4
+			};
 
-            BaseResponse expected = new BaseResponse
-            {
-                Code = Code.UnknownError,
-                ErrorMessage = "Person data has not been updated"
-            };
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PeopleService),
-                CallerMethodName = nameof(_peopleService.UpdateAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = person,
-                Response = new Exception(expected.ErrorMessage)
-            };
+            BaseResponse expected = new()
+			{
+				Code = Code.UnknownError,
+				ErrorMessage = "Person data has not been updated"
+			};
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PeopleService),
+				CallerMethodName = nameof(_peopleService.UpdateAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = person,
+				Response = new Exception(expected.ErrorMessage)
+			};
 
             // Act
             BaseResponse actual = _peopleService.UpdateAsync(person, null).Result;
@@ -541,20 +522,20 @@ namespace EMS.Core.API.Tests.Services
         public void UpdateAsync_should_handle_null_reference_exception_from_people_repository()
         {
             // Arrange
-            BaseResponse expected = new BaseResponse
-            {
-                Code = Code.DataError,
-                ErrorMessage = "Person data cannot be empty"
-            };
+            BaseResponse expected = new()
+			{
+				Code = Code.DataError,
+				ErrorMessage = "Person data cannot be empty"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PeopleService),
-                CallerMethodName = nameof(_peopleService.UpdateAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = null,
-                Response = new Exception(expected.ErrorMessage)
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PeopleService),
+				CallerMethodName = nameof(_peopleService.UpdateAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = null,
+				Response = new Exception(expected.ErrorMessage)
+			};
 
             // Act
             BaseResponse actual = _peopleService.UpdateAsync(null, null).Result;
@@ -568,28 +549,28 @@ namespace EMS.Core.API.Tests.Services
         public void UpdateAsync_should_handle_argument_exception_from_people_repository()
         {
             // Arrange
-            BaseResponse expected = new BaseResponse
-            {
-                Code = Code.DataError,
-                ErrorMessage = "Person first name or last name cannot be empty"
-            };
-            PersonData person = new PersonData
-            {
-                Name = "Test",
-                LastName = string.Empty,
-                SecondName = "Test",
-                BornedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
-                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
-                Id = _person1.Id
-            };
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PeopleService),
-                CallerMethodName = nameof(_peopleService.UpdateAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = person,
-                Response = new Exception(expected.ErrorMessage)
-            };
+            BaseResponse expected = new()
+			{
+				Code = Code.DataError,
+				ErrorMessage = "Person first name or last name cannot be empty"
+			};
+            PersonData person = new()
+			{
+				Name = "Test",
+				LastName = string.Empty,
+				SecondName = "Test",
+				BornedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
+				CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
+				Id = _person1.Id
+			};
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PeopleService),
+				CallerMethodName = nameof(_peopleService.UpdateAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = person,
+				Response = new Exception(expected.ErrorMessage)
+			};
 
             // Act
             BaseResponse actual = _peopleService.UpdateAsync(person, null).Result;
@@ -604,28 +585,28 @@ namespace EMS.Core.API.Tests.Services
         {
             // Arrange
             DbContextMock.ShouldThrowException = true;
-            BaseResponse expected = new BaseResponse
-            {
-                Code = Code.DbError,
-                ErrorMessage = "An error occured while saving person data"
-            };
-            PersonData person = new PersonData
-            {
-                Name = "Test",
-                LastName = "Test",
-                SecondName = "Test",
-                BornedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
-                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
-                Id = _person1.Id
-            };
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PeopleService),
-                CallerMethodName = nameof(_peopleService.UpdateAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = person,
-                Response = new Exception("DbContext test Exception")
-            };
+            BaseResponse expected = new()
+			{
+				Code = Code.DbError,
+				ErrorMessage = "An error occured while saving person data"
+			};
+            PersonData person = new()
+			{
+				Name = "Test",
+				LastName = "Test",
+				SecondName = "Test",
+				BornedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
+				CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().ToUniversalTime()),
+				Id = _person1.Id
+			};
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PeopleService),
+				CallerMethodName = nameof(_peopleService.UpdateAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = person,
+				Response = new Exception("DbContext test Exception")
+			};
 
             // Act
             BaseResponse actual = _peopleService.UpdateAsync(person, null).Result;
@@ -639,28 +620,28 @@ namespace EMS.Core.API.Tests.Services
         public void AddContactAsync_should_add_contact_to_db_via_people_repository()
         {
             // Arrange
-            ContactData contact = new ContactData
-            {
-                PersonId = _person1.Id,
-                ContactType = 1,
-                Name = "Test",
-                Value = "Test"
-            };
+            ContactData contact = new()
+			{
+				PersonId = _person1.Id,
+				ContactType = 1,
+				Name = "Test",
+				Value = "Test"
+			};
 
-            BaseResponse expected = new BaseResponse
-            {
-                Code = Code.Success,
-                ErrorMessage = string.Empty,
-                DataId = 2
-            };
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PeopleService),
-                CallerMethodName = nameof(_peopleService.AddContactAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = contact,
-                Response = expected
-            };
+            BaseResponse expected = new()
+			{
+				Code = Code.Success,
+				ErrorMessage = string.Empty,
+				DataId = 2
+			};
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PeopleService),
+				CallerMethodName = nameof(_peopleService.AddContactAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = contact,
+				Response = expected
+			};
 
             // Act
             BaseResponse actual = _peopleService.AddContactAsync(contact, null).Result;
@@ -674,19 +655,19 @@ namespace EMS.Core.API.Tests.Services
         public void AddContactAsync_should_handle_null_reference_exception_from_people_repository()
         {
             // Arrange
-            BaseResponse expected = new BaseResponse
-            {
-                Code = Code.DataError,
-                ErrorMessage = "Contact data cannot be empty"
-            };
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PeopleService),
-                CallerMethodName = nameof(_peopleService.AddContactAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = null,
-                Response = new Exception(expected.ErrorMessage)
-            };
+            BaseResponse expected = new()
+			{
+				Code = Code.DataError,
+				ErrorMessage = "Contact data cannot be empty"
+			};
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PeopleService),
+				CallerMethodName = nameof(_peopleService.AddContactAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = null,
+				Response = new Exception(expected.ErrorMessage)
+			};
 
             // Act
             BaseResponse actual = _peopleService.AddContactAsync(null, null).Result;
@@ -700,27 +681,27 @@ namespace EMS.Core.API.Tests.Services
         public void AddContactAsync_should_handle_argument_exception_from_people_repository()
         {
             // Arrange
-            ContactData contact = new ContactData
-            {
-                PersonId = 3,
-                ContactType = 1,
-                Name = "Test",
-                Value = "Test"
-            };
+            ContactData contact = new()
+			{
+				PersonId = 3,
+				ContactType = 1,
+				Name = "Test",
+				Value = "Test"
+			};
 
-            BaseResponse expected = new BaseResponse
-            {
-                Code = Code.DataError,
-                ErrorMessage = "Person is not specified"
-            };
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PeopleService),
-                CallerMethodName = nameof(_peopleService.AddContactAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = contact,
-                Response = new Exception(expected.ErrorMessage)
-            };
+            BaseResponse expected = new()
+			{
+				Code = Code.DataError,
+				ErrorMessage = "Person is not specified"
+			};
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PeopleService),
+				CallerMethodName = nameof(_peopleService.AddContactAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = contact,
+				Response = new Exception(expected.ErrorMessage)
+			};
 
             // Act
             BaseResponse actual = _peopleService.AddContactAsync(contact, null).Result;
@@ -735,28 +716,28 @@ namespace EMS.Core.API.Tests.Services
         {
             // Arrange
             DbContextMock.ShouldThrowException = true;
-            ContactData contact = new ContactData
-            {
-                PersonId = _person1.Id,
-                ContactType = 1,
-                Name = "Test",
-                Value = "Test"
-            };
+            ContactData contact = new()
+			{
+				PersonId = _person1.Id,
+				ContactType = 1,
+				Name = "Test",
+				Value = "Test"
+			};
 
-            BaseResponse expected = new BaseResponse
-            {
-                Code = Code.DbError,
-                ErrorMessage = "An error occured while saving contact"
-            };
+            BaseResponse expected = new()
+			{
+				Code = Code.DbError,
+				ErrorMessage = "An error occured while saving contact"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PeopleService),
-                CallerMethodName = nameof(_peopleService.AddContactAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = contact,
-                Response = new Exception("DbContext test Exception")
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PeopleService),
+				CallerMethodName = nameof(_peopleService.AddContactAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = contact,
+				Response = new Exception("DbContext test Exception")
+			};
 
             // Act
             BaseResponse actual = _peopleService.AddContactAsync(contact, null).Result;
@@ -771,27 +752,27 @@ namespace EMS.Core.API.Tests.Services
         {
             // Arrange
             DbContextMock.SaveChangesResult = 0;
-            ContactData contact = new ContactData
-            {
-                PersonId = _person1.Id,
-                ContactType = 1,
-                Name = "Test",
-                Value = "Test"
-            };
+            ContactData contact = new()
+			{
+				PersonId = _person1.Id,
+				ContactType = 1,
+				Name = "Test",
+				Value = "Test"
+			};
 
-            BaseResponse expected = new BaseResponse
-            {
-                Code = Code.UnknownError,
-                ErrorMessage = "Contact has not been saved"
-            };
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PeopleService),
-                CallerMethodName = nameof(_peopleService.AddContactAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = contact,
-                Response = new Exception(expected.ErrorMessage)
-            };
+            BaseResponse expected = new()
+			{
+				Code = Code.UnknownError,
+				ErrorMessage = "Contact has not been saved"
+			};
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PeopleService),
+				CallerMethodName = nameof(_peopleService.AddContactAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = contact,
+				Response = new Exception(expected.ErrorMessage)
+			};
 
             // Act
             BaseResponse actual = _peopleService.AddContactAsync(contact, null).Result;
@@ -805,28 +786,28 @@ namespace EMS.Core.API.Tests.Services
         public void AddPhotoAsync_should_add_contact_to_db_via_people_repository()
         {
             // Arrange
-            PhotoData photoData = new PhotoData
-            {
-                PersonId = _person1.Id,
-                Name = "test.jpg",
-                Base64 = "dGVzdCBmaWxlIG9uZQ==",
-                Mime = string.Empty
-            };
+            PhotoData photoData = new()
+			{
+				PersonId = _person1.Id,
+				Name = "test.jpg",
+				Base64 = "dGVzdCBmaWxlIG9uZQ==",
+				Mime = string.Empty
+			};
 
-            BaseResponse expected = new BaseResponse
-            {
-                Code = Code.Success,
-                ErrorMessage = string.Empty,
-                DataId = 2
-            };
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PeopleService),
-                CallerMethodName = nameof(_peopleService.AddPhotoAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = photoData,
-                Response = expected
-            };
+            BaseResponse expected = new()
+			{
+				Code = Code.Success,
+				ErrorMessage = string.Empty,
+				DataId = 2
+			};
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PeopleService),
+				CallerMethodName = nameof(_peopleService.AddPhotoAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = photoData,
+				Response = expected
+			};
 
             // Act
             BaseResponse actual = _peopleService.AddPhotoAsync(photoData, null).Result;
@@ -840,20 +821,20 @@ namespace EMS.Core.API.Tests.Services
         public void AddPhotoAsync_should_handle_null_reference_exception_from_people_repository()
         {
             // Arrange
-            BaseResponse expected = new BaseResponse
-            {
-                Code = Code.DataError,
-                ErrorMessage = "Photo data cannot be empty"
-            };
+            BaseResponse expected = new()
+			{
+				Code = Code.DataError,
+				ErrorMessage = "Photo data cannot be empty"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PeopleService),
-                CallerMethodName = nameof(_peopleService.AddPhotoAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = null,
-                Response = new Exception(expected.ErrorMessage)
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PeopleService),
+				CallerMethodName = nameof(_peopleService.AddPhotoAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = null,
+				Response = new Exception(expected.ErrorMessage)
+			};
 
             // Act
             BaseResponse actual = _peopleService.AddPhotoAsync(null, null).Result;
@@ -867,27 +848,27 @@ namespace EMS.Core.API.Tests.Services
         public void AddPhotoAsync_should_handle_argument_exception_from_people_repository()
         {
             // Arrange
-            PhotoData photoData = new PhotoData
-            {
-                PersonId = 3,
-                Name = "test.jpg",
-                Base64 = "dGVzdCBmaWxlIG9uZQ==",
-                Mime = string.Empty
-            };
+            PhotoData photoData = new()
+			{
+				PersonId = 3,
+				Name = "test.jpg",
+				Base64 = "dGVzdCBmaWxlIG9uZQ==",
+				Mime = string.Empty
+			};
 
-            BaseResponse expected = new BaseResponse
-            {
-                Code = Code.DataError,
-                ErrorMessage = "Person is not specified"
-            };
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PeopleService),
-                CallerMethodName = nameof(_peopleService.AddPhotoAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = photoData,
-                Response = new Exception(expected.ErrorMessage)
-            };
+            BaseResponse expected = new()
+			{
+				Code = Code.DataError,
+				ErrorMessage = "Person is not specified"
+			};
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PeopleService),
+				CallerMethodName = nameof(_peopleService.AddPhotoAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = photoData,
+				Response = new Exception(expected.ErrorMessage)
+			};
 
             // Act
             BaseResponse actual = _peopleService.AddPhotoAsync(photoData, null).Result;
@@ -902,27 +883,27 @@ namespace EMS.Core.API.Tests.Services
         {
             // Arrange
             DbContextMock.ShouldThrowException = true;
-            PhotoData photoData = new PhotoData
-            {
-                PersonId = _person1.Id,
-                Name = "test.jpg",
-                Base64 = "dGVzdCBmaWxlIG9uZQ==",
-                Mime = string.Empty
-            };
+            PhotoData photoData = new()
+			{
+				PersonId = _person1.Id,
+				Name = "test.jpg",
+				Base64 = "dGVzdCBmaWxlIG9uZQ==",
+				Mime = string.Empty
+			};
 
-            BaseResponse expected = new BaseResponse
-            {
-                Code = Code.DbError,
-                ErrorMessage = "An error occured while saving contact"
-            };
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PeopleService),
-                CallerMethodName = nameof(_peopleService.AddPhotoAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = photoData,
-                Response = new Exception("DbContext test Exception")
-            };
+            BaseResponse expected = new()
+			{
+				Code = Code.DbError,
+				ErrorMessage = "An error occured while saving contact"
+			};
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PeopleService),
+				CallerMethodName = nameof(_peopleService.AddPhotoAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = photoData,
+				Response = new Exception("DbContext test Exception")
+			};
 
             // Act
             BaseResponse actual = _peopleService.AddPhotoAsync(photoData, null).Result;
@@ -937,27 +918,27 @@ namespace EMS.Core.API.Tests.Services
         {
             // Arrange
             DbContextMock.SaveChangesResult = 0;
-            PhotoData photoData = new PhotoData
-            {
-                PersonId = _person1.Id,
-                Name = "test.jpg",
-                Base64 = "dGVzdCBmaWxlIG9uZQ==",
-                Mime = string.Empty
-            };
+            PhotoData photoData = new()
+			{
+				PersonId = _person1.Id,
+				Name = "test.jpg",
+				Base64 = "dGVzdCBmaWxlIG9uZQ==",
+				Mime = string.Empty
+			};
 
-            BaseResponse expected = new BaseResponse
-            {
-                Code = Code.UnknownError,
-                ErrorMessage = "Photo has not been saved"
-            };
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PeopleService),
-                CallerMethodName = nameof(_peopleService.AddPhotoAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = photoData,
-                Response = new Exception(expected.ErrorMessage)
-            };
+            BaseResponse expected = new()
+			{
+				Code = Code.UnknownError,
+				ErrorMessage = "Photo has not been saved"
+			};
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PeopleService),
+				CallerMethodName = nameof(_peopleService.AddPhotoAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = photoData,
+				Response = new Exception(expected.ErrorMessage)
+			};
 
             // Act
             BaseResponse actual = _peopleService.AddPhotoAsync(photoData, null).Result;

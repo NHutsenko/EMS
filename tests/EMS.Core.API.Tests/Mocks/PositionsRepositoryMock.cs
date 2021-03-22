@@ -12,8 +12,8 @@ namespace EMS.Core.API.Tests.Mocks
     {
         public static Mock<PositionsRepository> SetupMock(IApplicationDbContext dbContext, IDateTimeUtil dateTimeUtil)
         {
-            Mock<PositionsRepository> mock = new Mock<PositionsRepository>(dbContext, dateTimeUtil);
-            PositionsRepository repository = new PositionsRepository(dbContext, dateTimeUtil);
+            Mock<PositionsRepository> mock = new(dbContext, dateTimeUtil);
+            PositionsRepository repository = new(dbContext, dateTimeUtil);
 
             mock.Setup(m => m.AddAsync(It.IsAny<Position>())).Returns<Position>((position) =>
             {

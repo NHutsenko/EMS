@@ -86,7 +86,7 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddAsync_should_add_other_payment_to_db()
         {
             // Arrange
-            OtherPayment otherPayment = new OtherPayment
+            OtherPayment otherPayment = new()
             {
                 Value = 10,
                 Comment = "Test",
@@ -115,13 +115,13 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddAsync_should_throws_argument_exception_because_of_other_payment_value_is_wrong()
         {
             // Arrange
-            OtherPayment otherPayment = new OtherPayment
-            {
-                Value = 0,
-                Comment = "Test",
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                PersonId = _person.Id
-            };
+            OtherPayment otherPayment = new()
+			{
+				Value = 0,
+				Comment = "Test",
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				PersonId = _person.Id
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _otherPaymentsRepository.AddAsync(otherPayment), "Argument exception because value less or equal to 0 throws as expected");
@@ -132,13 +132,13 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddAsync_should_throws_argument_exception_because_of_other_payment_comment_is_empty()
         {
             // Arrange
-            OtherPayment otherPayment = new OtherPayment
-            {
-                Value = 10,
-                Comment = string.Empty,
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                PersonId = _person.Id
-            };
+            OtherPayment otherPayment = new()
+			{
+				Value = 10,
+				Comment = string.Empty,
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				PersonId = _person.Id
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _otherPaymentsRepository.AddAsync(otherPayment), "Argument exception because comment is empty as expected");
@@ -149,13 +149,13 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddAsync_should_throws_argument_exception_because_of_other_payment_creation_date_is_wrong()
         {
             // Arrange
-            OtherPayment otherPayment = new OtherPayment
-            {
-                Value = 10,
-                Comment = "Test",
-                CreatedOn = DateTime.MinValue,
-                PersonId = _person.Id
-            };
+            OtherPayment otherPayment = new()
+			{
+				Value = 10,
+				Comment = "Test",
+				CreatedOn = DateTime.MinValue,
+				PersonId = _person.Id
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _otherPaymentsRepository.AddAsync(otherPayment), "Argument exception because creation date is wrong as expected");
@@ -166,12 +166,12 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddAsync_should_throws_argument_exception_because_of_other_payment_personId_is_wrong()
         {
             // Arrange
-            OtherPayment otherPayment = new OtherPayment
-            {
-                Value = 10,
-                Comment = "Test",
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-            };
+            OtherPayment otherPayment = new()
+			{
+				Value = 10,
+				Comment = "Test",
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime()
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _otherPaymentsRepository.AddAsync(otherPayment), "Argument exception because person Id is wrong as expected");
@@ -182,14 +182,14 @@ namespace EMS.Core.API.Tests.Repositories
         public void UpdateAsync_should_update_other_payment_into_db()
         {
             // Arrange
-            OtherPayment otherPayment = new OtherPayment
-            {
-                Value = 10,
-                Comment = "Test",
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                PersonId = _person.Id,
-                Id = 1
-            };
+            OtherPayment otherPayment = new()
+			{
+				Value = 10,
+				Comment = "Test",
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				PersonId = _person.Id,
+				Id = 1
+			};
 
             // Act
             int result = _otherPaymentsRepository.UpdateAsync(otherPayment).Result;
@@ -212,14 +212,14 @@ namespace EMS.Core.API.Tests.Repositories
         public void UpdateAsync_should_throws_argument_exception_because_of_other_payment_value_is_wrong()
         {
             // Arrange
-            OtherPayment otherPayment = new OtherPayment
-            {
-                Value = 0,
-                Comment = "Test",
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                PersonId = _person.Id,
-                Id = 1
-            };
+            OtherPayment otherPayment = new()
+			{
+				Value = 0,
+				Comment = "Test",
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				PersonId = _person.Id,
+				Id = 1
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _otherPaymentsRepository.UpdateAsync(otherPayment), "Argument exception because value less or equal to 0 throws as expected");
@@ -230,14 +230,14 @@ namespace EMS.Core.API.Tests.Repositories
         public void UpdateAsync_should_throws_argument_exception_because_of_other_payment_comment_is_empty()
         {
             // Arrange
-            OtherPayment otherPayment = new OtherPayment
-            {
-                Value = 10,
-                Comment = string.Empty,
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                PersonId = _person.Id,
-                Id = 1
-            };
+            OtherPayment otherPayment = new()
+			{
+				Value = 10,
+				Comment = string.Empty,
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				PersonId = _person.Id,
+				Id = 1
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _otherPaymentsRepository.UpdateAsync(otherPayment), "Argument exception because comment is empty as expected");
@@ -248,14 +248,14 @@ namespace EMS.Core.API.Tests.Repositories
         public void UpdateAsync_should_throws_argument_exception_because_of_other_payment_creation_date_is_wrong()
         {
             // Arrange
-            OtherPayment otherPayment = new OtherPayment
-            {
-                Value = 10,
-                Comment = "Test",
-                CreatedOn = DateTime.MinValue,
-                PersonId = _person.Id,
-                Id = 1
-            };
+            OtherPayment otherPayment = new()
+			{
+				Value = 10,
+				Comment = "Test",
+				CreatedOn = DateTime.MinValue,
+				PersonId = _person.Id,
+				Id = 1
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _otherPaymentsRepository.UpdateAsync(otherPayment), "Argument exception because creation date is wrong as expected");
@@ -266,13 +266,13 @@ namespace EMS.Core.API.Tests.Repositories
         public void UpdateAsync_should_throws_argument_exception_because_of_other_payment_personId_is_wrong()
         {
             // Arrange
-            OtherPayment otherPayment = new OtherPayment
-            {
-                Value = 10,
-                Comment = "Test",
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Id = 1
-            };
+            OtherPayment otherPayment = new()
+			{
+				Value = 10,
+				Comment = "Test",
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Id = 1
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _otherPaymentsRepository.UpdateAsync(otherPayment), "Argument exception because person Id is wrong as expected");

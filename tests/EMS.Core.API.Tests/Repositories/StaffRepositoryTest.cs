@@ -65,13 +65,13 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddAsync_should_add_new_record_to_db()
         {
             // Arrange
-            Staff toAdd = new Staff
-            {
-                CreatedOn = new DateTime(2020, 03, 01, 12, 00, 00),
-                PersonId = 1,
-                ManagerId = 123,
-                PositionId = _position2.Id
-            };
+            Staff toAdd = new()
+			{
+				CreatedOn = new DateTime(2020, 03, 01, 12, 00, 00),
+				PersonId = 1,
+				ManagerId = 123,
+				PositionId = _position2.Id
+			};
 
             // Act
             int result = _staffRepository.AddAsync(toAdd).Result;
@@ -87,13 +87,13 @@ namespace EMS.Core.API.Tests.Repositories
         {
             // Arrange
             DbContextMock.ShouldThrowException = true;
-            Staff toAdd = new Staff
-            {
-                CreatedOn = new DateTime(2020, 03, 01, 12, 00, 00),
-                PersonId = 1,
-                ManagerId = 123,
-                PositionId = _position2.Id
-            };
+            Staff toAdd = new()
+			{
+				CreatedOn = new DateTime(2020, 03, 01, 12, 00, 00),
+				PersonId = 1,
+				ManagerId = 123,
+				PositionId = _position2.Id
+			};
 
             // Assert
             Assert.ThrowsAsync<DbUpdateException>(() => _staffRepository.AddAsync(toAdd), "Exception from db throws as expected");
@@ -112,13 +112,13 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddAsync_should_throw_exception_because_positionId_is_equal_to_zero()
         {
             // Arrange
-            Staff toAdd = new Staff
-            {
-                CreatedOn = new DateTime(2019, 03, 01, 12, 00, 00),
-                PersonId = 1,
-                ManagerId = 123,
-                PositionId = 0
-            };
+            Staff toAdd = new()
+			{
+				CreatedOn = new DateTime(2019, 03, 01, 12, 00, 00),
+				PersonId = 1,
+				ManagerId = 123,
+				PositionId = 0
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _staffRepository.AddAsync(toAdd), "AddAsync throws exception as expected");
@@ -129,13 +129,13 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddAsync_should_throw_exception_because_position_does_not_exists_in_db()
         {
             // Arrange
-            Staff toAdd = new Staff
-            {
-                CreatedOn = new DateTime(2020, 03, 01, 12, 00, 00),
-                PersonId = 1,
-                ManagerId = 123,
-                PositionId = 3
-            };
+            Staff toAdd = new()
+			{
+				CreatedOn = new DateTime(2020, 03, 01, 12, 00, 00),
+				PersonId = 1,
+				ManagerId = 123,
+				PositionId = 3
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _staffRepository.AddAsync(toAdd), "AddAsync succesfully throws exception with wrong position");
@@ -146,13 +146,13 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddAsync_should_throw_exception_because_managerId_is_equal_to_zero()
         {
             // Arrange
-            Staff toAdd = new Staff
-            {
-                CreatedOn = new DateTime(2019, 03, 01, 12, 00, 00),
-                PersonId = 1,
-                ManagerId = 0,
-                PositionId = _position2.Id
-            };
+            Staff toAdd = new()
+			{
+				CreatedOn = new DateTime(2019, 03, 01, 12, 00, 00),
+				PersonId = 1,
+				ManagerId = 0,
+				PositionId = _position2.Id
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _staffRepository.AddAsync(toAdd), "AddAsync throws exception as expected");
@@ -163,13 +163,13 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddAsync_should_throw_exception_because_date_is_less_than_existing_staff_record_in_db()
         {
             // Arrange
-            Staff toAdd = new Staff
-            {
-                CreatedOn = new DateTime(2019, 02, 01, 12, 00, 00),
-                PersonId = 1,
-                ManagerId = 123,
-                PositionId = _position2.Id
-            };
+            Staff toAdd = new()
+			{
+				CreatedOn = new DateTime(2019, 02, 01, 12, 00, 00),
+				PersonId = 1,
+				ManagerId = 123,
+				PositionId = _position2.Id
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _staffRepository.AddAsync(toAdd), "AddAsync throws exception as expected");
@@ -180,14 +180,14 @@ namespace EMS.Core.API.Tests.Repositories
         public void UpdateAsync_should_update_record_in_db()
         {
             // Arrange
-            Staff toUpdate = new Staff
-            {
-                Id = 1,
-                CreatedOn = new DateTime(2020, 02, 01, 12, 00, 00),
-                ManagerId = 123,
-                PersonId = 1,
-                PositionId = _position2.Id
-            };
+            Staff toUpdate = new()
+			{
+				Id = 1,
+				CreatedOn = new DateTime(2020, 02, 01, 12, 00, 00),
+				ManagerId = 123,
+				PersonId = 1,
+				PositionId = _position2.Id
+			};
 
             // Act
             int result = _staffRepository.UpdateAsync(toUpdate).Result;
@@ -202,14 +202,14 @@ namespace EMS.Core.API.Tests.Repositories
         {
             // Arrange
             DbContextMock.ShouldThrowException = true;
-            Staff toUpdate = new Staff
-            {
-                CreatedOn = new DateTime(2020, 03, 01, 12, 00, 00),
-                PersonId = 1,
-                ManagerId = 123,
-                PositionId = _position2.Id,
-                Id = _staff1.Id
-            };
+            Staff toUpdate = new()
+			{
+				CreatedOn = new DateTime(2020, 03, 01, 12, 00, 00),
+				PersonId = 1,
+				ManagerId = 123,
+				PositionId = _position2.Id,
+				Id = _staff1.Id
+			};
 
             // Assert
             Assert.ThrowsAsync<DbUpdateException>(() => _staffRepository.UpdateAsync(toUpdate), "Exception from db throws as expected");
@@ -228,14 +228,14 @@ namespace EMS.Core.API.Tests.Repositories
         public void UpdateAsync_should_throw_exception_because_positionId_is_equal_to_zero()
         {
             // Arrange
-            Staff toUpdate = new Staff
-            {
-                Id = 2,
-                CreatedOn = new DateTime(2020, 03, 01, 12, 00, 00),
-                PersonId = 1,
-                ManagerId = 123,
-                PositionId = 0
-            };
+            Staff toUpdate = new()
+			{
+				Id = 2,
+				CreatedOn = new DateTime(2020, 03, 01, 12, 00, 00),
+				PersonId = 1,
+				ManagerId = 123,
+				PositionId = 0
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _staffRepository.UpdateAsync(toUpdate), "AddAsync throws exception as expected");
@@ -246,13 +246,13 @@ namespace EMS.Core.API.Tests.Repositories
         public void UpdateAsync_should_throw_exception_because_position_does_not_exists_in_db()
         {
             // Arrange
-            Staff toAdd = new Staff
-            {
-                CreatedOn = new DateTime(2020, 03, 01, 12, 00, 00),
-                PersonId = 1,
-                ManagerId = 123,
-                PositionId = 3
-            };
+            Staff toAdd = new()
+			{
+				CreatedOn = new DateTime(2020, 03, 01, 12, 00, 00),
+				PersonId = 1,
+				ManagerId = 123,
+				PositionId = 3
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _staffRepository.UpdateAsync(toAdd), "UpdateAsync succesfully throws exception with wrong position");
@@ -263,14 +263,14 @@ namespace EMS.Core.API.Tests.Repositories
         public void UpdateAsync_should_throw_exception_because_managerId_is_equal_to_zero()
         {
             // Arrange
-            Staff toUpdate = new Staff
-            {
-                Id = 2,
-                CreatedOn = new DateTime(2020, 03, 01, 12, 00, 00),
-                PersonId = 1,
-                ManagerId = 0,
-                PositionId = 3
-            };
+            Staff toUpdate = new()
+			{
+				Id = 2,
+				CreatedOn = new DateTime(2020, 03, 01, 12, 00, 00),
+				PersonId = 1,
+				ManagerId = 0,
+				PositionId = 3
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _staffRepository.UpdateAsync(toUpdate), "AddAsync throws exception as expected");
@@ -281,14 +281,14 @@ namespace EMS.Core.API.Tests.Repositories
         public void UpdateAsync_should_throw_exception_because_date_is_less_than_existing_staff_record_in_db()
         {
             // Arrange
-            Staff toUpdate = new Staff
-            {
-                Id = 2,
-                CreatedOn = new DateTime(2019, 02, 01, 12, 00, 00),
-                PersonId = 1,
-                ManagerId = 123,
-                PositionId = _position1.Id
-            };
+            Staff toUpdate = new()
+			{
+				Id = 2,
+				CreatedOn = new DateTime(2019, 02, 01, 12, 00, 00),
+				PersonId = 1,
+				ManagerId = 123,
+				PositionId = _position1.Id
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _staffRepository.UpdateAsync(toUpdate), "AddAsync throws exception as expected");
@@ -299,14 +299,14 @@ namespace EMS.Core.API.Tests.Repositories
         public void DeleteAsync_should_succesfully_delete_record_from_db()
         {
             // Arrange
-            Staff toDelete = new Staff
-            {
-                Id = 3,
-                CreatedOn = DateTime.Now.AddDays(1),
-                PersonId = 1,
-                ManagerId = 123,
-                PositionId = 3
-            };
+            Staff toDelete = new()
+			{
+				Id = 3,
+				CreatedOn = DateTime.Now.AddDays(1),
+				PersonId = 1,
+				ManagerId = 123,
+				PositionId = 3
+			};
             _dbContext.Staff.Add(toDelete);
 
             // Act
@@ -330,14 +330,14 @@ namespace EMS.Core.API.Tests.Repositories
         {
             // Arrange
             DbContextMock.ShouldThrowException = true;
-            Staff toDelete = new Staff
-            {
-                CreatedOn = new DateTime(2021, 03, 01, 12, 00, 00),
-                PersonId = 1,
-                ManagerId = 123,
-                PositionId = 3,
-                Id = _staff1.Id
-            };
+            Staff toDelete = new()
+			{
+				CreatedOn = new DateTime(2021, 03, 01, 12, 00, 00),
+				PersonId = 1,
+				ManagerId = 123,
+				PositionId = 3,
+				Id = _staff1.Id
+			};
 
             // Assert
             Assert.ThrowsAsync<DbUpdateException>(() => _staffRepository.DeleteAsync(toDelete), "Exception from db throws as expected");
@@ -348,14 +348,14 @@ namespace EMS.Core.API.Tests.Repositories
         public void DeleteAsync_should_throw_exception_because_trying_to_delete_history_record()
         {
             // Arrange
-            Staff toDelete = new Staff
-            {
-                Id = 3,
-                CreatedOn = new DateTime(2020, 01, 15, 12, 00, 00),
-                PersonId = 1,
-                ManagerId = 123,
-                PositionId = 3
-            };
+            Staff toDelete = new()
+			{
+				Id = 3,
+				CreatedOn = new DateTime(2020, 01, 15, 12, 00, 00),
+				PersonId = 1,
+				ManagerId = 123,
+				PositionId = 3
+			};
             _dbContext.Staff.Add(toDelete);
 
             // Assert

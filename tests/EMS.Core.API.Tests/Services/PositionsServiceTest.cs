@@ -60,29 +60,29 @@ namespace EMS.Core.API.Tests.Services
         public void AddAsync_should_add_position_to_db_via_people_repository()
         {
             // Arrange
-            PositionData positionData = new PositionData
-            {
-                Name = "Test",
-                TeamId = _team.Id,
-                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
-                HourRate = 10
-            };
+            PositionData positionData = new()
+			{
+				Name = "Test",
+				TeamId = _team.Id,
+				CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
+				HourRate = 10
+			};
 
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.Success,
-                ErrorMessage = string.Empty,
-                DataId = 3
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.Success,
+				ErrorMessage = string.Empty,
+				DataId = 3
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PositionsService),
-                CallerMethodName = nameof(_positionsService.AddAsync),
-                Request = positionData,
-                Response = expectedResponse,
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime()
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PositionsService),
+				CallerMethodName = nameof(_positionsService.AddAsync),
+				Request = positionData,
+				Response = expectedResponse,
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime()
+			};
 
             // Act
             BaseResponse actual = _positionsService.AddAsync(positionData, null).Result;
@@ -96,20 +96,20 @@ namespace EMS.Core.API.Tests.Services
         public void AddAsync_should_handle_null_reference_exception()
         {
             // Arrange
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.DataError,
-                ErrorMessage = "Position cannot be empty"
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.DataError,
+				ErrorMessage = "Position cannot be empty"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PositionsService),
-                CallerMethodName = nameof(_positionsService.AddAsync),
-                Request = null,
-                Response = new Exception(expectedResponse.ErrorMessage),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime()
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PositionsService),
+				CallerMethodName = nameof(_positionsService.AddAsync),
+				Request = null,
+				Response = new Exception(expectedResponse.ErrorMessage),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime()
+			};
 
             // Act
             BaseResponse actual = _positionsService.AddAsync(null, null).Result;
@@ -123,28 +123,28 @@ namespace EMS.Core.API.Tests.Services
         public void AddAsync_should_handle_argument_exception()
         {
             // Arrange
-            PositionData positionData = new PositionData
-            {
-                Name = "Test",
-                TeamId = 2,
-                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
-                HourRate = 10
-            };
+            PositionData positionData = new()
+			{
+				Name = "Test",
+				TeamId = 2,
+				CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
+				HourRate = 10
+			};
 
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.DataError,
-                ErrorMessage = "Cannot add position with non specified team"
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.DataError,
+				ErrorMessage = "Cannot add position with non specified team"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PositionsService),
-                CallerMethodName = nameof(_positionsService.AddAsync),
-                Request = positionData,
-                Response = new Exception(expectedResponse.ErrorMessage),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime()
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PositionsService),
+				CallerMethodName = nameof(_positionsService.AddAsync),
+				Request = positionData,
+				Response = new Exception(expectedResponse.ErrorMessage),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime()
+			};
 
             // Act
             BaseResponse actual = _positionsService.AddAsync(positionData, null).Result;
@@ -159,28 +159,28 @@ namespace EMS.Core.API.Tests.Services
         {
             // Arrange
             DbContextMock.ShouldThrowException = true;
-            PositionData positionData = new PositionData
-            {
-                Name = "Test",
-                TeamId = _team.Id,
-                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
-                HourRate = 10
-            };
+            PositionData positionData = new()
+			{
+				Name = "Test",
+				TeamId = _team.Id,
+				CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
+				HourRate = 10
+			};
 
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.DbError,
-                ErrorMessage = "An error occured while saving position"
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.DbError,
+				ErrorMessage = "An error occured while saving position"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PositionsService),
-                CallerMethodName = nameof(_positionsService.AddAsync),
-                Request = positionData,
-                Response = new Exception("DbContext test Exception"),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime()
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PositionsService),
+				CallerMethodName = nameof(_positionsService.AddAsync),
+				Request = positionData,
+				Response = new Exception("DbContext test Exception"),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime()
+			};
 
             // Act
             BaseResponse actual = _positionsService.AddAsync(positionData, null).Result;
@@ -195,28 +195,28 @@ namespace EMS.Core.API.Tests.Services
         {
             // Arrange
             DbContextMock.SaveChangesResult = 0;
-            PositionData positionData = new PositionData
-            {
-                Name = "Test",
-                TeamId = _team.Id,
-                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
-                HourRate = 10
-            };
+            PositionData positionData = new()
+			{
+				Name = "Test",
+				TeamId = _team.Id,
+				CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
+				HourRate = 10
+			};
 
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.UnknownError,
-                ErrorMessage = "Position has not been saved"
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.UnknownError,
+				ErrorMessage = "Position has not been saved"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PositionsService),
-                CallerMethodName = nameof(_positionsService.AddAsync),
-                Request = positionData,
-                Response = new Exception(expectedResponse.ErrorMessage),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime()
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PositionsService),
+				CallerMethodName = nameof(_positionsService.AddAsync),
+				Request = positionData,
+				Response = new Exception(expectedResponse.ErrorMessage),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime()
+			};
 
             // Act
             BaseResponse actual = _positionsService.AddAsync(positionData, null).Result;
@@ -230,30 +230,30 @@ namespace EMS.Core.API.Tests.Services
         public void UpdateAsync_should_update_position_to_db_via_people_repository()
         {
             // Arrange
-            PositionData positionData = new PositionData
-            {
-                Id = _position1.Id,
-                Name = "Test update",
-                TeamId = _team.Id,
-                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
-                HourRate = 10
-            };
+            PositionData positionData = new()
+			{
+				Id = _position1.Id,
+				Name = "Test update",
+				TeamId = _team.Id,
+				CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
+				HourRate = 10
+			};
 
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.Success,
-                ErrorMessage = string.Empty,
-                DataId = positionData.Id
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.Success,
+				ErrorMessage = string.Empty,
+				DataId = positionData.Id
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PositionsService),
-                CallerMethodName = nameof(_positionsService.UpdateAsync),
-                Request = positionData,
-                Response = expectedResponse,
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime()
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PositionsService),
+				CallerMethodName = nameof(_positionsService.UpdateAsync),
+				Request = positionData,
+				Response = expectedResponse,
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime()
+			};
 
             // Act
             BaseResponse actual = _positionsService.UpdateAsync(positionData, null).Result;
@@ -267,20 +267,20 @@ namespace EMS.Core.API.Tests.Services
         public void UpdateAsync_should_handle_null_reference_exception()
         {
             // Arrange
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.DataError,
-                ErrorMessage = "Position cannot be empty"
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.DataError,
+				ErrorMessage = "Position cannot be empty"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PositionsService),
-                CallerMethodName = nameof(_positionsService.UpdateAsync),
-                Request = null,
-                Response = new Exception(expectedResponse.ErrorMessage),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime()
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PositionsService),
+				CallerMethodName = nameof(_positionsService.UpdateAsync),
+				Request = null,
+				Response = new Exception(expectedResponse.ErrorMessage),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime()
+			};
 
             // Act
             BaseResponse actual = _positionsService.UpdateAsync(null, null).Result;
@@ -294,29 +294,29 @@ namespace EMS.Core.API.Tests.Services
         public void UpdateAsync_should_handle_argument_exception()
         {
             // Arrange
-            PositionData positionData = new PositionData
-            {
-                Id = _position1.Id,
-                Name = "Test",
-                TeamId = 2,
-                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
-                HourRate = 10
-            };
+            PositionData positionData = new()
+			{
+				Id = _position1.Id,
+				Name = "Test",
+				TeamId = 2,
+				CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
+				HourRate = 10
+			};
 
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.DataError,
-                ErrorMessage = "Cannot update position with non exists team"
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.DataError,
+				ErrorMessage = "Cannot update position with non exists team"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PositionsService),
-                CallerMethodName = nameof(_positionsService.UpdateAsync),
-                Request = positionData,
-                Response = new Exception(expectedResponse.ErrorMessage),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime()
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PositionsService),
+				CallerMethodName = nameof(_positionsService.UpdateAsync),
+				Request = positionData,
+				Response = new Exception(expectedResponse.ErrorMessage),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime()
+			};
 
             // Act
             BaseResponse actual = _positionsService.UpdateAsync(positionData, null).Result;
@@ -331,29 +331,29 @@ namespace EMS.Core.API.Tests.Services
         {
             // Arrange
             DbContextMock.ShouldThrowException = true;
-            PositionData positionData = new PositionData
-            {
-                Id = _position1.Id,
-                Name = "Test",
-                TeamId = _team.Id,
-                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
-                HourRate = 10
-            };
+            PositionData positionData = new()
+			{
+				Id = _position1.Id,
+				Name = "Test",
+				TeamId = _team.Id,
+				CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
+				HourRate = 10
+			};
 
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.DbError,
-                ErrorMessage = "An error occured while updating position"
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.DbError,
+				ErrorMessage = "An error occured while updating position"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PositionsService),
-                CallerMethodName = nameof(_positionsService.UpdateAsync),
-                Request = positionData,
-                Response = new Exception("DbContext test Exception"),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime()
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PositionsService),
+				CallerMethodName = nameof(_positionsService.UpdateAsync),
+				Request = positionData,
+				Response = new Exception("DbContext test Exception"),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime()
+			};
 
             // Act
             BaseResponse actual = _positionsService.UpdateAsync(positionData, null).Result;
@@ -368,29 +368,29 @@ namespace EMS.Core.API.Tests.Services
         {
             // Arrange
             DbContextMock.SaveChangesResult = 0;
-            PositionData positionData = new PositionData
-            {
-                Id = 1,
-                Name = "Test",
-                TeamId = _team.Id,
-                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
-                HourRate = 10
-            };
+            PositionData positionData = new()
+			{
+				Id = 1,
+				Name = "Test",
+				TeamId = _team.Id,
+				CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
+				HourRate = 10
+			};
 
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.UnknownError,
-                ErrorMessage = "Position has not been updated"
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.UnknownError,
+				ErrorMessage = "Position has not been updated"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PositionsService),
-                CallerMethodName = nameof(_positionsService.UpdateAsync),
-                Request = positionData,
-                Response = new Exception(expectedResponse.ErrorMessage),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime()
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PositionsService),
+				CallerMethodName = nameof(_positionsService.UpdateAsync),
+				Request = positionData,
+				Response = new Exception(expectedResponse.ErrorMessage),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime()
+			};
 
             // Act
             BaseResponse actual = _positionsService.UpdateAsync(positionData, null).Result;
@@ -404,29 +404,29 @@ namespace EMS.Core.API.Tests.Services
         public void DeleteAsync_should_delete_position_from_db()
         {
             // Arrange
-            PositionData positionData = new PositionData
-            {
-                Id = _position2.Id,
-                CreatedOn = Timestamp.FromDateTime(_position2.CreatedOn),
-                HourRate = _position2.HourRate,
-                Name = _position2.Name
-            };
+            PositionData positionData = new()
+			{
+				Id = _position2.Id,
+				CreatedOn = Timestamp.FromDateTime(_position2.CreatedOn),
+				HourRate = _position2.HourRate,
+				Name = _position2.Name
+			};
 
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.Success,
-                ErrorMessage = string.Empty,
-                DataId = positionData.Id
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.Success,
+				ErrorMessage = string.Empty,
+				DataId = positionData.Id
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PositionsService),
-                CallerMethodName = nameof(_positionsService.DeleteAsync),
-                Request = positionData,
-                Response = expectedResponse,
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime()
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PositionsService),
+				CallerMethodName = nameof(_positionsService.DeleteAsync),
+				Request = positionData,
+				Response = expectedResponse,
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime()
+			};
 
             // Act
             BaseResponse actual = _positionsService.DeleteAsync(positionData, null).Result;
@@ -440,29 +440,29 @@ namespace EMS.Core.API.Tests.Services
         public void DeleteAsync_should_handle_invalid_operation_exception()
         {
             // Arrange
-            PositionData positionData = new PositionData
-            {
-                Id = _position1.Id,
-                CreatedOn = Timestamp.FromDateTime(_position1.CreatedOn),
-                HourRate = _position1.HourRate,
-                Name = _position1.Name,
-                TeamId = _position1.TeamId
-            };
+            PositionData positionData = new()
+			{
+				Id = _position1.Id,
+				CreatedOn = Timestamp.FromDateTime(_position1.CreatedOn),
+				HourRate = _position1.HourRate,
+				Name = _position1.Name,
+				TeamId = _position1.TeamId
+			};
 
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.DataError,
-                ErrorMessage = "Cannot delete position related to team"
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.DataError,
+				ErrorMessage = "Cannot delete position related to team"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PositionsService),
-                CallerMethodName = nameof(_positionsService.DeleteAsync),
-                Request = positionData,
-                Response = new Exception(expectedResponse.ErrorMessage),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime()
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PositionsService),
+				CallerMethodName = nameof(_positionsService.DeleteAsync),
+				Request = positionData,
+				Response = new Exception(expectedResponse.ErrorMessage),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime()
+			};
 
             // Act
             BaseResponse actual = _positionsService.DeleteAsync(positionData, null).Result;
@@ -476,20 +476,20 @@ namespace EMS.Core.API.Tests.Services
         public void DeleteAsync_should_handle_null_reference_exception()
         {
             // Arrange
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.DataError,
-                ErrorMessage = "Position cannot be empty"
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.DataError,
+				ErrorMessage = "Position cannot be empty"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PositionsService),
-                CallerMethodName = nameof(_positionsService.DeleteAsync),
-                Request = null,
-                Response = new Exception(expectedResponse.ErrorMessage),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime()
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PositionsService),
+				CallerMethodName = nameof(_positionsService.DeleteAsync),
+				Request = null,
+				Response = new Exception(expectedResponse.ErrorMessage),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime()
+			};
 
             // Act
             BaseResponse actual = _positionsService.DeleteAsync(null, null).Result;
@@ -504,29 +504,29 @@ namespace EMS.Core.API.Tests.Services
         {
             // Arrange
             DbContextMock.ShouldThrowException = true;
-            PositionData positionData = new PositionData
-            {
-                Id = _position2.Id,
-                CreatedOn = Timestamp.FromDateTime(_position2.CreatedOn),
-                HourRate = _position2.HourRate,
-                Name = _position2.Name,
-                TeamId = _position2.TeamId
-            };
+            PositionData positionData = new()
+			{
+				Id = _position2.Id,
+				CreatedOn = Timestamp.FromDateTime(_position2.CreatedOn),
+				HourRate = _position2.HourRate,
+				Name = _position2.Name,
+				TeamId = _position2.TeamId
+			};
 
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.DbError,
-                ErrorMessage = "An error occured while deleting position"
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.DbError,
+				ErrorMessage = "An error occured while deleting position"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PositionsService),
-                CallerMethodName = nameof(_positionsService.DeleteAsync),
-                Request = positionData,
-                Response = new Exception("DbContext test Exception"),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime()
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PositionsService),
+				CallerMethodName = nameof(_positionsService.DeleteAsync),
+				Request = positionData,
+				Response = new Exception("DbContext test Exception"),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime()
+			};
 
             // Act
             BaseResponse actual = _positionsService.DeleteAsync(positionData, null).Result;
@@ -541,29 +541,29 @@ namespace EMS.Core.API.Tests.Services
         {
             // Arrange
             DbContextMock.SaveChangesResult = 0;
-            PositionData positionData = new PositionData
-            {
-                Id = _position2.Id,
-                CreatedOn = Timestamp.FromDateTime(_position1.CreatedOn),
-                HourRate = _position2.HourRate,
-                Name = _position2.Name,
-                TeamId = _position2.TeamId
-            };
+            PositionData positionData = new()
+			{
+				Id = _position2.Id,
+				CreatedOn = Timestamp.FromDateTime(_position1.CreatedOn),
+				HourRate = _position2.HourRate,
+				Name = _position2.Name,
+				TeamId = _position2.TeamId
+			};
 
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.UnknownError,
-                ErrorMessage = "Position has not been deleted"
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.UnknownError,
+				ErrorMessage = "Position has not been deleted"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PositionsService),
-                CallerMethodName = nameof(_positionsService.DeleteAsync),
-                Request = positionData,
-                Response = new Exception(expectedResponse.ErrorMessage),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime()
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PositionsService),
+				CallerMethodName = nameof(_positionsService.DeleteAsync),
+				Request = positionData,
+				Response = new Exception(expectedResponse.ErrorMessage),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime()
+			};
 
             // Act
             BaseResponse actual = _positionsService.DeleteAsync(positionData, null).Result;
@@ -577,14 +577,10 @@ namespace EMS.Core.API.Tests.Services
         public void GetAll_should_return_all_positions_from_db()
         {
             // Arrange
-            PositionsResponse expectedResponse = new PositionsResponse
-            {
-                Status = new BaseResponse
-                {
-                    Code = Code.Success,
-                    ErrorMessage = string.Empty
-                }
-            };
+            PositionsResponse expectedResponse = new()
+			{
+				Status = new BaseResponse { Code = Code.Success, ErrorMessage = string.Empty }
+			};
 
             expectedResponse.Data.Add(new PositionData
             {
@@ -603,14 +599,14 @@ namespace EMS.Core.API.Tests.Services
                 TeamId = _position2.TeamId
             });
             Empty request = new Empty();
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PositionsService),
-                CallerMethodName = nameof(_positionsService.GetAll),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = expectedResponse
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PositionsService),
+				CallerMethodName = nameof(_positionsService.GetAll),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = expectedResponse
+			};
 
             // Act
             PositionsResponse actual = _positionsService.GetAll(request, null).Result;
@@ -625,23 +621,19 @@ namespace EMS.Core.API.Tests.Services
         {
             // Arrange
             BaseMock.ShouldThrowException = true;
-            PositionsResponse expectedResponse = new PositionsResponse
-            {
-                Status = new BaseResponse
-                {
-                    Code = Code.UnknownError,
-                    ErrorMessage = "An error occured while loading positions data"
-                }
-            };
+            PositionsResponse expectedResponse = new()
+			{
+				Status = new BaseResponse { Code = Code.UnknownError, ErrorMessage = "An error occured while loading positions data" }
+			};
             Empty request = new Empty();
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PositionsService),
-                CallerMethodName = nameof(_positionsService.GetAll),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = new Exception("Test exception")
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PositionsService),
+				CallerMethodName = nameof(_positionsService.GetAll),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = new Exception("Test exception")
+			};
 
             // Act
             PositionsResponse actual = _positionsService.GetAll(request, null).Result;
@@ -655,36 +647,25 @@ namespace EMS.Core.API.Tests.Services
         public void GetbyId_should_return_position_by_id_from_db()
         {
             // Arrange
-            PositionResponse expectedResponse = new PositionResponse
-            {
-                Status = new BaseResponse
-                {
-                    Code = Code.Success,
-                    ErrorMessage = string.Empty
-                },
-                Data = new PositionData
-                {
-                    Id = _position2.Id,
-                    CreatedOn = Timestamp.FromDateTime(_position2.CreatedOn),
-                    HourRate = _position2.HourRate,
-                    Name = _position2.Name,
-                    TeamId = _position2.TeamId
-                }
-            };
+            PositionResponse expectedResponse = new()
+			{
+				Status = new BaseResponse { Code = Code.Success, ErrorMessage = string.Empty },
+				Data = new PositionData { Id = _position2.Id, CreatedOn = Timestamp.FromDateTime(_position2.CreatedOn), HourRate = _position2.HourRate, Name = _position2.Name, TeamId = _position2.TeamId }
+			};
 
-            PositionRequest request = new PositionRequest
-            {
-                PositionId = _position2.Id
-            };
+            PositionRequest request = new()
+			{
+				PositionId = _position2.Id
+			};
            
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PositionsService),
-                CallerMethodName = nameof(_positionsService.GetById),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = expectedResponse
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PositionsService),
+				CallerMethodName = nameof(_positionsService.GetById),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = expectedResponse
+			};
 
             // Act
             PositionResponse actual = _positionsService.GetById(request, null).Result;
@@ -698,28 +679,24 @@ namespace EMS.Core.API.Tests.Services
         public void GetbyId_should_return_not_found_result()
         {
             // Arrange
-            PositionResponse expectedResponse = new PositionResponse
-            {
-                Status = new BaseResponse
-                {
-                    Code = Code.DataError,
-                    ErrorMessage = "Requested position not found"
-                }
-            };
+            PositionResponse expectedResponse = new()
+			{
+				Status = new BaseResponse { Code = Code.DataError, ErrorMessage = "Requested position not found" }
+			};
 
-            PositionRequest request = new PositionRequest
-            {
-                PositionId = 3
-            };
+            PositionRequest request = new()
+			{
+				PositionId = 3
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PositionsService),
-                CallerMethodName = nameof(_positionsService.GetById),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = expectedResponse
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PositionsService),
+				CallerMethodName = nameof(_positionsService.GetById),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = expectedResponse
+			};
 
             // Act
             PositionResponse actual = _positionsService.GetById(request, null).Result;
@@ -734,28 +711,24 @@ namespace EMS.Core.API.Tests.Services
         {
             // Arrange
             BaseMock.ShouldThrowException = true;
-            PositionResponse expectedResponse = new PositionResponse
-            {
-                Status = new BaseResponse
-                {
-                    Code = Code.UnknownError,
-                    ErrorMessage = "An error occured while loading position data"
-                }
-            };
+            PositionResponse expectedResponse = new()
+			{
+				Status = new BaseResponse { Code = Code.UnknownError, ErrorMessage = "An error occured while loading position data" }
+			};
 
-            PositionRequest request = new PositionRequest
-            {
-                PositionId = 3
-            };
+            PositionRequest request = new()
+			{
+				PositionId = 3
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PositionsService),
-                CallerMethodName = nameof(_positionsService.GetById),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = new Exception("Test exception")
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PositionsService),
+				CallerMethodName = nameof(_positionsService.GetById),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = new Exception("Test exception")
+			};
 
             // Act
             PositionResponse actual = _positionsService.GetById(request, null).Result;

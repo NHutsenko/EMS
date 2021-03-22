@@ -48,19 +48,15 @@ namespace EMS.Core.API.Tests.Services
         public void GetByPersonId_should_return_all_other_payments_by_specified_person()
         {
             // Arrange
-            ByPersonIdRequest request = new ByPersonIdRequest
-            {
-                PersonId = 1
-            };
+            ByPersonIdRequest request = new()
+			{
+				PersonId = 1
+			};
 
-            OtherPaymentsResponse expectedResponse = new OtherPaymentsResponse
-            {
-                Status = new BaseResponse
-                {
-                    Code = Code.Success,
-                    ErrorMessage = string.Empty
-                }
-            };
+            OtherPaymentsResponse expectedResponse = new()
+			{
+				Status = new BaseResponse { Code = Code.Success, ErrorMessage = string.Empty }
+			};
 
             expectedResponse.Data.Add(new OtherPaymentData
             {
@@ -79,14 +75,14 @@ namespace EMS.Core.API.Tests.Services
                 Value = _otherPayment2.Value
             });
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(OtherPaymentsService),
-                CallerMethodName = nameof(_otherPaymentsService.GetByPersonId),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = expectedResponse
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(OtherPaymentsService),
+				CallerMethodName = nameof(_otherPaymentsService.GetByPersonId),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = expectedResponse
+			};
 
             // Act
             OtherPaymentsResponse actual = _otherPaymentsService.GetByPersonId(request, null).Result;
@@ -101,28 +97,24 @@ namespace EMS.Core.API.Tests.Services
         {
             // Arrange
             BaseMock.ShouldThrowException = true;
-            ByPersonIdRequest request = new ByPersonIdRequest
-            {
-                PersonId = 1
-            };
+            ByPersonIdRequest request = new()
+			{
+				PersonId = 1
+			};
 
-            OtherPaymentsResponse expectedResponse = new OtherPaymentsResponse
-            {
-                Status = new BaseResponse
-                {
-                    Code = Code.UnknownError,
-                    ErrorMessage = "An error ocured while loading other payments"
-                }
-            };
+            OtherPaymentsResponse expectedResponse = new()
+			{
+				Status = new BaseResponse { Code = Code.UnknownError, ErrorMessage = "An error ocured while loading other payments" }
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(OtherPaymentsService),
-                CallerMethodName = nameof(_otherPaymentsService.GetByPersonId),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = new Exception("Test exception")
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(OtherPaymentsService),
+				CallerMethodName = nameof(_otherPaymentsService.GetByPersonId),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = new Exception("Test exception")
+			};
 
             // Act
             OtherPaymentsResponse actual = _otherPaymentsService.GetByPersonId(request, null).Result;
@@ -136,27 +128,16 @@ namespace EMS.Core.API.Tests.Services
         public void GetByPersonIdAndDateRange_should_return_all_other_payments_by_specified_person_and_date_range()
         {
             // Arrange
-            ByPersonIdAndDateRangeRequest request = new ByPersonIdAndDateRangeRequest
-            {
-                Person = new ByPersonIdRequest
-                {
-                    PersonId = 1
-                },
-                Range = new ByDateRangeRequestRequest
-                {
-                    From = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
-                    To = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().AddDays(5))
-                }
-            };
+            ByPersonIdAndDateRangeRequest request = new()
+			{
+				Person = new ByPersonIdRequest { PersonId = 1 },
+				Range = new ByDateRangeRequest { From = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()), To = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().AddDays(5)) }
+			};
 
-            OtherPaymentsResponse expectedResponse = new OtherPaymentsResponse
-            {
-                Status = new BaseResponse
-                {
-                    Code = Code.Success,
-                    ErrorMessage = string.Empty
-                }
-            };
+            OtherPaymentsResponse expectedResponse = new()
+			{
+				Status = new BaseResponse { Code = Code.Success, ErrorMessage = string.Empty }
+			};
 
             expectedResponse.Data.Add(new OtherPaymentData
             {
@@ -167,14 +148,14 @@ namespace EMS.Core.API.Tests.Services
                 Value = _otherPayment1.Value
             });
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(OtherPaymentsService),
-                CallerMethodName = nameof(_otherPaymentsService.GetByPersonIdAndDateRange),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = expectedResponse
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(OtherPaymentsService),
+				CallerMethodName = nameof(_otherPaymentsService.GetByPersonIdAndDateRange),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = expectedResponse
+			};
 
             // Act
             OtherPaymentsResponse actual = _otherPaymentsService.GetByPersonIdAndDateRange(request, null).Result;
@@ -189,36 +170,25 @@ namespace EMS.Core.API.Tests.Services
         {
             // Arrange
             BaseMock.ShouldThrowException = true;
-            ByPersonIdAndDateRangeRequest request = new ByPersonIdAndDateRangeRequest
-            {
-                Person = new ByPersonIdRequest
-                {
-                    PersonId = 1
-                },
-                Range = new ByDateRangeRequestRequest
-                {
-                    From = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
-                    To = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().AddDays(5))
-                }
-            };
+            ByPersonIdAndDateRangeRequest request = new()
+			{
+				Person = new ByPersonIdRequest { PersonId = 1 },
+				Range = new ByDateRangeRequest { From = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()), To = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().AddDays(5)) }
+			};
 
-            OtherPaymentsResponse expectedResponse = new OtherPaymentsResponse
-            {
-                Status = new BaseResponse
-                {
-                    Code = Code.UnknownError,
-                    ErrorMessage = "An error ocured while loading other payments"
-                }
-            };
+            OtherPaymentsResponse expectedResponse = new()
+			{
+				Status = new BaseResponse { Code = Code.UnknownError, ErrorMessage = "An error ocured while loading other payments" }
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(OtherPaymentsService),
-                CallerMethodName = nameof(_otherPaymentsService.GetByPersonIdAndDateRange),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = new Exception("Test exception")
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(OtherPaymentsService),
+				CallerMethodName = nameof(_otherPaymentsService.GetByPersonIdAndDateRange),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = new Exception("Test exception")
+			};
 
             // Act
             OtherPaymentsResponse actual = _otherPaymentsService.GetByPersonIdAndDateRange(request, null).Result;
@@ -232,29 +202,29 @@ namespace EMS.Core.API.Tests.Services
         public void AddAsync_should_add_other_payment_to_db()
         {
             // Arrange
-            OtherPaymentData request = new OtherPaymentData
-            {
-                CreatedOn = Timestamp.FromDateTime(new DateTime(2021, 01, 16, 12, 0, 0, DateTimeKind.Utc)),
-                Comment = "test",
-                PersonId = 1,
-                Value = 100
-            };
+            OtherPaymentData request = new()
+			{
+				CreatedOn = Timestamp.FromDateTime(new DateTime(2021, 01, 16, 12, 0, 0, DateTimeKind.Utc)),
+				Comment = "test",
+				PersonId = 1,
+				Value = 100
+			};
 
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.Success,
-                DataId = 3,
-                ErrorMessage = string.Empty
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.Success,
+				DataId = 3,
+				ErrorMessage = string.Empty
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(OtherPaymentsService),
-                CallerMethodName = nameof(_otherPaymentsService.AddAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = expectedResponse
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(OtherPaymentsService),
+				CallerMethodName = nameof(_otherPaymentsService.AddAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = expectedResponse
+			};
 
             // Act
             BaseResponse actual = _otherPaymentsService.AddAsync(request, null).Result;
@@ -268,21 +238,21 @@ namespace EMS.Core.API.Tests.Services
         public void AddAsync_should_handle_null_reference_exception()
         {
             // Arrange
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.DataError,
-                DataId = 0,
-                ErrorMessage = "Other payment data cannot be empty"
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.DataError,
+				DataId = 0,
+				ErrorMessage = "Other payment data cannot be empty"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(OtherPaymentsService),
-                CallerMethodName = nameof(_otherPaymentsService.AddAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = null,
-                Response = new Exception(expectedResponse.ErrorMessage)
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(OtherPaymentsService),
+				CallerMethodName = nameof(_otherPaymentsService.AddAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = null,
+				Response = new Exception(expectedResponse.ErrorMessage)
+			};
 
             // Act
             BaseResponse actual = _otherPaymentsService.AddAsync(null, null).Result;
@@ -296,29 +266,29 @@ namespace EMS.Core.API.Tests.Services
         public void AddAsync_should_handle_argument_exception()
         {
             // Arrange
-            OtherPaymentData request = new OtherPaymentData
-            {
-                CreatedOn = Timestamp.FromDateTime(new DateTime(2021, 01, 16, 12, 0, 0, DateTimeKind.Utc)),
-                Comment = "test",
-                PersonId = 1,
-                Value = 0
-            };
+            OtherPaymentData request = new()
+			{
+				CreatedOn = Timestamp.FromDateTime(new DateTime(2021, 01, 16, 12, 0, 0, DateTimeKind.Utc)),
+				Comment = "test",
+				PersonId = 1,
+				Value = 0
+			};
 
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.DataError,
-                DataId = 0,
-                ErrorMessage = "Summ of payment cannot be equal to zero"
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.DataError,
+				DataId = 0,
+				ErrorMessage = "Summ of payment cannot be equal to zero"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(OtherPaymentsService),
-                CallerMethodName = nameof(_otherPaymentsService.AddAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = new Exception(expectedResponse.ErrorMessage)
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(OtherPaymentsService),
+				CallerMethodName = nameof(_otherPaymentsService.AddAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = new Exception(expectedResponse.ErrorMessage)
+			};
 
             // Act
             BaseResponse actual = _otherPaymentsService.AddAsync(request, null).Result;
@@ -333,29 +303,29 @@ namespace EMS.Core.API.Tests.Services
         {
             // Arrange
             DbContextMock.ShouldThrowException = true;
-            OtherPaymentData request = new OtherPaymentData
-            {
-                CreatedOn = Timestamp.FromDateTime(new DateTime(2021, 01, 16, 12, 0, 0, DateTimeKind.Utc)),
-                Comment = "test",
-                PersonId = 1,
-                Value = 10
-            };
+            OtherPaymentData request = new()
+			{
+				CreatedOn = Timestamp.FromDateTime(new DateTime(2021, 01, 16, 12, 0, 0, DateTimeKind.Utc)),
+				Comment = "test",
+				PersonId = 1,
+				Value = 10
+			};
 
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.DbError,
-                DataId = 0,
-                ErrorMessage = "An error occured while saving other payment"
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.DbError,
+				DataId = 0,
+				ErrorMessage = "An error occured while saving other payment"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(OtherPaymentsService),
-                CallerMethodName = nameof(_otherPaymentsService.AddAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = new Exception("DbContext test Exception")
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(OtherPaymentsService),
+				CallerMethodName = nameof(_otherPaymentsService.AddAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = new Exception("DbContext test Exception")
+			};
 
             // Act
             BaseResponse actual = _otherPaymentsService.AddAsync(request, null).Result;
@@ -370,29 +340,29 @@ namespace EMS.Core.API.Tests.Services
         {
             // Arrange
             DbContextMock.SaveChangesResult = 0;
-            OtherPaymentData request = new OtherPaymentData
-            {
-                CreatedOn = Timestamp.FromDateTime(new DateTime(2021, 01, 16, 12, 0, 0, DateTimeKind.Utc)),
-                Comment = "test",
-                PersonId = 1,
-                Value = 10
-            };
+            OtherPaymentData request = new()
+			{
+				CreatedOn = Timestamp.FromDateTime(new DateTime(2021, 01, 16, 12, 0, 0, DateTimeKind.Utc)),
+				Comment = "test",
+				PersonId = 1,
+				Value = 10
+			};
 
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.UnknownError,
-                DataId = 0,
-                ErrorMessage = "Other payment has not been saved"
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.UnknownError,
+				DataId = 0,
+				ErrorMessage = "Other payment has not been saved"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(OtherPaymentsService),
-                CallerMethodName = nameof(_otherPaymentsService.AddAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = new Exception(expectedResponse.ErrorMessage)
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(OtherPaymentsService),
+				CallerMethodName = nameof(_otherPaymentsService.AddAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = new Exception(expectedResponse.ErrorMessage)
+			};
 
             // Act
             BaseResponse actual = _otherPaymentsService.AddAsync(request, null).Result;
@@ -406,30 +376,30 @@ namespace EMS.Core.API.Tests.Services
         public void UpdateAsync_should_update_other_payment_into_db()
         {
             // Arrange
-            OtherPaymentData request = new OtherPaymentData
-            {
-                CreatedOn = Timestamp.FromDateTime(new DateTime(2021, 01, 16, 12, 0, 0, DateTimeKind.Utc)),
-                Comment = "test",
-                PersonId = 1,
-                Value = 100,
-                Id = _otherPayment1.Id
-            };
+            OtherPaymentData request = new()
+			{
+				CreatedOn = Timestamp.FromDateTime(new DateTime(2021, 01, 16, 12, 0, 0, DateTimeKind.Utc)),
+				Comment = "test",
+				PersonId = 1,
+				Value = 100,
+				Id = _otherPayment1.Id
+			};
 
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.Success,
-                DataId = 1,
-                ErrorMessage = string.Empty
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.Success,
+				DataId = 1,
+				ErrorMessage = string.Empty
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(OtherPaymentsService),
-                CallerMethodName = nameof(_otherPaymentsService.UpdateAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = expectedResponse
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(OtherPaymentsService),
+				CallerMethodName = nameof(_otherPaymentsService.UpdateAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = expectedResponse
+			};
 
             // Act
             BaseResponse actual = _otherPaymentsService.UpdateAsync(request, null).Result;
@@ -443,21 +413,21 @@ namespace EMS.Core.API.Tests.Services
         public void UpdateAsync_should_handle_null_reference_exception()
         {
             // Arrange
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.DataError,
-                DataId = 0,
-                ErrorMessage = "Other payment data cannot be empty"
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.DataError,
+				DataId = 0,
+				ErrorMessage = "Other payment data cannot be empty"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(OtherPaymentsService),
-                CallerMethodName = nameof(_otherPaymentsService.UpdateAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = null,
-                Response = new Exception(expectedResponse.ErrorMessage)
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(OtherPaymentsService),
+				CallerMethodName = nameof(_otherPaymentsService.UpdateAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = null,
+				Response = new Exception(expectedResponse.ErrorMessage)
+			};
 
             // Act
             BaseResponse actual = _otherPaymentsService.UpdateAsync(null, null).Result;
@@ -471,30 +441,30 @@ namespace EMS.Core.API.Tests.Services
         public void UpdateAsync_should_handle_argument_exception()
         {
             // Arrange
-            OtherPaymentData request = new OtherPaymentData
-            {
-                CreatedOn = Timestamp.FromDateTime(new DateTime(2021, 01, 16, 12, 0, 0, DateTimeKind.Utc)),
-                Comment = "test",
-                PersonId = 1,
-                Value = 0,
-                Id = _otherPayment1.Id
-            };
+            OtherPaymentData request = new()
+			{
+				CreatedOn = Timestamp.FromDateTime(new DateTime(2021, 01, 16, 12, 0, 0, DateTimeKind.Utc)),
+				Comment = "test",
+				PersonId = 1,
+				Value = 0,
+				Id = _otherPayment1.Id
+			};
 
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.DataError,
-                DataId = 0,
-                ErrorMessage = "Summ of payment cannot be equal to zero"
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.DataError,
+				DataId = 0,
+				ErrorMessage = "Summ of payment cannot be equal to zero"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(OtherPaymentsService),
-                CallerMethodName = nameof(_otherPaymentsService.UpdateAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = new Exception(expectedResponse.ErrorMessage)
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(OtherPaymentsService),
+				CallerMethodName = nameof(_otherPaymentsService.UpdateAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = new Exception(expectedResponse.ErrorMessage)
+			};
 
             // Act
             BaseResponse actual = _otherPaymentsService.UpdateAsync(request, null).Result;
@@ -509,30 +479,30 @@ namespace EMS.Core.API.Tests.Services
         {
             // Arrange
             DbContextMock.ShouldThrowException = true;
-            OtherPaymentData request = new OtherPaymentData
-            {
-                CreatedOn = Timestamp.FromDateTime(new DateTime(2021, 01, 16, 12, 0, 0, DateTimeKind.Utc)),
-                Comment = "test",
-                PersonId = 1,
-                Value = 10,
-                Id = _otherPayment1.Id
-            };
+            OtherPaymentData request = new()
+			{
+				CreatedOn = Timestamp.FromDateTime(new DateTime(2021, 01, 16, 12, 0, 0, DateTimeKind.Utc)),
+				Comment = "test",
+				PersonId = 1,
+				Value = 10,
+				Id = _otherPayment1.Id
+			};
 
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.DbError,
-                DataId = 0,
-                ErrorMessage = "An error occured while updating other payment"
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.DbError,
+				DataId = 0,
+				ErrorMessage = "An error occured while updating other payment"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(OtherPaymentsService),
-                CallerMethodName = nameof(_otherPaymentsService.UpdateAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = new Exception("DbContext test Exception")
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(OtherPaymentsService),
+				CallerMethodName = nameof(_otherPaymentsService.UpdateAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = new Exception("DbContext test Exception")
+			};
 
             // Act
             BaseResponse actual = _otherPaymentsService.UpdateAsync(request, null).Result;
@@ -547,30 +517,30 @@ namespace EMS.Core.API.Tests.Services
         {
             // Arrange
             DbContextMock.SaveChangesResult = 0;
-            OtherPaymentData request = new OtherPaymentData
-            {
-                CreatedOn = Timestamp.FromDateTime(new DateTime(2021, 01, 16, 12, 0, 0, DateTimeKind.Utc)),
-                Comment = "test",
-                PersonId = 1,
-                Value = 10,
-                Id = _otherPayment1.Id
-            };
+            OtherPaymentData request = new()
+			{
+				CreatedOn = Timestamp.FromDateTime(new DateTime(2021, 01, 16, 12, 0, 0, DateTimeKind.Utc)),
+				Comment = "test",
+				PersonId = 1,
+				Value = 10,
+				Id = _otherPayment1.Id
+			};
 
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.UnknownError,
-                DataId = 0,
-                ErrorMessage = "Other payment has not been updated"
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.UnknownError,
+				DataId = 0,
+				ErrorMessage = "Other payment has not been updated"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(OtherPaymentsService),
-                CallerMethodName = nameof(_otherPaymentsService.UpdateAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = new Exception(expectedResponse.ErrorMessage)
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(OtherPaymentsService),
+				CallerMethodName = nameof(_otherPaymentsService.UpdateAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = new Exception(expectedResponse.ErrorMessage)
+			};
 
             // Act
             BaseResponse actual = _otherPaymentsService.UpdateAsync(request, null).Result;
@@ -586,30 +556,30 @@ namespace EMS.Core.API.Tests.Services
             _otherPayment1.CreatedOn = _otherPayment1.CreatedOn.AddMonths(4);
             _dbContext.OtherPayments.Update(_otherPayment1);
             // Arrange
-            OtherPaymentData request = new OtherPaymentData
-            {
-                CreatedOn = Timestamp.FromDateTime(_otherPayment1.CreatedOn),
-                Comment = _otherPayment1.Comment,
-                PersonId = _otherPayment1.PersonId,
-                Value = _otherPayment1.Value,
-                Id = _otherPayment1.Id
-            };
+            OtherPaymentData request = new()
+			{
+				CreatedOn = Timestamp.FromDateTime(_otherPayment1.CreatedOn),
+				Comment = _otherPayment1.Comment,
+				PersonId = _otherPayment1.PersonId,
+				Value = _otherPayment1.Value,
+				Id = _otherPayment1.Id
+			};
 
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.Success,
-                DataId = _otherPayment1.Id,
-                ErrorMessage = string.Empty
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.Success,
+				DataId = _otherPayment1.Id,
+				ErrorMessage = string.Empty
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(OtherPaymentsService),
-                CallerMethodName = nameof(_otherPaymentsService.DeleteAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = expectedResponse
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(OtherPaymentsService),
+				CallerMethodName = nameof(_otherPaymentsService.DeleteAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = expectedResponse
+			};
 
             // Act
             BaseResponse actual = _otherPaymentsService.DeleteAsync(request, null).Result;
@@ -623,20 +593,20 @@ namespace EMS.Core.API.Tests.Services
         public void DeleteAsync_should_handle_null_reference_exception()
         {
             // Arrange
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.DataError,
-                ErrorMessage = "Other payment cannot be empty"
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.DataError,
+				ErrorMessage = "Other payment cannot be empty"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(OtherPaymentsService),
-                CallerMethodName = nameof(_otherPaymentsService.DeleteAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = null,
-                Response = new Exception(expectedResponse.ErrorMessage)
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(OtherPaymentsService),
+				CallerMethodName = nameof(_otherPaymentsService.DeleteAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = null,
+				Response = new Exception(expectedResponse.ErrorMessage)
+			};
 
             // Act
             BaseResponse actual = _otherPaymentsService.DeleteAsync(null, null).Result;
@@ -650,29 +620,29 @@ namespace EMS.Core.API.Tests.Services
         public void DeleteAsync_should_handle_invalid_operation_exception()
         {
             // Arrange
-            OtherPaymentData request = new OtherPaymentData
-            {
-                CreatedOn = Timestamp.FromDateTime(_otherPayment1.CreatedOn),
-                Comment = _otherPayment1.Comment,
-                PersonId = _otherPayment1.PersonId,
-                Value = _otherPayment1.Value,
-                Id = _otherPayment1.Id
-            };
+            OtherPaymentData request = new()
+			{
+				CreatedOn = Timestamp.FromDateTime(_otherPayment1.CreatedOn),
+				Comment = _otherPayment1.Comment,
+				PersonId = _otherPayment1.PersonId,
+				Value = _otherPayment1.Value,
+				Id = _otherPayment1.Id
+			};
 
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.DataError,
-                ErrorMessage = "Cannot delete history record"
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.DataError,
+				ErrorMessage = "Cannot delete history record"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(OtherPaymentsService),
-                CallerMethodName = nameof(_otherPaymentsService.DeleteAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = new Exception(expectedResponse.ErrorMessage)
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(OtherPaymentsService),
+				CallerMethodName = nameof(_otherPaymentsService.DeleteAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = new Exception(expectedResponse.ErrorMessage)
+			};
 
             // Act
             BaseResponse actual = _otherPaymentsService.DeleteAsync(request, null).Result;
@@ -689,29 +659,29 @@ namespace EMS.Core.API.Tests.Services
             _otherPayment1.CreatedOn = _otherPayment1.CreatedOn.AddMonths(4);
             _dbContext.OtherPayments.Update(_otherPayment1);
             DbContextMock.ShouldThrowException = true;
-            OtherPaymentData request = new OtherPaymentData
-            {
-                CreatedOn = Timestamp.FromDateTime(_otherPayment1.CreatedOn),
-                Comment = _otherPayment1.Comment,
-                PersonId = _otherPayment1.PersonId,
-                Value = _otherPayment1.Value,
-                Id = _otherPayment1.Id
-            };
+            OtherPaymentData request = new()
+			{
+				CreatedOn = Timestamp.FromDateTime(_otherPayment1.CreatedOn),
+				Comment = _otherPayment1.Comment,
+				PersonId = _otherPayment1.PersonId,
+				Value = _otherPayment1.Value,
+				Id = _otherPayment1.Id
+			};
 
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.DbError,
-                ErrorMessage = "An error occured while deleting other payment"
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.DbError,
+				ErrorMessage = "An error occured while deleting other payment"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(OtherPaymentsService),
-                CallerMethodName = nameof(_otherPaymentsService.DeleteAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = new Exception("DbContext test Exception")
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(OtherPaymentsService),
+				CallerMethodName = nameof(_otherPaymentsService.DeleteAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = new Exception("DbContext test Exception")
+			};
 
             // Act
             BaseResponse actual = _otherPaymentsService.DeleteAsync(request, null).Result;
@@ -728,29 +698,29 @@ namespace EMS.Core.API.Tests.Services
             _otherPayment1.CreatedOn = _otherPayment1.CreatedOn.AddMonths(4);
             _dbContext.OtherPayments.Update(_otherPayment1);
             DbContextMock.SaveChangesResult = 0;
-            OtherPaymentData request = new OtherPaymentData
-            {
-                CreatedOn = Timestamp.FromDateTime(_otherPayment1.CreatedOn),
-                Comment = _otherPayment1.Comment,
-                PersonId = _otherPayment1.PersonId,
-                Value = _otherPayment1.Value,
-                Id = _otherPayment1.Id
-            };
+            OtherPaymentData request = new()
+			{
+				CreatedOn = Timestamp.FromDateTime(_otherPayment1.CreatedOn),
+				Comment = _otherPayment1.Comment,
+				PersonId = _otherPayment1.PersonId,
+				Value = _otherPayment1.Value,
+				Id = _otherPayment1.Id
+			};
 
-            BaseResponse expectedResponse = new BaseResponse
-            {
-                Code = Code.UnknownError,
-                ErrorMessage = "Other payment has not been deleted"
-            };
+            BaseResponse expectedResponse = new()
+			{
+				Code = Code.UnknownError,
+				ErrorMessage = "Other payment has not been deleted"
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(OtherPaymentsService),
-                CallerMethodName = nameof(_otherPaymentsService.DeleteAsync),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = new Exception(expectedResponse.ErrorMessage)
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(OtherPaymentsService),
+				CallerMethodName = nameof(_otherPaymentsService.DeleteAsync),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = new Exception(expectedResponse.ErrorMessage)
+			};
 
             // Act
             BaseResponse actual = _otherPaymentsService.DeleteAsync(request, null).Result;

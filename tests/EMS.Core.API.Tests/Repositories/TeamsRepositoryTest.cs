@@ -90,11 +90,11 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddAsync_should_add_teams_to_db()
         {
             // Arrange
-            Team toAdd = new Team
-            {
-                Name = "Test",
-                Description = "test"
-            };
+            Team toAdd = new()
+			{
+				Name = "Test",
+				Description = "test"
+			};
 
             // Act
             int result = _teamsRepository.AddAsync(toAdd).Result;
@@ -109,12 +109,12 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddAsync_should_throw_argument_exception_because_team_with_the_same_name_already_exists()
         {
             // Arrange
-            Team toAdd = new Team
-            {
-                Name = "test1",
-                Description = "test",
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime()
-            };
+            Team toAdd = new()
+			{
+				Name = "test1",
+				Description = "test",
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime()
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _teamsRepository.AddAsync(toAdd), "Team succesfully throws an exception because team with the same name already exists");
@@ -125,12 +125,12 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddAsync_should_throw_an_exception_because_team_name_is_empty()
         {
             // Arrange
-            Team toAdd = new Team
-            {
-                Name = "",
-                Description = "test",
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime()
-            };
+            Team toAdd = new()
+			{
+				Name = "",
+				Description = "test",
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime()
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _teamsRepository.AddAsync(toAdd), "Team succesfully throws an exception because team name is empty");
@@ -142,12 +142,12 @@ namespace EMS.Core.API.Tests.Repositories
         {
             // Arrange
             DbContextMock.ShouldThrowException = true;
-            Team toAdd = new Team
-            {
-                Name = "test",
-                Description = "test",
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime()
-            };
+            Team toAdd = new()
+			{
+				Name = "test",
+				Description = "test",
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime()
+			};
 
             // Assert
             Assert.ThrowsAsync<DbUpdateException>(() => _teamsRepository.AddAsync(toAdd), "Exception from db throws as expected");
@@ -189,13 +189,13 @@ namespace EMS.Core.API.Tests.Repositories
         public void UpdateAsync_should_update_enitity_by_id()
         {
             // Arrange
-            Team team = new Team
-            {
-                Id = _test1.Id,
-                Name = "new test name",
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Description = "new test description"
-            };
+            Team team = new()
+			{
+				Id = _test1.Id,
+				Name = "new test name",
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Description = "new test description"
+			};
 
             // Act
             int result = _teamsRepository.UpdateAsync(team).Result;
@@ -213,13 +213,13 @@ namespace EMS.Core.API.Tests.Repositories
         public void UpdateAsync_should_throw_argument_exception_because_team_with_the_same_name_already_exists()
         {
             // Arrange
-            Team toAdd = new Team
-            {
-                Id = _test2.Id,
-                Name = "test1",
-                Description = "test",
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime()
-            };
+            Team toAdd = new()
+			{
+				Id = _test2.Id,
+				Name = "test1",
+				Description = "test",
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime()
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _teamsRepository.UpdateAsync(toAdd), "Team succesfully throws an exception because team with the same name already exists");
@@ -231,13 +231,13 @@ namespace EMS.Core.API.Tests.Repositories
         {
             // Arrange
             DbContextMock.ShouldThrowException = true;
-            Team team = new Team
-            {
-                Id = _test1.Id,
-                Name = "new test name",
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Description = "new test description"
-            };
+            Team team = new()
+			{
+				Id = _test1.Id,
+				Name = "new test name",
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Description = "new test description"
+			};
 
             // Assert
             Assert.ThrowsAsync<DbUpdateException>(() => _teamsRepository.UpdateAsync(team), "Exception from db throws as expected");
@@ -248,13 +248,13 @@ namespace EMS.Core.API.Tests.Repositories
         public void UpdateAsync_should_throw_an_exception_because_team_name_is_empty()
         {
             // Arrange
-            Team team = new Team
-            {
-                Id = _test1.Id,
-                Name = "",
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Description = "new test description"
-            };
+            Team team = new()
+			{
+				Id = _test1.Id,
+				Name = "",
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Description = "new test description"
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _teamsRepository.UpdateAsync(team), "Succesfullty throwed an exception that team name cannot be null while updating");
@@ -273,13 +273,13 @@ namespace EMS.Core.API.Tests.Repositories
         public void DeleteAsync_should_succesfully_delete_team_from_DB()
         {
             // Arrange
-            Team team = new Team
-            {
-                Id = 3,
-                Name = "to delete",
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Description = "new test description"
-            };
+            Team team = new()
+			{
+				Id = 3,
+				Name = "to delete",
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Description = "new test description"
+			};
             _dbContext.Teams.Add(team);
 
             // Act
@@ -296,13 +296,13 @@ namespace EMS.Core.API.Tests.Repositories
         {
             // Arrange
             DbContextMock.ShouldThrowException = true;
-            Team team = new Team
-            {
-                Id = 3,
-                Name = "new test name",
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Description = "new test description"
-            };
+            Team team = new()
+			{
+				Id = 3,
+				Name = "new test name",
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Description = "new test description"
+			};
 
             // Assert
             Assert.ThrowsAsync<DbUpdateException>(() => _teamsRepository.DeleteAsync(team), "Exception from db throws as expected");

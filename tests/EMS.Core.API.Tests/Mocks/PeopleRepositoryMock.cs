@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics.CodeAnalysis;
 using EMS.Common.Utils.DateTimeUtil;
 using EMS.Core.API.DAL;
 using EMS.Core.API.DAL.Repositories;
@@ -17,8 +12,8 @@ namespace EMS.Core.API.Tests.Mocks
     {
         public static Mock<PeopleRepository> SetupMock(IApplicationDbContext dbContext, IDateTimeUtil dateTimeUtil)
         {
-            Mock<PeopleRepository> mock = new Mock<PeopleRepository>(dbContext, dateTimeUtil);
-            PeopleRepository repository = new PeopleRepository(dbContext, dateTimeUtil);
+            Mock<PeopleRepository> mock = new(dbContext, dateTimeUtil);
+            PeopleRepository repository = new(dbContext, dateTimeUtil);
 
             mock.Setup(m => m.AddAsync(It.IsAny<Person>())).Returns<Person>((person) =>
             {

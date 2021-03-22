@@ -40,14 +40,14 @@ namespace EMS.Core.API.Services
                 {
                     throw new Exception("Day off has not been saved");
                 }
-                BaseResponse response = new BaseResponse
+                BaseResponse response = new()
                 {
                     Code = Code.Success,
                     ErrorMessage = string.Empty,
                     DataId = dayOff.Id
                 };
 
-                LogData logData = new LogData
+                LogData logData = new()
                 {
                     CallSide = nameof(DayOffsService),
                     CallerMethodName = nameof(AddAsync),
@@ -61,14 +61,14 @@ namespace EMS.Core.API.Services
             }
             catch(NullReferenceException nrex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(DayOffsService),
-                    CallerMethodName = nameof(AddAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = nrex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(DayOffsService),
+					CallerMethodName = nameof(AddAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = nrex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -78,14 +78,14 @@ namespace EMS.Core.API.Services
             }
             catch(ArgumentException aex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(DayOffsService),
-                    CallerMethodName = nameof(AddAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = aex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(DayOffsService),
+					CallerMethodName = nameof(AddAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = aex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -95,14 +95,14 @@ namespace EMS.Core.API.Services
             }
             catch(DbUpdateException duex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(DayOffsService),
-                    CallerMethodName = nameof(AddAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = duex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(DayOffsService),
+					CallerMethodName = nameof(AddAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = duex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -112,14 +112,14 @@ namespace EMS.Core.API.Services
             }
             catch(Exception ex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(DayOffsService),
-                    CallerMethodName = nameof(AddAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(DayOffsService),
+					CallerMethodName = nameof(AddAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -141,35 +141,35 @@ namespace EMS.Core.API.Services
                 {
                     throw new Exception("Day off has not been deleted");
                 }
-                BaseResponse response = new BaseResponse
-                {
-                    Code = Code.Success,
-                    ErrorMessage = string.Empty,
-                    DataId = dayOff.Id
-                };
+                BaseResponse response = new()
+				{
+					Code = Code.Success,
+					ErrorMessage = string.Empty,
+					DataId = dayOff.Id
+				};
 
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(DayOffsService),
-                    CallerMethodName = nameof(DeleteAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = response
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(DayOffsService),
+					CallerMethodName = nameof(DeleteAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = response
+				};
                 _logger.AddLog(logData);
 
                 return response;
             }
             catch (NullReferenceException nrex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(DayOffsService),
-                    CallerMethodName = nameof(DeleteAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = nrex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(DayOffsService),
+					CallerMethodName = nameof(DeleteAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = nrex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -179,14 +179,14 @@ namespace EMS.Core.API.Services
             }
             catch (InvalidOperationException ioex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(DayOffsService),
-                    CallerMethodName = nameof(DeleteAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ioex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(DayOffsService),
+					CallerMethodName = nameof(DeleteAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ioex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -196,14 +196,14 @@ namespace EMS.Core.API.Services
             }
             catch (DbUpdateException duex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(DayOffsService),
-                    CallerMethodName = nameof(DeleteAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = duex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(DayOffsService),
+					CallerMethodName = nameof(DeleteAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = duex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -213,14 +213,14 @@ namespace EMS.Core.API.Services
             }
             catch (Exception ex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(DayOffsService),
-                    CallerMethodName = nameof(DeleteAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(DayOffsService),
+					CallerMethodName = nameof(DeleteAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -243,35 +243,35 @@ namespace EMS.Core.API.Services
                 {
                     throw new Exception("Day off has not been saved");
                 }
-                BaseResponse response = new BaseResponse
-                {
-                    Code = Code.Success,
-                    ErrorMessage = string.Empty,
-                    DataId = dayOff.Id
-                };
+                BaseResponse response = new()
+				{
+					Code = Code.Success,
+					ErrorMessage = string.Empty,
+					DataId = dayOff.Id
+				};
 
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(DayOffsService),
-                    CallerMethodName = nameof(UpdateAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = response
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(DayOffsService),
+					CallerMethodName = nameof(UpdateAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = response
+				};
                 _logger.AddLog(logData);
 
                 return response;
             }
             catch (NullReferenceException nrex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(DayOffsService),
-                    CallerMethodName = nameof(UpdateAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = nrex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(DayOffsService),
+					CallerMethodName = nameof(UpdateAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = nrex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -281,14 +281,14 @@ namespace EMS.Core.API.Services
             }
             catch (ArgumentException aex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(DayOffsService),
-                    CallerMethodName = nameof(UpdateAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = aex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(DayOffsService),
+					CallerMethodName = nameof(UpdateAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = aex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -298,14 +298,14 @@ namespace EMS.Core.API.Services
             }
             catch (DbUpdateException duex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(DayOffsService),
-                    CallerMethodName = nameof(UpdateAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = duex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(DayOffsService),
+					CallerMethodName = nameof(UpdateAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = duex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -315,14 +315,14 @@ namespace EMS.Core.API.Services
             }
             catch (Exception ex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(DayOffsService),
-                    CallerMethodName = nameof(UpdateAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(DayOffsService),
+					CallerMethodName = nameof(UpdateAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -334,14 +334,10 @@ namespace EMS.Core.API.Services
 
         public override Task<DayOffsResponse> GetByPersonId(ByPersonIdRequest request, ServerCallContext context)
         {
-            DayOffsResponse response = new DayOffsResponse
-            {
-                Status = new BaseResponse
-                {
-                    Code = Code.Success,
-                    ErrorMessage = string.Empty
-                }
-            };
+            DayOffsResponse response = new()
+			{
+				Status = new BaseResponse { Code = Code.Success, ErrorMessage = string.Empty }
+			};
 
             try
             {
@@ -352,26 +348,26 @@ namespace EMS.Core.API.Services
                     response.Data.Add(ToRpcModel(dayOff));
                 }
 
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(DayOffsService),
-                    CallerMethodName = nameof(GetByPersonId),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = response
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(DayOffsService),
+					CallerMethodName = nameof(GetByPersonId),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = response
+				};
                 _logger.AddLog(logData);
             }
             catch(Exception ex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(DayOffsService),
-                    CallerMethodName = nameof(GetByPersonId),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(DayOffsService),
+					CallerMethodName = nameof(GetByPersonId),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ex
+				};
                 _logger.AddErrorLog(logData);
                 response.Status.Code = Code.UnknownError;
                 response.Status.ErrorMessage = "An error occured while loading day offs data";
@@ -381,14 +377,10 @@ namespace EMS.Core.API.Services
 
         public override Task<DayOffsResponse> GetByPersonIdAndDateRange(ByPersonIdAndDateRangeRequest request, ServerCallContext context)
         {
-            DayOffsResponse response = new DayOffsResponse
-            {
-                Status = new BaseResponse
-                {
-                    Code = Code.Success,
-                    ErrorMessage = string.Empty
-                }
-            };
+            DayOffsResponse response = new()
+			{
+				Status = new BaseResponse { Code = Code.Success, ErrorMessage = string.Empty }
+			};
             try
             {
                 IQueryable<DayOff> dayOffs = _dayOffRepository.GetByDateRangeAndPersonId(request.Range.From.ToDateTime(), request.Range.To.ToDateTime(), request.Person.PersonId);
@@ -398,26 +390,26 @@ namespace EMS.Core.API.Services
                     response.Data.Add(ToRpcModel(dayOff));
                 }
 
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(DayOffsService),
-                    CallerMethodName = nameof(GetByPersonIdAndDateRange),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = response
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(DayOffsService),
+					CallerMethodName = nameof(GetByPersonIdAndDateRange),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = response
+				};
                 _logger.AddLog(logData);
             }
             catch(Exception ex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(DayOffsService),
-                    CallerMethodName = nameof(GetByPersonIdAndDateRange),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(DayOffsService),
+					CallerMethodName = nameof(GetByPersonIdAndDateRange),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ex
+				};
                 _logger.AddErrorLog(logData);
                 response.Status.Code = Code.UnknownError;
                 response.Status.ErrorMessage = "An error occured while loading day offs data";

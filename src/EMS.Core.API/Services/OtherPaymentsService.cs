@@ -38,34 +38,34 @@ namespace EMS.Core.API.Services
                 {
                     throw new Exception("Other payment has not been saved");
                 }
-                BaseResponse response = new BaseResponse
+                BaseResponse response = new()
                 {
                     Code = Code.Success,
                     ErrorMessage = string.Empty,
                     DataId = otherPayment.Id
                 };
 
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(OtherPaymentsService),
-                    CallerMethodName = nameof(AddAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = response
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(OtherPaymentsService),
+					CallerMethodName = nameof(AddAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = response
+				};
                 _logger.AddLog(logData);
                 return response;
             }
             catch(NullReferenceException nrex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(OtherPaymentsService),
-                    CallerMethodName = nameof(AddAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = nrex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(OtherPaymentsService),
+					CallerMethodName = nameof(AddAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = nrex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -75,14 +75,14 @@ namespace EMS.Core.API.Services
             }
             catch(ArgumentException aex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(OtherPaymentsService),
-                    CallerMethodName = nameof(AddAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = aex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(OtherPaymentsService),
+					CallerMethodName = nameof(AddAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = aex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -92,14 +92,14 @@ namespace EMS.Core.API.Services
             }
             catch(DbUpdateException duex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(OtherPaymentsService),
-                    CallerMethodName = nameof(AddAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = duex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(OtherPaymentsService),
+					CallerMethodName = nameof(AddAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = duex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -109,14 +109,14 @@ namespace EMS.Core.API.Services
             }
             catch(Exception ex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(OtherPaymentsService),
-                    CallerMethodName = nameof(AddAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(OtherPaymentsService),
+					CallerMethodName = nameof(AddAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -139,34 +139,34 @@ namespace EMS.Core.API.Services
                 {
                     throw new Exception("Other payment has not been deleted");
                 }
-                BaseResponse response = new BaseResponse
-                {
-                    Code = Code.Success,
-                    ErrorMessage = string.Empty,
-                    DataId = otherPayment.Id
-                };
+                BaseResponse response = new()
+				{
+					Code = Code.Success,
+					ErrorMessage = string.Empty,
+					DataId = otherPayment.Id
+				};
 
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(OtherPaymentsService),
-                    CallerMethodName = nameof(DeleteAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = response
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(OtherPaymentsService),
+					CallerMethodName = nameof(DeleteAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = response
+				};
                 _logger.AddLog(logData);
                 return response;
             }
             catch (NullReferenceException nrex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(OtherPaymentsService),
-                    CallerMethodName = nameof(DeleteAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = nrex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(OtherPaymentsService),
+					CallerMethodName = nameof(DeleteAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = nrex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -176,14 +176,14 @@ namespace EMS.Core.API.Services
             }
             catch (InvalidOperationException ioex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(OtherPaymentsService),
-                    CallerMethodName = nameof(DeleteAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ioex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(OtherPaymentsService),
+					CallerMethodName = nameof(DeleteAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ioex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -193,14 +193,14 @@ namespace EMS.Core.API.Services
             }
             catch (DbUpdateException duex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(OtherPaymentsService),
-                    CallerMethodName = nameof(DeleteAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = duex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(OtherPaymentsService),
+					CallerMethodName = nameof(DeleteAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = duex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -210,14 +210,14 @@ namespace EMS.Core.API.Services
             }
             catch (Exception ex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(OtherPaymentsService),
-                    CallerMethodName = nameof(DeleteAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(OtherPaymentsService),
+					CallerMethodName = nameof(DeleteAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -239,34 +239,34 @@ namespace EMS.Core.API.Services
                 {
                     throw new Exception("Other payment has not been updated");
                 }
-                BaseResponse response = new BaseResponse
-                {
-                    Code = Code.Success,
-                    ErrorMessage = string.Empty,
-                    DataId = otherPayment.Id
-                };
+                BaseResponse response = new()
+				{
+					Code = Code.Success,
+					ErrorMessage = string.Empty,
+					DataId = otherPayment.Id
+				};
 
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(OtherPaymentsService),
-                    CallerMethodName = nameof(UpdateAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = response
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(OtherPaymentsService),
+					CallerMethodName = nameof(UpdateAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = response
+				};
                 _logger.AddLog(logData);
                 return response;
             }
             catch (NullReferenceException nrex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(OtherPaymentsService),
-                    CallerMethodName = nameof(UpdateAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = nrex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(OtherPaymentsService),
+					CallerMethodName = nameof(UpdateAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = nrex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -276,14 +276,14 @@ namespace EMS.Core.API.Services
             }
             catch (ArgumentException aex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(OtherPaymentsService),
-                    CallerMethodName = nameof(UpdateAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = aex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(OtherPaymentsService),
+					CallerMethodName = nameof(UpdateAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = aex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -293,14 +293,14 @@ namespace EMS.Core.API.Services
             }
             catch (DbUpdateException duex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(OtherPaymentsService),
-                    CallerMethodName = nameof(UpdateAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = duex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(OtherPaymentsService),
+					CallerMethodName = nameof(UpdateAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = duex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -310,14 +310,14 @@ namespace EMS.Core.API.Services
             }
             catch (Exception ex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(OtherPaymentsService),
-                    CallerMethodName = nameof(UpdateAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(OtherPaymentsService),
+					CallerMethodName = nameof(UpdateAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ex
+				};
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
                 {
@@ -346,26 +346,26 @@ namespace EMS.Core.API.Services
                     response.Data.Add(ToRpcModel(otherPayment));
                 }
 
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(OtherPaymentsService),
-                    CallerMethodName = nameof(GetByPersonId),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = response
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(OtherPaymentsService),
+					CallerMethodName = nameof(GetByPersonId),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = response
+				};
                 _logger.AddLog(logData);
             }
             catch(Exception ex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(OtherPaymentsService),
-                    CallerMethodName = nameof(GetByPersonId),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(OtherPaymentsService),
+					CallerMethodName = nameof(GetByPersonId),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ex
+				};
                 _logger.AddErrorLog(logData);
                 response.Status.Code = Code.UnknownError;
                 response.Status.ErrorMessage = "An error ocured while loading other payments";
@@ -393,27 +393,27 @@ namespace EMS.Core.API.Services
                     response.Data.Add(ToRpcModel(otherPayment));
                 }
 
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(OtherPaymentsService),
-                    CallerMethodName = nameof(GetByPersonIdAndDateRange),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = response
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(OtherPaymentsService),
+					CallerMethodName = nameof(GetByPersonIdAndDateRange),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = response
+				};
                 _logger.AddLog(logData);
 
             }
             catch(Exception ex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(OtherPaymentsService),
-                    CallerMethodName = nameof(GetByPersonIdAndDateRange),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(OtherPaymentsService),
+					CallerMethodName = nameof(GetByPersonIdAndDateRange),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ex
+				};
                 _logger.AddErrorLog(logData);
                 response.Status.Code = Code.UnknownError;
                 response.Status.ErrorMessage = "An error ocured while loading other payments";

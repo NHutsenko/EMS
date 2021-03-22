@@ -5,38 +5,41 @@ using EMS.Common.Protos;
 using EMS.Common.Utils.DateTimeUtil;
 using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Mvc;
+using static EMS.Common.Protos.Holidays;
+
 
 namespace EMS.Gateway.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TeamsController : ControllerBase
+    public class HolidaysController : ControllerBase
     {
-        private readonly Teams.TeamsClient _teamsClient;
-        private readonly IEMSLogger<TeamsController> _logger;
+        private readonly HolidaysClient _holidaysClient;
+        private readonly IEMSLogger<HolidaysController> _logger;
         private readonly IDateTimeUtil _dateTimeUtil;
 
-        public TeamsController(Teams.TeamsClient teamsClient, IEMSLogger<TeamsController> logger, IDateTimeUtil dateTimeUtil)
+        public HolidaysController(HolidaysClient holidaysClient, IEMSLogger<HolidaysController> logger, IDateTimeUtil dateTimeUtil)
         {
-            _teamsClient = teamsClient;
-            _logger = logger;
             _dateTimeUtil = dateTimeUtil;
+            _holidaysClient = holidaysClient;
+            _logger = logger;
         }
 
         [HttpPost]
-        public IActionResult Add([FromBody] TeamData teamData)
+        public IActionResult Add([FromBody] HolidayData request)
         {
             try
             {
-                BaseResponse response = _teamsClient.AddAsync(teamData);
+                BaseResponse response = _holidaysClient.AddAsync(request);
                 LogData logData = new()
                 {
+                    CallSide = nameof(HolidaysController),
                     CallerMethodName = nameof(Add),
-                    CallSide = nameof(TeamsController),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = teamData,
+                    Request = request,
                     Response = response
                 };
+
                 _logger.AddLog(logData);
                 return Ok(response);
             }
@@ -44,31 +47,33 @@ namespace EMS.Gateway.API.Controllers
             {
                 LogData logData = new()
                 {
+                    CallSide = nameof(HolidaysController),
                     CallerMethodName = nameof(Add),
-                    CallSide = nameof(TeamsController),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = teamData,
+                    Request = request,
                     Response = ex
                 };
+
                 _logger.AddErrorLog(logData);
                 return StatusCode(500, "An error occured while sending request");
             }
         }
 
         [HttpPut]
-        public IActionResult Update([FromBody] TeamData teamData)
+        public IActionResult Update([FromBody] HolidayData request)
         {
             try
             {
-                BaseResponse response = _teamsClient.UpdateAsync(teamData);
+                BaseResponse response = _holidaysClient.UpdateAsync(request);
                 LogData logData = new()
                 {
+                    CallSide = nameof(HolidaysController),
                     CallerMethodName = nameof(Update),
-                    CallSide = nameof(TeamsController),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = teamData,
+                    Request = request,
                     Response = response
                 };
+
                 _logger.AddLog(logData);
                 return Ok(response);
             }
@@ -76,31 +81,33 @@ namespace EMS.Gateway.API.Controllers
             {
                 LogData logData = new()
                 {
+                    CallSide = nameof(HolidaysController),
                     CallerMethodName = nameof(Update),
-                    CallSide = nameof(TeamsController),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = teamData,
+                    Request = request,
                     Response = ex
                 };
+
                 _logger.AddErrorLog(logData);
                 return StatusCode(500, "An error occured while sending request");
             }
         }
 
         [HttpDelete]
-        public IActionResult Delete([FromQuery] TeamData teamData)
+        public IActionResult Delete([FromBody] HolidayData request)
         {
             try
             {
-                BaseResponse response = _teamsClient.DeleteAsync(teamData);
+                BaseResponse response = _holidaysClient.DeleteAsync(request);
                 LogData logData = new()
                 {
+                    CallSide = nameof(HolidaysController),
                     CallerMethodName = nameof(Delete),
-                    CallSide = nameof(TeamsController),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = teamData,
+                    Request = request,
                     Response = response
                 };
+
                 _logger.AddLog(logData);
                 return Ok(response);
             }
@@ -108,12 +115,13 @@ namespace EMS.Gateway.API.Controllers
             {
                 LogData logData = new()
                 {
+                    CallSide = nameof(HolidaysController),
                     CallerMethodName = nameof(Delete),
-                    CallSide = nameof(TeamsController),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = teamData,
+                    Request = request,
                     Response = ex
                 };
+
                 _logger.AddErrorLog(logData);
                 return StatusCode(500, "An error occured while sending request");
             }
@@ -122,17 +130,19 @@ namespace EMS.Gateway.API.Controllers
         [HttpGet("all")]
         public IActionResult GetAll()
         {
+            Empty request = new();
             try
             {
-                TeamsResponse response = _teamsClient.GetAll(new Empty());
+                HolidaysResponse response = _holidaysClient.GetAll(request);
                 LogData logData = new()
                 {
+                    CallSide = nameof(HolidaysController),
                     CallerMethodName = nameof(GetAll),
-                    CallSide = nameof(TeamsController),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = new Empty(),
+                    Request = request,
                     Response = response
                 };
+
                 _logger.AddLog(logData);
                 return Ok(response);
             }
@@ -140,35 +150,33 @@ namespace EMS.Gateway.API.Controllers
             {
                 LogData logData = new()
                 {
+                    CallSide = nameof(HolidaysController),
                     CallerMethodName = nameof(GetAll),
-                    CallSide = nameof(TeamsController),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = new Empty(),
+                    Request = request,
                     Response = ex
                 };
+
                 _logger.AddErrorLog(logData);
                 return StatusCode(500, "An error occured while sending request");
             }
         }
 
         [HttpGet]
-        public IActionResult GetById([FromQuery] long teamId)
+        public IActionResult GetByRangeDate([FromQuery] DateRangeRequest request)
         {
-            TeamRequest request = new()
-            {
-                Id = teamId
-            };
             try
             {
-                TeamResponse response = _teamsClient.GetById(request);
+                HolidaysResponse response = _holidaysClient.GetByDateRange(request);
                 LogData logData = new()
                 {
-                    CallerMethodName = nameof(GetById),
-                    CallSide = nameof(TeamsController),
+                    CallSide = nameof(HolidaysController),
+                    CallerMethodName = nameof(GetByRangeDate),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = response
                 };
+
                 _logger.AddLog(logData);
                 return Ok(response);
             }
@@ -176,12 +184,13 @@ namespace EMS.Gateway.API.Controllers
             {
                 LogData logData = new()
                 {
-                    CallerMethodName = nameof(GetById),
-                    CallSide = nameof(TeamsController),
+                    CallSide = nameof(HolidaysController),
+                    CallerMethodName = nameof(GetByRangeDate),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = ex
                 };
+
                 _logger.AddErrorLog(logData);
                 return StatusCode(500, "An error occured while sending request");
             }

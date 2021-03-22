@@ -40,35 +40,35 @@ namespace EMS.Core.API.Services
                     throw new Exception("Holiday has not been saved");
                 }
 
-                BaseResponse response = new BaseResponse
+                BaseResponse response = new()
                 {
                     Code = Code.Success,
                     ErrorMessage = string.Empty,
                     DataId = holiday.Id
                 };
 
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(HolidaysService),
-                    CallerMethodName = nameof(AddAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = response
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(HolidaysService),
+					CallerMethodName = nameof(AddAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = response
+				};
                 _logger.AddLog(logData);
 
                 return response;
             }
             catch (NullReferenceException nrex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(HolidaysService),
-                    CallerMethodName = nameof(AddAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = nrex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(HolidaysService),
+					CallerMethodName = nameof(AddAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = nrex
+				};
                 _logger.AddErrorLog(logData);
 
                 return new BaseResponse
@@ -79,14 +79,14 @@ namespace EMS.Core.API.Services
             }
             catch (ArgumentException aex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(HolidaysService),
-                    CallerMethodName = nameof(AddAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = aex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(HolidaysService),
+					CallerMethodName = nameof(AddAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = aex
+				};
                 _logger.AddErrorLog(logData);
 
                 return new BaseResponse
@@ -97,14 +97,14 @@ namespace EMS.Core.API.Services
             }
             catch (DbUpdateException duex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(HolidaysService),
-                    CallerMethodName = nameof(AddAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = duex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(HolidaysService),
+					CallerMethodName = nameof(AddAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = duex
+				};
                 _logger.AddErrorLog(logData);
 
                 return new BaseResponse
@@ -115,14 +115,14 @@ namespace EMS.Core.API.Services
             }
             catch (Exception ex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(HolidaysService),
-                    CallerMethodName = nameof(AddAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(HolidaysService),
+					CallerMethodName = nameof(AddAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ex
+				};
                 _logger.AddErrorLog(logData);
 
                 return new BaseResponse
@@ -147,35 +147,35 @@ namespace EMS.Core.API.Services
                     throw new Exception("Holiday has not been deleted");
                 }
 
-                BaseResponse response = new BaseResponse
-                {
-                    Code = Code.Success,
-                    ErrorMessage = string.Empty,
-                    DataId = holiday.Id
-                };
+                BaseResponse response = new()
+				{
+					Code = Code.Success,
+					ErrorMessage = string.Empty,
+					DataId = holiday.Id
+				};
 
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(HolidaysService),
-                    CallerMethodName = nameof(DeleteAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = response
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(HolidaysService),
+					CallerMethodName = nameof(DeleteAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = response
+				};
                 _logger.AddLog(logData);
 
                 return response;
             }
             catch (NullReferenceException nrex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(HolidaysService),
-                    CallerMethodName = nameof(DeleteAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = nrex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(HolidaysService),
+					CallerMethodName = nameof(DeleteAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = nrex
+				};
                 _logger.AddErrorLog(logData);
 
                 return new BaseResponse
@@ -186,14 +186,14 @@ namespace EMS.Core.API.Services
             }
             catch (InvalidOperationException ioex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(HolidaysService),
-                    CallerMethodName = nameof(DeleteAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ioex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(HolidaysService),
+					CallerMethodName = nameof(DeleteAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ioex
+				};
                 _logger.AddErrorLog(logData);
 
                 return new BaseResponse
@@ -204,14 +204,14 @@ namespace EMS.Core.API.Services
             }
             catch (DbUpdateException duex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(HolidaysService),
-                    CallerMethodName = nameof(DeleteAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = duex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(HolidaysService),
+					CallerMethodName = nameof(DeleteAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = duex
+				};
                 _logger.AddErrorLog(logData);
 
                 return new BaseResponse
@@ -222,14 +222,14 @@ namespace EMS.Core.API.Services
             }
             catch (Exception ex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(HolidaysService),
-                    CallerMethodName = nameof(DeleteAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(HolidaysService),
+					CallerMethodName = nameof(DeleteAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ex
+				};
                 _logger.AddErrorLog(logData);
 
                 return new BaseResponse
@@ -254,35 +254,35 @@ namespace EMS.Core.API.Services
                     throw new Exception("Holiday has not been updated");
                 }
 
-                BaseResponse response = new BaseResponse
-                {
-                    Code = Code.Success,
-                    ErrorMessage = string.Empty,
-                    DataId = holiday.Id
-                };
+                BaseResponse response = new()
+				{
+					Code = Code.Success,
+					ErrorMessage = string.Empty,
+					DataId = holiday.Id
+				};
 
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(HolidaysService),
-                    CallerMethodName = nameof(UpdateAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = response
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(HolidaysService),
+					CallerMethodName = nameof(UpdateAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = response
+				};
                 _logger.AddLog(logData);
 
                 return response;
             }
             catch (NullReferenceException nrex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(HolidaysService),
-                    CallerMethodName = nameof(UpdateAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = nrex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(HolidaysService),
+					CallerMethodName = nameof(UpdateAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = nrex
+				};
                 _logger.AddErrorLog(logData);
 
                 return new BaseResponse
@@ -293,14 +293,14 @@ namespace EMS.Core.API.Services
             }
             catch (ArgumentException aex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(HolidaysService),
-                    CallerMethodName = nameof(UpdateAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = aex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(HolidaysService),
+					CallerMethodName = nameof(UpdateAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = aex
+				};
                 _logger.AddErrorLog(logData);
 
                 return new BaseResponse
@@ -311,14 +311,14 @@ namespace EMS.Core.API.Services
             }
             catch (DbUpdateException duex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(HolidaysService),
-                    CallerMethodName = nameof(UpdateAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = duex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(HolidaysService),
+					CallerMethodName = nameof(UpdateAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = duex
+				};
                 _logger.AddErrorLog(logData);
 
                 return new BaseResponse
@@ -329,14 +329,14 @@ namespace EMS.Core.API.Services
             }
             catch (Exception ex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(HolidaysService),
-                    CallerMethodName = nameof(UpdateAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(HolidaysService),
+					CallerMethodName = nameof(UpdateAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ex
+				};
                 _logger.AddErrorLog(logData);
 
                 return new BaseResponse
@@ -349,14 +349,10 @@ namespace EMS.Core.API.Services
 
         public override Task<HolidaysResponse> GetAll(Empty request, ServerCallContext context)
         {
-            HolidaysResponse response = new HolidaysResponse
-            {
-                Status = new BaseResponse
-                {
-                    Code = Code.Success,
-                    ErrorMessage = string.Empty
-                }
-            };
+            HolidaysResponse response = new()
+			{
+				Status = new BaseResponse { Code = Code.Success, ErrorMessage = string.Empty }
+			};
             try
             {
                 IQueryable<Holiday> holidays = _holidaysRepository.GetAll();
@@ -366,26 +362,26 @@ namespace EMS.Core.API.Services
                     response.Data.Add(ToRpcModel(holiday));
                 }
 
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(HolidaysService),
-                    CallerMethodName = nameof(GetAll),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = response
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(HolidaysService),
+					CallerMethodName = nameof(GetAll),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = response
+				};
                 _logger.AddLog(logData);
             }
             catch(Exception ex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(HolidaysService),
-                    CallerMethodName = nameof(GetAll),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(HolidaysService),
+					CallerMethodName = nameof(GetAll),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ex
+				};
                 _logger.AddErrorLog(logData);
                 response.Status.Code = Code.UnknownError;
                 response.Status.ErrorMessage = "An error occured while loading holidays data";
@@ -396,14 +392,10 @@ namespace EMS.Core.API.Services
 
         public override Task<HolidaysResponse> GetByDateRange(DateRangeRequest request, ServerCallContext context)
         {
-            HolidaysResponse response = new HolidaysResponse
-            {
-                Status = new BaseResponse
-                {
-                    Code = Code.Success,
-                    ErrorMessage = string.Empty
-                }
-            };
+            HolidaysResponse response = new()
+			{
+				Status = new BaseResponse { Code = Code.Success, ErrorMessage = string.Empty }
+			};
             try
             {
                 IQueryable<Holiday> holidays = _holidaysRepository.GetByDateRange(request.From.ToDateTime().Date, request.To.ToDateTime().Date);
@@ -413,26 +405,26 @@ namespace EMS.Core.API.Services
                     response.Data.Add(ToRpcModel(holiday));
                 }
 
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(HolidaysService),
-                    CallerMethodName = nameof(GetByDateRange),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = response
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(HolidaysService),
+					CallerMethodName = nameof(GetByDateRange),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = response
+				};
                 _logger.AddLog(logData);
             }
             catch (Exception ex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(HolidaysService),
-                    CallerMethodName = nameof(GetByDateRange),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(HolidaysService),
+					CallerMethodName = nameof(GetByDateRange),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ex
+				};
                 _logger.AddErrorLog(logData);
                 response.Status.Code = Code.UnknownError;
                 response.Status.ErrorMessage = "An error occured while loading holidays data";

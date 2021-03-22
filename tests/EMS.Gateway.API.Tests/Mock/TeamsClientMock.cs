@@ -16,7 +16,7 @@ namespace EMS.Gateway.API.Tests.Mock
         public static Mock<TeamsClient> SetupMock()
         {
             GrpcChannel channel = GrpcChannel.ForAddress("https://test.loc");
-            Mock<TeamsClient> mock = new Mock<TeamsClient>(channel);
+            Mock<TeamsClient> mock = new(channel);
 
             mock.Setup(m => m.AddAsync(It.IsAny<TeamData>(), It.IsAny<Metadata>(), It.IsAny<DateTime?>(), It.IsAny<CancellationToken>()))
                 .Returns<TeamData, Metadata, DateTime?, CancellationToken>((request, metdata, timestamp, token) =>

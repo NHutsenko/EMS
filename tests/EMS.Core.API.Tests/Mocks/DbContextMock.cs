@@ -20,7 +20,7 @@ namespace EMS.Core.API.Tests.Mock
         public static Mock<DbSet<T>> SetupCollectionMock<T>(List<T> data) where T : class
         {
             IQueryable<T> dataQueryable = data.AsQueryable();
-            Mock<DbSet<T>> mockSet = new Mock<DbSet<T>>();
+            Mock<DbSet<T>> mockSet = new();
 
             mockSet.As<IQueryable<T>>().Setup(m => m.Provider).Returns(dataQueryable.Provider);
             mockSet.As<IQueryable<T>>().Setup(m => m.Expression).Returns(dataQueryable.Expression);

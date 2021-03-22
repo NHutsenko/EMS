@@ -13,9 +13,9 @@ namespace EMS.Gateway.API.Controllers
     [ApiController]
     public class PositionsController : ControllerBase
     {
-        private PositionsClient _positionsClient;
-        private IEMSLogger<PositionsController> _logger;
-        private IDateTimeUtil _dateTimeUtil;
+        private readonly PositionsClient _positionsClient;
+        private readonly IEMSLogger<PositionsController> _logger;
+        private readonly IDateTimeUtil _dateTimeUtil;
 
         public PositionsController(PositionsClient positionsClient, IEMSLogger<PositionsController> logger, IDateTimeUtil dateTimeUtil)
         {
@@ -31,7 +31,7 @@ namespace EMS.Gateway.API.Controllers
             {
                 BaseResponse response = _positionsClient.AddAsync(request);
 
-                LogData logData = new LogData
+                LogData logData = new()
                 {
                     CallSide = nameof(PositionsController),
                     CallerMethodName = nameof(Add),
@@ -45,7 +45,7 @@ namespace EMS.Gateway.API.Controllers
             }
             catch (Exception ex)
             {
-                LogData logData = new LogData
+                LogData logData = new()
                 {
                     CallSide = nameof(PositionsController),
                     CallerMethodName = nameof(Add),
@@ -55,7 +55,7 @@ namespace EMS.Gateway.API.Controllers
                 };
 
                 _logger.AddErrorLog(logData);
-                return StatusCode(500, "An error occured while making request");
+                return StatusCode(500, "An error occured while sending request");
             }
         }
 
@@ -66,7 +66,7 @@ namespace EMS.Gateway.API.Controllers
             {
                 BaseResponse response = _positionsClient.UpdateAsync(request);
 
-                LogData logData = new LogData
+                LogData logData = new()
                 {
                     CallSide = nameof(PositionsController),
                     CallerMethodName = nameof(Update),
@@ -80,7 +80,7 @@ namespace EMS.Gateway.API.Controllers
             }
             catch (Exception ex)
             {
-                LogData logData = new LogData
+                LogData logData = new()
                 {
                     CallSide = nameof(PositionsController),
                     CallerMethodName = nameof(Update),
@@ -90,7 +90,7 @@ namespace EMS.Gateway.API.Controllers
                 };
 
                 _logger.AddErrorLog(logData);
-                return StatusCode(500, "An error occured while making request");
+                return StatusCode(500, "An error occured while sending request");
             }
         }
 
@@ -101,7 +101,7 @@ namespace EMS.Gateway.API.Controllers
             {
                 BaseResponse response = _positionsClient.DeleteAsync(request);
 
-                LogData logData = new LogData
+                LogData logData = new()
                 {
                     CallSide = nameof(PositionsController),
                     CallerMethodName = nameof(Delete),
@@ -115,7 +115,7 @@ namespace EMS.Gateway.API.Controllers
             }
             catch (Exception ex)
             {
-                LogData logData = new LogData
+                LogData logData = new()
                 {
                     CallSide = nameof(PositionsController),
                     CallerMethodName = nameof(Delete),
@@ -125,7 +125,7 @@ namespace EMS.Gateway.API.Controllers
                 };
 
                 _logger.AddErrorLog(logData);
-                return StatusCode(500, "An error occured while making request");
+                return StatusCode(500, "An error occured while sending request");
             }
         }
 
@@ -137,7 +137,7 @@ namespace EMS.Gateway.API.Controllers
             {
                 PositionsResponse response = _positionsClient.GetAll(request);
 
-                LogData logData = new LogData
+                LogData logData = new()
                 {
                     CallSide = nameof(PositionsController),
                     CallerMethodName = nameof(GetAll),
@@ -161,14 +161,14 @@ namespace EMS.Gateway.API.Controllers
                 };
 
                 _logger.AddErrorLog(logData);
-                return StatusCode(500, "An error occured while making request");
+                return StatusCode(500, "An error occured while sending request");
             }
         }
 
         [HttpGet]
         public IActionResult GetById([FromQuery] long id)
         {
-            PositionRequest request = new PositionRequest
+            PositionRequest request = new()
             {
                 PositionId = id
             };
@@ -176,7 +176,7 @@ namespace EMS.Gateway.API.Controllers
             {
                 PositionResponse response = _positionsClient.GetById(request);
 
-                LogData logData = new LogData
+                LogData logData = new()
                 {
                     CallSide = nameof(PositionsController),
                     CallerMethodName = nameof(GetById),
@@ -200,7 +200,7 @@ namespace EMS.Gateway.API.Controllers
                 };
 
                 _logger.AddErrorLog(logData);
-                return StatusCode(500, "An error occured while making request");
+                return StatusCode(500, "An error occured while sending request");
             }
         }
     }

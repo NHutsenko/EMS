@@ -40,35 +40,35 @@ namespace EMS.Core.API.Services
                     throw new Exception("Position has not been saved");
                 }
 
-                BaseResponse response = new BaseResponse
+                BaseResponse response = new()
                 {
                     Code = Code.Success,
                     ErrorMessage = string.Empty,
                     DataId = position.Id
                 };
 
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PositionsService),
-                    CallerMethodName = nameof(AddAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = response
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PositionsService),
+					CallerMethodName = nameof(AddAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = response
+				};
                 _logger.AddLog(logData);
 
                 return response;
             }
             catch (NullReferenceException nrex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PositionsService),
-                    CallerMethodName = nameof(AddAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = nrex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PositionsService),
+					CallerMethodName = nameof(AddAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = nrex
+				};
                 _logger.AddErrorLog(logData);
 
                 return new BaseResponse
@@ -79,14 +79,14 @@ namespace EMS.Core.API.Services
             }
             catch (ArgumentException aex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PositionsService),
-                    CallerMethodName = nameof(AddAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = aex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PositionsService),
+					CallerMethodName = nameof(AddAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = aex
+				};
                 _logger.AddErrorLog(logData);
 
                 return new BaseResponse
@@ -97,14 +97,14 @@ namespace EMS.Core.API.Services
             }
             catch (DbUpdateException duex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PositionsService),
-                    CallerMethodName = nameof(AddAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = duex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PositionsService),
+					CallerMethodName = nameof(AddAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = duex
+				};
                 _logger.AddErrorLog(logData);
 
                 return new BaseResponse
@@ -115,14 +115,14 @@ namespace EMS.Core.API.Services
             }
             catch (Exception ex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PositionsService),
-                    CallerMethodName = nameof(AddAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PositionsService),
+					CallerMethodName = nameof(AddAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ex
+				};
                 _logger.AddErrorLog(logData);
 
                 return new BaseResponse
@@ -147,35 +147,35 @@ namespace EMS.Core.API.Services
                     throw new Exception("Position has not been deleted");
                 }
 
-                BaseResponse response = new BaseResponse
-                {
-                    Code = Code.Success,
-                    ErrorMessage = string.Empty,
-                    DataId = position.Id
-                };
+                BaseResponse response = new()
+				{
+					Code = Code.Success,
+					ErrorMessage = string.Empty,
+					DataId = position.Id
+				};
 
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PositionsService),
-                    CallerMethodName = nameof(DeleteAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = response
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PositionsService),
+					CallerMethodName = nameof(DeleteAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = response
+				};
                 _logger.AddLog(logData);
 
                 return response;
             }
             catch (NullReferenceException nrex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PositionsService),
-                    CallerMethodName = nameof(DeleteAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = nrex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PositionsService),
+					CallerMethodName = nameof(DeleteAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = nrex
+				};
                 _logger.AddErrorLog(logData);
 
                 return new BaseResponse
@@ -186,14 +186,14 @@ namespace EMS.Core.API.Services
             }
             catch (InvalidOperationException ioex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PositionsService),
-                    CallerMethodName = nameof(DeleteAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ioex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PositionsService),
+					CallerMethodName = nameof(DeleteAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ioex
+				};
                 _logger.AddErrorLog(logData);
 
                 return new BaseResponse
@@ -204,14 +204,14 @@ namespace EMS.Core.API.Services
             }
             catch (DbUpdateException duex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PositionsService),
-                    CallerMethodName = nameof(DeleteAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = duex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PositionsService),
+					CallerMethodName = nameof(DeleteAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = duex
+				};
                 _logger.AddErrorLog(logData);
 
                 return new BaseResponse
@@ -222,14 +222,14 @@ namespace EMS.Core.API.Services
             }
             catch (Exception ex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PositionsService),
-                    CallerMethodName = nameof(DeleteAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PositionsService),
+					CallerMethodName = nameof(DeleteAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ex
+				};
                 _logger.AddErrorLog(logData);
 
                 return new BaseResponse
@@ -254,35 +254,35 @@ namespace EMS.Core.API.Services
                     throw new Exception("Position has not been updated");
                 }
 
-                BaseResponse response = new BaseResponse
-                {
-                    Code = Code.Success,
-                    ErrorMessage = string.Empty,
-                    DataId = position.Id
-                };
+                BaseResponse response = new()
+				{
+					Code = Code.Success,
+					ErrorMessage = string.Empty,
+					DataId = position.Id
+				};
 
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PositionsService),
-                    CallerMethodName = nameof(UpdateAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = response
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PositionsService),
+					CallerMethodName = nameof(UpdateAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = response
+				};
                 _logger.AddLog(logData);
 
                 return response;
             }
             catch (NullReferenceException nrex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PositionsService),
-                    CallerMethodName = nameof(UpdateAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = nrex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PositionsService),
+					CallerMethodName = nameof(UpdateAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = nrex
+				};
                 _logger.AddErrorLog(logData);
 
                 return new BaseResponse
@@ -293,14 +293,14 @@ namespace EMS.Core.API.Services
             }
             catch (ArgumentException aex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PositionsService),
-                    CallerMethodName = nameof(UpdateAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = aex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PositionsService),
+					CallerMethodName = nameof(UpdateAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = aex
+				};
                 _logger.AddErrorLog(logData);
 
                 return new BaseResponse
@@ -311,14 +311,14 @@ namespace EMS.Core.API.Services
             }
             catch (DbUpdateException duex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PositionsService),
-                    CallerMethodName = nameof(UpdateAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = duex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PositionsService),
+					CallerMethodName = nameof(UpdateAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = duex
+				};
                 _logger.AddErrorLog(logData);
 
                 return new BaseResponse
@@ -329,14 +329,14 @@ namespace EMS.Core.API.Services
             }
             catch (Exception ex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PositionsService),
-                    CallerMethodName = nameof(UpdateAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PositionsService),
+					CallerMethodName = nameof(UpdateAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ex
+				};
                 _logger.AddErrorLog(logData);
 
                 return new BaseResponse
@@ -350,14 +350,10 @@ namespace EMS.Core.API.Services
         public override Task<PositionsResponse> GetAll(Empty request, ServerCallContext context)
         {
             
-            PositionsResponse response = new PositionsResponse
-            {
-                Status = new BaseResponse
-                {
-                    Code = Code.Success,
-                    ErrorMessage = string.Empty
-                }
-            };
+            PositionsResponse response = new()
+			{
+				Status = new BaseResponse { Code = Code.Success, ErrorMessage = string.Empty }
+			};
 
             try
             {
@@ -367,26 +363,26 @@ namespace EMS.Core.API.Services
                     response.Data.Add(ToRpcModel(position));
                 }
 
-                LogData logData = new LogData
-                {
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    CallerMethodName = nameof(GetAll),
-                    CallSide = nameof(PositionsService),
-                    Request = request,
-                    Response = response
-                };
+                LogData logData = new()
+				{
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					CallerMethodName = nameof(GetAll),
+					CallSide = nameof(PositionsService),
+					Request = request,
+					Response = response
+				};
                 _logger.AddLog(logData);
             }
             catch(Exception ex)
             {
-                LogData logData = new LogData
-                {
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    CallerMethodName = nameof(GetAll),
-                    CallSide = nameof(PositionsService),
-                    Request = request,
-                    Response = ex
-                };
+                LogData logData = new()
+				{
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					CallerMethodName = nameof(GetAll),
+					CallSide = nameof(PositionsService),
+					Request = request,
+					Response = ex
+				};
                 _logger.AddErrorLog(logData);
                 response.Status.Code = Code.UnknownError;
                 response.Status.ErrorMessage = "An error occured while loading positions data";
@@ -397,14 +393,10 @@ namespace EMS.Core.API.Services
 
         public override Task<PositionResponse> GetById(PositionRequest request, ServerCallContext context)
         {
-            PositionResponse response = new PositionResponse
-            {
-                Status = new BaseResponse
-                {
-                    Code = Code.Success,
-                    ErrorMessage = string.Empty
-                }
-            };
+            PositionResponse response = new()
+			{
+				Status = new BaseResponse { Code = Code.Success, ErrorMessage = string.Empty }
+			};
             try
             {
                 Position position = _positionsRepository.Get(request.PositionId);
@@ -418,26 +410,26 @@ namespace EMS.Core.API.Services
                     response.Data = ToRpcModel(position);
                 }
 
-                LogData logData = new LogData
-                {
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    CallerMethodName = nameof(GetById),
-                    CallSide = nameof(PositionsService),
-                    Request = request,
-                    Response = response
-                };
+                LogData logData = new()
+				{
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					CallerMethodName = nameof(GetById),
+					CallSide = nameof(PositionsService),
+					Request = request,
+					Response = response
+				};
                 _logger.AddLog(logData);
             }
             catch(Exception ex)
             {
-                LogData logData = new LogData
-                {
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    CallerMethodName = nameof(GetById),
-                    CallSide = nameof(PositionsService),
-                    Request = request,
-                    Response = ex
-                };
+                LogData logData = new()
+				{
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					CallerMethodName = nameof(GetById),
+					CallSide = nameof(PositionsService),
+					Request = request,
+					Response = ex
+				};
                 _logger.AddErrorLog(logData);
                 response.Status.Code = Code.UnknownError;
                 response.Status.ErrorMessage = "An error occured while loading position data";

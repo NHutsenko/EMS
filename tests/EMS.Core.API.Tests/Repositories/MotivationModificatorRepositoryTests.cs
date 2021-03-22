@@ -75,7 +75,7 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddAsync_should_add_extity_to_db()
         {
             // Arrange
-            MotivationModificator motivationModificator = new MotivationModificator
+            MotivationModificator motivationModificator = new()
             {
                 ModValue = 0.5,
                 StaffId = _staff3.Id
@@ -94,11 +94,11 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddAsync_should_throw_null_reference_exception_because_entity_is_null()
         {
             // Arrange
-            MotivationModificator motivationModificator = new MotivationModificator
-            {
-                ModValue = 0.5,
-                StaffId = _staff3.Id
-            };
+            MotivationModificator motivationModificator = new()
+			{
+				ModValue = 0.5,
+				StaffId = _staff3.Id
+			};
 
             // Assert
             Assert.ThrowsAsync<NullReferenceException>(() => _motivationModificatorRepository.AddAsync(null), "Throws NullReferenceException as expected");
@@ -109,11 +109,11 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddAsync_should_argument_exception_because_staffId_does_not_exists_in_db()
         {
             // Arrange
-            MotivationModificator motivationModificator = new MotivationModificator
-            {
-                ModValue = 0.5,
-                StaffId = 4
-            };
+            MotivationModificator motivationModificator = new()
+			{
+				ModValue = 0.5,
+				StaffId = 4
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _motivationModificatorRepository.AddAsync(motivationModificator), "Throws ArgumentException as expected");
@@ -124,11 +124,11 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddAsync_should_throw_because_modificator_already_exists()
         {
             // Arrange
-            MotivationModificator motivationModificator = new MotivationModificator
-            {
-                ModValue = 0.5,
-                StaffId = _staff1.Id
-            };
+            MotivationModificator motivationModificator = new()
+			{
+				ModValue = 0.5,
+				StaffId = _staff1.Id
+			};
 
             // Assert
             Assert.ThrowsAsync<InvalidOperationException>(() => _motivationModificatorRepository.AddAsync(motivationModificator), "Throws InvalidOperationException as expected");
@@ -140,11 +140,11 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddAsync_should_argument_exception_because_staffId_is_equal_to_zero()
         {
             // Arrange
-            MotivationModificator motivationModificator = new MotivationModificator
-            {
-                ModValue = 0.5,
-                StaffId = 0
-            };
+            MotivationModificator motivationModificator = new()
+			{
+				ModValue = 0.5,
+				StaffId = 0
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _motivationModificatorRepository.AddAsync(motivationModificator), "Throws ArgumentException as expected");
@@ -155,11 +155,11 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddAsync_should_argument_exception_because_motivation_modificator_is_wrong()
         {
             // Arrange
-            MotivationModificator motivationModificator = new MotivationModificator
-            {
-                ModValue = -0.5,
-                StaffId = _staff1.Id
-            };
+            MotivationModificator motivationModificator = new()
+			{
+				ModValue = -0.5,
+				StaffId = _staff1.Id
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _motivationModificatorRepository.AddAsync(motivationModificator), "Throws ArgumentException as expected");
@@ -170,12 +170,12 @@ namespace EMS.Core.API.Tests.Repositories
         public void UpdateAsync_should_add_extity_to_db()
         {
             // Arrange
-            MotivationModificator motivationModificator = new MotivationModificator
-            {
-                Id = _motivationModificator1.Id,
-                ModValue = 0.5,
-                StaffId = _staff3.Id
-            };
+            MotivationModificator motivationModificator = new()
+			{
+				Id = _motivationModificator1.Id,
+				ModValue = 0.5,
+				StaffId = _staff3.Id
+			};
 
             // Act
             int result = _motivationModificatorRepository.UpdateAsync(motivationModificator).Result;
@@ -190,11 +190,11 @@ namespace EMS.Core.API.Tests.Repositories
         public void UpdateAsync_should_throw_null_reference_exception_because_entity_is_null()
         {
             // Arrange
-            MotivationModificator motivationModificator = new MotivationModificator
-            {
-                ModValue = 0.5,
-                StaffId = _staff3.Id
-            };
+            MotivationModificator motivationModificator = new()
+			{
+				ModValue = 0.5,
+				StaffId = _staff3.Id
+			};
 
             // Assert
             Assert.ThrowsAsync<NullReferenceException>(() => _motivationModificatorRepository.UpdateAsync(null), "Throws NullReferenceException as expected");
@@ -205,12 +205,12 @@ namespace EMS.Core.API.Tests.Repositories
         public void UpdateAsync_should_argument_exception_because_staffId_does_not_exists_in_db()
         {
             // Arrange
-            MotivationModificator motivationModificator = new MotivationModificator
-            {
-                ModValue = 0.5,
-                StaffId = 4,
-                Id = _motivationModificator1.Id
-            };
+            MotivationModificator motivationModificator = new()
+			{
+				ModValue = 0.5,
+				StaffId = 4,
+				Id = _motivationModificator1.Id
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _motivationModificatorRepository.UpdateAsync(motivationModificator), "Throws ArgumentException as expected");
@@ -222,12 +222,12 @@ namespace EMS.Core.API.Tests.Repositories
         public void UpdateAsync_should_argument_exception_because_staffId_is_equal_to_zero()
         {
             // Arrange
-            MotivationModificator motivationModificator = new MotivationModificator
-            {
-                ModValue = 0.5,
-                StaffId = 0,
-                Id = _motivationModificator1.Id
-            };
+            MotivationModificator motivationModificator = new()
+			{
+				ModValue = 0.5,
+				StaffId = 0,
+				Id = _motivationModificator1.Id
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _motivationModificatorRepository.UpdateAsync(motivationModificator), "Throws ArgumentException as expected");
@@ -238,12 +238,12 @@ namespace EMS.Core.API.Tests.Repositories
         public void UpdateAsync_should_argument_exception_because_motivation_modificator_is_wrong()
         {
             // Arrange
-            MotivationModificator motivationModificator = new MotivationModificator
-            {
-                ModValue = -0.5,
-                StaffId = _staff1.Id,
-                Id = _motivationModificator1.Id
-            };
+            MotivationModificator motivationModificator = new()
+			{
+				ModValue = -0.5,
+				StaffId = _staff1.Id,
+				Id = _motivationModificator1.Id
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _motivationModificatorRepository.UpdateAsync(motivationModificator), "Throws ArgumentException as expected");

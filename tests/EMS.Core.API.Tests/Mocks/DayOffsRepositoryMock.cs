@@ -13,8 +13,8 @@ namespace EMS.Core.API.Tests.Mocks
     {
         public static Mock<DayOffRepository> SetupMock(IApplicationDbContext dbContext, IDateTimeUtil dateTimeUtil)
         {
-            Mock<DayOffRepository> mock = new Mock<DayOffRepository>(dbContext, dateTimeUtil);
-            DayOffRepository repository = new DayOffRepository(dbContext, dateTimeUtil);
+            Mock<DayOffRepository> mock = new(dbContext, dateTimeUtil);
+            DayOffRepository repository = new(dbContext, dateTimeUtil);
 
             mock.Setup(m => m.AddAsync(It.IsAny<DayOff>())).Returns<DayOff>((dayOff) =>
             {

@@ -55,8 +55,8 @@ namespace EMS.Core.API.Tests.Repositories
         public void GetByDateRange_should_return_all_holidays_from_db_by_date_range()
         {
             // Arrange
-            DateTime startDate = new DateTime(2021, 4, 1);
-            DateTime endDate = new DateTime(2021, 4, 25);
+            DateTime startDate = new(2021, 4, 1);
+            DateTime endDate = new(2021, 4, 25);
 
             // Assert
             CollectionAssert.AreEqual(new List<Holiday> {_holiday2 }, _holidaysRepository.GetByDateRange(startDate, endDate), "Returned holidays as expected");
@@ -66,8 +66,8 @@ namespace EMS.Core.API.Tests.Repositories
         public void GetByDateRange_should_throw_exception_because_of_date_range_is_wrong()
         {
             // Arrange
-            DateTime startDate = new DateTime(2020, 4, 25);
-            DateTime endDate = new DateTime(2020, 4, 1);
+            DateTime startDate = new(2020, 4, 25);
+            DateTime endDate = new(2020, 4, 1);
 
             // Assert
             Assert.Throws<ArgumentException>(() => _holidaysRepository.GetByDateRange(startDate, endDate), "Throws wrong date range exception as expected");
@@ -77,7 +77,7 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddAsync_should_add_holiday_to_db()
         {
             // Arrange
-            Holiday holiday = new Holiday
+            Holiday holiday = new()
             {
                 Description = "New holiday",
                 HolidayDate = new DateTime(2020, 08, 01),
@@ -105,12 +105,12 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddAsync_should_throws_exception_because_of_holiday_description_is_null()
         {
             // Arrange
-            Holiday holiday = new Holiday
-            {
-                Description = string.Empty,
-                HolidayDate = new DateTime(2020, 08, 01),
-                ToDoDate = new DateTime(2020, 08, 05)
-            };
+            Holiday holiday = new()
+			{
+				Description = string.Empty,
+				HolidayDate = new DateTime(2020, 08, 01),
+				ToDoDate = new DateTime(2020, 08, 05)
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _holidaysRepository.AddAsync(holiday), "Throws argument null exception as expected");
@@ -121,12 +121,12 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddAsync_should_throws_exception_because_of_holiday_date_is_wrong()
         {
             // Arrange
-            Holiday holiday = new Holiday
-            {
-                Description = "Test",
-                HolidayDate = DateTime.MinValue,
-                ToDoDate = new DateTime(2020, 08, 05)
-            };
+            Holiday holiday = new()
+			{
+				Description = "Test",
+				HolidayDate = DateTime.MinValue,
+				ToDoDate = new DateTime(2020, 08, 05)
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _holidaysRepository.AddAsync(holiday), "Throws argument exception as expected");
@@ -137,13 +137,13 @@ namespace EMS.Core.API.Tests.Repositories
         public void UpdateAsync_should_update_holiday_into_db()
         {
             // Arrange
-            Holiday holiday = new Holiday
-            {
-                Description = "New holiday",
-                HolidayDate = new DateTime(2020, 08, 01),
-                ToDoDate = new DateTime(2020, 08, 05),
-                Id = _holiday1.Id
-            };
+            Holiday holiday = new()
+			{
+				Description = "New holiday",
+				HolidayDate = new DateTime(2020, 08, 01),
+				ToDoDate = new DateTime(2020, 08, 05),
+				Id = _holiday1.Id
+			};
 
             // Act
             int result = _holidaysRepository.UpdateAsync(holiday).Result;
@@ -166,13 +166,13 @@ namespace EMS.Core.API.Tests.Repositories
         public void UpdateAsync_should_throws_exception_because_of_holiday_description_is_null()
         {
             // Arrange
-            Holiday holiday = new Holiday
-            {
-                Description = string.Empty,
-                HolidayDate = new DateTime(2020, 08, 01),
-                ToDoDate = new DateTime(2020, 08, 05),
-                Id = _holiday1.Id
-            };
+            Holiday holiday = new()
+			{
+				Description = string.Empty,
+				HolidayDate = new DateTime(2020, 08, 01),
+				ToDoDate = new DateTime(2020, 08, 05),
+				Id = _holiday1.Id
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _holidaysRepository.UpdateAsync(holiday), "Throws argument null exception as expected");
@@ -183,12 +183,12 @@ namespace EMS.Core.API.Tests.Repositories
         public void UpdateAsync_should_throws_exception_because_of_holiday_date_is_wrong()
         {
             // Arrange
-            Holiday holiday = new Holiday
-            {
-                Description = "Test",
-                HolidayDate = DateTime.MinValue,
-                ToDoDate = new DateTime(2020, 08, 05)
-            };
+            Holiday holiday = new()
+			{
+				Description = "Test",
+				HolidayDate = DateTime.MinValue,
+				ToDoDate = new DateTime(2020, 08, 05)
+			};
 
             // Assert
             Assert.ThrowsAsync<ArgumentException>(() => _holidaysRepository.UpdateAsync(holiday), "Throws argument exception as expected");
@@ -218,12 +218,12 @@ namespace EMS.Core.API.Tests.Repositories
         public void DeleteAsync_throw_exception_because_record_from_history()
         {
             // Arrange
-            Holiday holiday = new Holiday
-            {
-                Description = "Test",
-                HolidayDate = new DateTime(2019, 08, 05),
-                Id = 3
-            };
+            Holiday holiday = new()
+			{
+				Description = "Test",
+				HolidayDate = new DateTime(2019, 08, 05),
+				Id = 3
+			};
             _dbContext.Holidays.Add(holiday);
 
             // Assert

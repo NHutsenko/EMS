@@ -29,7 +29,7 @@ namespace EMS.Gateway.API.Tests
         public void Add_should_return_result_from_grpc_client()
         {
             // Arrange
-            PositionData request = new PositionData
+            PositionData request = new()
             {
                 Name = "test",
                 CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
@@ -37,23 +37,23 @@ namespace EMS.Gateway.API.Tests
                 TeamId = 1
             };
 
-            BaseResponse response = new BaseResponse
-            {
-                Code = Code.Success,
-                DataId = 1,
-                ErrorMessage = string.Empty
-            };
+            BaseResponse response = new()
+			{
+				Code = Code.Success,
+				DataId = 1,
+				ErrorMessage = string.Empty
+			};
 
             BaseMock.Response = response;
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PositionsController),
-                CallerMethodName = nameof(_positionsController.Add),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = response
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PositionsController),
+				CallerMethodName = nameof(_positionsController.Add),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = response
+			};
 
             // Act
             ObjectResult actual = _positionsController.Add(request) as ObjectResult;
@@ -71,29 +71,29 @@ namespace EMS.Gateway.API.Tests
         {
             // Arrange
             BaseMock.ShouldThrowException = true;
-            PositionData request = new PositionData
-            {
-                Name = "test",
-                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
-                HourRate = 10,
-                TeamId = 1
-            };
+            PositionData request = new()
+			{
+				Name = "test",
+				CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
+				HourRate = 10,
+				TeamId = 1
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PositionsController),
-                CallerMethodName = nameof(_positionsController.Add),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = new Exception(BaseMock.ExceptionMessage)
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PositionsController),
+				CallerMethodName = nameof(_positionsController.Add),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = new Exception(BaseMock.ExceptionMessage)
+			};
 
             // Act
             ObjectResult actual = _positionsController.Add(request) as ObjectResult;
 
             // Asssert
             Assert.AreEqual(500, actual.StatusCode, "Status code as expected");
-            Assert.AreEqual("An error occured while making request", actual.Value, "Response as expected");
+            Assert.AreEqual("An error occured while sending request", actual.Value, "Response as expected");
             _loggerMock.Verify(m => m.AddErrorLog(expectedLog), Times.Once);
             _positionsClientMock.Verify(m => m.AddAsync(request, null, null, new CancellationToken()), Times.Once);
         }
@@ -102,32 +102,32 @@ namespace EMS.Gateway.API.Tests
         public void Update_should_return_result_from_grpc_client()
         {
             // Arrange
-            PositionData request = new PositionData
-            {
-                Name = "test",
-                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
-                HourRate = 10,
-                TeamId = 1,
-                Id = 1
-            };
+            PositionData request = new()
+			{
+				Name = "test",
+				CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
+				HourRate = 10,
+				TeamId = 1,
+				Id = 1
+			};
 
-            BaseResponse response = new BaseResponse
-            {
-                Code = Code.Success,
-                DataId = 1,
-                ErrorMessage = string.Empty
-            };
+            BaseResponse response = new()
+			{
+				Code = Code.Success,
+				DataId = 1,
+				ErrorMessage = string.Empty
+			};
 
             BaseMock.Response = response;
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PositionsController),
-                CallerMethodName = nameof(_positionsController.Update),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = response
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PositionsController),
+				CallerMethodName = nameof(_positionsController.Update),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = response
+			};
 
             // Act
             ObjectResult actual = _positionsController.Update(request) as ObjectResult;
@@ -145,29 +145,29 @@ namespace EMS.Gateway.API.Tests
         {
             // Arrange
             BaseMock.ShouldThrowException = true;
-            PositionData request = new PositionData
-            {
-                Name = "test",
-                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
-                HourRate = 10,
-                TeamId = 1
-            };
+            PositionData request = new()
+			{
+				Name = "test",
+				CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
+				HourRate = 10,
+				TeamId = 1
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PositionsController),
-                CallerMethodName = nameof(_positionsController.Update),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = new Exception(BaseMock.ExceptionMessage)
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PositionsController),
+				CallerMethodName = nameof(_positionsController.Update),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = new Exception(BaseMock.ExceptionMessage)
+			};
 
             // Act
             ObjectResult actual = _positionsController.Update(request) as ObjectResult;
 
             // Asssert
             Assert.AreEqual(500, actual.StatusCode, "Status code as expected");
-            Assert.AreEqual("An error occured while making request", actual.Value, "Response as expected");
+            Assert.AreEqual("An error occured while sending request", actual.Value, "Response as expected");
             _loggerMock.Verify(m => m.AddErrorLog(expectedLog), Times.Once);
             _positionsClientMock.Verify(m => m.UpdateAsync(request, null, null, new CancellationToken()), Times.Once);
         }
@@ -176,32 +176,32 @@ namespace EMS.Gateway.API.Tests
         public void Delete_should_return_result_from_grpc_client()
         {
             // Arrange
-            PositionData request = new PositionData
-            {
-                Name = "test",
-                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
-                HourRate = 10,
-                TeamId = 1,
-                Id = 1
-            };
+            PositionData request = new()
+			{
+				Name = "test",
+				CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
+				HourRate = 10,
+				TeamId = 1,
+				Id = 1
+			};
 
-            BaseResponse response = new BaseResponse
-            {
-                Code = Code.Success,
-                DataId = 1,
-                ErrorMessage = string.Empty
-            };
+            BaseResponse response = new()
+			{
+				Code = Code.Success,
+				DataId = 1,
+				ErrorMessage = string.Empty
+			};
 
             BaseMock.Response = response;
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PositionsController),
-                CallerMethodName = nameof(_positionsController.Delete),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = response
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PositionsController),
+				CallerMethodName = nameof(_positionsController.Delete),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = response
+			};
 
             // Act
             ObjectResult actual = _positionsController.Delete(request) as ObjectResult;
@@ -219,30 +219,30 @@ namespace EMS.Gateway.API.Tests
         {
             // Arrange
             BaseMock.ShouldThrowException = true;
-            PositionData request = new PositionData
-            {
-                Name = "test",
-                CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
-                HourRate = 10,
-                TeamId = 1,
-                Id = 1
-            };
+            PositionData request = new()
+			{
+				Name = "test",
+				CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
+				HourRate = 10,
+				TeamId = 1,
+				Id = 1
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PositionsController),
-                CallerMethodName = nameof(_positionsController.Delete),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = new Exception(BaseMock.ExceptionMessage)
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PositionsController),
+				CallerMethodName = nameof(_positionsController.Delete),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = new Exception(BaseMock.ExceptionMessage)
+			};
 
             // Act
             ObjectResult actual = _positionsController.Delete(request) as ObjectResult;
 
             // Asssert
             Assert.AreEqual(500, actual.StatusCode, "Status code as expected");
-            Assert.AreEqual("An error occured while making request", actual.Value, "Response as expected");
+            Assert.AreEqual("An error occured while sending request", actual.Value, "Response as expected");
             _loggerMock.Verify(m => m.AddErrorLog(expectedLog), Times.Once);
             _positionsClientMock.Verify(m => m.DeleteAsync(request, null, null, new CancellationToken()), Times.Once);
         }
@@ -251,14 +251,10 @@ namespace EMS.Gateway.API.Tests
         public void GetAll_should_return_Response_from_grpc_client()
         {
             // Arrange
-            PositionsResponse response = new PositionsResponse
-            {
-                Status = new BaseResponse
-                {
-                    Code = Code.Success,
-                    ErrorMessage = string.Empty
-                }
-            };
+            PositionsResponse response = new()
+			{
+				Status = new BaseResponse { Code = Code.Success, ErrorMessage = string.Empty }
+			};
             response.Data.Add(new PositionData
             {
                 Name = "test",
@@ -268,14 +264,14 @@ namespace EMS.Gateway.API.Tests
                 Id = 1
             });
             BaseMock.Response = response;
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PositionsController),
-                CallerMethodName = nameof(_positionsController.GetAll),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = new Empty(),
-                Response = response
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PositionsController),
+				CallerMethodName = nameof(_positionsController.GetAll),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = new Empty(),
+				Response = response
+			};
 
             // Act
             ObjectResult actual = _positionsController.GetAll() as ObjectResult;
@@ -293,14 +289,14 @@ namespace EMS.Gateway.API.Tests
         {
             // Arrange
             BaseMock.ShouldThrowException = true;
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PositionsController),
-                CallerMethodName = nameof(_positionsController.GetAll),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = new Empty(),
-                Response = new Exception(BaseMock.ExceptionMessage)
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PositionsController),
+				CallerMethodName = nameof(_positionsController.GetAll),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = new Empty(),
+				Response = new Exception(BaseMock.ExceptionMessage)
+			};
 
             // Act
             ObjectResult actual = _positionsController.GetAll() as ObjectResult;
@@ -308,7 +304,7 @@ namespace EMS.Gateway.API.Tests
 
             // Assert
             Assert.AreEqual(500, actual.StatusCode, "Status code as expected");
-            Assert.AreEqual("An error occured while making request", actual.Value, "Response as expected");
+            Assert.AreEqual("An error occured while sending request", actual.Value, "Response as expected");
             _loggerMock.Verify(m => m.AddErrorLog(expectedLog), Times.Once);
             _positionsClientMock.Verify(m => m.GetAll(new Empty(), null, null, new CancellationToken()), Times.Once);
         }
@@ -317,36 +313,25 @@ namespace EMS.Gateway.API.Tests
         public void GetById_should_return_response_from_rpc_client()
         {
             // Arrange
-            PositionResponse response = new PositionResponse
-            {
-                Status = new BaseResponse
-                {
-                    Code = Code.Success,
-                    ErrorMessage = string.Empty
-                },
-                Data = new PositionData
-                {
-                    Name = "test",
-                    CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
-                    HourRate = 10,
-                    TeamId = 1,
-                    Id = 1
-                }
-            };
+            PositionResponse response = new()
+			{
+				Status = new BaseResponse { Code = Code.Success, ErrorMessage = string.Empty },
+				Data = new PositionData { Name = "test", CreatedOn = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()), HourRate = 10, TeamId = 1, Id = 1 }
+			};
             BaseMock.Response = response;
-            PositionRequest request = new PositionRequest
-            {
-                PositionId = 1
-            };
+            PositionRequest request = new()
+			{
+				PositionId = 1
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PositionsController),
-                CallerMethodName = nameof(_positionsController.GetById),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = response
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PositionsController),
+				CallerMethodName = nameof(_positionsController.GetById),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = response
+			};
 
             // Act
             ObjectResult actual = _positionsController.GetById(request.PositionId) as ObjectResult;
@@ -364,19 +349,19 @@ namespace EMS.Gateway.API.Tests
         {
 			// Arrange
 			BaseMock.ShouldThrowException = true;
-            PositionRequest request = new PositionRequest
-            {
-                PositionId = 1
-            };
+            PositionRequest request = new()
+			{
+				PositionId = 1
+			};
 
-            LogData expectedLog = new LogData
-            {
-                CallSide = nameof(PositionsController),
-                CallerMethodName = nameof(_positionsController.GetById),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = new Exception(BaseMock.ExceptionMessage)
-            };
+            LogData expectedLog = new()
+			{
+				CallSide = nameof(PositionsController),
+				CallerMethodName = nameof(_positionsController.GetById),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = new Exception(BaseMock.ExceptionMessage)
+			};
 
             // Act
             ObjectResult actual = _positionsController.GetById(request.PositionId) as ObjectResult;
@@ -384,7 +369,7 @@ namespace EMS.Gateway.API.Tests
 
             // Assert
             Assert.AreEqual(500, actual.StatusCode, "Status code as expected");
-            Assert.AreEqual("An error occured while making request", actual.Value, "Response as expected");
+            Assert.AreEqual("An error occured while sending request", actual.Value, "Response as expected");
             _loggerMock.Verify(m => m.AddErrorLog(expectedLog), Times.Once);
             _positionsClientMock.Verify(m => m.GetById(request, null, null, new CancellationToken()), Times.Once);
         }

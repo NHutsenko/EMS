@@ -10,12 +10,12 @@ message ByPersonIdRequest {
 	int64 person_id = 1;
 }
 
-message ByDateRangeRequestRequest {
+message ByDateRangeRequest {
 	google.protobuf.Timestamp from = 1;
 	google.protobuf.Timestamp to = 2;
 }
 
 message ByPersonIdAndDateRangeRequest {
 	ByPersonIdRequest person = 1;
-	ByDateRangeRequestRequest range = 2;
+	ByDateRangeRequest range = 2;
 }

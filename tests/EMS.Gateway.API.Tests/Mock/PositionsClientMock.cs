@@ -16,7 +16,7 @@ namespace EMS.Gateway.API.Tests.Mock
         public static Mock<PositionsClient> SetupMock()
         {
             GrpcChannel channel = GrpcChannel.ForAddress("https://test.loc");
-            Mock<PositionsClient> mock = new Mock<PositionsClient>(channel);
+            Mock<PositionsClient> mock = new(channel);
 
             mock.Setup(m => m.AddAsync(It.IsAny<PositionData>(), It.IsAny<Metadata>(), It.IsAny<DateTime?>(), It.IsAny<CancellationToken>()))
                 .Returns<PositionData, Metadata, DateTime?, CancellationToken>((request, metdata, timestamp, token) =>

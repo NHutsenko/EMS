@@ -12,8 +12,8 @@ namespace EMS.Core.API.Tests.Mocks
     {
         public static Mock<TeamsRepository> SetupMock(IApplicationDbContext dbContext, IDateTimeUtil dateTimeUtil)
         {
-            Mock<TeamsRepository> mock = new Mock<TeamsRepository>(dbContext, dateTimeUtil);
-            TeamsRepository repository = new TeamsRepository(dbContext, dateTimeUtil);
+            Mock<TeamsRepository> mock = new(dbContext, dateTimeUtil);
+            TeamsRepository repository = new(dbContext, dateTimeUtil);
             mock.Setup(m => m.GetAll()).Returns(() =>
             {
                 ThrowExceptionIfNeeded();

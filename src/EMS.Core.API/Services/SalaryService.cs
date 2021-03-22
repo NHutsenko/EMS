@@ -45,7 +45,7 @@ namespace EMS.Core.API.Services
 
         public override Task<ISalaryResponse> GetSalary(SalaryRequest request, ServerCallContext context)
         {
-            ISalaryResponse response = new ISalaryResponse()
+            ISalaryResponse response = new()
             {
                 Status = new BaseResponse { Code = Code.Success, ErrorMessage = string.Empty }
             };
@@ -63,14 +63,14 @@ namespace EMS.Core.API.Services
             }
             catch (NullReferenceException nrex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(SalaryService),
-                    CallerMethodName = nameof(GetSalary),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = nrex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(SalaryService),
+					CallerMethodName = nameof(GetSalary),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = nrex
+				};
 
                 _logger.AddErrorLog(logData);
                 response.Status.ErrorMessage = $"Some data has not found (type: {nrex.GetType().Name})";
@@ -78,28 +78,28 @@ namespace EMS.Core.API.Services
             }
             catch (Exception ex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(SalaryService),
-                    CallerMethodName = nameof(GetSalary),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(SalaryService),
+					CallerMethodName = nameof(GetSalary),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ex
+				};
 
                 _logger.AddErrorLog(logData);
                 response.Status.ErrorMessage = ex.Message;
                 response.Status.Code = Code.UnknownError;
             }
 
-            LogData log = new LogData
-            {
-                CallSide = nameof(SalaryService),
-                CallerMethodName = nameof(GetSalary),
-                CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                Request = request,
-                Response = response
-            };
+            LogData log = new()
+			{
+				CallSide = nameof(SalaryService),
+				CallerMethodName = nameof(GetSalary),
+				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+				Request = request,
+				Response = response
+			};
 
             _logger.AddLog(log);
 
@@ -110,10 +110,10 @@ namespace EMS.Core.API.Services
         {
             IQueryable<DayOff> dayOffs = _dayOffRepository.GetByDateRangeAndPersonId(startDate, endDate, staff.First().PersonId.Value);
             IQueryable<Holiday> holidays = _holidaysRepository.GetByDateRange(startDate, endDate);
-            SalaryResponse response = new SalaryResponse
-            {
-                StartedOn = Timestamp.FromDateTime(staff.First().CreatedOn.ToUniversalTime())
-            };
+            SalaryResponse response = new()
+			{
+				StartedOn = Timestamp.FromDateTime(staff.First().CreatedOn.ToUniversalTime())
+			};
             double workHours = GetWorkHours();
 
             for (DateTime current = startDate.Date; current.Date <= endDate.Date; current = current.AddDays(1))

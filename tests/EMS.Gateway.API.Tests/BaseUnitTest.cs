@@ -3,6 +3,7 @@ using EMS.Common.Logger;
 using EMS.Common.Utils.DateTimeUtil;
 using EMS.Gateway.API.Tests.Mock;
 using Moq;
+using static EMS.Common.Protos.Holidays;
 using static EMS.Common.Protos.Positions;
 using static EMS.Common.Protos.Teams;
 
@@ -17,6 +18,9 @@ namespace EMS.Gateway.API.Tests
 
         protected Mock<PositionsClient> _positionsClientMock;
         protected PositionsClient _positionsClient;
+
+        protected Mock<HolidaysClient> _holidaysClientMock;
+        protected HolidaysClient _holidaysClient;
 
         // Logger
         protected Mock<IEMSLogger<T>> _loggerMock;
@@ -37,6 +41,9 @@ namespace EMS.Gateway.API.Tests
 
             _positionsClientMock = PositionsClientMock.SetupMock();
             _positionsClient = _positionsClientMock.Object;
+
+            _holidaysClientMock = HolidaysClientMock.SetupMock();
+            _holidaysClient = _holidaysClientMock.Object;
         }
 
         public void InitializeLoggerMock(T loggerClass)

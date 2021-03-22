@@ -11,7 +11,7 @@ namespace EMS.Gateway.API.Tests.Mock
         private static LogData LogData { get; set; }
         public static Mock<IEMSLogger<T>> SetupMock<T>(T _)
         {
-            Mock<IEMSLogger<T>> mock = new Mock<IEMSLogger<T>>();
+            Mock<IEMSLogger<T>> mock = new();
             mock.Setup(m => m.AddLog(It.IsAny<LogData>())).Callback<LogData>((rro) => { LogData = rro; });
             mock.Setup(m => m.AddErrorLog(It.IsAny<LogData>())).Callback<LogData>((rro) => { LogData = rro; });
 

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using EMS.Common.Utils.DateTimeUtil;
 using EMS.Core.API.DAL;
 using EMS.Core.API.DAL.Repositories;
@@ -18,8 +14,8 @@ namespace EMS.Core.API.Tests.Mocks
 
         public static Mock<HolidaysRepository> SetupMock(IApplicationDbContext dbContext, IDateTimeUtil dateTimeUtil)
         {
-            Mock<HolidaysRepository> mock = new Mock<HolidaysRepository>(dbContext, dateTimeUtil);
-            HolidaysRepository repository = new HolidaysRepository(dbContext, dateTimeUtil);
+            Mock<HolidaysRepository> mock = new(dbContext, dateTimeUtil);
+            HolidaysRepository repository = new(dbContext, dateTimeUtil);
 
             mock.Setup(m => m.AddAsync(It.IsAny<Holiday>())).Returns<Holiday>((holiday) =>
             {

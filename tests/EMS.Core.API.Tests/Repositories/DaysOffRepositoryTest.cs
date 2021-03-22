@@ -59,7 +59,7 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddAsync_should_add_new_record_to_db()
         {
             // Arrange
-            DayOff dayOff = new DayOff
+            DayOff dayOff = new()
             {
                 Hours = 8,
                 CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
@@ -81,7 +81,7 @@ namespace EMS.Core.API.Tests.Repositories
         {
             // Arrange
             DbContextMock.ShouldThrowException = true;
-            DayOff dayOff = new DayOff
+            DayOff dayOff = new()
             {
                 Hours = 8,
                 CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
@@ -106,7 +106,7 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddAsync_should_throws_exception_because_person_Id_is_not_specified()
         {
             // Arrange
-            DayOff dayOff = new DayOff
+            DayOff dayOff = new()
             {
                 Hours = 8,
                 CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
@@ -122,7 +122,7 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddAsync_should_throws_exception_because_hours_is_less_or_equal_to_zero()
         {
             // Arrange
-            DayOff dayOff = new DayOff
+            DayOff dayOff = new()
             {
                 Hours = -1,
                 CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
@@ -139,7 +139,7 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddAsync_should_throws_exception_because_hours_is_greater_than_max_work_hours()
         {
             // Arrange
-            DayOff dayOff = new DayOff
+            DayOff dayOff = new()
             {
                 Hours = 9,
                 CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
@@ -156,7 +156,7 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddAsync_should_throws_exception_because_date_is_not_specified()
         {
             // Arrange
-            DayOff dayOff = new DayOff
+            DayOff dayOff = new()
             {
                 Hours = 8,
                 CreatedOn = DateTime.MinValue,
@@ -173,13 +173,13 @@ namespace EMS.Core.API.Tests.Repositories
         public void AddAsync_should_not_ad_new_record_because_record_with_this_date_already_exists()
         {
             // Arrange
-            DayOff dayOff = new DayOff
-            {
-                Hours = 8,
-                CreatedOn = new DateTime(2020, 01, 02, 12, 00, 00),
-                DayOffType = DayOffType.SickLeave,
-                PersonId = _person.Id,
-            };
+            DayOff dayOff = new()
+			{
+				Hours = 8,
+				CreatedOn = new DateTime(2020, 01, 02, 12, 00, 00),
+				DayOffType = DayOffType.SickLeave,
+				PersonId = _person.Id
+			};
 
             // Act
             int result = _dayOffRepository.AddAsync(dayOff).Result;
@@ -193,7 +193,7 @@ namespace EMS.Core.API.Tests.Repositories
         public void UpdateAsync_should_succesfullty_update_record()
         {
             // Arrange
-            DayOff dayOff = new DayOff
+            DayOff dayOff = new()
             {
                 Id = 1,
                 Hours = 6,
@@ -215,7 +215,7 @@ namespace EMS.Core.API.Tests.Repositories
         {
             // Arrange
             DbContextMock.ShouldThrowException = true;
-            DayOff dayOff = new DayOff
+            DayOff dayOff = new()
             {
                 Hours = 8,
                 CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
@@ -240,7 +240,7 @@ namespace EMS.Core.API.Tests.Repositories
         public void UpdateAsync_should_throws_exception_because_person_Id_is_not_specified()
         {
             // Arrange
-            DayOff dayOff = new DayOff
+            DayOff dayOff = new()
             {
                 Hours = 8,
                 CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
@@ -256,7 +256,7 @@ namespace EMS.Core.API.Tests.Repositories
         public void UpdateAsync_should_throws_exception_because_hours_is_less_or_equal_to_zero()
         {
             // Arrange
-            DayOff dayOff = new DayOff
+            DayOff dayOff = new()
             {
                 Id = 1,
                 Hours = -1,
@@ -274,7 +274,7 @@ namespace EMS.Core.API.Tests.Repositories
         public void UpdateAsync_should_throws_exception_because_hours_is_greater_than_max_work_hours()
         {
             // Arrange
-            DayOff dayOff = new DayOff
+            DayOff dayOff = new()
             {
                 Id = 1,
                 Hours = 9,
@@ -292,7 +292,7 @@ namespace EMS.Core.API.Tests.Repositories
         public void UpdateAsync_should_throws_exception_because_date_is_not_specified()
         {
             // Arrange
-            DayOff dayOff = new DayOff
+            DayOff dayOff = new()
             {
                 Id = 1,
                 Hours = 8,
@@ -310,7 +310,7 @@ namespace EMS.Core.API.Tests.Repositories
         public void DeleteAsync_should_delete_record_from_db()
         {
             // Arrange
-            DayOff dayOff = new DayOff
+            DayOff dayOff = new()
             {
                 Id = 3,
                 Hours = 8,
@@ -333,13 +333,13 @@ namespace EMS.Core.API.Tests.Repositories
         {
             // Arrange
             DbContextMock.ShouldThrowException = true;
-            DayOff dayOff = new DayOff
-            {
-                Hours = 8,
-                CreatedOn = new DateTime(2021, 01, 15, 12, 00, 00),
-                DayOffType = DayOffType.SickLeave,
-                PersonId = _person.Id,
-            };
+            DayOff dayOff = new()
+			{
+				Hours = 8,
+				CreatedOn = new DateTime(2021, 01, 15, 12, 00, 00),
+				DayOffType = DayOffType.SickLeave,
+				PersonId = _person.Id
+			};
 
             // Assert
             Assert.ThrowsAsync<DbUpdateException>(() => _dayOffRepository.DeleteAsync(dayOff), "Exception from db throws as expected");
@@ -383,14 +383,14 @@ namespace EMS.Core.API.Tests.Repositories
         public void GetByDateRange_should_return_all_records_from_db_by_specified_DateRange()
         {
             // Arrange
-            DayOff dayOff = new DayOff
-            {
-                Id = 3,
-                Hours = 8,
-                CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
-                DayOffType = DayOffType.SickLeave,
-                PersonId = _person.Id,
-            };
+            DayOff dayOff = new()
+			{
+				Id = 3,
+				Hours = 8,
+				CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
+				DayOffType = DayOffType.SickLeave,
+				PersonId = _person.Id
+			};
             _dbContext.DaysOff.Add(dayOff);
 
             // Act
@@ -411,22 +411,22 @@ namespace EMS.Core.API.Tests.Repositories
         public void GetByDateRangeAndStaffId_should_return_all_records_from_db_by_specified_DateRange_and_staffId()
         {
             // Arrange
-            DayOff dayOff = new DayOff
-            {
-                Id = 3,
-                Hours = 8,
-                CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
-                DayOffType = DayOffType.SickLeave,
-                PersonId = _person.Id,
-            };
-            DayOff staffNotForSearch = new DayOff
-            {
-                Id = 3,
-                Hours = 8,
-                CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
-                DayOffType = DayOffType.SickLeave,
-                PersonId = 2
-            };
+            DayOff dayOff = new()
+			{
+				Id = 3,
+				Hours = 8,
+				CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
+				DayOffType = DayOffType.SickLeave,
+				PersonId = _person.Id
+			};
+            DayOff staffNotForSearch = new()
+			{
+				Id = 3,
+				Hours = 8,
+				CreatedOn = new DateTime(2020, 01, 03, 12, 00, 00),
+				DayOffType = DayOffType.SickLeave,
+				PersonId = 2
+			};
             _dbContext.DaysOff.Add(dayOff);
             _dbContext.DaysOff.Add(staffNotForSearch);
 

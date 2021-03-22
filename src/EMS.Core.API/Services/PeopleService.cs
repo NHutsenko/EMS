@@ -29,7 +29,7 @@ namespace EMS.Core.API.Services
 
         public override Task<PeopleResponse> GetAll(Empty request, ServerCallContext context)
         {
-            PeopleResponse response = new PeopleResponse
+            PeopleResponse response = new()
             {
                 Status = new BaseResponse
                 {
@@ -47,26 +47,26 @@ namespace EMS.Core.API.Services
                     response.Data.Add(ToRpcModel(person));
                 }
 
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PeopleService),
-                    CallerMethodName = nameof(GetAll),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = response
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PeopleService),
+					CallerMethodName = nameof(GetAll),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = response
+				};
                 _logger.AddLog(logData);
             }
             catch(Exception ex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PeopleService),
-                    CallerMethodName = nameof(GetAll),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PeopleService),
+					CallerMethodName = nameof(GetAll),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ex
+				};
                 _logger.AddErrorLog(logData);
                 response.Status.Code = Code.UnknownError;
                 response.Status.ErrorMessage = "An error orccured while loading people data";
@@ -76,29 +76,25 @@ namespace EMS.Core.API.Services
 
         public override Task<PersonResponse> GetById(PersonRequest request, ServerCallContext context)
         {
-            PersonResponse response = new PersonResponse
-            {
-                Status = new BaseResponse
-                {
-                    Code = Code.UnknownError,
-                    ErrorMessage = string.Empty
-                },
-                Data = null
-            };
+            PersonResponse response = new()
+			{
+				Status = new BaseResponse { Code = Code.UnknownError, ErrorMessage = string.Empty },
+				Data = null
+			};
             try
             {
                 Person person = _peopleRepository.GetById(request.Id);
                 PersonData data = ToRpcModel(person);
                 response.Data = data;
                 response.Status.Code = Code.Success;
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PeopleService),
-                    CallerMethodName = nameof(GetById),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = response
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PeopleService),
+					CallerMethodName = nameof(GetById),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = response
+				};
                 _logger.AddLog(logData);
                 return Task.FromResult(response);
             }
@@ -106,14 +102,14 @@ namespace EMS.Core.API.Services
             {
                 response.Status.ErrorMessage = "An error occured while loading person data";
                 response.Status.Code = Code.DataError;
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PeopleService),
-                    CallerMethodName = nameof(GetById),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = nrex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PeopleService),
+					CallerMethodName = nameof(GetById),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = nrex
+				};
                 _logger.AddErrorLog(logData);
                 return Task.FromResult(response);
             }
@@ -121,14 +117,14 @@ namespace EMS.Core.API.Services
             {
                 response.Status.ErrorMessage = "An error occured while loading person data";
                 response.Status.Code = Code.UnknownError;
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PeopleService),
-                    CallerMethodName = nameof(GetById),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PeopleService),
+					CallerMethodName = nameof(GetById),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ex
+				};
                 _logger.AddErrorLog(logData);
                 return Task.FromResult(response);
             }
@@ -141,33 +137,33 @@ namespace EMS.Core.API.Services
                 if (request is null)
                     await _peopleRepository.AddAsync(null);
 
-                Person person = new Person
-                {
-                    LastName = request.LastName,
-                    Name = request.Name,
-                    SecondName = request.SecondName,
-                    BornedOn = request.BornedOn.ToDateTime()
-                };
+                Person person = new()
+				{
+					LastName = request.LastName,
+					Name = request.Name,
+					SecondName = request.SecondName,
+					BornedOn = request.BornedOn.ToDateTime()
+				};
                 int result = await _peopleRepository.AddAsync(person);
                 if(result == 0)
                 {
                     throw new Exception("Person data has not been saved");
                 }
-                BaseResponse response = new BaseResponse
-                {
-                    Code = Code.Success,
-                    ErrorMessage = string.Empty,
-                    DataId = person.Id
-                };
+                BaseResponse response = new()
+				{
+					Code = Code.Success,
+					ErrorMessage = string.Empty,
+					DataId = person.Id
+				};
 
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PeopleService),
-                    CallerMethodName = nameof(AddAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = response
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PeopleService),
+					CallerMethodName = nameof(AddAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = response
+				};
 
                 _logger.AddLog(logData);
 
@@ -175,14 +171,14 @@ namespace EMS.Core.API.Services
             }
             catch (NullReferenceException nrex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PeopleService),
-                    CallerMethodName = nameof(AddAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = nrex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PeopleService),
+					CallerMethodName = nameof(AddAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = nrex
+				};
 
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
@@ -193,14 +189,14 @@ namespace EMS.Core.API.Services
             }
             catch (ArgumentException aex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PeopleService),
-                    CallerMethodName = nameof(AddAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = aex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PeopleService),
+					CallerMethodName = nameof(AddAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = aex
+				};
 
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
@@ -211,14 +207,14 @@ namespace EMS.Core.API.Services
             }
             catch (DbUpdateException duex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PeopleService),
-                    CallerMethodName = nameof(AddAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = duex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PeopleService),
+					CallerMethodName = nameof(AddAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = duex
+				};
 
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
@@ -229,14 +225,14 @@ namespace EMS.Core.API.Services
             }
             catch(Exception ex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PeopleService),
-                    CallerMethodName = nameof(AddAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PeopleService),
+					CallerMethodName = nameof(AddAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ex
+				};
 
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
@@ -254,34 +250,34 @@ namespace EMS.Core.API.Services
                 if (request is null)
                     await _peopleRepository.UpdateAsync(null);
 
-                Person person = new Person
-                {
-                    LastName = request.LastName,
-                    Name = request.Name,
-                    SecondName = request.SecondName,
-                    BornedOn = request.BornedOn.ToDateTime(),
-                    Id = request.Id
-                };
+                Person person = new()
+				{
+					LastName = request.LastName,
+					Name = request.Name,
+					SecondName = request.SecondName,
+					BornedOn = request.BornedOn.ToDateTime(),
+					Id = request.Id
+				};
                 int result = await _peopleRepository.UpdateAsync(person);
                 if (result == 0)
                 {
                     throw new Exception("Person data has not been updated");
                 }
-                BaseResponse response = new BaseResponse
-                {
-                    Code = Code.Success,
-                    ErrorMessage = string.Empty,
-                    DataId = person.Id
-                };
+                BaseResponse response = new()
+				{
+					Code = Code.Success,
+					ErrorMessage = string.Empty,
+					DataId = person.Id
+				};
 
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PeopleService),
-                    CallerMethodName = nameof(UpdateAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = response
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PeopleService),
+					CallerMethodName = nameof(UpdateAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = response
+				};
 
                 _logger.AddLog(logData);
 
@@ -289,14 +285,14 @@ namespace EMS.Core.API.Services
             }
             catch (NullReferenceException nrex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PeopleService),
-                    CallerMethodName = nameof(UpdateAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = nrex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PeopleService),
+					CallerMethodName = nameof(UpdateAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = nrex
+				};
 
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
@@ -307,14 +303,14 @@ namespace EMS.Core.API.Services
             }
             catch (ArgumentException aex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PeopleService),
-                    CallerMethodName = nameof(UpdateAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = aex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PeopleService),
+					CallerMethodName = nameof(UpdateAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = aex
+				};
 
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
@@ -325,14 +321,14 @@ namespace EMS.Core.API.Services
             }
             catch (DbUpdateException duex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PeopleService),
-                    CallerMethodName = nameof(UpdateAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = duex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PeopleService),
+					CallerMethodName = nameof(UpdateAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = duex
+				};
 
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
@@ -343,14 +339,14 @@ namespace EMS.Core.API.Services
             }
             catch (Exception ex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PeopleService),
-                    CallerMethodName = nameof(UpdateAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PeopleService),
+					CallerMethodName = nameof(UpdateAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ex
+				};
 
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
@@ -368,33 +364,33 @@ namespace EMS.Core.API.Services
                 if (request is null)
                     await _peopleRepository.AddContactAsync(null);
 
-                Contact contact = new Contact
-                {
-                    ContactType = (ContactType)System.Enum.Parse(typeof(ContactType), request.ContactType.ToString()),
-                    Name = request.Name,
-                    PersonId = request.PersonId,
-                    Value = request.Value
-                };
+                Contact contact = new()
+				{
+					ContactType = (ContactType)System.Enum.Parse(typeof(ContactType), request.ContactType.ToString()),
+					Name = request.Name,
+					PersonId = request.PersonId,
+					Value = request.Value
+				};
                 int result = await _peopleRepository.AddContactAsync(contact);
                 if(result == 0)
                 {
                     throw new Exception("Contact has not been saved");
                 }
-                BaseResponse response = new BaseResponse
-                {
-                    Code = Code.Success,
-                    ErrorMessage = string.Empty,
-                    DataId = contact.Id
-                };
+                BaseResponse response = new()
+				{
+					Code = Code.Success,
+					ErrorMessage = string.Empty,
+					DataId = contact.Id
+				};
 
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PeopleService),
-                    CallerMethodName = nameof(AddContactAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = response
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PeopleService),
+					CallerMethodName = nameof(AddContactAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = response
+				};
 
                 _logger.AddLog(logData);
 
@@ -402,14 +398,14 @@ namespace EMS.Core.API.Services
             }
             catch(NullReferenceException nrex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PeopleService),
-                    CallerMethodName = nameof(AddContactAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = nrex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PeopleService),
+					CallerMethodName = nameof(AddContactAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = nrex
+				};
 
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
@@ -420,14 +416,14 @@ namespace EMS.Core.API.Services
             }
             catch(ArgumentException aex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PeopleService),
-                    CallerMethodName = nameof(AddContactAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = aex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PeopleService),
+					CallerMethodName = nameof(AddContactAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = aex
+				};
 
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
@@ -438,14 +434,14 @@ namespace EMS.Core.API.Services
             }
             catch(DbUpdateException duex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PeopleService),
-                    CallerMethodName = nameof(AddContactAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = duex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PeopleService),
+					CallerMethodName = nameof(AddContactAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = duex
+				};
 
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
@@ -456,14 +452,14 @@ namespace EMS.Core.API.Services
             }
             catch(Exception ex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PeopleService),
-                    CallerMethodName = nameof(AddContactAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PeopleService),
+					CallerMethodName = nameof(AddContactAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ex
+				};
 
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
@@ -480,32 +476,32 @@ namespace EMS.Core.API.Services
             {
                 if (request is null)
                     await _peopleRepository.AddPhotoAsync(null);
-                PersonPhoto photo = new PersonPhoto
-                {
-                    Base64 = request.Base64,
-                    Name = request.Name,
-                    PersonId = request.PersonId
-                };
+                PersonPhoto photo = new()
+				{
+					Base64 = request.Base64,
+					Name = request.Name,
+					PersonId = request.PersonId
+				};
                 int result = await _peopleRepository.AddPhotoAsync(photo);
                 if(result == 0)
                 {
                     throw new Exception("Photo has not been saved");
                 }
-                BaseResponse response = new BaseResponse
-                {
-                    Code = Code.Success,
-                    ErrorMessage = string.Empty,
-                    DataId = photo.Id
-                };
+                BaseResponse response = new()
+				{
+					Code = Code.Success,
+					ErrorMessage = string.Empty,
+					DataId = photo.Id
+				};
 
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PeopleService),
-                    CallerMethodName = nameof(AddPhotoAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = response
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PeopleService),
+					CallerMethodName = nameof(AddPhotoAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = response
+				};
 
                 _logger.AddLog(logData);
 
@@ -513,14 +509,14 @@ namespace EMS.Core.API.Services
             }
             catch (NullReferenceException nrex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PeopleService),
-                    CallerMethodName = nameof(AddPhotoAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = nrex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PeopleService),
+					CallerMethodName = nameof(AddPhotoAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = nrex
+				};
 
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
@@ -531,14 +527,14 @@ namespace EMS.Core.API.Services
             }
             catch (ArgumentException aex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PeopleService),
-                    CallerMethodName = nameof(AddPhotoAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = aex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PeopleService),
+					CallerMethodName = nameof(AddPhotoAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = aex
+				};
 
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
@@ -549,14 +545,14 @@ namespace EMS.Core.API.Services
             }
             catch (DbUpdateException duex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PeopleService),
-                    CallerMethodName = nameof(AddPhotoAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = duex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PeopleService),
+					CallerMethodName = nameof(AddPhotoAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = duex
+				};
 
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
@@ -567,14 +563,14 @@ namespace EMS.Core.API.Services
             }
             catch (Exception ex)
             {
-                LogData logData = new LogData
-                {
-                    CallSide = nameof(PeopleService),
-                    CallerMethodName = nameof(AddPhotoAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ex
-                };
+                LogData logData = new()
+				{
+					CallSide = nameof(PeopleService),
+					CallerMethodName = nameof(AddPhotoAsync),
+					CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+					Request = request,
+					Response = ex
+				};
 
                 _logger.AddErrorLog(logData);
                 return new BaseResponse
@@ -587,15 +583,15 @@ namespace EMS.Core.API.Services
 
         private static PersonData ToRpcModel(Person person)
         {
-            PersonData converted = new PersonData
-            {
-                Id = person.Id,
-                Name = person.Name,
-                LastName = person.LastName,
-                SecondName = person.SecondName,
-                BornedOn = Timestamp.FromDateTime(person.BornedOn.ToUniversalTime()),
-                CreatedOn = Timestamp.FromDateTime(person.CreatedOn.ToUniversalTime())
-            };
+            PersonData converted = new()
+			{
+				Id = person.Id,
+				Name = person.Name,
+				LastName = person.LastName,
+				SecondName = person.SecondName,
+				BornedOn = Timestamp.FromDateTime(person.BornedOn.ToUniversalTime()),
+				CreatedOn = Timestamp.FromDateTime(person.CreatedOn.ToUniversalTime())
+			};
 
             if (person.Contacts is not null)
             {
