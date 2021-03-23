@@ -16,20 +16,6 @@ service DayOffs {
 	rpc GetByPersonIdAndDateRange(requests.ByPersonIdAndDateRangeRequest) returns (DayOffsResponse) { }
 }
 
-message DayOffsByPersonRequest {
-	int64 person_id = 1;
-}
-
-message DayOffsByDateRangeRequestRequest {
-	google.protobuf.Timestamp from = 1;
-	google.protobuf.Timestamp to = 2;
-}
-
-message DayOffsByPersonIdDateRangeRequestRequest{
-	DayOffsByPersonRequest person = 1;
-	DayOffsByDateRangeRequestRequest range = 2;
-}
-
 message DayOffsResponse {
 	response.BaseResponse status = 1;
 	repeated DayOffData data = 2;

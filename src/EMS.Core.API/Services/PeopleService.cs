@@ -74,7 +74,7 @@ namespace EMS.Core.API.Services
             return Task.FromResult(response);
         }
 
-        public override Task<PersonResponse> GetById(PersonRequest request, ServerCallContext context)
+        public override Task<PersonResponse> GetById(ByPersonIdRequest request, ServerCallContext context)
         {
             PersonResponse response = new()
 			{
@@ -83,7 +83,7 @@ namespace EMS.Core.API.Services
 			};
             try
             {
-                Person person = _peopleRepository.GetById(request.Id);
+                Person person = _peopleRepository.GetById(request.PersonId);
                 PersonData data = ToRpcModel(person);
                 response.Data = data;
                 response.Status.Code = Code.Success;

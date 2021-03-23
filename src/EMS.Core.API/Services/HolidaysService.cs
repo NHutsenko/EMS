@@ -390,7 +390,7 @@ namespace EMS.Core.API.Services
             return Task.FromResult(response);
         }
 
-        public override Task<HolidaysResponse> GetByDateRange(DateRangeRequest request, ServerCallContext context)
+        public override Task<HolidaysResponse> GetByDateRange(ByDateRangeRequest request, ServerCallContext context)
         {
             HolidaysResponse response = new()
 			{

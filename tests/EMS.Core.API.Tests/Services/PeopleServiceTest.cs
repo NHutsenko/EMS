@@ -178,9 +178,9 @@ namespace EMS.Core.API.Tests.Services
                 Name = _photo.Name
             });
 
-            PersonRequest request = new()
+            ByPersonIdRequest request = new()
 			{
-				Id = _person1.Id
+				PersonId = _person1.Id
 			};
 
             LogData expectedLog = new()
@@ -212,9 +212,9 @@ namespace EMS.Core.API.Tests.Services
 				Data = null
 			};
 
-            PersonRequest request = new()
+            ByPersonIdRequest request = new()
 			{
-				Id = 3
+				PersonId = 3
 			};
 
             LogData expectedLog = new()
@@ -247,9 +247,9 @@ namespace EMS.Core.API.Tests.Services
 				Data = null
 			};
 
-            PersonRequest request = new()
+            ByPersonIdRequest request = new()
 			{
-				Id = _person1.Id
+				PersonId = _person1.Id
 			};
 
             LogData expectedLog = new()

@@ -124,7 +124,7 @@ namespace EMS.Core.API.Tests.Services
         public void GetByDateRange_should_return_hoildays_by_date_range_from_db()
         {
             // Arrange
-            DateRangeRequest request = new()
+            ByDateRangeRequest request = new()
 			{
 				From = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc)),
 				To = Timestamp.FromDateTime(new DateTime(2021, 1, 10, 0, 0, 0, DateTimeKind.Utc))
@@ -166,7 +166,7 @@ namespace EMS.Core.API.Tests.Services
         {
             // Arrange
             BaseMock.ShouldThrowException = true;
-            DateRangeRequest request = new()
+            ByDateRangeRequest request = new()
 			{
 				From = Timestamp.FromDateTime(new DateTime(2021, 1, 1, 0, 0, 0, DateTimeKind.Utc)),
 				To = Timestamp.FromDateTime(new DateTime(2021, 1, 10, 0, 0, 0, DateTimeKind.Utc))

@@ -3,43 +3,72 @@ using EMS.Common.Logger;
 using EMS.Common.Logger.Models;
 using EMS.Common.Protos;
 using EMS.Common.Utils.DateTimeUtil;
-using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Mvc;
-using static EMS.Common.Protos.Holidays;
-
+using static EMS.Common.Protos.DayOffs;
 
 namespace EMS.Gateway.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HolidaysController : ControllerBase
+    public class DayOffsController : ControllerBase
     {
-        private readonly HolidaysClient _holidaysClient;
-        private readonly IEMSLogger<HolidaysController> _logger;
+        private readonly DayOffsClient _dayOffsClient;
+        private readonly IEMSLogger<DayOffsController> _logger;
         private readonly IDateTimeUtil _dateTimeUtil;
 
-        public HolidaysController(HolidaysClient holidaysClient, IEMSLogger<HolidaysController> logger, IDateTimeUtil dateTimeUtil)
+        public DayOffsController(DayOffsClient dayOffsClient, IEMSLogger<DayOffsController> logger, IDateTimeUtil dateTimeUtil)
         {
             _dateTimeUtil = dateTimeUtil;
-            _holidaysClient = holidaysClient;
+            _dayOffsClient = dayOffsClient;
             _logger = logger;
         }
 
-        [HttpPost]
-        public IActionResult Add([FromBody] HolidayData request)
+        [HttpGet]
+        public IActionResult GetByPersonId([FromQuery] ByPersonIdRequest request)
         {
             try
             {
-                BaseResponse response = _holidaysClient.AddAsync(request);
+                DayOffsResponse response = _dayOffsClient.GetByPersonId(request);
                 LogData logData = new()
                 {
-                    CallSide = nameof(HolidaysController),
-                    CallerMethodName = nameof(Add),
+                    CallSide = nameof(DayOffsController),
+                    CallerMethodName = nameof(GetByPersonId),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = response
                 };
+                _logger.AddLog(logData);
+                return Ok(response);
+            }
+            catch(Exception ex)
+            {
+                LogData logData = new()
+                {
+                    CallSide = nameof(DayOffsController),
+                    CallerMethodName = nameof(GetByPersonId),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = ex
+                };
+                _logger.AddErrorLog(logData);
+                return StatusCode(500, "An error occured while sending request");
+            }
+        }
 
+        [HttpGet("range")]
+        public IActionResult GetByPersonIdAndDateRange([FromQuery] ByPersonIdAndDateRangeRequest request)
+        {
+            try
+            {
+                DayOffsResponse response = _dayOffsClient.GetByPersonIdAndDateRange(request);
+                LogData logData = new()
+                {
+                    CallSide = nameof(DayOffsController),
+                    CallerMethodName = nameof(GetByPersonIdAndDateRange),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = response
+                };
                 _logger.AddLog(logData);
                 return Ok(response);
             }
@@ -47,33 +76,63 @@ namespace EMS.Gateway.API.Controllers
             {
                 LogData logData = new()
                 {
-                    CallSide = nameof(HolidaysController),
+                    CallSide = nameof(DayOffsController),
+                    CallerMethodName = nameof(GetByPersonIdAndDateRange),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = ex
+                };
+                _logger.AddErrorLog(logData);
+                return StatusCode(500, "An error occured while sending request");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Add([FromBody] DayOffData request)
+        {
+            try
+            {
+                BaseResponse response = _dayOffsClient.AddAsync(request);
+                LogData logData = new()
+                {
+                    CallSide = nameof(DayOffsController),
+                    CallerMethodName = nameof(Add),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = response
+                };
+                _logger.AddLog(logData);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                LogData logData = new()
+                {
+                    CallSide = nameof(DayOffsController),
                     CallerMethodName = nameof(Add),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = ex
                 };
-
                 _logger.AddErrorLog(logData);
                 return StatusCode(500, "An error occured while sending request");
             }
         }
 
         [HttpPut]
-        public IActionResult Update([FromBody] HolidayData request)
+        public IActionResult Update([FromBody] DayOffData request)
         {
             try
             {
-                BaseResponse response = _holidaysClient.UpdateAsync(request);
+                BaseResponse response = _dayOffsClient.UpdateAsync(request);
                 LogData logData = new()
                 {
-                    CallSide = nameof(HolidaysController),
+                    CallSide = nameof(DayOffsController),
                     CallerMethodName = nameof(Update),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = response
                 };
-
                 _logger.AddLog(logData);
                 return Ok(response);
             }
@@ -81,33 +140,31 @@ namespace EMS.Gateway.API.Controllers
             {
                 LogData logData = new()
                 {
-                    CallSide = nameof(HolidaysController),
+                    CallSide = nameof(DayOffsController),
                     CallerMethodName = nameof(Update),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = ex
                 };
-
                 _logger.AddErrorLog(logData);
                 return StatusCode(500, "An error occured while sending request");
             }
         }
 
         [HttpDelete]
-        public IActionResult Delete([FromBody] HolidayData request)
+        public IActionResult Delete([FromBody] DayOffData request)
         {
             try
             {
-                BaseResponse response = _holidaysClient.DeleteAsync(request);
+                BaseResponse response = _dayOffsClient.DeleteAsync(request);
                 LogData logData = new()
                 {
-                    CallSide = nameof(HolidaysController),
+                    CallSide = nameof(DayOffsController),
                     CallerMethodName = nameof(Delete),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = response
                 };
-
                 _logger.AddLog(logData);
                 return Ok(response);
             }
@@ -115,82 +172,12 @@ namespace EMS.Gateway.API.Controllers
             {
                 LogData logData = new()
                 {
-                    CallSide = nameof(HolidaysController),
+                    CallSide = nameof(DayOffsController),
                     CallerMethodName = nameof(Delete),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = ex
                 };
-
-                _logger.AddErrorLog(logData);
-                return StatusCode(500, "An error occured while sending request");
-            }
-        }
-
-        [HttpGet("all")]
-        public IActionResult GetAll()
-        {
-            Empty request = new();
-            try
-            {
-                HolidaysResponse response = _holidaysClient.GetAll(request);
-                LogData logData = new()
-                {
-                    CallSide = nameof(HolidaysController),
-                    CallerMethodName = nameof(GetAll),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = response
-                };
-
-                _logger.AddLog(logData);
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                LogData logData = new()
-                {
-                    CallSide = nameof(HolidaysController),
-                    CallerMethodName = nameof(GetAll),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ex
-                };
-
-                _logger.AddErrorLog(logData);
-                return StatusCode(500, "An error occured while sending request");
-            }
-        }
-
-        [HttpGet]
-        public IActionResult GetByRangeDate([FromQuery] ByDateRangeRequest request)
-        {
-            try
-            {
-                HolidaysResponse response = _holidaysClient.GetByDateRange(request);
-                LogData logData = new()
-                {
-                    CallSide = nameof(HolidaysController),
-                    CallerMethodName = nameof(GetByRangeDate),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = response
-                };
-
-                _logger.AddLog(logData);
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                LogData logData = new()
-                {
-                    CallSide = nameof(HolidaysController),
-                    CallerMethodName = nameof(GetByRangeDate),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ex
-                };
-
                 _logger.AddErrorLog(logData);
                 return StatusCode(500, "An error occured while sending request");
             }

@@ -46,8 +46,8 @@ namespace EMS.Gateway.API.Tests.Mock
                     return Response as HolidaysResponse;
                 });
 
-            mock.Setup(m => m.GetByDateRange(It.IsAny<DateRangeRequest>(), It.IsAny<Metadata>(), It.IsAny<DateTime?>(), It.IsAny<CancellationToken>()))
-                .Returns<DateRangeRequest, Metadata, DateTime?, CancellationToken>((request, metdata, timestamp, token) =>
+            mock.Setup(m => m.GetByDateRange(It.IsAny<ByDateRangeRequest>(), It.IsAny<Metadata>(), It.IsAny<DateTime?>(), It.IsAny<CancellationToken>()))
+                .Returns<ByDateRangeRequest, Metadata, DateTime?, CancellationToken>((request, metdata, timestamp, token) =>
                 {
                     ThrowExceptionIfNeeded();
                     return Response as HolidaysResponse;

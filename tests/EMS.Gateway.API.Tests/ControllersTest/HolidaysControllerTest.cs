@@ -333,7 +333,7 @@ namespace EMS.Gateway.API.Tests
             });
             BaseMock.Response = response;
 
-            DateRangeRequest request = new()
+            ByDateRangeRequest request = new()
             {
                 From = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
                 To = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().AddMonths(1))
@@ -364,7 +364,7 @@ namespace EMS.Gateway.API.Tests
         {
             // Arrange
             BaseMock.ShouldThrowException = true;
-            DateRangeRequest request = new()
+            ByDateRangeRequest request = new()
             {
                 From = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime()),
                 To = Timestamp.FromDateTime(_dateTimeUtil.GetCurrentDateTime().AddMonths(1))
