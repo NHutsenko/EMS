@@ -18,9 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\common\BaseModel\CommonModels.csproj" />
-    <ProjectReference Include="..\common\DateTimeUtil\DateTimeUtil.csproj" />
-    <ProjectReference Include="..\common\LoggerExtensions\Logger.csproj" />
+    <ProjectReference Include="..\common\BaseModel\EMS.Common.Models.csproj" />
+    <ProjectReference Include="..\common\DateTimeUtil\EMS.Common.Utils.DateTimeUtil.csproj" />
+    <ProjectReference Include="..\common\LoggerExtensions\EMS.Common.Extensions.Logger.csproj" />
   </ItemGroup>
 
   <ItemGroup>

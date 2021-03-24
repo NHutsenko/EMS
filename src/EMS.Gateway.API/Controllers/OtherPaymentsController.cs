@@ -4,77 +4,74 @@ using EMS.Common.Logger;
 using EMS.Common.Logger.Models;
 using EMS.Common.Protos;
 using EMS.Common.Utils.DateTimeUtil;
-using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Mvc;
-using static EMS.Common.Protos.Holidays;
-
+using static EMS.Common.Protos.OtherPayments;
 
 namespace EMS.Gateway.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HolidaysController : BaseApiController
+    public class OtherPaymentsController : BaseApiController
     {
-        private readonly HolidaysClient _holidaysClient;
-        private readonly IEMSLogger<HolidaysController> _logger;
+        private readonly OtherPaymentsClient _otherPaymentsClient;
+        private readonly IEMSLogger<OtherPaymentsController> _logger;
         private readonly IDateTimeUtil _dateTimeUtil;
 
-        public HolidaysController(HolidaysClient holidaysClient, IEMSLogger<HolidaysController> logger, IDateTimeUtil dateTimeUtil)
+        public OtherPaymentsController(OtherPaymentsClient client,
+            IEMSLogger<OtherPaymentsController> logger,
+            IDateTimeUtil dateTimeUtil)
         {
-            _dateTimeUtil = dateTimeUtil;
-            _holidaysClient = holidaysClient;
+            _otherPaymentsClient = client;
             _logger = logger;
+            _dateTimeUtil = dateTimeUtil;
         }
 
         [HttpPost]
-        public IActionResult Add([FromBody] HolidayData request)
+        public IActionResult Add([FromBody] OtherPaymentData request)
         {
             try
             {
-                BaseResponse response = _holidaysClient.AddAsync(request);
+                BaseResponse response = _otherPaymentsClient.AddAsync(request);
                 LogData logData = new()
                 {
-                    CallSide = nameof(HolidaysController),
+                    CallSide = nameof(OtherPaymentsController),
                     CallerMethodName = nameof(Add),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = response
                 };
-
                 _logger.AddLog(logData);
                 return Ok(response);
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 LogData logData = new()
                 {
-                    CallSide = nameof(HolidaysController),
+                    CallSide = nameof(OtherPaymentsController),
                     CallerMethodName = nameof(Add),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = ex
                 };
-
                 _logger.AddErrorLog(logData);
                 return InternalServerError();
             }
         }
 
         [HttpPut]
-        public IActionResult Update([FromBody] HolidayData request)
+        public IActionResult Update([FromBody] OtherPaymentData request)
         {
             try
             {
-                BaseResponse response = _holidaysClient.UpdateAsync(request);
+                BaseResponse response = _otherPaymentsClient.UpdateAsync(request);
                 LogData logData = new()
                 {
-                    CallSide = nameof(HolidaysController),
+                    CallSide = nameof(OtherPaymentsController),
                     CallerMethodName = nameof(Update),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = response
                 };
-
                 _logger.AddLog(logData);
                 return Ok(response);
             }
@@ -82,33 +79,31 @@ namespace EMS.Gateway.API.Controllers
             {
                 LogData logData = new()
                 {
-                    CallSide = nameof(HolidaysController),
+                    CallSide = nameof(OtherPaymentsController),
                     CallerMethodName = nameof(Update),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = ex
                 };
-
                 _logger.AddErrorLog(logData);
                 return InternalServerError();
             }
         }
 
         [HttpDelete]
-        public IActionResult Delete([FromBody] HolidayData request)
+        public IActionResult Delete([FromBody] OtherPaymentData request)
         {
             try
             {
-                BaseResponse response = _holidaysClient.DeleteAsync(request);
+                BaseResponse response = _otherPaymentsClient.DeleteAsync(request);
                 LogData logData = new()
                 {
-                    CallSide = nameof(HolidaysController),
+                    CallSide = nameof(OtherPaymentsController),
                     CallerMethodName = nameof(Delete),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = response
                 };
-
                 _logger.AddLog(logData);
                 return Ok(response);
             }
@@ -116,68 +111,31 @@ namespace EMS.Gateway.API.Controllers
             {
                 LogData logData = new()
                 {
-                    CallSide = nameof(HolidaysController),
+                    CallSide = nameof(OtherPaymentsController),
                     CallerMethodName = nameof(Delete),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = ex
                 };
-
-                _logger.AddErrorLog(logData);
-                return InternalServerError();
-            }
-        }
-
-        [HttpGet("all")]
-        public IActionResult GetAll()
-        {
-            Empty request = new();
-            try
-            {
-                HolidaysResponse response = _holidaysClient.GetAll(request);
-                LogData logData = new()
-                {
-                    CallSide = nameof(HolidaysController),
-                    CallerMethodName = nameof(GetAll),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = response
-                };
-
-                _logger.AddLog(logData);
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                LogData logData = new()
-                {
-                    CallSide = nameof(HolidaysController),
-                    CallerMethodName = nameof(GetAll),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ex
-                };
-
                 _logger.AddErrorLog(logData);
                 return InternalServerError();
             }
         }
 
         [HttpGet]
-        public IActionResult GetByRangeDate([FromQuery] ByDateRangeRequest request)
+        public IActionResult GetByPersonId([FromQuery] ByPersonIdRequest request)
         {
             try
             {
-                HolidaysResponse response = _holidaysClient.GetByDateRange(request);
+                OtherPaymentsResponse response = _otherPaymentsClient.GetByPersonId(request);
                 LogData logData = new()
                 {
-                    CallSide = nameof(HolidaysController),
-                    CallerMethodName = nameof(GetByRangeDate),
+                    CallSide = nameof(OtherPaymentsController),
+                    CallerMethodName = nameof(GetByPersonId),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = response
                 };
-
                 _logger.AddLog(logData);
                 return Ok(response);
             }
@@ -185,13 +143,44 @@ namespace EMS.Gateway.API.Controllers
             {
                 LogData logData = new()
                 {
-                    CallSide = nameof(HolidaysController),
-                    CallerMethodName = nameof(GetByRangeDate),
+                    CallSide = nameof(OtherPaymentsController),
+                    CallerMethodName = nameof(GetByPersonId),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = ex
                 };
+                _logger.AddErrorLog(logData);
+                return InternalServerError();
+            }
+        }
 
+        [HttpGet("range")]
+        public IActionResult GetByPersonIdAndDateRange([FromQuery] ByPersonIdAndDateRangeRequest request)
+        {
+            try
+            {
+                OtherPaymentsResponse response = _otherPaymentsClient.GetByPersonIdAndDateRange(request);
+                LogData logData = new()
+                {
+                    CallSide = nameof(OtherPaymentsController),
+                    CallerMethodName = nameof(GetByPersonIdAndDateRange),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = response
+                };
+                _logger.AddLog(logData);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                LogData logData = new()
+                {
+                    CallSide = nameof(OtherPaymentsController),
+                    CallerMethodName = nameof(GetByPersonIdAndDateRange),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = ex
+                };
                 _logger.AddErrorLog(logData);
                 return InternalServerError();
             }

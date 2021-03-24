@@ -1,4 +1,5 @@
 ﻿using System;
+using EMS.Common.ControllerExtension;
 using EMS.Common.Logger;
 using EMS.Common.Logger.Models;
 using EMS.Common.Protos;
@@ -10,7 +11,7 @@ namespace EMS.Gateway.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MotivationModificatorController : ControllerBase
+    public class MotivationModificatorController : BaseApiController
     {
         private readonly MotivationModificatorsClient _motivationModificatorsClient;
         private readonly IEMSLogger<MotivationModificatorController> _logger;
@@ -52,7 +53,7 @@ namespace EMS.Gateway.API.Controllers
                     Response = ex
                 };
                 _logger.AddErrorLog(logData);
-                return StatusCode(500, "An error occured while sending request");
+                return InternalServerError();
             }
         }
 
@@ -84,7 +85,7 @@ namespace EMS.Gateway.API.Controllers
                     Response = ex
                 };
                 _logger.AddErrorLog(logData);
-                return StatusCode(500, "An error occured while sending request");
+                return InternalServerError();
             }
         }
 
@@ -121,7 +122,7 @@ namespace EMS.Gateway.API.Controllers
                     Response = ex
                 };
                 _logger.AddErrorLog(logData);
-                return StatusCode(500, "An error occured while sending request");
+                return InternalServerError();
             }
         }
     }

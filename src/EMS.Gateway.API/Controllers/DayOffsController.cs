@@ -1,4 +1,5 @@
 ﻿using System;
+using EMS.Common.ControllerExtension;
 using EMS.Common.Logger;
 using EMS.Common.Logger.Models;
 using EMS.Common.Protos;
@@ -10,7 +11,7 @@ namespace EMS.Gateway.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DayOffsController : ControllerBase
+    public class DayOffsController : BaseApiController
     {
         private readonly DayOffsClient _dayOffsClient;
         private readonly IEMSLogger<DayOffsController> _logger;
@@ -51,7 +52,7 @@ namespace EMS.Gateway.API.Controllers
                     Response = ex
                 };
                 _logger.AddErrorLog(logData);
-                return StatusCode(500, "An error occured while sending request");
+                return InternalServerError();
             }
         }
 
@@ -83,7 +84,7 @@ namespace EMS.Gateway.API.Controllers
                     Response = ex
                 };
                 _logger.AddErrorLog(logData);
-                return StatusCode(500, "An error occured while sending request");
+                return InternalServerError();
             }
         }
 
@@ -115,7 +116,7 @@ namespace EMS.Gateway.API.Controllers
                     Response = ex
                 };
                 _logger.AddErrorLog(logData);
-                return StatusCode(500, "An error occured while sending request");
+                return InternalServerError();
             }
         }
 
@@ -147,7 +148,7 @@ namespace EMS.Gateway.API.Controllers
                     Response = ex
                 };
                 _logger.AddErrorLog(logData);
-                return StatusCode(500, "An error occured while sending request");
+                return InternalServerError();
             }
         }
 
@@ -179,7 +180,7 @@ namespace EMS.Gateway.API.Controllers
                     Response = ex
                 };
                 _logger.AddErrorLog(logData);
-                return StatusCode(500, "An error occured while sending request");
+                return InternalServerError();
             }
         }
     }

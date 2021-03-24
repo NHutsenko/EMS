@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\common\DateTimeUtil\DateTimeUtil.csproj" />
+    <ProjectReference Include="..\..\src\common\DateTimeUtil\EMS.Common.Utils.DateTimeUtil.csproj" />
   </ItemGroup>
 
 </Project>

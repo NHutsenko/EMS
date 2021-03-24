@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
 
-namespace EMS.Gateway.API.Tests.ControllersTest
+namespace EMS.Gateway.API.Tests
 {
     [ExcludeFromCodeCoverage]
     public class MotivationModificatorControllerTest: BaseUnitTest<MotivationModificatorController>
@@ -92,7 +92,7 @@ namespace EMS.Gateway.API.Tests.ControllersTest
 
             // Assert
             Assert.AreEqual(500, actual.StatusCode, "StatusCode as expected");
-            Assert.AreEqual("An error occured while sending request", actual.Value, "Response data as expected");
+            Assert.AreEqual(BaseMock.ErrorResponseMessage, actual.Value, "Response data as expected");
             _loggerMock.Verify(m => m.AddErrorLog(expectedLog), Times.Once);
             _motivationModificatorsClientMock.Verify(m => m.AddAsync(request, null, null, new CancellationToken()), Times.Once);
         }
@@ -166,7 +166,7 @@ namespace EMS.Gateway.API.Tests.ControllersTest
 
             // Assert
             Assert.AreEqual(500, actual.StatusCode, "StatusCode as expected");
-            Assert.AreEqual("An error occured while sending request", actual.Value, "Response data as expected");
+            Assert.AreEqual(BaseMock.ErrorResponseMessage, actual.Value, "Response data as expected");
             _loggerMock.Verify(m => m.AddErrorLog(expectedLog), Times.Once);
             _motivationModificatorsClientMock.Verify(m => m.UpdateAsync(request, null, null, new CancellationToken()), Times.Once);
         }
@@ -242,7 +242,7 @@ namespace EMS.Gateway.API.Tests.ControllersTest
 
             // Assert
             Assert.AreEqual(500, actual.StatusCode, "StatusCode as expected");
-            Assert.AreEqual("An error occured while sending request", actual.Value, "Response data as expected");
+            Assert.AreEqual(BaseMock.ErrorResponseMessage, actual.Value, "Response data as expected");
             _loggerMock.Verify(m => m.AddErrorLog(expectedLog), Times.Once);
             _motivationModificatorsClientMock.Verify(m => m.GetByStaffId(request, null, null, new CancellationToken()), Times.Once);
         }

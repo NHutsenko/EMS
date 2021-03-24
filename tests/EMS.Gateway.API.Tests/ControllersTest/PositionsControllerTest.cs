@@ -93,7 +93,7 @@ namespace EMS.Gateway.API.Tests
 
             // Asssert
             Assert.AreEqual(500, actual.StatusCode, "Status code as expected");
-            Assert.AreEqual("An error occured while sending request", actual.Value, "Response as expected");
+            Assert.AreEqual(BaseMock.ErrorResponseMessage, actual.Value, "Response as expected");
             _loggerMock.Verify(m => m.AddErrorLog(expectedLog), Times.Once);
             _positionsClientMock.Verify(m => m.AddAsync(request, null, null, new CancellationToken()), Times.Once);
         }
@@ -167,7 +167,7 @@ namespace EMS.Gateway.API.Tests
 
             // Asssert
             Assert.AreEqual(500, actual.StatusCode, "Status code as expected");
-            Assert.AreEqual("An error occured while sending request", actual.Value, "Response as expected");
+            Assert.AreEqual(BaseMock.ErrorResponseMessage, actual.Value, "Response as expected");
             _loggerMock.Verify(m => m.AddErrorLog(expectedLog), Times.Once);
             _positionsClientMock.Verify(m => m.UpdateAsync(request, null, null, new CancellationToken()), Times.Once);
         }
@@ -242,7 +242,7 @@ namespace EMS.Gateway.API.Tests
 
             // Asssert
             Assert.AreEqual(500, actual.StatusCode, "Status code as expected");
-            Assert.AreEqual("An error occured while sending request", actual.Value, "Response as expected");
+            Assert.AreEqual(BaseMock.ErrorResponseMessage, actual.Value, "Response as expected");
             _loggerMock.Verify(m => m.AddErrorLog(expectedLog), Times.Once);
             _positionsClientMock.Verify(m => m.DeleteAsync(request, null, null, new CancellationToken()), Times.Once);
         }
@@ -304,7 +304,7 @@ namespace EMS.Gateway.API.Tests
 
             // Assert
             Assert.AreEqual(500, actual.StatusCode, "Status code as expected");
-            Assert.AreEqual("An error occured while sending request", actual.Value, "Response as expected");
+            Assert.AreEqual(BaseMock.ErrorResponseMessage, actual.Value, "Response as expected");
             _loggerMock.Verify(m => m.AddErrorLog(expectedLog), Times.Once);
             _positionsClientMock.Verify(m => m.GetAll(new Empty(), null, null, new CancellationToken()), Times.Once);
         }
@@ -369,7 +369,7 @@ namespace EMS.Gateway.API.Tests
 
             // Assert
             Assert.AreEqual(500, actual.StatusCode, "Status code as expected");
-            Assert.AreEqual("An error occured while sending request", actual.Value, "Response as expected");
+            Assert.AreEqual(BaseMock.ErrorResponseMessage, actual.Value, "Response as expected");
             _loggerMock.Verify(m => m.AddErrorLog(expectedLog), Times.Once);
             _positionsClientMock.Verify(m => m.GetById(request, null, null, new CancellationToken()), Times.Once);
         }

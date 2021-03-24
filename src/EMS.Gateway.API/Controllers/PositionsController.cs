@@ -1,4 +1,5 @@
 ﻿using System;
+using EMS.Common.ControllerExtension;
 using EMS.Common.Logger;
 using EMS.Common.Logger.Models;
 using EMS.Common.Protos;
@@ -11,7 +12,7 @@ namespace EMS.Gateway.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PositionsController : ControllerBase
+    public class PositionsController : BaseApiController
     {
         private readonly PositionsClient _positionsClient;
         private readonly IEMSLogger<PositionsController> _logger;
@@ -55,7 +56,7 @@ namespace EMS.Gateway.API.Controllers
                 };
 
                 _logger.AddErrorLog(logData);
-                return StatusCode(500, "An error occured while sending request");
+                return InternalServerError();
             }
         }
 
@@ -90,7 +91,7 @@ namespace EMS.Gateway.API.Controllers
                 };
 
                 _logger.AddErrorLog(logData);
-                return StatusCode(500, "An error occured while sending request");
+                return InternalServerError();
             }
         }
 
@@ -125,7 +126,7 @@ namespace EMS.Gateway.API.Controllers
                 };
 
                 _logger.AddErrorLog(logData);
-                return StatusCode(500, "An error occured while sending request");
+                return InternalServerError();
             }
         }
 
@@ -161,7 +162,7 @@ namespace EMS.Gateway.API.Controllers
                 };
 
                 _logger.AddErrorLog(logData);
-                return StatusCode(500, "An error occured while sending request");
+                return InternalServerError();
             }
         }
 
@@ -200,7 +201,7 @@ namespace EMS.Gateway.API.Controllers
                 };
 
                 _logger.AddErrorLog(logData);
-                return StatusCode(500, "An error occured while sending request");
+                return InternalServerError();
             }
         }
     }
