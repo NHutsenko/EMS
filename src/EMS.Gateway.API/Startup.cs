@@ -6,9 +6,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using EMS.Common.Protos;
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace EMS.Gateway.API
 {
+    [ExcludeFromCodeCoverage]
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -35,7 +37,7 @@ namespace EMS.Gateway.API
             InjectCoreGrpcClients(services);
         }
 
-        private void InjectCoreGrpcClients(IServiceCollection services)
+        private static void InjectCoreGrpcClients(IServiceCollection services)
         {
             string coreApiUrl = Environment.GetEnvironmentVariable("CoreApiUrl");
             services.AddGrpcClient<DayOffs.DayOffsClient>(o =>
@@ -91,7 +93,11 @@ namespace EMS.Gateway.API
             app.UseAuthorization();
 
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "EMS.Gateway.API v1"));
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "EMS.Gateway.API v1");
+                c.RoutePrefix = string.Empty;
+            });
 
             app.UseEndpoints(endpoints =>
             {

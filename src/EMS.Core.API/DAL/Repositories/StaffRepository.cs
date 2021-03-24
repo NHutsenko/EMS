@@ -82,17 +82,23 @@ namespace EMS.Core.API.DAL.Repositories
 
         public virtual IQueryable<Staff> GetAll()
         {
-            return _context.Staff.Select(e => e);
+            return _context.Staff
+                .Include(e => e.MotivationModificator)
+                .Select(e => e);
         }
 
         public virtual IQueryable<Staff> GetByPersonId(long personId)
         {
-            return _context.Staff.Where(s => s.PersonId == personId);
+            return _context.Staff
+                .Include(e => e.MotivationModificator)
+                .Where(s => s.PersonId == personId);
         }
 
         public virtual IQueryable<Staff> GetByManagerId(long managerId)
         {
-            return _context.Staff.Where(s => s.ManagerId == managerId);
+            return _context.Staff
+                .Include(e => e.MotivationModificator)
+                .Where(s => s.ManagerId == managerId);
         }
     }
 }

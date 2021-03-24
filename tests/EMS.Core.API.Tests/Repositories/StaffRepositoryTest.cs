@@ -32,7 +32,14 @@ namespace EMS.Core.API.Tests.Repositories
                 CreatedOn = new DateTime(2020, 01, 01, 12, 00, 00),
                 ManagerId = 123,
                 PersonId = 1,
-                PositionId = 1
+                PositionId = 1,
+                MotivationModificator = new MotivationModificator
+                {
+                    Id = 1,
+                    StaffId = 1,
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    ModValue = 10
+                }
             };
 
             _staff2 = new Staff
