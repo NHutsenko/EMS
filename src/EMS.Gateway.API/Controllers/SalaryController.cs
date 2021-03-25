@@ -28,7 +28,7 @@ namespace EMS.Gateway.API.Controllers
             try
             {
                 ISalaryResponse response = _salaryClient.GetSalary(request);
-                LogData logData = new LogData
+                LogData logData = new()
                 {
                     CallSide = nameof(SalaryController),
                     CallerMethodName = nameof(GetSalary),
@@ -41,7 +41,7 @@ namespace EMS.Gateway.API.Controllers
             }
             catch (Exception ex)
             {
-                LogData logData = new LogData
+                LogData logData = new()
                 {
                     CallSide = nameof(SalaryController),
                     CallerMethodName = nameof(GetSalary),
