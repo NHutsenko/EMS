@@ -11,17 +11,14 @@ namespace EMS.Gateway.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TeamsController : BaseApiController
+    public class TeamsController : BaseApiController<TeamsController>
     {
         private readonly Teams.TeamsClient _teamsClient;
-        private readonly IEMSLogger<TeamsController> _logger;
-        private readonly IDateTimeUtil _dateTimeUtil;
 
-        public TeamsController(Teams.TeamsClient teamsClient, IEMSLogger<TeamsController> logger, IDateTimeUtil dateTimeUtil)
+        public TeamsController(Teams.TeamsClient teamsClient, IEMSLogger<TeamsController> logger, IDateTimeUtil dateTimeUtil):
+            base(logger, dateTimeUtil)
         {
             _teamsClient = teamsClient;
-            _logger = logger;
-            _dateTimeUtil = dateTimeUtil;
         }
 
         [HttpPost]

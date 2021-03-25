@@ -11,17 +11,14 @@ namespace EMS.Gateway.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MotivationModificatorController : BaseApiController
+    public class MotivationModificatorController : BaseApiController<MotivationModificatorController>
     {
         private readonly MotivationModificatorsClient _motivationModificatorsClient;
-        private readonly IEMSLogger<MotivationModificatorController> _logger;
-        private readonly IDateTimeUtil _datetimeUtil;
 
         public MotivationModificatorController(MotivationModificatorsClient client,
-            IEMSLogger<MotivationModificatorController> logger, IDateTimeUtil dateTimeUtil)
+            IEMSLogger<MotivationModificatorController> logger, IDateTimeUtil dateTimeUtil): 
+                base(logger, dateTimeUtil)
         {
-            _datetimeUtil = dateTimeUtil;
-            _logger = logger;  
             _motivationModificatorsClient = client;
         }
 
@@ -35,7 +32,7 @@ namespace EMS.Gateway.API.Controllers
                 {
                     CallSide = nameof(MotivationModificatorController),
                     CallerMethodName = nameof(Add),
-                    CreatedOn = _datetimeUtil.GetCurrentDateTime(),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = response
                 };
@@ -48,7 +45,7 @@ namespace EMS.Gateway.API.Controllers
                 {
                     CallSide = nameof(MotivationModificatorController),
                     CallerMethodName = nameof(Add),
-                    CreatedOn = _datetimeUtil.GetCurrentDateTime(),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = ex
                 };
@@ -67,7 +64,7 @@ namespace EMS.Gateway.API.Controllers
                 {
                     CallSide = nameof(MotivationModificatorController),
                     CallerMethodName = nameof(Update),
-                    CreatedOn = _datetimeUtil.GetCurrentDateTime(),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = response
                 };
@@ -80,7 +77,7 @@ namespace EMS.Gateway.API.Controllers
                 {
                     CallSide = nameof(MotivationModificatorController),
                     CallerMethodName = nameof(Update),
-                    CreatedOn = _datetimeUtil.GetCurrentDateTime(),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = ex
                 };
@@ -104,7 +101,7 @@ namespace EMS.Gateway.API.Controllers
                 {
                     CallSide = nameof(MotivationModificatorController),
                     CallerMethodName = nameof(GetBystaffId),
-                    CreatedOn = _datetimeUtil.GetCurrentDateTime(),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = response
                 };
@@ -117,7 +114,7 @@ namespace EMS.Gateway.API.Controllers
                 {
                     CallSide = nameof(MotivationModificatorController),
                     CallerMethodName = nameof(GetBystaffId),
-                    CreatedOn = _datetimeUtil.GetCurrentDateTime(),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
                     Response = ex
                 };

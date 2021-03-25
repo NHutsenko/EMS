@@ -12,17 +12,14 @@ namespace EMS.Gateway.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PositionsController : BaseApiController
+    public class PositionsController : BaseApiController<PositionsController>
     {
         private readonly PositionsClient _positionsClient;
-        private readonly IEMSLogger<PositionsController> _logger;
-        private readonly IDateTimeUtil _dateTimeUtil;
 
-        public PositionsController(PositionsClient positionsClient, IEMSLogger<PositionsController> logger, IDateTimeUtil dateTimeUtil)
+        public PositionsController(PositionsClient positionsClient, IEMSLogger<PositionsController> logger, IDateTimeUtil dateTimeUtil):
+            base(logger, dateTimeUtil)
         {
             _positionsClient = positionsClient;
-            _logger = logger;
-            _dateTimeUtil = dateTimeUtil;
         }
 
         [HttpPost]

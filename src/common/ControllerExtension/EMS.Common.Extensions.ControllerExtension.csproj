@@ -11,4 +11,9 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DateTimeUtil\EMS.Common.Utils.DateTimeUtil.csproj" />
+    <ProjectReference Include="..\LoggerExtensions\EMS.Common.Extensions.Logger.csproj" />
+  </ItemGroup>
+
 </Project>

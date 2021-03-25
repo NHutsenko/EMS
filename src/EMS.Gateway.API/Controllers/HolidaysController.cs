@@ -13,17 +13,14 @@ namespace EMS.Gateway.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HolidaysController : BaseApiController
+    public class HolidaysController : BaseApiController<HolidaysController>
     {
         private readonly HolidaysClient _holidaysClient;
-        private readonly IEMSLogger<HolidaysController> _logger;
-        private readonly IDateTimeUtil _dateTimeUtil;
 
-        public HolidaysController(HolidaysClient holidaysClient, IEMSLogger<HolidaysController> logger, IDateTimeUtil dateTimeUtil)
+        public HolidaysController(HolidaysClient holidaysClient, IEMSLogger<HolidaysController> logger, IDateTimeUtil dateTimeUtil) : 
+            base(logger, dateTimeUtil)
         {
-            _dateTimeUtil = dateTimeUtil;
             _holidaysClient = holidaysClient;
-            _logger = logger;
         }
 
         [HttpPost]

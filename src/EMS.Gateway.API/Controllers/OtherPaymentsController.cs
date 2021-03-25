@@ -11,19 +11,15 @@ namespace EMS.Gateway.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OtherPaymentsController : BaseApiController
+    public class OtherPaymentsController : BaseApiController<OtherPaymentsController>
     {
         private readonly OtherPaymentsClient _otherPaymentsClient;
-        private readonly IEMSLogger<OtherPaymentsController> _logger;
-        private readonly IDateTimeUtil _dateTimeUtil;
 
         public OtherPaymentsController(OtherPaymentsClient client,
             IEMSLogger<OtherPaymentsController> logger,
-            IDateTimeUtil dateTimeUtil)
+            IDateTimeUtil dateTimeUtil) : base(logger, dateTimeUtil)
         {
             _otherPaymentsClient = client;
-            _logger = logger;
-            _dateTimeUtil = dateTimeUtil;
         }
 
         [HttpPost]
