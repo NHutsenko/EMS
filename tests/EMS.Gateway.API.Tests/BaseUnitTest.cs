@@ -7,6 +7,7 @@ using static EMS.Common.Protos.DayOffs;
 using static EMS.Common.Protos.Holidays;
 using static EMS.Common.Protos.MotivationModificators;
 using static EMS.Common.Protos.OtherPayments;
+using static EMS.Common.Protos.People;
 using static EMS.Common.Protos.Positions;
 using static EMS.Common.Protos.Salary;
 using static EMS.Common.Protos.Staffs;
@@ -41,6 +42,9 @@ namespace EMS.Gateway.API.Tests
 
         protected Mock<StaffsClient> _staffsClientMock;
         protected StaffsClient _staffsClient;
+
+        protected Mock<PeopleClient> _peopleClientMock;
+        protected PeopleClient _peopleClient;
         // Logger
         protected Mock<IEMSLogger<T>> _loggerMock;
         protected IEMSLogger<T> _logger;
@@ -78,6 +82,9 @@ namespace EMS.Gateway.API.Tests
 
             _staffsClientMock = StaffClientMock.SetupMock();
             _staffsClient = _staffsClientMock.Object;
+
+            _peopleClientMock = PeopleClientMock.SetupMock();
+            _peopleClient = _peopleClientMock.Object;
         }
 
         public void InitializeLoggerMock(T loggerClass)

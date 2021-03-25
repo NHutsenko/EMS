@@ -16,7 +16,7 @@ namespace EMS.Common.ControllerExtension
             _dateTimeUtil = dateTimeUtil;
         }
 
-        public IActionResult InternalServerError()
+        protected IActionResult InternalServerError()
         {
             return StatusCode(500, ErrorMessage);
         }
