@@ -1,15 +1,15 @@
-﻿using EMS.Core.API.DAL;
-using Microsoft.EntityFrameworkCore;
-using Moq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using EMS.Auth.API.DAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using Moq;
 
-namespace EMS.Core.API.Tests.Mock
+namespace EMS.Auth.API.Tests.Mocks
 {
     [ExcludeFromCodeCoverage]
     public class DbContextMock
@@ -29,13 +29,13 @@ namespace EMS.Core.API.Tests.Mock
 
             mockSet.Setup(m => m.Add(It.IsAny<T>())).Callback((T item) =>
             {
-                if((long)item.GetType().GetProperty("Id").GetValue(item) == 0)
+                if ((long)item.GetType().GetProperty("Id").GetValue(item) == 0)
                 {
                     long index = 0;
-                    foreach(object entity in data)
+                    foreach (object entity in data)
                     {
                         long currentIndex = (long)entity.GetType().GetProperty("Id").GetValue(entity);
-                        if(currentIndex >= index)
+                        if (currentIndex >= index)
                         {
                             index = ++currentIndex;
                         }
