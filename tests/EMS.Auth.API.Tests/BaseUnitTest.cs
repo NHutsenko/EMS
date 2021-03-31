@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using EMS.Auth.API.DAL.Interfaces;
+using EMS.Auth.API.Interfaces;
 using EMS.Auth.API.Tests.Mocks;
 using EMS.Common.Logger;
 using EMS.Common.Utils.DateTimeUtil;
@@ -13,6 +13,10 @@ namespace EMS.Auth.API.Tests
         // Repos
         protected Mock<IUsersRepository> _usersRepositoryMock;
         protected IUsersRepository _usersRepository;
+
+        protected Mock<ITokenRepository> _tokenRepositoryMock;
+        protected ITokenRepository _tokenRepository;
+
         // DB context
         protected Mock<IApplicationDbContext> _dbContextMock;
         protected IApplicationDbContext _dbContext;

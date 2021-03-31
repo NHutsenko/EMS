@@ -1,4 +1,4 @@
-﻿using EMS.Auth.API.DAL.Interfaces;
+﻿using EMS.Auth.API.Interfaces;
 using EMS.Common.Utils.DateTimeUtil;
 
 namespace EMS.Auth.API.DAL.Repositories

@@ -155,17 +155,17 @@ namespace EMS.Auth.API.Tests.Repositories
         }
 
         [Test]
-        public void GetByLogin_should_return_user_entity_by_login()
+        public void VerifyUser_should_return_user_from_db()
         {
             // Act
-            User actual = _usersRepository.GetByLogin(_user.Login);
+            User actual = _usersRepository.VerifyUser(_user.Login, _user.Password);
 
             // Assert
             Assert.AreEqual(_user, actual, "Returned user as expected");
         }
 
         [Test]
-        public void GetByLogin_should_return_user_entity_by_id()
+        public void GetById_should_return_user_entity_by_id()
         {
             // Act
             User actual = _usersRepository.GetById(_user.Id);

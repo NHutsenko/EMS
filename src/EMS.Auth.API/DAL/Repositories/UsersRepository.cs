@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using EMS.Auth.API.DAL.Interfaces;
+using EMS.Auth.API.Interfaces;
 using EMS.Auth.API.Models;
 using EMS.Common.Utils.DateTimeUtil;
 
@@ -35,9 +35,9 @@ namespace EMS.Auth.API.DAL.Repositories
             return _context.Users.FirstOrDefault(e => e.Id == id);
         }
 
-        public User GetByLogin(string login)
+        public User VerifyUser(string login, string password)
         {
-            return _context.Users.FirstOrDefault(e => e.Login == login);
+            return _context.Users.FirstOrDefault(e => e.Login == login && e.Password == password);
         }
 
         public async Task<int> UpdateAsync(User user)
