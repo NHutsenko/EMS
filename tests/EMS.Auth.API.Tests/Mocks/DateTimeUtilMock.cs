@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using EMS.Common.Utils.DateTimeUtil;
 
-namespace EMS.Auth.API.Tests.Mocks
+namespace EMS.Auth.API.Tests.Mock
 {
     [ExcludeFromCodeCoverage]
     public class DateTimeUtilMock : DateTimeUtil, IDateTimeUtil

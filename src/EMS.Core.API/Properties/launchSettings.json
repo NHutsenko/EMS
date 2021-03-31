@@ -15,7 +15,7 @@
       "launchUrl": "alive",
       "environmentVariables": {
         "MaxWorkHours": "8",
-        "DbConnectionString": "Data Source=localhost;Initial Catalog=EMS;Integrated Security=True",
+        "DbConnectionString": "Data Source=localhost\\sqlexpress;Initial Catalog=EMS;Integrated Security=True",
         "ASPNETCORE_ENVIRONMENT": "Development",
         "GatewayApiUrl": "https://localhost:5000"
       },

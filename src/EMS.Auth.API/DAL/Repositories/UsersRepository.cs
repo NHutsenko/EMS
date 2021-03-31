@@ -35,7 +35,7 @@ namespace EMS.Auth.API.DAL.Repositories
             return _context.Users.FirstOrDefault(e => e.Id == id);
         }
 
-        public User VerifyUser(string login, string password)
+        public virtual User VerifyUser(string login, string password)
         {
             return _context.Users.FirstOrDefault(e => e.Login == login && e.Password == password);
         }

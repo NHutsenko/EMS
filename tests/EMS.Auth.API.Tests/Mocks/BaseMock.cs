@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace EMS.Auth.API.Tests.Mocks
+namespace EMS.Auth.API.Tests.Mock
 {
     [ExcludeFromCodeCoverage]
     public class BaseMock

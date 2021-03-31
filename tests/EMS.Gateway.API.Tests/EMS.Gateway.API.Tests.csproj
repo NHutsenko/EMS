@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\EMS.Auth.API\EMS.Auth.API.csproj" />
     <ProjectReference Include="..\..\src\EMS.Gateway.API\EMS.Gateway.API.csproj" />
   </ItemGroup>
 

@@ -9,7 +9,7 @@ using EMS.Auth.API.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 
-namespace EMS.Auth.API.Tests.Mocks
+namespace EMS.Auth.API.Tests.Mock
 {
     [ExcludeFromCodeCoverage]
     public class DbContextMock

@@ -3,7 +3,7 @@ using EMS.Common.Logger;
 using EMS.Common.Logger.Models;
 using Moq;
 
-namespace EMS.Auth.API.Tests.Mocks
+namespace EMS.Auth.API.Tests.Mock
 {
     [ExcludeFromCodeCoverage]
     public class LoggerMock

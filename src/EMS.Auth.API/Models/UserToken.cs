@@ -18,5 +18,26 @@ namespace EMS.Auth.API.Models
         public DateTime ExpiresIn { get; set; }
         [Column("isRefreshTokenExpired")]
         public bool IsRefreshTokenExpired { get; set; }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if(obj is not UserToken)
+            {
+                return false;
+            }
+            UserToken toCompare = obj as UserToken;
+            return Id == toCompare.Id
+                && CreatedOn == toCompare.CreatedOn
+                && UserId == toCompare.UserId
+                && AccessToken == toCompare.AccessToken
+                && RefreshToken == toCompare.RefreshToken
+                && ExpiresIn == toCompare.ExpiresIn
+                && IsRefreshTokenExpired == toCompare.IsRefreshTokenExpired;
+        }
     }
 }

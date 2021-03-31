@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
@@ -9,7 +8,7 @@ using EMS.Auth.API.Models;
 using Moq;
 using NUnit.Framework;
 
-namespace EMS.Auth.API.Tests.Repositories
+namespace EMS.Auth.API.Tests
 {
     [ExcludeFromCodeCoverage]
     public class UserRepositoryTest : BaseUnitTest<UsersRepository>

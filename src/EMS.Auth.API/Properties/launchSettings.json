@@ -17,7 +17,8 @@
       "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "AuthKey": "AuthKey",
+        "AuthKey": "test_secret_security_key_123_test",
+        "DbConnectionString": "Data Source=localhost\\sqlexpress;Initial Catalog=EMS;Integrated Security=True",
         "TokenLifeTime": "5"
       }
     }

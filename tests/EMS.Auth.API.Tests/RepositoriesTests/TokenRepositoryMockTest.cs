@@ -7,7 +7,7 @@ using EMS.Auth.API.Models;
 using Moq;
 using NUnit.Framework;
 
-namespace EMS.Auth.API.Tests.Repositories
+namespace EMS.Auth.API.Tests
 {
     [ExcludeFromCodeCoverage]
     public class TokenRepositoryMockTest: BaseUnitTest<TokenRepository>
