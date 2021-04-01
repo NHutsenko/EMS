@@ -1,5 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using EMS.Auth.API.Enums;
 using EMS.Common.Models.BaseModel;
 
@@ -14,6 +17,9 @@ namespace EMS.Auth.API.Models
         public string Password { get; set; }
         [Column("role")]
         public RoleType Role { get; set; }
+        [JsonIgnore]
+        [IgnoreDataMember]
+        public ICollection<UserToken> Tokens { get; set; }
 
         public override int GetHashCode()
         {

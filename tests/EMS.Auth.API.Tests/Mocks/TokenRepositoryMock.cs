@@ -27,6 +27,11 @@ namespace EMS.Auth.API.Tests.Mock
                 return repository.DisableRefreshTokenAsync(token);
             });
 
+            mock.Setup(m => m.GetTokenData(It.IsAny<string>())).Returns<string>((token) =>
+            {
+                return repository.GetTokenData(token);
+            });
+
             return mock;
         }
     }

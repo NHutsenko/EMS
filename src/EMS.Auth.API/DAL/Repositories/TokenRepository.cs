@@ -22,6 +22,11 @@ namespace EMS.Auth.API.DAL.Repositories
             return await _context.SaveChangesAsync();
         }
 
+        public virtual UserToken GetTokenData(string accessToken)
+        {
+            return _context.Tokens.FirstOrDefault(e => e.AccessToken == accessToken);
+        }
+
         public virtual async Task<int> SaveTokenAsync(UserToken userToken)
         {
             userToken.CreatedOn = _dateTimeUtil.GetCurrentDateTime();

@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace EMS.Auth.API.Tests
 {
     [ExcludeFromCodeCoverage]
-    public class TokenRepositoryMockTest: BaseUnitTest<TokenRepository>
+    public class TokenRepositoryTests: BaseUnitTest<TokenRepository>
     {
         private UserToken _token;
 
@@ -76,6 +76,16 @@ namespace EMS.Auth.API.Tests
             // Assert
             Assert.AreEqual(0, result, "Saving result as expected");
             _dbContextMock.Verify(m => m.SaveChangesAsync(true, new CancellationToken()), Times.Never);
+        }
+
+        [Test]
+        public void GetTokenData_should_retun_token_data_From_db_by_accessTiken()
+        {
+            // Act
+            UserToken token = _tokenRepository.GetTokenData(_token.AccessToken);
+
+            // Assert
+            Assert.AreEqual(_token, token, "Token data as expected");
         }
     }
 }

@@ -7,12 +7,11 @@ using EMS.Auth.API.Enums;
 using EMS.Auth.API.Interfaces;
 using EMS.Auth.API.Models;
 using EMS.Auth.API.Models.RequestModels;
-using EMS.Auth.API.Models.ResponseModels;
 using EMS.Common.Logger;
 using EMS.Common.Logger.Models;
 using EMS.Common.Utils.DateTimeUtil;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json.Linq;
 
 namespace EMS.Auth.API.Services
 {
@@ -24,9 +23,9 @@ namespace EMS.Auth.API.Services
         private readonly IEMSLogger<AuthService> _logger;
         private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler;
 
-        public AuthService(IUsersRepository usersRepository, 
-            ITokenRepository tokenRepository, 
-            IDateTimeUtil dateTimeUtil, 
+        public AuthService(IUsersRepository usersRepository,
+            ITokenRepository tokenRepository,
+            IDateTimeUtil dateTimeUtil,
             IEMSLogger<AuthService> logger,
             JwtSecurityTokenHandler jwtSecurityTokenHandler)
         {
@@ -37,7 +36,7 @@ namespace EMS.Auth.API.Services
             _jwtSecurityTokenHandler = jwtSecurityTokenHandler;
         }
 
-        public async Task<TokenResponse> AuthUserAsync(LoginUserRequest request)
+        public async Task<TokenData> AuthUserAsync(LoginUserRequest request)
         {
             try
             {
@@ -58,11 +57,11 @@ namespace EMS.Auth.API.Services
                     IsRefreshTokenExpired = false
                 };
                 int result = await _tokenRepository.SaveTokenAsync(userToken);
-                if(result == 0)
+                if (result == 0)
                 {
-                    throw new InvalidOperationException("An error occured while saving token data");
+                    throw new Exception("An error occured while saving token data");
                 }
-                TokenResponse tokenResponse = new()
+                TokenData tokenResponse = new()
                 {
                     AccessToken = userToken.AccessToken,
                     RefreshToken = userToken.RefreshToken,
@@ -92,13 +91,15 @@ namespace EMS.Auth.API.Services
                     Response = aex
                 };
                 _logger.AddErrorLog(logData);
-                return new TokenResponse
+                return new TokenData
                 {
                     IsSuccess = false,
-                    ErrorMessage = aex.Message
+                    ErrorMessage = aex.Message,
+                    AccessToken = string.Empty,
+                    RefreshToken = string.Empty
                 };
             }
-            catch(InvalidOperationException ioex)
+            catch (DbUpdateException duex)
             {
                 LogData logData = new()
                 {
@@ -106,21 +107,103 @@ namespace EMS.Auth.API.Services
                     CallerMethodName = nameof(AuthUserAsync),
                     CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                     Request = request,
-                    Response = ioex
+                    Response = duex
                 };
                 _logger.AddErrorLog(logData);
-                return new TokenResponse
+                return new TokenData
                 {
                     IsSuccess = false,
-                    ErrorMessage = $"An error occured while authentcating user {request.Login}"
+                    ErrorMessage = $"An error occured while authentcating user {request.Login}",
+                    AccessToken = string.Empty,
+                    RefreshToken = string.Empty
                 };
             }
-
+            catch (Exception ex)
+            {
+                LogData logData = new()
+                {
+                    CallSide = nameof(AuthService),
+                    CallerMethodName = nameof(AuthUserAsync),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = request,
+                    Response = ex
+                };
+                _logger.AddErrorLog(logData);
+                return new TokenData
+                {
+                    IsSuccess = false,
+                    ErrorMessage = $"An error occured while authentcating user {request.Login}",
+                    AccessToken = string.Empty,
+                    RefreshToken = string.Empty
+                };
+            }
         }
 
-        public async Task<TokenResponse> RefreshTokenAsync(string refreshToken)
+        public async Task<TokenData> RefreshTokenAsync(TokenData toRefresh)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                UserToken userToken = _tokenRepository.GetTokenData(toRefresh.AccessToken);
+                if (userToken is null)
+                {
+                    throw new ArgumentException($"Token data for token {toRefresh.AccessToken} does mot exists into DB");
+                }
+                User user = _usersRepository.GetById(userToken.UserId);
+                DateTime creationDate = _dateTimeUtil.GetCurrentDateTime();
+                JwtSecurityToken access = GetToken(user, creationDate, TokenType.Access);
+                JwtSecurityToken refresh = GetToken(user, creationDate, TokenType.Refresh);
+                UserToken newToken = new()
+                {
+                    AccessToken = _jwtSecurityTokenHandler.WriteToken(access),
+                    RefreshToken = _jwtSecurityTokenHandler.WriteToken(refresh),
+                    ExpiresIn = creationDate.AddMinutes(5),
+                    UserId = user.Id,
+                    IsRefreshTokenExpired = false
+                };
+                int result = await _tokenRepository.SaveTokenAsync(newToken);
+                if (result == 0)
+                {
+                    throw new Exception("An error occured while saving new access token");
+                }
+                await _tokenRepository.DisableRefreshTokenAsync(toRefresh.RefreshToken);
+                TokenData response = new()
+                {
+                    IsSuccess = true,
+                    ErrorMessage = string.Empty,
+                    AccessToken = _jwtSecurityTokenHandler.WriteToken(access),
+                    RefreshToken = _jwtSecurityTokenHandler.WriteToken(refresh),
+                    ExpiresIn = creationDate.AddMinutes(5)
+                };
+                LogData logData = new()
+                {
+                    CallSide = nameof(AuthService),
+                    CallerMethodName = nameof(RefreshTokenAsync),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = toRefresh,
+                    Response = response
+                };
+                _logger.AddLog(logData);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                LogData logData = new()
+                {
+                    CallSide = nameof(AuthService),
+                    CallerMethodName = nameof(RefreshTokenAsync),
+                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
+                    Request = toRefresh,
+                    Response = ex
+                };
+                _logger.AddErrorLog(logData);
+                return new TokenData
+                {
+                    AccessToken = string.Empty,
+                    RefreshToken = string.Empty,
+                    IsSuccess = false,
+                    ErrorMessage = "Authentication failed"
+                };
+            }
         }
 
         private static JwtSecurityToken GetToken(User user, DateTime creationDate, TokenType tokenType)

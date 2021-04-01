@@ -21,6 +21,10 @@ namespace EMS.Auth.API.DAL
                 .IsUnique();
             modelBuilder.Entity<UserToken>()
                 .ToTable("Tokens", "auth")
+                .HasOne(e => e.User)
+                .WithMany(e => e.Tokens)
+                .HasForeignKey(e => e.UserId);
+            modelBuilder.Entity<UserToken>()
                 .HasIndex(e => new { e.AccessToken, e.RefreshToken })
                 .IsUnique();
         }

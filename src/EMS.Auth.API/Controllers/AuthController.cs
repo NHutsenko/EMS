@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using EMS.Auth.API.Interfaces;
+using EMS.Auth.API.Models;
 using EMS.Auth.API.Models.RequestModels;
-using EMS.Auth.API.Models.ResponseModels;
 using EMS.Common.ControllerExtension;
 using EMS.Common.Logger;
 using EMS.Common.Utils.DateTimeUtil;
@@ -23,7 +23,7 @@ namespace EMS.Auth.API.Controllers
         [HttpPost]
         public async Task<IActionResult> AuthUserAsync([FromBody] LoginUserRequest request)
         {
-            TokenResponse tokenReponse = await _authService.AuthUserAsync(request);
+            TokenData tokenReponse = await _authService.AuthUserAsync(request);
             return Ok(tokenReponse);
         }
     }

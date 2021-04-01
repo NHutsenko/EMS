@@ -10,6 +10,8 @@ namespace EMS.Auth.API.Models
     {
         [Column("userId")]
         public long UserId { get; set; }
+        [Column("user")]
+        public User User { get; set; }
         [Column("accessToken")]
         public string AccessToken { get; set; }
         [Column("refreshToken")]

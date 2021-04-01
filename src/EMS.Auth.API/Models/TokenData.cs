@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace EMS.Auth.API.Models.ResponseModels
+namespace EMS.Auth.API.Models
 {
     [ExcludeFromCodeCoverage]
-    public class TokenResponse
+    public class TokenData
     {
         public bool IsSuccess { get; set; }
         public string ErrorMessage { get; set; }
@@ -19,11 +19,11 @@ namespace EMS.Auth.API.Models.ResponseModels
 
         public override bool Equals(object obj)
         {
-            if(obj is not TokenResponse)
+            if(obj is not TokenData)
             {
                 return false;
             }
-            TokenResponse toCompare = obj as TokenResponse;
+            TokenData toCompare = obj as TokenData;
             return IsSuccess == toCompare.IsSuccess
                 && ErrorMessage == toCompare.ErrorMessage
                 && AccessToken == toCompare.AccessToken

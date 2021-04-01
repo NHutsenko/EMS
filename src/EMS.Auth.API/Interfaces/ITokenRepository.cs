@@ -7,5 +7,6 @@ namespace EMS.Auth.API.Interfaces
     {
         Task<int> SaveTokenAsync(UserToken userToken);
         Task<int> DisableRefreshTokenAsync(string refreshToken);
+        UserToken GetTokenData(string accessToken);
     }
 }
