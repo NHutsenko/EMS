@@ -83,21 +83,21 @@ namespace EMS.Auth.API
                        options.RequireHttpsMetadata = false;
                        options.TokenValidationParameters = new TokenValidationParameters
                        {
-                            // укзывает, будет ли валидироваться издатель при валидации токена
+                            // token issuer validation required
                             ValidateIssuer = true,
-                            // строка, представляющая издателя
+                            // token issuer
                             ValidIssuer = AuthOptions.Issuer,
 
-                            // будет ли валидироваться потребитель токена
+                            // audience validation required
                             ValidateAudience = true,
-                            // установка потребителя токена
+                            // set aoudience name
                             ValidAudience = AuthOptions.Audience,
-                            // будет ли валидироваться время существования
+                            // set token expiring
                             ValidateLifetime = true,
 
-                            // установка ключа безопасности
+                            // security key
                             IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(TokenType.Access),
-                            // валидация ключа безопасности
+                            // is security key validation needed
                             ValidateIssuerSigningKey = true,
                        };
                    });

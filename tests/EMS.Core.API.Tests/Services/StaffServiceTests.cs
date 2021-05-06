@@ -406,7 +406,7 @@ namespace EMS.Core.API.Tests.Services
 				CallerMethodName = nameof(_staffService.AddAsync),
 				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
 				Request = request,
-				Response = new Exception("DbContext test Exception")
+				Response = new Exception(DbContextMock.ExceptionMessage)
 			};
 
             // Act
@@ -588,7 +588,7 @@ namespace EMS.Core.API.Tests.Services
 				CallerMethodName = nameof(_staffService.UpdateAsync),
 				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
 				Request = request,
-				Response = new Exception("DbContext test Exception")
+				Response = new Exception(DbContextMock.ExceptionMessage)
 			};
 
             // Act
@@ -771,7 +771,7 @@ namespace EMS.Core.API.Tests.Services
 				CallerMethodName = nameof(_staffService.DeleteAsync),
 				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
 				Request = request,
-				Response = new Exception("DbContext test Exception")
+				Response = new Exception(DbContextMock.ExceptionMessage)
 			};
 
             // Act

@@ -9,7 +9,7 @@ using Moq;
 
 using NUnit.Framework;
 
-namespace EMS.Auth.API.Tests
+namespace EMS.Auth.API.Tests.ServicesTests
 {
     [ExcludeFromCodeCoverage]
     public class AuthServiceTests: BaseUnitTest<AuthService>
@@ -152,7 +152,7 @@ namespace EMS.Auth.API.Tests
                 CallerMethodName = nameof(_authService.AuthUserAsync),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = request,
-                Response = new Exception("DbContext test Exception")
+                Response = new Exception(DbContextMock.ExceptionMessage)
             };
 
             // Act
@@ -301,7 +301,7 @@ namespace EMS.Auth.API.Tests
                 CallerMethodName = nameof(_authService.RefreshTokenAsync),
                 CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
                 Request = request,
-                Response = new Exception("DbContext test Exception")
+                Response = new Exception(DbContextMock.ExceptionMessage)
             };
 
             // Act

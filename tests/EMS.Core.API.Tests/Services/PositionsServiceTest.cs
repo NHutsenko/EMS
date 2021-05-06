@@ -178,7 +178,7 @@ namespace EMS.Core.API.Tests.Services
 				CallSide = nameof(PositionsService),
 				CallerMethodName = nameof(_positionsService.AddAsync),
 				Request = positionData,
-				Response = new Exception("DbContext test Exception"),
+				Response = new Exception(DbContextMock.ExceptionMessage),
 				CreatedOn = _dateTimeUtil.GetCurrentDateTime()
 			};
 
@@ -351,7 +351,7 @@ namespace EMS.Core.API.Tests.Services
 				CallSide = nameof(PositionsService),
 				CallerMethodName = nameof(_positionsService.UpdateAsync),
 				Request = positionData,
-				Response = new Exception("DbContext test Exception"),
+				Response = new Exception(DbContextMock.ExceptionMessage),
 				CreatedOn = _dateTimeUtil.GetCurrentDateTime()
 			};
 
@@ -524,7 +524,7 @@ namespace EMS.Core.API.Tests.Services
 				CallSide = nameof(PositionsService),
 				CallerMethodName = nameof(_positionsService.DeleteAsync),
 				Request = positionData,
-				Response = new Exception("DbContext test Exception"),
+				Response = new Exception(DbContextMock.ExceptionMessage),
 				CreatedOn = _dateTimeUtil.GetCurrentDateTime()
 			};
 

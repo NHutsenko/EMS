@@ -395,7 +395,7 @@ namespace EMS.Core.API.Tests.Services
 				CallerMethodName = nameof(_peopleService.AddAsync),
 				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
 				Request = person,
-				Response = new Exception("DbContext test Exception")
+				Response = new Exception(DbContextMock.ExceptionMessage)
 			};
 
             // Act
@@ -605,7 +605,7 @@ namespace EMS.Core.API.Tests.Services
 				CallerMethodName = nameof(_peopleService.UpdateAsync),
 				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
 				Request = person,
-				Response = new Exception("DbContext test Exception")
+				Response = new Exception(DbContextMock.ExceptionMessage)
 			};
 
             // Act
@@ -736,7 +736,7 @@ namespace EMS.Core.API.Tests.Services
 				CallerMethodName = nameof(_peopleService.AddContactAsync),
 				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
 				Request = contact,
-				Response = new Exception("DbContext test Exception")
+				Response = new Exception(DbContextMock.ExceptionMessage)
 			};
 
             // Act
@@ -902,7 +902,7 @@ namespace EMS.Core.API.Tests.Services
 				CallerMethodName = nameof(_peopleService.AddPhotoAsync),
 				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
 				Request = photoData,
-				Response = new Exception("DbContext test Exception")
+				Response = new Exception(DbContextMock.ExceptionMessage)
 			};
 
             // Act

@@ -3,11 +3,9 @@
 namespace EMS.Auth.API.Models.ResponseModels
 {
     [ExcludeFromCodeCoverage]
-    public class BaseResponse
+    public class UserResponse: BaseResponse
     {
-        public bool IsSucess { get; set; }
-        public string ErrorMessage { get; set; }
-        public long Id { get; set; }
+        public User User { get; set; }
 
         public override int GetHashCode()
         {
@@ -16,14 +14,15 @@ namespace EMS.Auth.API.Models.ResponseModels
 
         public override bool Equals(object obj)
         {
-            if(obj is not BaseResponse)
+            if(obj is not UserResponse)
             {
                 return false;
             }
-            BaseResponse toCompare = obj as BaseResponse;
-            return IsSucess == toCompare.IsSucess
+            UserResponse toCompare = obj as UserResponse;
+            return Id == toCompare.Id
+                && IsSucess == toCompare.IsSucess
                 && ErrorMessage == toCompare.ErrorMessage
-                && Id == toCompare.Id;
+                && ((User == null && toCompare.User == null) || User.Equals(toCompare.User));
         }
     }
 }

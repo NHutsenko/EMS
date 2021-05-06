@@ -37,8 +37,7 @@ namespace EMS.Auth.API.DAL.Repositories
 
         public virtual User VerifyUser(string login, string password)
         {
-            User user = _context.Users.FirstOrDefault(e => e.Login.Equals(login) && e.Password.Equals(password));
-            return user.Login.Equals(login, StringComparison.Ordinal) && user.Password.Equals(password, StringComparison.Ordinal) ? user : null;
+            return _context.Users.FirstOrDefault(e => e.Login.Equals(login) && e.Password.Equals(password));
         }
 
         public virtual async Task<int> UpdateAsync(User user)

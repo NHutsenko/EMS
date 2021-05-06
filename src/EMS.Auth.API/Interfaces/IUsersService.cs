@@ -9,6 +9,6 @@ namespace EMS.Auth.API.Interfaces
         Task<BaseResponse> AddAsync(User user);
         Task<BaseResponse> DeleteAsync(User user);
         Task<BaseResponse> UpdateAsync(User user);
-        User GetById(long id);
+        UserResponse GetById(long id);
     }
 }

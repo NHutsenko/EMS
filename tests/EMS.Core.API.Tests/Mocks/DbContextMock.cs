@@ -16,7 +16,7 @@ namespace EMS.Core.API.Tests.Mock
     {
         public static bool ShouldThrowException { get; set; }
         public static int SaveChangesResult { get; set; } = 1;
-
+        public static string ExceptionMessage { get; private set; } = "DbContext test Exception";
         public static Mock<DbSet<T>> SetupCollectionMock<T>(List<T> data) where T : class
         {
             IQueryable<T> dataQueryable = data.AsQueryable();
@@ -62,7 +62,7 @@ namespace EMS.Core.API.Tests.Mock
             if (ShouldThrowException)
             {
                 ShouldThrowException = false;
-                throw new DbUpdateException("DbContext test Exception");
+                throw new DbUpdateException(ExceptionMessage);
             }
         }
 

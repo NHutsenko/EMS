@@ -324,7 +324,7 @@ namespace EMS.Core.API.Tests.Services
 				CallerMethodName = nameof(_otherPaymentsService.AddAsync),
 				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
 				Request = request,
-				Response = new Exception("DbContext test Exception")
+				Response = new Exception(DbContextMock.ExceptionMessage)
 			};
 
             // Act
@@ -501,7 +501,7 @@ namespace EMS.Core.API.Tests.Services
 				CallerMethodName = nameof(_otherPaymentsService.UpdateAsync),
 				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
 				Request = request,
-				Response = new Exception("DbContext test Exception")
+				Response = new Exception(DbContextMock.ExceptionMessage)
 			};
 
             // Act
@@ -680,7 +680,7 @@ namespace EMS.Core.API.Tests.Services
 				CallerMethodName = nameof(_otherPaymentsService.DeleteAsync),
 				CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
 				Request = request,
-				Response = new Exception("DbContext test Exception")
+				Response = new Exception(DbContextMock.ExceptionMessage)
 			};
 
             // Act
