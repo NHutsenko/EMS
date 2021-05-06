@@ -41,8 +41,6 @@ namespace EMS.Auth.API.Tests.ServicesTests
             Assert.AreEqual(_user, actual, "Returned user by id as expected");
         }
 
-        public 
-
         [Test]
         public void AddAsync_should_return_success_result_of_adding_user()
         {

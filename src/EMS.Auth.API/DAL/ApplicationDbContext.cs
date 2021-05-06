@@ -25,7 +25,9 @@ namespace EMS.Auth.API.DAL
                 .WithMany(e => e.Tokens)
                 .HasForeignKey(e => e.UserId);
             modelBuilder.Entity<UserToken>()
-                .HasIndex(e => new { e.AccessToken, e.RefreshToken });
+                .HasIndex(e => e.AccessToken);
+            modelBuilder.Entity<UserToken>()
+                .HasIndex(e => e.RefreshToken);
         }
     }
 }

@@ -12,9 +12,9 @@ namespace EMS.Auth.API.Models
         public long UserId { get; set; }
         [Column("user")]
         public User User { get; set; }
-        [Column("accessToken", TypeName = "varchar(256)")]
+        [Column("accessToken", TypeName = "varchar(450)")]
         public string AccessToken { get; set; }
-        [Column("refreshToken", TypeName = "varchar(256)")]
+        [Column("refreshToken", TypeName = "varchar(450)")]
         public string RefreshToken { get; set; }
         [Column("expiresIn", TypeName = "datetime")]
         public DateTime ExpiresIn { get; set; }
