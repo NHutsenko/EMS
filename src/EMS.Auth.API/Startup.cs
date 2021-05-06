@@ -45,7 +45,7 @@ namespace EMS.Auth.API
                     Name = "Authorization",
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.ApiKey,
-                    Scheme = "tomsAuth"
+                    Scheme = "Bearer"
                 });
 
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -55,7 +55,7 @@ namespace EMS.Auth.API
                         {
                             Reference = new OpenApiReference {
                                 Type = ReferenceType.SecurityScheme,
-                                Id = "tomsAuth" }
+                                Id = "Bearer" }
                         }, new List<string>() }
                 });
             });
@@ -69,12 +69,13 @@ namespace EMS.Auth.API
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
             services.AddSingleton(typeof(IEMSLogger<>), typeof(EMSLogger<>));
-            services.AddSingleton<IDateTimeUtil, Common.Utils.DateTimeUtil.DateTimeUtil>();
             services.AddSingleton<JwtSecurityTokenHandler>();
+            services.AddTransient<IDateTimeUtil, Common.Utils.DateTimeUtil.DateTimeUtil>();
             services.AddTransient<IApplicationDbContext, ApplicationDbContext>();
             services.AddTransient<IUsersRepository, UsersRepository>();
             services.AddTransient<ITokenRepository, TokenRepository>();
             services.AddTransient<IAuthService, AuthService>();
+            services.AddTransient<IUsersService, UsersService>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                    .AddJwtBearer(options =>
