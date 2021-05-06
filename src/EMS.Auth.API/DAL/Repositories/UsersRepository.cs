@@ -12,7 +12,7 @@ namespace EMS.Auth.API.DAL.Repositories
 
         public UsersRepository(IApplicationDbContext applicationDbContext, IDateTimeUtil dateTimeUtil) : base(applicationDbContext, dateTimeUtil) { }
 
-        public async Task<int> AddAsync(User user)
+        public virtual async Task<int> AddAsync(User user)
         {
             CheckData(user);
             if (_context.Users.Any(e => e.Login == user.Login))
@@ -24,13 +24,13 @@ namespace EMS.Auth.API.DAL.Repositories
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<int> DeleteAsync(User user)
+        public virtual async Task<int> DeleteAsync(User user)
         {
             _context.Users.Remove(user);
             return await _context.SaveChangesAsync();
         }
 
-        public User GetById(long id)
+        public virtual User GetById(long id)
         {
             return _context.Users.FirstOrDefault(e => e.Id == id);
         }
@@ -40,7 +40,7 @@ namespace EMS.Auth.API.DAL.Repositories
             return _context.Users.FirstOrDefault(e => e.Login == login && e.Password == password);
         }
 
-        public async Task<int> UpdateAsync(User user)
+        public virtual async Task<int> UpdateAsync(User user)
         {
             CheckData(user);
             _context.Users.Update(user);

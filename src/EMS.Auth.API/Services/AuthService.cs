@@ -15,28 +15,24 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace EMS.Auth.API.Services
 {
-    public class AuthService : IAuthService
+    public class AuthService : BaseService<AuthService>, IAuthService
     {
         private readonly IUsersRepository _usersRepository;
         private readonly ITokenRepository _tokenRepository;
-        private readonly IDateTimeUtil _dateTimeUtil;
-        private readonly IEMSLogger<AuthService> _logger;
         private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler;
 
         public AuthService(IUsersRepository usersRepository,
             ITokenRepository tokenRepository,
             IDateTimeUtil dateTimeUtil,
             IEMSLogger<AuthService> logger,
-            JwtSecurityTokenHandler jwtSecurityTokenHandler)
+            JwtSecurityTokenHandler jwtSecurityTokenHandler) : base(logger, dateTimeUtil)
         {
             _tokenRepository = tokenRepository;
             _usersRepository = usersRepository;
-            _dateTimeUtil = dateTimeUtil;
-            _logger = logger;
             _jwtSecurityTokenHandler = jwtSecurityTokenHandler;
         }
 
-        public async Task<TokenData> AuthUserAsync(LoginUserRequest request)
+        public virtual async Task<TokenData> AuthUserAsync(LoginUserRequest request)
         {
             try
             {
@@ -139,7 +135,7 @@ namespace EMS.Auth.API.Services
             }
         }
 
-        public async Task<TokenData> RefreshTokenAsync(TokenData toRefresh)
+        public virtual async Task<TokenData> RefreshTokenAsync(TokenData toRefresh)
         {
             try
             {
