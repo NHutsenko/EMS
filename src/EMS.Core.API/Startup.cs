@@ -28,7 +28,6 @@ namespace EMS.Core.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddAuthorization();
 
             string connectionString = Environment.GetEnvironmentVariable("DbConnectionString");

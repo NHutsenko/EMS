@@ -2,6 +2,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using EMS.Auth.API.DAL.Repositories;
 using EMS.Auth.API.Interfaces;
+using EMS.Auth.API.Services;
 using EMS.Auth.API.Tests.Mock;
 using EMS.Auth.API.Tests.Mocks;
 using EMS.Common.Logger;
@@ -19,6 +20,10 @@ namespace EMS.Auth.API.Tests
 
         protected Mock<TokenRepository> _tokenRepositoryMock;
         protected ITokenRepository _tokenRepository;
+
+        //Services
+        protected Mock<UsersService> _usersServiceMock;
+        protected IUsersService _usersService;
 
         // DB context
         protected Mock<IApplicationDbContext> _dbContextMock;
