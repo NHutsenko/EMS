@@ -24,17 +24,19 @@ namespace EMS.Gateway.API
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "EMS.Gateway.API", Version = "v1" });
+            });
+
+            InjectCoreGrpcClients(services);
+            
             services.AddControllers()
                 .AddNewtonsoftJson()
                 .AddJsonOptions(options =>
                 {
                     options.JsonSerializerOptions.IgnoreNullValues = true;
                 });
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "EMS.Gateway.API", Version = "v1" });
-            });
-            InjectCoreGrpcClients(services);
         }
 
         private static void InjectCoreGrpcClients(IServiceCollection services)

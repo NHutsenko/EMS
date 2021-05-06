@@ -12,11 +12,11 @@ namespace EMS.Auth.API.Models
         public long UserId { get; set; }
         [Column("user")]
         public User User { get; set; }
-        [Column("accessToken")]
+        [Column("accessToken", TypeName = "varchar(256)")]
         public string AccessToken { get; set; }
-        [Column("refreshToken")]
+        [Column("refreshToken", TypeName = "varchar(256)")]
         public string RefreshToken { get; set; }
-        [Column("expiresIn")]
+        [Column("expiresIn", TypeName = "datetime")]
         public DateTime ExpiresIn { get; set; }
         [Column("isRefreshTokenExpired")]
         public bool IsRefreshTokenExpired { get; set; }

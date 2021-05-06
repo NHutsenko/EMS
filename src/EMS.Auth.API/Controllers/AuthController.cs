@@ -5,6 +5,7 @@ using EMS.Auth.API.Models.RequestModels;
 using EMS.Common.ControllerExtension;
 using EMS.Common.Logger;
 using EMS.Common.Utils.DateTimeUtil;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EMS.Auth.API.Controllers
@@ -21,6 +22,7 @@ namespace EMS.Auth.API.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> AuthUserAsync([FromBody] LoginUserRequest request)
         {
             TokenData tokenReponse = await _authService.AuthUserAsync(request);

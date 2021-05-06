@@ -12,7 +12,7 @@ namespace EMS.Common.Models.BaseModel
         [Column("Id")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
-        [Column("createdOn")]
+        [Column("createdOn", TypeName = "datetime")]
         public DateTime CreatedOn { get; set; }
     }
 }

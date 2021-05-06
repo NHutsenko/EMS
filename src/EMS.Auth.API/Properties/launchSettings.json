@@ -18,7 +18,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "AuthKey": "test_secret_security_key_123_test",
-        "DbConnectionString": "Data Source=localhost\\sqlexpress;Initial Catalog=EMS;Integrated Security=True",
+        "DbConnectionString": "Data Source=localhost;Initial Catalog=EMS;Integrated Security=True",
         "TokenLifeTime": "5"
       }
     }

@@ -17,7 +17,7 @@ namespace EMS.Core.API.Models
         public string LastName { get; set; }
         [Column("secondName")]
         public string SecondName { get; set; }
-        [Column("bornedOn")]
+        [Column("bornedOn", TypeName = "datetime")]
         public DateTime BornedOn { get; set; }
         [IgnoreDataMember]
         public ICollection<PersonPhoto> Photos { get; set; }

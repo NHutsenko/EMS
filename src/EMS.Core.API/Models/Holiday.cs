@@ -8,9 +8,9 @@ namespace EMS.Core.API.Models
     [ExcludeFromCodeCoverage]
     public class Holiday: BaseModel
     {
-        [Column("holidayDate")]
+        [Column("holidayDate", TypeName = "datetime")]
         public DateTime HolidayDate { get; set; }
-        [Column("toDoDay")]
+        [Column("toDoDay", TypeName = "datetime"), AllowNull]
         public DateTime? ToDoDate { get; set; }
         [Column("Description")]
         public string Description { get; set; }
