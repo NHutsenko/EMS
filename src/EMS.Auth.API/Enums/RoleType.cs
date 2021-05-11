@@ -1,4 +1,6 @@
-﻿namespace EMS.Auth.API.Enums
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace EMS.Auth.API.Enums
 {
     public enum RoleType
     {

@@ -9,6 +9,7 @@ namespace EMS.Auth.API.Interfaces
         Task<int> UpdateAsync(User user);
         Task<int> DeleteAsync(User user);
         User GetById(long id);
+        User GetByLogin(string login);
         User VerifyUser(string login, string password);
     }
 }

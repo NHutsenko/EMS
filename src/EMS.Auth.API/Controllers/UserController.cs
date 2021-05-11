@@ -1,5 +1,8 @@
-﻿using EMS.Auth.API.Enums;
+﻿using System.Threading.Tasks;
+using EMS.Auth.API.Enums;
 using EMS.Auth.API.Interfaces;
+using EMS.Auth.API.Models;
+using EMS.Auth.API.Models.ResponseModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,11 +20,35 @@ namespace EMS.Auth.API.Controllers
         }
 
 
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AddUserAsync([FromBody] User user)
+        {
+            BaseResponse result = await _usersService.AddAsync(user);
+            return Ok(result);
+        }
+
+        [HttpPut]
+        [Authorize(Roles = "Admin, Employee")]
+        public async Task<IActionResult> UpdateUserAsync([FromBody] User user)
+        {
+            BaseResponse result = await _usersService.UpdateAsync(user);
+            return Ok(result);
+        }
+
+        [HttpDelete]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteUserAsync([FromBody] User user)
+        {
+            BaseResponse result = await _usersService.DeleteAsync(user);
+            return Ok(result);
+        }
+
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public IActionResult Test()
+        public IActionResult GetUserById([FromQuery] long userId)
         {
-            return Ok();
+            return Ok(_usersService.GetById(userId));
         }
     }
 }
