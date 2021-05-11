@@ -29,9 +29,13 @@ namespace EMS.Auth.API.Controllers
         }
 
         [HttpPut]
-        [Authorize(Roles = "Admin, Employee")]
+        [Authorize]
         public async Task<IActionResult> UpdateUserAsync([FromBody] User user)
         {
+            if(HttpContext.Items["User"].ToString() != user.Login)
+            {
+                return Forbid();
+            }
             BaseResponse result = await _usersService.UpdateAsync(user);
             return Ok(result);
         }

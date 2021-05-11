@@ -39,10 +39,25 @@ namespace EMS.Auth.API
             {
                 context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
             }
+            AttachUserToContext(context, token);
             await _next(context);
         }
 
-        public bool IsUserExistsByToken(string token, IUsersRepository usersRepository)
+        private bool IsUserExistsByToken(string token, IUsersRepository usersRepository)
+        {
+            JwtSecurityToken jwtToken = ParseTokenData(token);
+            string userLogin = jwtToken.Claims.First(x => x.Type == ClaimsIdentity.DefaultNameClaimType).Value;
+            return usersRepository.GetByLogin(userLogin) != null;
+        }
+
+        private void AttachUserToContext(HttpContext httpContext, string token)
+        {
+            JwtSecurityToken jwtToken = ParseTokenData(token);
+            string userLogin = jwtToken.Claims.First(x => x.Type == ClaimsIdentity.DefaultNameClaimType).Value;
+            httpContext.Items["User"] = userLogin;
+        }
+
+        private static JwtSecurityToken ParseTokenData(string token)
         {
             JwtSecurityTokenHandler tokenHandler = new();
             tokenHandler.ValidateToken(token, new TokenValidationParameters
@@ -56,8 +71,7 @@ namespace EMS.Auth.API
             }, out SecurityToken validatedToken);
 
             JwtSecurityToken jwtToken = (JwtSecurityToken)validatedToken;
-            string userLogin = jwtToken.Claims.First(x => x.Type == ClaimsIdentity.DefaultNameClaimType).Value;
-            return usersRepository.GetByLogin(userLogin) != null;
+            return jwtToken;
         }
     }
 }
