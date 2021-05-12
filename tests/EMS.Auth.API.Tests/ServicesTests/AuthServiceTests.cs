@@ -16,13 +16,11 @@ namespace EMS.Auth.API.Tests.ServicesTests
     {
         private User _user;
         private UserToken _token;
-        private AuthService _authService;
 
         [SetUp]
         public void Setup()
         {
-            InitializeMocks();
-            InitializeLoggerMock(new AuthService(null, null, null, null, null));
+            InitializeMocks(new AuthService(null, null, null, null, null));
             _user = new User
             {
                 Id = 1,

@@ -17,7 +17,7 @@ namespace EMS.Auth.API.Tests
         [SetUp]
         public void Setup()
         {
-            InitializeMocks();
+            InitializeMocks(null);
             _token = new UserToken
             {
                 Id = 1,

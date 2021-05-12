@@ -18,8 +18,7 @@ namespace EMS.Auth.API.Tests.ServicesTests
         [SetUp]
         public void Setup()
         {
-            InitializeMocks();
-            InitializeLoggerMock(new UsersService(null, null, null));
+            InitializeMocks(new UsersService(null, null, null));
             _user = new User
             {
                 Id = 1,

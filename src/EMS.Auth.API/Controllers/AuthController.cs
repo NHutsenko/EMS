@@ -2,9 +2,6 @@
 using EMS.Auth.API.Interfaces;
 using EMS.Auth.API.Models;
 using EMS.Auth.API.Models.RequestModels;
-using EMS.Common.ControllerExtension;
-using EMS.Common.Logger;
-using EMS.Common.Utils.DateTimeUtil;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,11 +9,10 @@ namespace EMS.Auth.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController : BaseApiController<AuthController>
+    public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
-        public AuthController(IEMSLogger<AuthController> logger, IDateTimeUtil dateTimeUtil, IAuthService authService) :
-            base(logger, dateTimeUtil)
+        public AuthController(IAuthService authService)
         {
             _authService = authService;
         }
@@ -27,6 +23,14 @@ namespace EMS.Auth.API.Controllers
         {
             TokenData tokenReponse = await _authService.AuthUserAsync(request);
             return Ok(tokenReponse);
+        }
+
+        [HttpPost("refresh")]
+        [Authorize]
+        public async Task<IActionResult> RefreshTokenAsync([FromBody] TokenData tokenData)
+        {
+            TokenData newTokenData = await _authService.RefreshTokenAsync(tokenData);
+            return Ok(newTokenData);
         }
     }
 }

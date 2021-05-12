@@ -177,7 +177,7 @@ namespace EMS.Auth.API.Services
             }
         }
 
-        public UserResponse GetById(long id)
+        public virtual UserResponse GetById(long id)
         {
             try
             {

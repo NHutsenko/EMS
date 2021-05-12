@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using EMS.Auth.API.Enums;
 using EMS.Auth.API.Interfaces;
 using EMS.Auth.API.Models;
 using EMS.Auth.API.Models.ResponseModels;
@@ -49,7 +48,7 @@ namespace EMS.Auth.API.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         public IActionResult GetUserById([FromQuery] long userId)
         {
             return Ok(_usersService.GetById(userId));
