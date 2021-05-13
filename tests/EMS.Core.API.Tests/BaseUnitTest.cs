@@ -45,6 +45,9 @@ namespace EMS.Core.API.Tests
         protected Mock<MotivationModificatorRepository> _motivationModificatorRepositoryMock;
         protected MotivationModificatorRepository _motivationModificatorRepository;
 
+        protected Mock<RoadMapRepository> _roadMapRepositoryMock;
+        protected RoadMapRepository _roadMapRepository;
+
         // Services
         protected SalaryService _salaryService;
         protected PeopleService _peopleService;
@@ -97,6 +100,9 @@ namespace EMS.Core.API.Tests
 
             _staffRepositoryMock = StaffRepositoryMock.SetupMock(_dbContext, _dateTimeUtil);
             _staffRepository = _staffRepositoryMock.Object;
+
+            _roadMapRepositoryMock = RoadMapRepositoryMock.SetupMock(_dbContext, _dateTimeUtil);
+            _roadMapRepository = _roadMapRepositoryMock.Object;
         }
 
         protected void InitializeLoggerMock(T loggerClass)

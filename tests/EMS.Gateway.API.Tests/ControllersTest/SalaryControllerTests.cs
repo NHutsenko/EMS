@@ -13,7 +13,7 @@ using NUnit.Framework;
 namespace EMS.Gateway.API.Tests
 {
     [ExcludeFromCodeCoverage]
-    public class SalaryControllerTest: BaseUnitTest<SalaryController>
+    public class SalaryControllerTests: BaseUnitTest<SalaryController>
     {
         private SalaryController _salaryController;
 

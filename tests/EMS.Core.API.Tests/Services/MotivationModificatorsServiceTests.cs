@@ -17,7 +17,7 @@ using NUnit.Framework;
 namespace EMS.Core.API.Tests.Services
 {
     [ExcludeFromCodeCoverage]
-    public class MotivationModificatorsServiceTest : BaseUnitTest<MotivationModificatorsService>
+    public class MotivationModificatorsServiceTests : BaseUnitTest<MotivationModificatorsService>
     {
         private MotivationModificator _motivationModificator1;
         private Staff _staff1;

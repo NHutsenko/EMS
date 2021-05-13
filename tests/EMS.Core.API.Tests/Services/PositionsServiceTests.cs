@@ -13,7 +13,7 @@ using NUnit.Framework;
 namespace EMS.Core.API.Tests.Services
 {
     [ExcludeFromCodeCoverage]
-    public class PositionsServiceTest: BaseUnitTest<PositionsService>
+    public class PositionsServiceTests: BaseUnitTest<PositionsService>
     {
         private Position _position1;
         private Position _position2;

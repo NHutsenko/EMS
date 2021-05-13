@@ -13,7 +13,7 @@ using NUnit.Framework;
 namespace EMS.Gateway.API.Tests
 {
     [ExcludeFromCodeCoverage]
-    public class TeamsControllerTest : BaseUnitTest<TeamsController>
+    public class TeamsControllerTests : BaseUnitTest<TeamsController>
     {
         private TeamsController _teamsController;
 

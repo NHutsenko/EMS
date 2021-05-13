@@ -12,7 +12,7 @@ using NUnit.Framework;
 namespace EMS.Core.API.Tests.Repositories
 {
     [ExcludeFromCodeCoverage]
-    public class OtherPaymentsRepositoryTest: BaseUnitTest<OtherPaymentsRepository>
+    public class OtherPaymentsRepositoryTests: BaseUnitTest<OtherPaymentsRepository>
     {
         private Person _person;
         private OtherPayment _otherPayment1;

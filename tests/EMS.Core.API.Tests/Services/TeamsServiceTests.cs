@@ -13,7 +13,7 @@ using EMS.Core.API.Tests.Mocks;
 namespace EMS.Core.API.Tests.Services
 {
     [ExcludeFromCodeCoverage]
-    public class TeamsServiceTest : BaseUnitTest<TeamsService>
+    public class TeamsServiceTests : BaseUnitTest<TeamsService>
     {
         private Team _team1;
         private Team _team2;

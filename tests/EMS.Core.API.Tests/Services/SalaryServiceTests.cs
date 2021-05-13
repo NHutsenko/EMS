@@ -12,7 +12,7 @@ using NUnit.Framework;
 namespace EMS.Core.API.Tests.Services
 {
     [ExcludeFromCodeCoverage]
-    public class SalaryServiceTest : BaseUnitTest<SalaryService>
+    public class SalaryServiceTests : BaseUnitTest<SalaryService>
     {
         public Staff _staff1;
         public Position _position1;

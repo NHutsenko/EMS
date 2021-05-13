@@ -13,7 +13,7 @@ using NUnit.Framework;
 namespace EMS.Core.API.Tests.Services
 {
     [ExcludeFromCodeCoverage]
-    public class OtherPaymentsServiceTest: BaseUnitTest<OtherPaymentsService>
+    public class OtherPaymentsServiceTests: BaseUnitTest<OtherPaymentsService>
     {
         private OtherPayment _otherPayment1;
         private OtherPayment _otherPayment2;

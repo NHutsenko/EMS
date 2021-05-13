@@ -15,8 +15,10 @@ namespace EMS.Core.API.DAL
         public DbSet<Person> People { get; set; }
         public DbSet<PersonPhoto> Photos { get; set; }
         public DbSet<Position> Positions { get; set; }
+        public DbSet<RoadMap> RoadMaps { get; set; }
         public DbSet<Staff> Staff { get; set; }
         public DbSet<Team> Teams { get; set; }
+
         int SaveChanges();
         Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess = true, CancellationToken cancellationToken = default);
     }

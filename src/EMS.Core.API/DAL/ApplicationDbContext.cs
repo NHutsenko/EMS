@@ -15,6 +15,7 @@ namespace EMS.Core.API.DAL
         public DbSet<Person> People { get; set; }
         public DbSet<PersonPhoto> Photos { get; set; }
 		public DbSet<Position> Positions { get; set; }
+        public DbSet<RoadMap> RoadMaps { get; set; }
         public DbSet<Staff> Staff { get; set; }
 		public DbSet<Team> Teams { get; set; }
 
@@ -74,6 +75,12 @@ namespace EMS.Core.API.DAL
                 .HasOne(e => e.Staff)
                 .WithOne(e => e.MotivationModificator)
                 .HasForeignKey<Staff>(e => e.MotivationModificatorId);
+
+            modelBuilder.Entity<RoadMap>()
+                .ToTable("RoadMaps", "core")
+                .HasOne(e => e.Staff)
+                .WithOne(e => e.RoadMap)
+                .HasForeignKey<Staff>(e => e.RoadMapId);
         }
 	}
 }

@@ -14,7 +14,7 @@ using NUnit.Framework;
 namespace EMS.Core.API.Tests.Services
 {
     [ExcludeFromCodeCoverage]
-    public class PeopleServiceTest : BaseUnitTest<PeopleService>
+    public class PeopleServiceTests : BaseUnitTest<PeopleService>
     {
         private Person _person1;
         private Person _person2;

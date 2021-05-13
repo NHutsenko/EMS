@@ -13,7 +13,7 @@ using NUnit.Framework;
 namespace EMS.Gateway.API.Tests
 {
     [ExcludeFromCodeCoverage]
-    public class MotivationModificatorControllerTest: BaseUnitTest<MotivationModificatorController>
+    public class MotivationModificatorControllerTests: BaseUnitTest<MotivationModificatorController>
     {
         private MotivationModificatorController _motivationModificatorController;
 

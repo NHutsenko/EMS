@@ -13,7 +13,7 @@ using NUnit.Framework;
 namespace EMS.Core.API.Tests.Services
 {
     [ExcludeFromCodeCoverage]
-    public class DayOffsServiceTest: BaseUnitTest<DayOffsService>
+    public class DayOffsServiceTests: BaseUnitTest<DayOffsService>
     {
         private DayOff _dayOff1;
         private DayOff _dayOff2;

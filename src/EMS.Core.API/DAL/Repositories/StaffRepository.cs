@@ -91,6 +91,7 @@ namespace EMS.Core.API.DAL.Repositories
         {
             return _context.Staff
                 .Include(e => e.MotivationModificator)
+                .Include(e => e.RoadMap)
                 .Where(s => s.PersonId == personId);
         }
 

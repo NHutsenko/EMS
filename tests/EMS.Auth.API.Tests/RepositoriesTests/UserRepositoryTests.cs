@@ -11,7 +11,7 @@ using NUnit.Framework;
 namespace EMS.Auth.API.Tests
 {
     [ExcludeFromCodeCoverage]
-    public class UserRepositoryTest : BaseUnitTest<UsersRepository>
+    public class UserRepositoryTests : BaseUnitTest<UsersRepository>
     {
         private User _user;
 

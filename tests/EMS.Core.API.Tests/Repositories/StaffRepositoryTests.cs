@@ -13,7 +13,7 @@ using EMS.Core.API.Tests.Mock;
 namespace EMS.Core.API.Tests.Repositories
 {
     [ExcludeFromCodeCoverage]
-    public class StaffRepositoryTest : BaseUnitTest<StaffRepository>
+    public class StaffRepositoryTests : BaseUnitTest<StaffRepository>
     {
         public Staff _staff1;
         public Staff _staff2;

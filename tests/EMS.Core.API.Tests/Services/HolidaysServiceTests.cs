@@ -13,7 +13,7 @@ using NUnit.Framework;
 namespace EMS.Core.API.Tests.Services
 {
     [ExcludeFromCodeCoverage]
-    public class HolidaysServiceTest: BaseUnitTest<HolidaysService>
+    public class HolidaysServiceTests: BaseUnitTest<HolidaysService>
     {
         public Holiday _holiday1;
         public Holiday _holiday2;

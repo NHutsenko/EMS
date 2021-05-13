@@ -13,7 +13,7 @@ using NUnit.Framework;
 namespace EMS.Gateway.API.Tests
 {
     [ExcludeFromCodeCoverage]
-    public class PositionsControllerTest : BaseUnitTest<PositionsController>
+    public class PositionsControllerTests : BaseUnitTest<PositionsController>
     {
         private PositionsController _positionsController;
 
