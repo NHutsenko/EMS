@@ -8,7 +8,7 @@ option csharp_namespace = "EMS.Common.Protos";
 package salary;
 
 service Salary{
-	rpc GetSalary(SalaryRequest) returns (ISalaryResponse) { }
+	rpc GetSalary(SalaryRequest) returns (ISalaryResponse);
 }
 
 message SalaryRequest{

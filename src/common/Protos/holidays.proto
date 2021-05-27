@@ -10,15 +10,11 @@ option csharp_namespace = "EMS.Common.Protos";
 package holidays;
 
 service Holidays {
-	rpc AddAsync(HolidayData) returns (response.BaseResponse) { }
-
-	rpc UpdateAsync(HolidayData) returns (response.BaseResponse) { }
-
-	rpc DeleteAsync(HolidayData) returns (response.BaseResponse) { }
-
-	rpc GetAll(google.protobuf.Empty) returns (HolidaysResponse) { }
-
-	rpc GetByDateRange(requests.ByDateRangeRequest) returns (HolidaysResponse) { }
+	rpc AddAsync(HolidayData) returns (response.BaseResponse);
+	rpc UpdateAsync(HolidayData) returns (response.BaseResponse);
+	rpc DeleteAsync(HolidayData) returns (response.BaseResponse);
+	rpc GetAll(google.protobuf.Empty) returns (HolidaysResponse);
+	rpc GetByDateRange(requests.ByDateRangeRequest) returns (HolidaysResponse);
 }
 
 message HolidaysResponse {

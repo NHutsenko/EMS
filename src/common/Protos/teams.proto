@@ -9,15 +9,11 @@ option csharp_namespace = "EMS.Common.Protos";
 package teams;
 
 service Teams{
-	rpc GetAll(google.protobuf.Empty) returns (TeamsResponse) { }
-
-	rpc GetById(TeamRequest) returns (TeamResponse) { }
-
-	rpc AddAsync(TeamData) returns (response.BaseResponse) { }
-
-	rpc UpdateAsync(TeamData) returns (response.BaseResponse) { }
-
-	rpc DeleteAsync(TeamData) returns (response.BaseResponse) { }
+	rpc GetAll(google.protobuf.Empty) returns (TeamsResponse);
+	rpc GetById(TeamRequest) returns (TeamResponse);
+	rpc AddAsync(TeamData) returns (response.BaseResponse);
+	rpc UpdateAsync(TeamData) returns (response.BaseResponse);
+	rpc DeleteAsync(TeamData) returns (response.BaseResponse);
 }
 
 message TeamData {

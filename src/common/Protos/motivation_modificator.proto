@@ -8,9 +8,9 @@ option csharp_namespace = "EMS.Common.Protos";
 package motivation_modificator;
 
 service MotivationModificators {
-	rpc AddAsync(MotivationModificatorData) returns (response.BaseResponse) { }
-	rpc UpdateAsync(MotivationModificatorData) returns (response.BaseResponse) { }
-	rpc GetByStaffId(ByStaffIdRequest) returns (MotivationModificatorResponse) { }
+	rpc AddAsync(MotivationModificatorData) returns (response.BaseResponse);
+	rpc UpdateAsync(MotivationModificatorData) returns (response.BaseResponse);
+	rpc GetByStaffId(ByStaffIdRequest) returns (MotivationModificatorResponse);
 }
 
 message MotivationModificatorResponse {

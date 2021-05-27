@@ -11,12 +11,12 @@ package staff;
 
 
 service Staffs {
-	rpc AddAsync(StaffData) returns (response.BaseResponse) { }
-	rpc UpdateAsync(StaffData) returns (response.BaseResponse) { }
-	rpc DeleteAsync(StaffData) returns (response.BaseResponse) { }
-	rpc GetAll(google.protobuf.Empty) returns (StaffResponse) { }
-	rpc GetByPersonId(requests.ByPersonIdRequest) returns (StaffResponse) { }
-	rpc GetByManagerId(requests.ByPersonIdRequest) returns (StaffResponse) { }
+	rpc AddAsync(StaffData) returns (response.BaseResponse);
+	rpc UpdateAsync(StaffData) returns (response.BaseResponse);
+	rpc DeleteAsync(StaffData) returns (response.BaseResponse);
+	rpc GetAll(google.protobuf.Empty) returns (StaffResponse);
+	rpc GetByPersonId(requests.ByPersonIdRequest) returns (StaffResponse);
+	rpc GetByManagerId(requests.ByPersonIdRequest) returns (StaffResponse);
 }
 
 message StaffResponse {

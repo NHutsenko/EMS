@@ -9,11 +9,11 @@ option csharp_namespace = "EMS.Common.Protos";
 package day_offs;
 
 service DayOffs {
-	rpc AddAsync(DayOffData) returns (response.BaseResponse) { }
-	rpc UpdateAsync(DayOffData) returns (response.BaseResponse) { }
-	rpc DeleteAsync(DayOffData) returns (response.BaseResponse) { }
-	rpc GetByPersonId(requests.ByPersonIdRequest) returns (DayOffsResponse) { }
-	rpc GetByPersonIdAndDateRange(requests.ByPersonIdAndDateRangeRequest) returns (DayOffsResponse) { }
+	rpc AddAsync(DayOffData) returns (response.BaseResponse);
+	rpc UpdateAsync(DayOffData) returns (response.BaseResponse);
+	rpc DeleteAsync(DayOffData) returns (response.BaseResponse);
+	rpc GetByPersonId(requests.ByPersonIdRequest) returns (DayOffsResponse);
+	rpc GetByPersonIdAndDateRange(requests.ByPersonIdAndDateRangeRequest) returns (DayOffsResponse);
 }
 
 message DayOffsResponse {

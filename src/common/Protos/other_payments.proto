@@ -9,11 +9,11 @@ option csharp_namespace = "EMS.Common.Protos";
 package other_payments;
 
 service OtherPayments {
-	rpc AddAsync (OtherPaymentData) returns (response.BaseResponse) { }
-	rpc UpdateAsync (OtherPaymentData) returns (response.BaseResponse) { }
-	rpc DeleteAsync (OtherPaymentData) returns (response.BaseResponse) { }
-	rpc GetByPersonId (requests.ByPersonIdRequest) returns (OtherPaymentsResponse) { }
-	rpc GetByPersonIdAndDateRange (requests.ByPersonIdAndDateRangeRequest) returns (OtherPaymentsResponse) { }
+	rpc AddAsync (OtherPaymentData) returns (response.BaseResponse);
+	rpc UpdateAsync (OtherPaymentData) returns (response.BaseResponse);
+	rpc DeleteAsync (OtherPaymentData) returns (response.BaseResponse);
+	rpc GetByPersonId (requests.ByPersonIdRequest) returns (OtherPaymentsResponse);
+	rpc GetByPersonIdAndDateRange (requests.ByPersonIdAndDateRangeRequest) returns (OtherPaymentsResponse);
 }
 
 message OtherPaymentsResponse {

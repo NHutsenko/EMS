@@ -49,13 +49,6 @@ namespace EMS.Core.API
             services.AddTransient<IStaffRepository, StaffRepository>();
             services.AddTransient<ITeamsRepository, TeamsRepository>();
 
-            services.AddCors(c => c.AddDefaultPolicy(builder =>
-            {
-                builder.WithOrigins(Environment.GetEnvironmentVariable("GatewayApiUrl"))
-                    .AllowAnyMethod()
-                    .AllowAnyHeader();
-            }));
-
             services.AddCors(c => c.AddPolicy("GatewayCorsPolicy", builder =>
             {
                 builder.WithOrigins(Environment.GetEnvironmentVariable("GatewayApiUrl"))
@@ -63,7 +56,14 @@ namespace EMS.Core.API
                     .AllowAnyHeader();
             }));
 
-            services.AddGrpc();
+            services.AddGrpc(o =>
+            {
+                o.EnableDetailedErrors = true;
+            }).AddServiceOptions<PeopleService>(o =>
+            {
+                o.EnableDetailedErrors = true;
+                o.MaxReceiveMessageSize = null;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -108,13 +108,6 @@ namespace EMS.Core.API
                     await context.Response.WriteAsync("Core API is alive");
                 });
             });
-
-            using IServiceScope serviceScope = app.ApplicationServices
-                .GetRequiredService<IServiceScopeFactory>()
-                .CreateScope();
-
-            DbContext context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
-            context.Database.EnsureCreated();
         }
     }
 }
