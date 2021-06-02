@@ -1,12 +1,32 @@
 ﻿syntax = "proto3";
 
 import "google/protobuf/timestamp.proto";
-import "google/protobuf/empty.proto";
 import "response.proto";
-import "requests.proto";
 
 option csharp_namespace = "EMS.Common.Protos";
 
 package road_maps;
 
-service RoadMaps
+service RoadMaps {
+	rpc GetByStaffId(ByStaffRequest) returns (RoadMapResponse);
+	rpc AddAsync(RoadMapData) returns (response.BaseResponse);
+	rpc UpdateAsync(RoadMapData) returns (response.BaseResponse);
+	rpc DeleteAsync(RoadMapData) returns (response.BaseResponse);
+}
+
+message RoadMapData {
+	int64 id = 1;
+	google.protobuf.Timestamp created_on = 2;
+	int64 staff_id = 3;
+	int32 status = 4;
+	string tasks = 5;
+}
+
+message RoadMapResponse{
+	response.BaseResponse status = 1;
+	RoadMapData data = 2;
+}
+
+message ByStaffRequest {
+	int64 staff_id = 1;
+}

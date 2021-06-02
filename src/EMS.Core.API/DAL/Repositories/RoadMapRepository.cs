@@ -15,7 +15,7 @@ namespace EMS.Core.API.DAL.Repositories
         {
             if(!_context.Staff.Any(e => e.Id == roadMap.StaffId))
             {
-                throw new ArgumentException("Staff does not exists");
+                throw new ArgumentException("Cannot create road map for non-existent work period");
             }
             if(_context.Staff.FirstOrDefault(e => e.Id == roadMap.StaffId).RoadMapId != 0)
             {

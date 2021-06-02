@@ -58,6 +58,7 @@ namespace EMS.Core.API.Tests
         protected OtherPaymentsService _otherPaymentsService;
         protected MotivationModificatorsService _motivationModificatorsService;
         protected StaffService _staffService;
+        protected RoadMapsService _roadMapsService;
 
         // Logger
         protected Mock<IEMSLogger<T>> _loggerMock;
