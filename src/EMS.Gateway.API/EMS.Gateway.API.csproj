@@ -38,6 +38,7 @@
     <Protobuf Include="../common/Protos/other_payments.proto" Link="Protos/other_payments.proto" GrpcServices="Client" />
     <Protobuf Include="../common/Protos/motivation_modificator.proto" Link="Protos/motivation_modificator.proto" GrpcServices="Client" />
     <Protobuf Include="../common/Protos/staff.proto" Link="Protos/staff.proto" GrpcServices="Client" />
+    <Protobuf Include="../common/Protos/roadmaps.proto" Link="Protos/roadmaps.proto" GrpcServices="Client" />
   </ItemGroup>
 
 </Project>

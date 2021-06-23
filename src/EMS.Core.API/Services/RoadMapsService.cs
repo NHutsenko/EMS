@@ -279,23 +279,6 @@ namespace EMS.Core.API.Services
                     ErrorMessage = aex.Message
                 };
             }
-            catch (InvalidOperationException ioex)
-            {
-                LogData log = new()
-                {
-                    CallSide = nameof(RoadMapsService),
-                    CallerMethodName = nameof(UpdateAsync),
-                    CreatedOn = _dateTimeUtil.GetCurrentDateTime(),
-                    Request = request,
-                    Response = ioex
-                };
-                _logger.AddErrorLog(log);
-                return new BaseResponse
-                {
-                    Code = Code.DataError,
-                    ErrorMessage = ioex.Message
-                };
-            }
             catch (DbUpdateException duex)
             {
                 LogData log = new()

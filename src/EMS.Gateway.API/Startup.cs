@@ -78,6 +78,10 @@ namespace EMS.Gateway.API
             {
                 o.Address = new Uri(coreApiUrl);
             });
+            services.AddGrpcClient<RoadMaps.RoadMapsClient>(o =>
+            {
+                o.Address = new Uri(coreApiUrl);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
