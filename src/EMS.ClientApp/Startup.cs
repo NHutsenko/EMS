@@ -28,7 +28,7 @@ namespace EMS.ClientApp
 			services.AddControllers();
 			services.AddSpaStaticFiles(configuration =>
 			{
-				configuration.RootPath = "ClientApp";
+				configuration.RootPath = "client-app";
 			});
 		}
 
