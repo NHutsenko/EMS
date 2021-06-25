@@ -1,0 +1,60 @@
+label {
+  @extend .text-primary;
+  font-family: "vostok-medium";
+  font-size: $text-primary-font-size;
+}
+
+.no-results {
+  font-family: "vostok-medium";
+  color: #7a7a7a;
+  font-size: $no-results-font-size;
+}
+
+body {
+  overflow: hidden;
+}
+
+.user-dialog-caption {
+  color: $unnessasary;
+  font-family: vostok-medium;
+  font-size: 12pt;
+}
+
+.user-dialog-reason {
+  color: $unnessasary;
+  font-family: vostok-medium;
+  font-size: 8pt;
+}
+
+.user-notification-progress {
+  background-color: $primary;
+}
+
+.empty-list-caption {
+  font-size: 12pt;
+  color: #b4b3b3;
+}
+
+.user-notification {
+  min-width: 30%;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: $scroll-bar-width;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: $primary;
+}

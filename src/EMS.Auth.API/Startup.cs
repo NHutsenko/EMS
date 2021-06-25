@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using EMS.Auth.API.DAL;
 using EMS.Auth.API.DAL.Repositories;
 using EMS.Auth.API.Enums;

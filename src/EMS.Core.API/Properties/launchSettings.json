@@ -14,12 +14,12 @@
       "launchBrowser": true,
       "launchUrl": "alive",
       "environmentVariables": {
+        "GatewayApiUrl": "https://localhost:5000",
         "MaxWorkHours": "8",
         "DbConnectionString": "Data Source=localhost\\sqlexpress;Initial Catalog=EMS;Integrated Security=True",
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "GatewayApiUrl": "https://localhost:5000"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "https://localhost:5001"
+      "applicationUrl": "https://localhost:5000"
     }
   }
 }

@@ -5,6 +5,7 @@ using EMS.Common.Logger.Models;
 using EMS.Common.Protos;
 using EMS.Common.Utils.DateTimeUtil;
 using Google.Protobuf.WellKnownTypes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static EMS.Common.Protos.People;
 
@@ -23,6 +24,7 @@ namespace EMS.Gateway.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin,HR,Manager")]
         public IActionResult Add([FromBody] PersonData request)
         {
             try
@@ -55,6 +57,7 @@ namespace EMS.Gateway.API.Controllers
         }
 
         [HttpPut]
+        [Authorize]
         public IActionResult Update([FromBody] PersonData request)
         {
             try
@@ -87,6 +90,7 @@ namespace EMS.Gateway.API.Controllers
         }
 
         [HttpPost("photo")]
+        [Authorize]
         public IActionResult AddPhoto([FromBody] PhotoData request)
         {
             try
@@ -119,6 +123,7 @@ namespace EMS.Gateway.API.Controllers
         }
 
         [HttpPost("contact")]
+        [Authorize]
         public IActionResult AddContact([FromBody] ContactData request)
         {
             try
@@ -151,6 +156,7 @@ namespace EMS.Gateway.API.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult GetAll()
         {
             Empty request = new();
@@ -184,6 +190,7 @@ namespace EMS.Gateway.API.Controllers
         }
 
         [HttpGet("person")]
+        [Authorize]
         public IActionResult GetById([FromQuery] long personId)
         {
             ByPersonIdRequest request = new()

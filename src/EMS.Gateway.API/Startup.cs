@@ -7,6 +7,11 @@ using Microsoft.OpenApi.Models;
 using EMS.Common.Protos;
 using System;
 using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using EMS.Auth.API.Models;
+using EMS.Auth.API.Enums;
+using System.Collections.Generic;
 
 namespace EMS.Gateway.API
 {
@@ -27,10 +32,54 @@ namespace EMS.Gateway.API
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "EMS.Gateway.API", Version = "v1" });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer" }
+                        }, new List<string>() }
+                });
             });
 
             InjectCoreGrpcClients(services);
-            
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                   .AddJwtBearer(options =>
+                   {
+                       options.RequireHttpsMetadata = false;
+                       options.TokenValidationParameters = new TokenValidationParameters
+                       {
+                           // token issuer validation required
+                           ValidateIssuer = true,
+                           // token issuer
+                           ValidIssuer = AuthOptions.Issuer,
+
+                           // audience validation required
+                           ValidateAudience = true,
+                           // set aoudience name
+                           ValidAudience = AuthOptions.Audience,
+                           // set token expiring
+                           ValidateLifetime = true,
+
+                           // security key
+                           IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(TokenType.Access),
+                           // is security key validation needed
+                           ValidateIssuerSigningKey = true,
+                       };
+                   });
+
             services.AddControllers()
                 .AddNewtonsoftJson()
                 .AddJsonOptions(options =>
@@ -102,6 +151,7 @@ namespace EMS.Gateway.API
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

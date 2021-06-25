@@ -1,0 +1,19 @@
+@font-face {
+    font-family: vostok-medium;
+    src: url("~@/fonts/Graphik-Medium-Web.woff");
+  }
+  
+  @font-face {
+    font-family: vostok-semi-bold;
+    src: url("~@/fonts/Graphik-Semibold-Web.woff");
+  }
+  
+  @font-face {
+    font-family: vostok-bold;
+    src: url("~@/fonts/Graphik-Bold-Web.woff");
+  }
+  
+  @import "./quasar.variables.scss";
+  @import "./common-styles.scss";
+  @import "~quasar-styl";
+  

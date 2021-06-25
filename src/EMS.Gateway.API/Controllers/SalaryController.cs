@@ -4,6 +4,7 @@ using EMS.Common.Logger;
 using EMS.Common.Logger.Models;
 using EMS.Common.Protos;
 using EMS.Common.Utils.DateTimeUtil;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static EMS.Common.Protos.Salary;
 
@@ -23,6 +24,7 @@ namespace EMS.Gateway.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin,HR,Manager")]
         public IActionResult GetSalary([FromQuery] SalaryRequest request)
         {
             try

@@ -4,6 +4,7 @@ using EMS.Common.Logger;
 using EMS.Common.Logger.Models;
 using EMS.Common.Protos;
 using EMS.Common.Utils.DateTimeUtil;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static EMS.Common.Protos.RoadMaps;
 
@@ -20,6 +21,7 @@ namespace EMS.Gateway.API.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult GetByStaffId([FromQuery] ByStaffRequest request)
         {
             try
@@ -52,6 +54,7 @@ namespace EMS.Gateway.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin,Manager")]
         public IActionResult Add([FromQuery] RoadMapData request)
         {
             try
@@ -84,6 +87,7 @@ namespace EMS.Gateway.API.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Admin,Manager")]
         public IActionResult Update([FromQuery] RoadMapData request)
         {
             try
@@ -116,6 +120,7 @@ namespace EMS.Gateway.API.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "Admin,Manager")]
         public IActionResult Delete([FromQuery] RoadMapData request)
         {
             try

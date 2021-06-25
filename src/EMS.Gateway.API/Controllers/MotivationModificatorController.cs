@@ -4,6 +4,7 @@ using EMS.Common.Logger;
 using EMS.Common.Logger.Models;
 using EMS.Common.Protos;
 using EMS.Common.Utils.DateTimeUtil;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static EMS.Common.Protos.MotivationModificators;
 
@@ -23,6 +24,7 @@ namespace EMS.Gateway.API.Controllers
         }
 
         [HttpPost]
+        [Authorize("Admin,Manager")]
         public IActionResult  Add([FromBody] MotivationModificatorData request)
         {
             try
@@ -55,6 +57,7 @@ namespace EMS.Gateway.API.Controllers
         }
 
         [HttpPut]
+        [Authorize("Admin,Manager")]
         public IActionResult Update([FromBody] MotivationModificatorData request)
         {
             try
@@ -87,6 +90,7 @@ namespace EMS.Gateway.API.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult GetBystaffId([FromQuery] long staffId)
         {
             ByStaffIdRequest request = new()

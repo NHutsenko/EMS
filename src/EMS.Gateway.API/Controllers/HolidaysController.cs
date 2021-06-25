@@ -5,6 +5,7 @@ using EMS.Common.Logger.Models;
 using EMS.Common.Protos;
 using EMS.Common.Utils.DateTimeUtil;
 using Google.Protobuf.WellKnownTypes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static EMS.Common.Protos.Holidays;
 
@@ -24,6 +25,7 @@ namespace EMS.Gateway.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin,HR")]
         public IActionResult Add([FromBody] HolidayData request)
         {
             try
@@ -58,6 +60,7 @@ namespace EMS.Gateway.API.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Admin,HR")]
         public IActionResult Update([FromBody] HolidayData request)
         {
             try
@@ -92,6 +95,7 @@ namespace EMS.Gateway.API.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "Admin,HR")]
         public IActionResult Delete([FromBody] HolidayData request)
         {
             try
@@ -126,6 +130,7 @@ namespace EMS.Gateway.API.Controllers
         }
 
         [HttpGet("all")]
+        [Authorize]
         public IActionResult GetAll()
         {
             Empty request = new();
@@ -161,6 +166,7 @@ namespace EMS.Gateway.API.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult GetByRangeDate([FromQuery] ByDateRangeRequest request)
         {
             try
