@@ -15,7 +15,7 @@
     </q-header>
 
     <q-drawer
-      v-model="rightDrawerOpen"
+      v-model="drawerOpen"
       side="right"
       overlay
       bordered
