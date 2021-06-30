@@ -1,3 +1,6 @@
-// Example state
-export const GET_BOOLEAN_FIELD = "GET_BOOLEAN_FIELD";
+// Root
+export const GET_OPERATION_WAITING_FLAG = "GET_OPERATION_WAITING_FLAG";
+export const GET_OPERATION_COMPLETE_FLAG = "GET_OPERATION_COMPLETE_FLAG";
+
+// Example module
 export const GET_STRING_FIELD = "GET_STRING_FIELD";

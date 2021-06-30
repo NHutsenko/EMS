@@ -1,14 +1,8 @@
 <template>
   <div class="absolute-center test">
     <span>Test component</span>
-
     <q-input :value="inputModel" @update:model-value="handleInput"/>
     <div>This is text from input: {{ exampleStoreStringGetter }}</div>
-    <q-spinner-hourglass
-      color="primary"
-      size="4em"
-      v-if="exapmleStoreBooleanGetter"
-    />
   </div>
 </template>
 
@@ -25,13 +19,9 @@ export default defineComponent({
     const exampleStoreStringGetter: ComputedRef<string> = computed(
       () => store.getters[Getters.GET_STRING_FIELD]
     );
-    const exapmleStoreBooleanGetter: ComputedRef<boolean> = computed(
-      () => store.getters[Getters.GET_BOOLEAN_FIELD]
-    );
 
     return {
       inputModel: ref(""),
-      exapmleStoreBooleanGetter,
       exampleStoreStringGetter,
     };
   },

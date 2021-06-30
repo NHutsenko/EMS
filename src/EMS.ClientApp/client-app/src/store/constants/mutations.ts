@@ -1,3 +1,6 @@
-// Example state
-export const SET_BOOLEAN_FIELD = "SET_BOOLEAN_FIELD";
+// Root
+export const SET_OPERATION_WAITING_FLAG = "SET_OPERATION_WAITING_FLAG";
+export const SET_OPERATION_COMPLETE_FLAG = "SET_OPERATION_COMPLETE_FLAG";
+
+// Example module
 export const SET_STRING_FIELD = "SET_STRING_FIELD";
