@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from "vue";
+import { defineComponent, ref, computed, ComputedRef } from "vue";
 import store from "@/store/index";
 import * as Getters from "@/store/constants/getters";
 import * as Actions from "@/store/constants/actions";
@@ -22,10 +22,10 @@ export default defineComponent({
   name: "ExampleComponent",
 
   setup() {
-    const exampleStoreStringGetter = computed(
+    const exampleStoreStringGetter: ComputedRef<string> = computed(
       () => store.getters[Getters.GET_STRING_FIELD]
     );
-    const exapmleStoreBooleanGetter = computed(
+    const exapmleStoreBooleanGetter: ComputedRef<boolean> = computed(
       () => store.getters[Getters.GET_BOOLEAN_FIELD]
     );
 
