@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UserSecretsId>aspnet-Bot-E1FE9BF2-7C40-4F20-A179-3E2F99BF8EAA</UserSecretsId>
+        <RootNamespace>EMS.Bot</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="7.0.1" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.1" />
+        <PackageReference Include="Microsoft.Identity.Web" Version="1.16.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Common\Logging\Logging.csproj" />
+    </ItemGroup>
+
+</Project>
