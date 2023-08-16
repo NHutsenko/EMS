@@ -1,5 +1,4 @@
 using Grpc.Core;
-using Recruiting;
 
 namespace Recruiting.Services;
 

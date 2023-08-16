@@ -1,5 +1,4 @@
 using Grpc.Core;
-using Payments;
 
 namespace Payments.Services;
 

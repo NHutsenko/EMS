@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+
+option csharp_namespace = "EMS.Protos";
+
+package person_contact;
+
+service PersonContactService {
+  rpc Add(NewContactRequest) returns (google.protobuf.Int32Value);
+  rpc Update(ContactData) returns (google.protobuf.Empty);
+}
+
+message NewContactRequest {
+  string person_id = 1;
+  ContactData data = 2;
+}
+
+message ContactData {
+  enum ContactType {
+    EMAIL = 0;
+    PHONE = 1;
+    SOCIAL_NETWORK_LINK = 2;
+  }
+  int32 id = 1;
+  ContactType type = 2;
+  string value = 3;
+}

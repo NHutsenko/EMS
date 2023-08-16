@@ -9,17 +9,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logging", "src\Common\Logging\Logging.csproj", "{47C86975-A3DB-4802-9F07-C812584B8159}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F197335B-D21F-496E-8FB4-88CB7BB8AC90}"
-	ProjectSection(SolutionItems) = preProject
-		src\Protos\people.proto = src\Protos\people.proto
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "google", "google", "{05AE4205-0690-403C-80E1-1DF99EEF9245}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "api", "api", "{6BC45A23-E6AF-43B3-8B54-396A84E70FB7}"
-	ProjectSection(SolutionItems) = preProject
-		src\Protos\google\api\annotations.proto = src\Protos\google\api\annotations.proto
-		src\Protos\google\api\http.proto = src\Protos\google\api\http.proto
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{B3FB7E78-E1C0-4D32-AD98-D9E12416E383}"
 EndProject
@@ -35,6 +24,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vacations", "src\Vacations\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Recruiting", "src\Recruiting\Recruiting.csproj", "{5DC305C5-72A8-406B-8141-7305FA9810D5}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Person", "Person", "{99AEA01C-7A31-4683-9373-43B3A56E8FDB}"
+	ProjectSection(SolutionItems) = preProject
+		src\Protos\Person\additional.proto = src\Protos\Person\additional.proto
+		src\Protos\Person\contact.proto = src\Protos\Person\contact.proto
+		src\Protos\Person\info.proto = src\Protos\Person\info.proto
+		src\Protos\Person\person.proto = src\Protos\Person\person.proto
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,8 +40,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{BC7FEEAB-C625-4E2A-B534-B1BC146F7555} = {0DD9FDB8-6088-4B2C-8345-97CCE0746696}
 		{47C86975-A3DB-4802-9F07-C812584B8159} = {BC7FEEAB-C625-4E2A-B534-B1BC146F7555}
-		{05AE4205-0690-403C-80E1-1DF99EEF9245} = {F197335B-D21F-496E-8FB4-88CB7BB8AC90}
-		{6BC45A23-E6AF-43B3-8B54-396A84E70FB7} = {05AE4205-0690-403C-80E1-1DF99EEF9245}
 		{B3FB7E78-E1C0-4D32-AD98-D9E12416E383} = {0DD9FDB8-6088-4B2C-8345-97CCE0746696}
 		{37F9FFD0-4A03-453C-8C59-F627276037B4} = {B3FB7E78-E1C0-4D32-AD98-D9E12416E383}
 		{E9355F7A-8ED9-45B1-8E87-BE9A4F8358F3} = {B3FB7E78-E1C0-4D32-AD98-D9E12416E383}
@@ -52,6 +47,7 @@ Global
 		{C5BE68EA-0304-4BAE-983F-C6B15067235B} = {B3FB7E78-E1C0-4D32-AD98-D9E12416E383}
 		{4700C9AA-1972-4265-86CA-2B246E7D4428} = {B3FB7E78-E1C0-4D32-AD98-D9E12416E383}
 		{5DC305C5-72A8-406B-8141-7305FA9810D5} = {B3FB7E78-E1C0-4D32-AD98-D9E12416E383}
+		{99AEA01C-7A31-4683-9373-43B3A56E8FDB} = {F197335B-D21F-496E-8FB4-88CB7BB8AC90}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{47C86975-A3DB-4802-9F07-C812584B8159}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

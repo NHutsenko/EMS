@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+option csharp_namespace = "EMS.Protos.Person";
+
+package person_additional_data;
+
+service PersonAdditionalDataService {
+  rpc AddComment(CommentRequest) returns (google.protobuf.Empty);
+  rpc UpdateComment(CommentRequest) returns (google.protobuf.Empty);
+  rpc AddAddress(AddressRequest) returns (google.protobuf.Empty);
+  rpc UpdateAddress(AddressRequest) returns (google.protobuf.Empty);
+}
+
+message CommentRequest {
+  string person_id = 1;
+  string value = 2;
+}
+
+message AddressRequest {
+  string person_id = 1;
+  AddressData value = 2;
+}
+
+message AddressData {
+  string city = 1;
+  string street = 2;
+  string building = 3;
+  string house = 4;
+}

@@ -1,5 +1,4 @@
 using Grpc.Core;
-using Vacations;
 
 namespace Vacations.Services;
 

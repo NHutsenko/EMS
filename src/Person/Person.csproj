@@ -5,18 +5,32 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <RootNamespace>EMS.Person</RootNamespace>
+        <Protobuf_ProtoRoot>../Protos</Protobuf_ProtoRoot>
     </PropertyGroup>
 
     <ItemGroup>
-        <Protobuf Include="Protos\greet.proto" GrpcServices="Server" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="Grpc.AspNetCore" Version="2.49.0" />
+        <PackageReference Include="Grpc.AspNetCore" Version="2.55.0" />
+        <PackageReference Include="Grpc.Tools" Version="2.57.0">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.10" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.4" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Common\Logging\Logging.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Protobuf Include="../Protos/Person/additional.proto" GrpcServices="Server" />
+        <Protobuf Include="../Protos/Person/contact.proto" GrpcServices="Server" />
+        <Protobuf Include="../Protos/Person/info.proto" GrpcServices="Server" />
+        <Protobuf Include="../Protos/Person/person.proto" GrpcServices="Server" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Services" />
     </ItemGroup>
 
 </Project>
