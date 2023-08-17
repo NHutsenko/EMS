@@ -13,15 +13,16 @@ service PersonContactService {
 }
 
 message NewContactRequest {
-  string person_id = 1;
+  int32 person_id = 1;
   ContactData data = 2;
 }
 
 message ContactData {
   enum ContactType {
-    EMAIL = 0;
-    PHONE = 1;
-    SOCIAL_NETWORK_LINK = 2;
+    UNDEFINED = 0;
+    EMAIL = 1;
+    PHONE = 2;
+    SOCIAL_NETWORK_LINK = 3;
   }
   int32 id = 1;
   ContactType type = 2;

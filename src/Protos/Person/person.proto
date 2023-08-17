@@ -14,7 +14,7 @@ package person;
 service PersonService{
   rpc Get(google.protobuf.StringValue) returns (PersonData);
   rpc GetAll(google.protobuf.Empty) returns (People);
-  rpc Create(PersonData) returns (google.protobuf.StringValue);
+  rpc Create(PersonData) returns (google.protobuf.Int32Value);
 }
 
 message People {
@@ -22,7 +22,7 @@ message People {
 }
 
 message PersonData {
-  string id = 1;
+  int32 id = 1;
   person_info.GeneralInfo general = 2;
   google.protobuf.StringValue comment = 3;
   person_additional_data.AddressData address = 4;
