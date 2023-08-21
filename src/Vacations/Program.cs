@@ -1,5 +1,5 @@
-using Logging.Extensions;
-using Vacations.Services;
+using EMS.Logging.Extensions;
+using EMS.Vacations.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

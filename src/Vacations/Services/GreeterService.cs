@@ -1,6 +1,7 @@
 using Grpc.Core;
+using Vacations;
 
-namespace Vacations.Services;
+namespace EMS.Vacations.Services;
 
 public class GreeterService : Greeter.GreeterBase
 {

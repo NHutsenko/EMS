@@ -1,5 +1,5 @@
+using EMS.Logging.Extensions;
 using EMS.Person.Extensions;
-using Logging.Extensions;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 

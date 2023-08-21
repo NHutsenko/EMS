@@ -1,5 +1,5 @@
-using Logging.Extensions;
-using Recruiting.Services;
+using EMS.Logging.Extensions;
+using EMS.Recruiting.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

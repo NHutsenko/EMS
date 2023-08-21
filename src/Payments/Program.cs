@@ -1,5 +1,5 @@
-using Logging.Extensions;
-using Payments.Services;
+using EMS.Logging.Extensions;
+using EMS.Payments.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

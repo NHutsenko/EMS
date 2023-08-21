@@ -1,21 +1,21 @@
 ﻿using System.Text.Json;
+using EMS.Logging.Constants;
 using Grpc.Core;
 using Grpc.Core.Interceptors;
-using Logging.Constants;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 
-namespace Logging.Interceptors;
+namespace EMS.Logging.Interceptors;
 
-public sealed class ServerLoggingInterceptor : Interceptor
+public sealed class SServiceLoggingInterceptor : Interceptor
 {
-    private readonly ILogger<ServerLoggingInterceptor> _logger;
+    private readonly ILogger<SServiceLoggingInterceptor> _logger;
     private readonly IMemoryCache _memoryCache;
 
-    public ServerLoggingInterceptor(ILoggerFactory loggerFactory, IMemoryCache memoryCache)
+    public SServiceLoggingInterceptor(ILoggerFactory loggerFactory, IMemoryCache memoryCache)
     {
         _memoryCache = memoryCache;
-        _logger = loggerFactory.CreateLogger<ServerLoggingInterceptor>();
+        _logger = loggerFactory.CreateLogger<SServiceLoggingInterceptor>();
     }
 
     public override async Task<TResponse> UnaryServerHandler<TRequest, TResponse>(

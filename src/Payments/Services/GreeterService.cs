@@ -1,6 +1,7 @@
 using Grpc.Core;
+using Payments;
 
-namespace Payments.Services;
+namespace EMS.Payments.Services;
 
 public class GreeterService : Greeter.GreeterBase
 {

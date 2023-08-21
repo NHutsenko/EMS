@@ -1,6 +1,7 @@
 using Grpc.Core;
+using Recruiting;
 
-namespace Recruiting.Services;
+namespace EMS.Recruiting.Services;
 
 public class GreeterService : Greeter.GreeterBase
 {

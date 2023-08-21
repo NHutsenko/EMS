@@ -1,4 +1,4 @@
-namespace Bot;
+namespace EMS.Bot;
 
 public class WeatherForecast
 {

@@ -1,4 +1,4 @@
-﻿namespace Logging.Constants;
+﻿namespace EMS.Logging.Constants;
 
 public static class LogConstants
 {

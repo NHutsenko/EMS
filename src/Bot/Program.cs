@@ -1,4 +1,4 @@
-using Logging.Extensions;
+using EMS.Logging.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
 

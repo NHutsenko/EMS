@@ -1,6 +1,7 @@
 using Grpc.Core;
+using Staff;
 
-namespace Staff.Services;
+namespace EMS.Staff.Services;
 
 public class GreeterService : Greeter.GreeterBase
 {

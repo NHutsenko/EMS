@@ -1,11 +1,11 @@
 ﻿using System.Text.Json;
+using EMS.Logging.Constants;
 using Grpc.Core;
 using Grpc.Core.Interceptors;
-using Logging.Constants;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 
-namespace Logging.Interceptors;
+namespace EMS.Logging.Interceptors;
 
 public sealed class ClientLoggingInterceptor : Interceptor
 {

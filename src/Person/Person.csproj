@@ -23,6 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Common\Exceptions\Exceptions.csproj" />
       <ProjectReference Include="..\Common\Logging\Logging.csproj" />
     </ItemGroup>
 
