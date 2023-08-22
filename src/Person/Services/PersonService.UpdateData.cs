@@ -1,4 +1,3 @@
-using EMS.Person.Context;
 using EMS.Person.Models;
 using EMS.Protos;
 using Exceptions;
@@ -8,15 +7,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EMS.Person.Services;
 
-public sealed class PersonService: Protos.PersonService.PersonServiceBase
+public sealed partial class PersonService
 {
-    private readonly PersonContext _dbContext;
-
-    public PersonService(PersonContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
-
     public override async Task<Empty> UpdateNames(NamesRequest request, ServerCallContext context)
     {
         PersonInfo info = await GetPersonAsync(request.Id, context.CancellationToken);
@@ -54,16 +46,32 @@ public sealed class PersonService: Protos.PersonService.PersonServiceBase
         await _dbContext.SaveChangesAsync(context.CancellationToken);
         return new Empty();
     }
-    
-    private async Task<PersonInfo> GetPersonAsync(int id, CancellationToken cancellationToken)
-    {
-        PersonInfo? info = await _dbContext.People.FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
-        
-        if (info is null)
-        {
-            throw new NotFoundException($"Person with id: {id} not found");
-        }
 
-        return info;
+    public override async Task<Empty> UpdateAddress(AddressRequest request, ServerCallContext context)
+    {
+        Address? address = await _dbContext.Addresses.FirstOrDefaultAsync(e => e.PersonId == request.PersonId, context.CancellationToken);
+        if (address is null)
+        {
+            throw new NotFoundException($"Adders for person with id {request.PersonId} not found");
+        }
+        
+        _dbContext.Entry(address).Property(e => e.City).CurrentValue = request.Address.City;
+        _dbContext.Entry(address).Property(e => e.Street).CurrentValue = request.Address.Street;
+        _dbContext.Entry(address).Property(e => e.Building).CurrentValue = request.Address.Building;
+        _dbContext.Entry(address).Property(e => e.House).CurrentValue = request.Address.House;
+
+        await _dbContext.SaveChangesAsync(context.CancellationToken);
+        
+        return new Empty();
+    }
+
+    public override async Task<Empty> UpdateAboutYourself(AboutRequest request, ServerCallContext context)
+    {
+        PersonInfo person = await GetPersonAsync(request.PersonId, context.CancellationToken);
+
+        _dbContext.Entry(person).Property(e => e.About).CurrentValue = request.Value;
+        await _dbContext.SaveChangesAsync(context.CancellationToken);
+
+        return new Empty();
     }
 }

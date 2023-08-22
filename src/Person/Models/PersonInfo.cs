@@ -1,6 +1,6 @@
 namespace EMS.Person.Models;
 
-public sealed record PersonInfo
+public sealed class PersonInfo
 {
     public int Id { get; init; }
     public required string FirstName { get; init; }
@@ -10,6 +10,6 @@ public sealed record PersonInfo
     public bool Gender { get; init; }
     public string? About { get; init; }
     
-    public ICollection<Contact> Contacts { get; init; } = new HashSet<Contact>();
+    public IEnumerable<Contact> Contacts { get; init; } = new HashSet<Contact>();
     public Address? Address { get; init; }
 }

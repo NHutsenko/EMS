@@ -1,9 +1,8 @@
 namespace EMS.Person.Models;
 
-public sealed record Contact
+public sealed class Contact
 {
     public int Id { get; init; }
-    public int Type { get; init; }
     public required string Value { get; init; }
     
     public int PersonId { get; init; }

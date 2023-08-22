@@ -24,9 +24,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vacations", "src\Vacations\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Recruiting", "src\Recruiting\Recruiting.csproj", "{5DC305C5-72A8-406B-8141-7305FA9810D5}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Person", "Person", "{99AEA01C-7A31-4683-9373-43B3A56E8FDB}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{99AEA01C-7A31-4683-9373-43B3A56E8FDB}"
 	ProjectSection(SolutionItems) = preProject
-		src\Protos\Person\person.proto = src\Protos\Person\person.proto
+		src\Protos\Services\person.proto = src\Protos\Services\person.proto
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exceptions", "src\Common\Exceptions\Exceptions.csproj", "{52943AC2-F012-4CD9-AFFC-C5359881845D}"

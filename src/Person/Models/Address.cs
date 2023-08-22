@@ -1,6 +1,6 @@
 namespace EMS.Person.Models;
 
-public sealed record Address
+public sealed class Address
 {
     public int Id { get; init; }
     public string? City { get; init; }

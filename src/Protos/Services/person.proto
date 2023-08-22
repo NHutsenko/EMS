@@ -9,7 +9,7 @@ option csharp_namespace = "EMS.Protos";
 package person;
 
 service PersonService{
-  rpc Get(google.protobuf.StringValue) returns (PersonData);
+  rpc Get(google.protobuf.Int32Value) returns (PersonData);
   rpc GetAll(google.protobuf.Empty) returns (People);
   rpc Create(PersonData) returns (google.protobuf.Int32Value);
   rpc UpdateNames(NamesRequest) returns (google.protobuf.Empty);
@@ -17,7 +17,6 @@ service PersonService{
   rpc UpdateLogin(LoginRequest) returns (google.protobuf.Empty);
   rpc AddContact(NewContactRequest) returns (google.protobuf.Int32Value);
   rpc UpdateContact(ContactData) returns (google.protobuf.Empty);
-  rpc AddAboutYourself(AboutRequest) returns (google.protobuf.Empty);
   rpc UpdateAboutYourself(AboutRequest) returns (google.protobuf.Empty);
   rpc AddAddress(AddressRequest) returns (google.protobuf.Empty);
   rpc UpdateAddress(AddressRequest) returns (google.protobuf.Empty);
@@ -67,7 +66,7 @@ message AboutRequest {
 
 message AddressRequest {
   int32 person_id = 1;
-  AddressData value = 2;
+  AddressData address = 2;
 }
 
 message AddressData {
@@ -79,7 +78,7 @@ message AddressData {
 
 message NewContactRequest {
   int32 person_id = 1;
-  ContactData data = 2;
+  ContactData contact = 2;
 }
 
 message ContactData {
