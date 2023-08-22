@@ -3,9 +3,6 @@ syntax = "proto3";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
 import "google/protobuf/empty.proto";
-import "Person/info.proto";
-import "Person/contact.proto";
-import "Person/additional.proto";
 
 option csharp_namespace = "EMS.Protos";
 
@@ -15,6 +12,15 @@ service PersonService{
   rpc Get(google.protobuf.StringValue) returns (PersonData);
   rpc GetAll(google.protobuf.Empty) returns (People);
   rpc Create(PersonData) returns (google.protobuf.Int32Value);
+  rpc UpdateNames(NamesRequest) returns (google.protobuf.Empty);
+  rpc UpdateGender(GenderRequest) returns (google.protobuf.Empty);
+  rpc UpdateLogin(LoginRequest) returns (google.protobuf.Empty);
+  rpc AddContact(NewContactRequest) returns (google.protobuf.Int32Value);
+  rpc UpdateContact(ContactData) returns (google.protobuf.Empty);
+  rpc AddAboutYourself(AboutRequest) returns (google.protobuf.Empty);
+  rpc UpdateAboutYourself(AboutRequest) returns (google.protobuf.Empty);
+  rpc AddAddress(AddressRequest) returns (google.protobuf.Empty);
+  rpc UpdateAddress(AddressRequest) returns (google.protobuf.Empty);
 }
 
 message People {
@@ -23,8 +29,67 @@ message People {
 
 message PersonData {
   int32 id = 1;
-  person_info.GeneralInfo general = 2;
+  GeneralInfo general = 2;
   google.protobuf.StringValue comment = 3;
-  person_additional_data.AddressData address = 4;
-  repeated person_contact.ContactData contacts = 5;
+  AddressData address = 4;
+  repeated ContactData contacts = 5;
+}
+
+message NamesRequest {
+  int32 id = 1;
+  google.protobuf.StringValue first_name = 2;
+  google.protobuf.StringValue last_name = 3;
+}
+
+message LoginRequest {
+  int32 id = 1;
+  google.protobuf.StringValue value = 2;
+}
+
+message GenderRequest {
+  int32 id = 1;
+  bool value = 2;
+}
+
+message GeneralInfo {
+  string first_name = 1;
+  string last_name = 2;
+  google.protobuf.Timestamp born_on = 3;
+  string login = 4;
+  bool gender = 5;
+  google.protobuf.StringValue about = 6;
+}
+
+message AboutRequest {
+  int32 person_id = 1;
+  string value = 2;
+}
+
+message AddressRequest {
+  int32 person_id = 1;
+  AddressData value = 2;
+}
+
+message AddressData {
+  string city = 1;
+  string street = 2;
+  string building = 3;
+  string house = 4;
+}
+
+message NewContactRequest {
+  int32 person_id = 1;
+  ContactData data = 2;
+}
+
+message ContactData {
+  enum ContactType {
+    UNDEFINED = 0;
+    EMAIL = 1;
+    PHONE = 2;
+    SOCIAL_NETWORK_LINK = 3;
+  }
+  int32 id = 1;
+  ContactType type = 2;
+  string value = 3;
 }

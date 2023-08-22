@@ -28,14 +28,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Protobuf Include="../Protos/Person/additional.proto" GrpcServices="Server" />
-        <Protobuf Include="../Protos/Person/contact.proto" GrpcServices="Server" />
-        <Protobuf Include="../Protos/Person/info.proto" GrpcServices="Server" />
         <Protobuf Include="../Protos/Person/person.proto" GrpcServices="Server" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Services" />
     </ItemGroup>
 
 </Project>

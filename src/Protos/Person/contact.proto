@@ -8,23 +8,6 @@ option csharp_namespace = "EMS.Protos";
 package person_contact;
 
 service PersonContactService {
-  rpc Add(NewContactRequest) returns (google.protobuf.Int32Value);
-  rpc Update(ContactData) returns (google.protobuf.Empty);
+  
 }
 
-message NewContactRequest {
-  int32 person_id = 1;
-  ContactData data = 2;
-}
-
-message ContactData {
-  enum ContactType {
-    UNDEFINED = 0;
-    EMAIL = 1;
-    PHONE = 2;
-    SOCIAL_NETWORK_LINK = 3;
-  }
-  int32 id = 1;
-  ContactType type = 2;
-  string value = 3;
-}

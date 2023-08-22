@@ -8,25 +8,6 @@ option csharp_namespace = "EMS.Protos.Person";
 package person_additional_data;
 
 service PersonAdditionalDataService {
-  rpc AddAboutYourself(AboutRequest) returns (google.protobuf.Empty);
-  rpc UpdateAboutYourself(AboutRequest) returns (google.protobuf.Empty);
-  rpc AddAddress(AddressRequest) returns (google.protobuf.Empty);
-  rpc UpdateAddress(AddressRequest) returns (google.protobuf.Empty);
+  
 }
 
-message AboutRequest {
-  int32 person_id = 1;
-  string value = 2;
-}
-
-message AddressRequest {
-  int32 person_id = 1;
-  AddressData value = 2;
-}
-
-message AddressData {
-  string city = 1;
-  string street = 2;
-  string building = 3;
-  string house = 4;
-}
