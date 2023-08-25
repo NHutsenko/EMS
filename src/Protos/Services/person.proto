@@ -8,7 +8,7 @@ option csharp_namespace = "EMS.Protos";
 
 package person;
 
-service PersonService{
+service PersonService {
   rpc Get(google.protobuf.Int32Value) returns (PersonData);
   rpc GetAll(google.protobuf.Empty) returns (People);
   rpc Create(PersonData) returns (google.protobuf.Int32Value);
