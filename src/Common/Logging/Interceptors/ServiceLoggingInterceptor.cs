@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using EMS.Logging.Constants;
+using Exceptions;
 using Grpc.Core;
 using Grpc.Core.Interceptors;
 using Microsoft.Extensions.Caching.Memory;
@@ -34,7 +35,7 @@ public sealed class SServiceLoggingInterceptor : Interceptor
             catch(Exception ex)
             {
                 _logger.LogError(ex, "An error occured while calling {method}", context.Method);
-                throw;
+                throw ex.ToRpcException();
             }
         }
     }

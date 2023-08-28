@@ -13,4 +13,8 @@
         <PackageReference Include="Grpc.AspNetCore" Version="2.55.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Exceptions\Exceptions.csproj" />
+    </ItemGroup>
+
 </Project>

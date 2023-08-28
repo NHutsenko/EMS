@@ -3,6 +3,7 @@ syntax = "proto3";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
 import "google/protobuf/empty.proto";
+import "CustomTypes/decimal.proto";
 
 option csharp_namespace = "EMS.Protos";
 
@@ -11,8 +12,7 @@ package position;
 service PositionService {
   rpc GetAll(google.protobuf.Empty) returns (PositionsReply);
   rpc Create(PositionRequest) returns (google.protobuf.Int32Value);
-  rpc Edit(ExistingPositionRequest) returns (google.protobuf.Empty);
-  rpc UpdateGrade(GradeRequest) returns (google.protobuf.Int32Value);
+  rpc UpdateGradeSalary(NewGradeSalaryRequest) returns (google.protobuf.Empty);
 }
 
 message PositionsReply {
@@ -26,28 +26,18 @@ message Position {
 }
 
 message Grade {
-  int32 id = 1;
-  int32 grade = 2;
-  repeated GradeHistory history = 3;
-}
-
-message GradeHistory {
-  int32 id = 1;
-  float value = 2;
-  google.protobuf.Timestamp createdOn = 3;
-}
-
-message ExistingPositionRequest {
-  int32 id = 1;
-  PositionRequest data = 2;
+  int32 value = 1;
+  decimal.DecimalValue salary = 2;
+  float actual_history_id = 3;
 }
 
 message PositionRequest {
   google.protobuf.StringValue name = 1;
-  repeated GradeRequest grades = 2;
+  repeated Grade grades = 2;
 }
 
-message GradeRequest {
-  int32 grade = 1;
-  float value = 2;
+message NewGradeSalaryRequest {
+  int32 position_id = 1;
+  int32 grade = 2;
+  decimal.DecimalValue salary = 3;
 }

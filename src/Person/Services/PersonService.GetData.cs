@@ -7,7 +7,6 @@ using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
-using Enum = System.Enum;
 
 namespace EMS.Person.Services;
 
