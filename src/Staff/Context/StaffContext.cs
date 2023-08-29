@@ -9,6 +9,9 @@ public sealed class StaffContext: DbContext
     public DbSet<Grade> Grades { get; init; }
     public DbSet<GradeHistory> GradeHistory { get; init; }
     public DbSet<Position> Positions { get; init; }
+    
+    public DbSet<Team> Teams { get; init; }
+    public DbSet<Member> Members { get; init; }
 
     public StaffContext(DbContextOptions<StaffContext> options) : base(options) {}
 
@@ -17,5 +20,8 @@ public sealed class StaffContext: DbContext
         modelBuilder.ApplyConfiguration(new GradeConfiguration());
         modelBuilder.ApplyConfiguration(new GradeHistoryConfiguration());
         modelBuilder.ApplyConfiguration(new PositionConfiguration());
+
+        modelBuilder.ApplyConfiguration(new TeamConfiguration());
+        modelBuilder.ApplyConfiguration(new MemberConfiguration());
     }
 }

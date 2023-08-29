@@ -10,8 +10,9 @@ public static class RpcExceptionMapper
     {
         return ex switch
         {
-            not null when ex.GetType() == typeof(AlreadyExistsException) => new RpcException(new Status(StatusCode.AlreadyExists, ex.Message)),
-            not null when ex.GetType() == typeof(NotFoundException) => new RpcException(new Status(StatusCode.NotFound, ex.Message)),
+            not null when ex is AlreadyExistsException => new RpcException(new Status(StatusCode.AlreadyExists, ex.Message)),
+            not null when ex is NotFoundException => new RpcException(new Status(StatusCode.NotFound, ex.Message)),
+            not null when ex is BadRequestException => new RpcException(new Status(StatusCode.InvalidArgument, ex.Message)),
             _ => new RpcException(new Status(StatusCode.Internal, ex.Message))
         };
     }

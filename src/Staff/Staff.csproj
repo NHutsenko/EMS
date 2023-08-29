@@ -29,6 +29,8 @@
     <ItemGroup>
         <Protobuf Include="../Protos/CustomTypes/decimal.proto" />
         <Protobuf Include="../Protos/Services/position.proto" Link="Protos/position.proto" GrpcServices="Server" />
+        <Protobuf Include="../Protos/Services/team.proto" Link="Protos/team.proto" GrpcServices="Server" />
+        <Protobuf Include="../Protos/Services/person.proto" Link="Protos/person.proto" GrpcServices="Client" />
     </ItemGroup>
 
 </Project>

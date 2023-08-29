@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+
+option csharp_namespace = "EMS.Protos";
+
+package team;
+
+service TeamService {
+  rpc GetAll(google.protobuf.Empty) returns (TeamsReply);
+  rpc Create(google.protobuf.StringValue) returns (google.protobuf.Int32Value);
+  rpc UpdateName(NewNameRequest) returns (google.protobuf.Empty);
+  rpc AddMember(NewMemberRequest) returns (google.protobuf.Empty);
+  rpc SetEndWork(EndWorkRequest) returns (google.protobuf.Empty);
+  rpc UpdateEmployment(EmploymentRequest) returns (google.protobuf.Empty);
+}
+
+message TeamsReply {
+  repeated Team data = 1;
+}
+
+message Team {
+  int32 id = 1;
+  string name = 2;
+  repeated Member members = 3;
+}
+
+message Member {
+  int32 id = 1;
+  google.protobuf.Timestamp start_work = 2;
+  google.protobuf.Timestamp end_work = 3;
+  int32 employment = 4;
+}
+
+message NewNameRequest {
+  int32 team_id = 1;
+  string name = 2;
+}
+
+message NewMemberRequest {
+  int32 team_id = 1;
+  int32 member_id = 2;
+  google.protobuf.Timestamp start_work = 3;
+  int32 employment = 4;
+}
+
+message EndWorkRequest {
+  int32 member_id = 1;
+  int32 team_id = 2;
+  google.protobuf.Timestamp date = 3;
+}
+
+message EmploymentRequest {
+  int32 team_id = 1;
+  int32 member_id = 2;
+  int32 employment = 3;
+}
+

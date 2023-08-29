@@ -28,6 +28,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{99
 	ProjectSection(SolutionItems) = preProject
 		src\Protos\Services\person.proto = src\Protos\Services\person.proto
 		src\Protos\Services\position.proto = src\Protos\Services\position.proto
+		src\Protos\Services\team.proto = src\Protos\Services\team.proto
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exceptions", "src\Common\Exceptions\Exceptions.csproj", "{52943AC2-F012-4CD9-AFFC-C5359881845D}"
