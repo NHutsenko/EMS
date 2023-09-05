@@ -4,7 +4,7 @@
         <TargetFramework>net7.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <RootNamespace>EMS.Staff</RootNamespace>
+        <RootNamespace>EMS.Structure</RootNamespace>
         <Protobuf_ProtoRoot>../Protos</Protobuf_ProtoRoot>
     </PropertyGroup>
 

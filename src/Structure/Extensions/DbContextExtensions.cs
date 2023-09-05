@@ -9,7 +9,7 @@ public static class DbContextExtensions
 {
     public static IServiceCollection AddDbContext(this IServiceCollection services, IConfiguration configuration)
     {
-        string? dbConnectionString = configuration.GetConnectionString("Staff");
+        string? dbConnectionString = configuration.GetConnectionString("Structure");
         ArgumentException.ThrowIfNullOrEmpty(dbConnectionString);
 
         services.AddDbContext<StaffContext>(opt => opt.UseNpgsql(dbConnectionString));

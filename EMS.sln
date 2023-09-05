@@ -16,7 +16,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bot", "src\Bot\Bot.csproj",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Person", "src\Person\Person.csproj", "{E9355F7A-8ED9-45B1-8E87-BE9A4F8358F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Staff", "src\Staff\Staff.csproj", "{03A32613-E9D2-4ED5-BA2B-8440BDE0341E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Structure", "src\Structure\Structure.csproj", "{03A32613-E9D2-4ED5-BA2B-8440BDE0341E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments", "src\Payments\Payments.csproj", "{C5BE68EA-0304-4BAE-983F-C6B15067235B}"
 EndProject
