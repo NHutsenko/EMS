@@ -1,7 +1,6 @@
 using EMS.Logging.Extensions;
-using EMS.Staff.Extensions;
-using EMS.Staff.Models;
-using EMS.Staff.Services;
+using EMS.Structure.Extensions;
+using EMS.Structure.Services;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -25,4 +24,4 @@ app.MapGet("/", () => "Communication with gRPC endpoints must be made through a 
 app.MapGrpcService<PositionService>();
 app.MapGrpcService<TeamService>();
 
-app.Run();
+await app.RunAsync();

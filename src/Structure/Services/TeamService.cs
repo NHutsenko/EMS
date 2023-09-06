@@ -1,17 +1,17 @@
 using EMS.Protos;
-using EMS.Staff.Context;
+using EMS.Structure.Context;
 using Exceptions;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
 
-namespace EMS.Staff.Services;
+namespace EMS.Structure.Services;
 
 public sealed class TeamService : Protos.TeamService.TeamServiceBase
 {
-    private readonly StaffContext _dbContext;
+    private readonly StructureContext _dbContext;
 
-    public TeamService(StaffContext dbContext)
+    public TeamService(StructureContext dbContext)
     {
         _dbContext = dbContext;
     }

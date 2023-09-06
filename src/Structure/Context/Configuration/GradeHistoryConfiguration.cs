@@ -1,8 +1,8 @@
-using EMS.Staff.Models;
+using EMS.Structure.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace EMS.Staff.Context.Configuration;
+namespace EMS.Structure.Context.Configuration;
 
 public class GradeHistoryConfiguration: IEntityTypeConfiguration<GradeHistory>
 {

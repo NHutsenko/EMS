@@ -1,19 +1,19 @@
 using EMS.Protos;
-using EMS.Staff.Context;
+using EMS.Structure.Context;
 using Exceptions;
 using Google.Protobuf.Collections;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
-using GradeHistory = EMS.Staff.Models.GradeHistory;
+using GradeHistory = EMS.Structure.Models.GradeHistory;
 
-namespace EMS.Staff.Services;
+namespace EMS.Structure.Services;
 
 public sealed class PositionService : Protos.PositionService.PositionServiceBase
 {
-    private readonly StaffContext _dbContext;
+    private readonly StructureContext _dbContext;
 
-    public PositionService(StaffContext dbContext)
+    public PositionService(StructureContext dbContext)
     {
         _dbContext = dbContext;
     }

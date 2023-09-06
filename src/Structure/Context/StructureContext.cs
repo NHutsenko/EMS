@@ -1,10 +1,10 @@
-using EMS.Staff.Context.Configuration;
-using EMS.Staff.Models;
+using EMS.Structure.Context.Configuration;
+using EMS.Structure.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace EMS.Staff.Context;
+namespace EMS.Structure.Context;
 
-public sealed class StaffContext: DbContext
+public sealed class StructureContext: DbContext
 {
     public DbSet<Grade> Grades { get; init; }
     public DbSet<GradeHistory> GradeHistory { get; init; }
@@ -13,7 +13,7 @@ public sealed class StaffContext: DbContext
     public DbSet<Team> Teams { get; init; }
     public DbSet<Member> Members { get; init; }
 
-    public StaffContext(DbContextOptions<StaffContext> options) : base(options) {}
+    public StructureContext(DbContextOptions<StructureContext> options) : base(options) {}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -1,4 +1,4 @@
-namespace EMS.Staff.Models;
+namespace EMS.Structure.Models;
 
 public sealed class GradeHistory
 {

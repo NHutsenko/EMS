@@ -1,19 +1,18 @@
 using System.Diagnostics.CodeAnalysis;
-using EMS.Structure.Context;
-using EMS.Structure.Models;
+using EMS.Staff.Context;
 using Microsoft.EntityFrameworkCore;
 
-namespace EMS.Structure.Extensions;
+namespace EMS.Staff.Extensions;
 
 [ExcludeFromCodeCoverage]
 public static class DbContextExtensions
 {
     public static IServiceCollection AddDbContext(this IServiceCollection services, IConfiguration configuration)
     {
-        string? dbConnectionString = configuration.GetConnectionString("Structure");
+        string? dbConnectionString = configuration.GetConnectionString("Staff");
         ArgumentException.ThrowIfNullOrEmpty(dbConnectionString);
 
-        services.AddDbContext<StructureContext>(opt => opt.UseNpgsql(dbConnectionString));
+        services.AddDbContext<StaffContext>(opt => opt.UseNpgsql(dbConnectionString));
         
         return services;
     }

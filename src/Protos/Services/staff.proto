@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+
+option csharp_namespace = "EMS.Protos";
+
+package staff;
+
+service StaffService {
+  rpc GetByPerson(google.protobuf.Int32Value) returns (StaffData);
+  rpc GetByManager(google.protobuf.Int32Value) returns (StaffData);
+  rpc GetAll(google.protobuf.Empty) returns (StaffData);
+  rpc Create(NewStaff) returns (google.protobuf.Int32Value);
+  rpc CreateHistory(NewHistory) returns (google.protobuf.Empty);
+  rpc SetDate(NewDate) returns (google.protobuf.Empty);
+  rpc SetMentor(NewMentor) returns (google.protobuf.Empty);
+  rpc SetEmployment(NewEmployment) returns (google.protobuf.Empty);
+  rpc SetManager(NewManager) returns (google.protobuf.Empty);
+  rpc SetPosition(NewPosition) returns (google.protobuf.Empty);
+}
+
+message StaffData {
+  repeated Staff data = 1;
+}
+
+message Staff {
+  int32 id = 1;
+  int32 manager = 2;
+  int32 position = 3;
+  StaffHistory history = 4;
+}
+
+message StaffHistory {
+  int32 person = 1;
+  google.protobuf.Int32Value mentor = 2;
+  google.protobuf.Timestamp created_on = 3;
+  int32 employment = 4;
+}
+
+message NewStaff {
+  int32 manager = 1;
+  int32 position = 2;
+}
+
+message NewHistory {
+  int32 staff_id = 1;
+  StaffHistory data = 2;
+}
+
+message NewDate {
+  int32 staff_id = 1;
+  google.protobuf.Timestamp date = 2;
+}
+
+message NewMentor {
+  int32 staff_id = 1;
+  google.protobuf.Int32Value mentor = 2;
+}
+
+message NewEmployment {
+  int32 staffId = 1;
+  int32 employment = 2;
+}
+
+message NewManager {
+  int32 staff_id = 1;
+  int32 manager = 2;
+}
+
+message NewPosition {
+  int32 staff_id = 1;
+  int32 position = 2;
+}
