@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using EMS.Exceptions;
 using Grpc.Core;
 
 namespace Exceptions;

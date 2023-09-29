@@ -4,17 +4,21 @@
         <TargetFramework>net7.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>EMS.Logging</RootNamespace>
+        <RootNamespace>EMS.Extensions</RootNamespace>
     </PropertyGroup>
-
+    
     <ItemGroup>
         <FrameworkReference Include="Microsoft.AspNetCore.App" />
         <PackageReference Include="Grpc.AspNetCore.Server" Version="2.57.0" />
         <PackageReference Include="Grpc.AspNetCore" Version="2.57.0" />
     </ItemGroup>
-
+    
     <ItemGroup>
-      <ProjectReference Include="..\Exceptions\Exceptions.csproj" />
+      <ProjectReference Include="..\Logging\Logging.csproj" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\Logging\Logging.csproj" />
     </ItemGroup>
 
 </Project>

@@ -1,3 +1,4 @@
+using EMS.Exceptions;
 using EMS.Person.Models;
 using EMS.Protos;
 using Exceptions;
@@ -61,7 +62,7 @@ public sealed partial class PersonService
             Gender = request.General.Gender,
             BornOn = DateTime.SpecifyKind(request.General.BornOn.ToDateTime(), DateTimeKind.Utc),
             About = request.General.About,
-            Address = new Address
+            Address = request.Address == null ? null : new Address
             {
                 City = request.Address.City,
                 Street = request.Address.Street,

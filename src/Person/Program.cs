@@ -1,15 +1,11 @@
+using EMS.Extensions;
 using EMS.Logging.Extensions;
 using EMS.Person.Extensions;
 using EMS.Person.Services;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddGrpc(cfg =>
-{
-    cfg.EnableDetailedErrors = true;
-    cfg.AddServiceLogging();
-    cfg.MaxReceiveMessageSize = null;
-});
+builder.Services.AddGrpcServer();
 
 builder.Services.AddDbContext(builder.Configuration);
 

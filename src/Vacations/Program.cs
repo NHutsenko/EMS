@@ -1,4 +1,4 @@
-using EMS.Logging.Extensions;
+using EMS.Extensions;
 using EMS.Vacations.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,12 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // For instructions on how to configure Kestrel and gRPC clients on macOS, visit https://go.microsoft.com/fwlink/?linkid=2099682
 
 // Add services to the container.
-builder.Services.AddGrpc(cfg =>
-{
-    cfg.EnableDetailedErrors = true;
-    cfg.AddServiceLogging();
-    cfg.MaxReceiveMessageSize = null;
-});
+builder.Services.AddGrpcServer();
 
 var app = builder.Build();
 
