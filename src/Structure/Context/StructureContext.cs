@@ -23,5 +23,30 @@ public sealed class StructureContext: DbContext
 
         modelBuilder.ApplyConfiguration(new TeamConfiguration());
         modelBuilder.ApplyConfiguration(new MemberConfiguration());
+
+        Position endWorkPosition = new Position
+        {
+            Id = -1,
+            Name = "End Work",
+            Grades = new List<Grade>
+            {
+                new()
+                {
+                    Id = -1,
+                    Value = 0,
+                    History = new List<GradeHistory>
+                    {
+                        new()
+                        {
+                            Id = -1,
+                            CreatedOn = DateTime.UtcNow,
+                            Value = 0
+                        }
+                    }
+                }
+            }
+        };
+        modelBuilder.Entity<Position>()
+            .HasData(endWorkPosition);
     }
 }
