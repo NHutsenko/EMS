@@ -2,12 +2,14 @@
 using Grpc.Core;
 using Grpc.Core.Testing;
 using Grpc.Core.Utils;
+using Grpc.Net.Client;
 
 namespace EMS.EmploymentHistory.Tests.Mocks;
 
 [ExcludeFromCodeCoverage]
-internal static class CallContextMock
+internal static class GrpcCoreMock
 {
+    public static GrpcChannel Channel { get; } = GrpcChannel.ForAddress("http://test.loc");
     public static ServerCallContext GetCallContext(string methodName)
     {
         return TestServerCallContext.Create(methodName,
@@ -21,5 +23,10 @@ internal static class CallContextMock
             _ => TaskUtils.CompletedTask,
             () => new WriteOptions(), _ => { }
         );
+    }
+    
+    public static AsyncUnaryCall<T> GetAsyncUnaryCallResponse<T>(T responseData) where T : class
+    {
+        return new AsyncUnaryCall<T>(Task.FromResult(responseData), null, null, null, null);
     }
 }

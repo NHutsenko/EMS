@@ -1,6 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
 using EMS.Structure.Context;
-using EMS.Structure.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace EMS.Structure.Extensions;

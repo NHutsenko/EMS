@@ -1,7 +1,6 @@
 using EMS.Exceptions;
 using EMS.Person.Models;
 using EMS.Protos;
-using Exceptions;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
