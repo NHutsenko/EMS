@@ -11,7 +11,7 @@ package employment_history;
 service EmploymentHistoryService {
   rpc CreateEmployment(NewEmploymentHistory) returns (google.protobuf.Int32Value);
   rpc UpdateEmployment(EmploymentHistoryData) returns (google.protobuf.Empty);
-  rpc GetPersonEmployment(google.protobuf.Int32Value) returns (PersonEmploymentHistoryReply);
+  rpc GetPersonEmployment(google.protobuf.Int32Value) returns (stream EmploymentHistoryData);
 }
 
 message NewEmploymentHistory {
@@ -28,8 +28,4 @@ message EmploymentHistoryData {
   int32 manager_id = 3;
   google.protobuf.Timestamp startWork = 4;
   int32 employment = 5;
-}
-
-message PersonEmploymentHistoryReply {
-  repeated EmploymentHistoryData data = 1;
 }

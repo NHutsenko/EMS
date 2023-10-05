@@ -43,6 +43,14 @@ internal static class GrpcCoreMock
         return mock;
     }
 
+    public static IServerStreamWriter<T> GetTestServerStreamWriter<T>()
+    {
+        IServerStreamWriter<T> writer = Substitute.For<IServerStreamWriter<T>>();
+
+        writer.WriteAsync(Arg.Any<T>()).Returns(Task.CompletedTask);
+        return writer;
+    }
+
     private sealed class TestAsyncStreamReader<T> : IAsyncStreamReader<T>
     {
         private readonly IEnumerator<T> _enumerator;
