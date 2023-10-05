@@ -5,6 +5,7 @@ using EMS.Staff.Models;
 using Exceptions;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
+using Grpc.Core.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace EMS.Staff.Services;
@@ -45,7 +46,7 @@ public sealed class StaffService : Protos.StaffService.StaffServiceBase
                         CreatedOn = DateTime.SpecifyKind(e.History.CreatedOn, DateTimeKind.Utc).ToTimestamp()
                     }
             });
-        await responseStream.WriteResponseAsync(data, context.CancellationToken);
+        await responseStream.WriteAllAsync(data);
     }
 
     public override async Task GetByManager(Int32Value request, IServerStreamWriter<Protos.Staff> responseStream, ServerCallContext context)
@@ -75,7 +76,7 @@ public sealed class StaffService : Protos.StaffService.StaffServiceBase
                         CreatedOn = DateTime.SpecifyKind(e.History.CreatedOn, DateTimeKind.Utc).ToTimestamp()
                     }
             });
-        await responseStream.WriteResponseAsync(data, context.CancellationToken);
+        await responseStream.WriteAllAsync(data);
     }
 
     public override async Task GetAll(Empty request, IServerStreamWriter<Protos.Staff> responseStream, ServerCallContext context)
@@ -100,7 +101,7 @@ public sealed class StaffService : Protos.StaffService.StaffServiceBase
                     }
             });
 
-        await responseStream.WriteResponseAsync(data, context.CancellationToken);
+        await responseStream.WriteAllAsync(data);
     }
 
     public override async Task<Int32Value> Create(NewStaff request, ServerCallContext context)

@@ -25,24 +25,4 @@ public static class GrpcServicesCollectionExtensions
         builder.ConfigureChannel(cfg => cfg.MaxReceiveMessageSize = null);
         return builder;
     }
-    
-    public static async Task<IEnumerable<T>> ToEnumerableAsync<T>(this AsyncServerStreamingCall<T> call, CancellationToken cancellationToken) where T: class
-    {
-        IAsyncEnumerable<T> responseData = call.ResponseStream.ReadAllAsync(cancellationToken);
-        IEnumerable<T> data = new List<T>();
-        await foreach (T item in responseData)
-        {
-            _ = data.Append(item);
-        }
-
-        return data;
-    }
-
-    public static async Task WriteResponseAsync<T>(this IServerStreamWriter<T> stream, IEnumerable<T> data, CancellationToken cancellationToken) where T : class
-    {
-        foreach (var item in data)
-        {
-            await stream.WriteAsync(item, cancellationToken);
-        }
-    }
 }

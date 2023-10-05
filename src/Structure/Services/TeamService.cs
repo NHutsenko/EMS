@@ -5,6 +5,7 @@ using EMS.Structure.Context;
 using Exceptions;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
+using Grpc.Core.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace EMS.Structure.Services;
@@ -40,7 +41,7 @@ public sealed class TeamService : Protos.TeamService.TeamServiceBase
                 }
             });
 
-        await responseStream.WriteResponseAsync(data, context.CancellationToken);
+        await responseStream.WriteAllAsync(data);
     }
 
     public override async Task<Int32Value> Create(StringValue request, ServerCallContext context)

@@ -5,6 +5,7 @@ using EMS.Protos;
 using Exceptions;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
+using Grpc.Core.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 
@@ -39,11 +40,8 @@ public sealed partial class PersonService : Protos.PersonService.PersonServiceBa
         IEnumerable<PersonData> data = (await GetPeopleData(filtered)
                 .ToListAsync(context.CancellationToken))
             .Select(e => e.MapToProto());
-        
-        foreach (PersonData item in data)
-        {
-            await responseStream.WriteAsync(item);
-        }
+
+        await responseStream.WriteAllAsync(data);
     }
 
     private async Task<PersonInfo> GetPersonAsync(int id, CancellationToken cancellationToken)

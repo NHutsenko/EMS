@@ -11,6 +11,7 @@ namespace EMS.EmploymentHistory.Tests.Mocks;
 internal static class GrpcCoreMock
 {
     public static GrpcChannel Channel { get; } = GrpcChannel.ForAddress("http://test.loc");
+
     public static ServerCallContext GetCallContext(string methodName)
     {
         return TestServerCallContext.Create(methodName,
@@ -25,7 +26,7 @@ internal static class GrpcCoreMock
             () => new WriteOptions(), _ => { }
         );
     }
-    
+
     public static AsyncUnaryCall<T> GetAsyncUnaryCallResponse<T>(T responseData) where T : class
     {
         return new AsyncUnaryCall<T>(Task.FromResult(responseData), null, null, null, null);
@@ -33,24 +34,27 @@ internal static class GrpcCoreMock
 
     public static AsyncServerStreamingCall<T> GetStreamResponse<T>(IEnumerable<T> response) where T : class
     {
-        AsyncServerStreamingCall<T>? mock = Substitute.For<AsyncServerStreamingCall<T>>();
-        IAsyncStreamReader<T> reader = new MyAsyncStreamReader<T>(response);
-        mock.ResponseStream.Returns(reader);
+        IAsyncStreamReader<T> streamReader = new TestAsyncStreamReader<T>(response);
+        AsyncServerStreamingCall<T>? mock = new AsyncServerStreamingCall<T>(streamReader,
+            Task.FromResult(new Metadata()),
+            () => new Status(StatusCode.OK, string.Empty),
+            () => null,
+            () => { });
         return mock;
     }
-    
-    private sealed class MyAsyncStreamReader<T> : IAsyncStreamReader<T>
-    {
-        private readonly IEnumerator<T> enumerator;
 
-        public MyAsyncStreamReader(IEnumerable<T> results)
+    private sealed class TestAsyncStreamReader<T> : IAsyncStreamReader<T>
+    {
+        private readonly IEnumerator<T> _enumerator;
+
+        public TestAsyncStreamReader(IEnumerable<T> results)
         {
-            enumerator = results.GetEnumerator();
+            _enumerator = results.GetEnumerator();
         }
 
-        public T Current => enumerator.Current;
+        public T Current => _enumerator.Current;
 
         public Task<bool> MoveNext(CancellationToken cancellationToken) =>
-            Task.Run(() => enumerator.MoveNext());
+            Task.Run(() => _enumerator.MoveNext());
     }
 }

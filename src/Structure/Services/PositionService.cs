@@ -6,6 +6,7 @@ using Exceptions;
 using Google.Protobuf.Collections;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
+using Grpc.Core.Utils;
 using Microsoft.EntityFrameworkCore;
 using GradeHistory = EMS.Structure.Models.GradeHistory;
 
@@ -42,7 +43,7 @@ public sealed class PositionService : Protos.PositionService.PositionServiceBase
                 }
             });
 
-        await responseStream.WriteResponseAsync(data, context.CancellationToken);
+        await responseStream.WriteAllAsync(data);
     }
 
     public override async Task<Int32Value> Create(PositionRequest request, ServerCallContext context)
