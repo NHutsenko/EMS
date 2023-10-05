@@ -1,4 +1,5 @@
 using EMS.Exceptions;
+using EMS.Extensions;
 using EMS.Protos;
 using EMS.Structure.Context;
 using Exceptions;
@@ -19,7 +20,7 @@ public sealed class PositionService : Protos.PositionService.PositionServiceBase
         _dbContext = dbContext;
     }
 
-    public override async Task<PositionsReply> GetAll(Empty request, ServerCallContext context)
+    public override async Task GetAll(Empty request, IServerStreamWriter<Position> responseStream, ServerCallContext context)
     {
         IEnumerable<Position> data = (await _dbContext.Positions
                 .Include(e => e.Grades)
@@ -41,11 +42,7 @@ public sealed class PositionService : Protos.PositionService.PositionServiceBase
                 }
             });
 
-        PositionsReply reply = new()
-        {
-            Data = { data }
-        };
-        return reply;
+        await responseStream.WriteResponseAsync(data, context.CancellationToken);
     }
 
     public override async Task<Int32Value> Create(PositionRequest request, ServerCallContext context)

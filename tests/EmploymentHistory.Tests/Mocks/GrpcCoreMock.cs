@@ -3,6 +3,7 @@ using Grpc.Core;
 using Grpc.Core.Testing;
 using Grpc.Core.Utils;
 using Grpc.Net.Client;
+using NSubstitute;
 
 namespace EMS.EmploymentHistory.Tests.Mocks;
 
@@ -28,5 +29,28 @@ internal static class GrpcCoreMock
     public static AsyncUnaryCall<T> GetAsyncUnaryCallResponse<T>(T responseData) where T : class
     {
         return new AsyncUnaryCall<T>(Task.FromResult(responseData), null, null, null, null);
+    }
+
+    public static AsyncServerStreamingCall<T> GetStreamResponse<T>(IEnumerable<T> response) where T : class
+    {
+        AsyncServerStreamingCall<T>? mock = Substitute.For<AsyncServerStreamingCall<T>>();
+        IAsyncStreamReader<T> reader = new MyAsyncStreamReader<T>(response);
+        mock.ResponseStream.Returns(reader);
+        return mock;
+    }
+    
+    private sealed class MyAsyncStreamReader<T> : IAsyncStreamReader<T>
+    {
+        private readonly IEnumerator<T> enumerator;
+
+        public MyAsyncStreamReader(IEnumerable<T> results)
+        {
+            enumerator = results.GetEnumerator();
+        }
+
+        public T Current => enumerator.Current;
+
+        public Task<bool> MoveNext(CancellationToken cancellationToken) =>
+            Task.Run(() => enumerator.MoveNext());
     }
 }

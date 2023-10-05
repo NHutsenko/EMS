@@ -10,13 +10,9 @@ option csharp_namespace = "EMS.Protos";
 package position;
 
 service PositionService {
-  rpc GetAll(google.protobuf.Empty) returns (PositionsReply);
+  rpc GetAll(google.protobuf.Empty) returns (stream Position);
   rpc Create(PositionRequest) returns (google.protobuf.Int32Value);
   rpc UpdateGradeSalary(NewGradeSalaryRequest) returns (google.protobuf.Empty);
-}
-
-message PositionsReply {
-  repeated Position data = 2; 
 }
 
 message Position {

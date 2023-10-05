@@ -9,9 +9,9 @@ option csharp_namespace = "EMS.Protos";
 package staff;
 
 service StaffService {
-  rpc GetByPerson(google.protobuf.Int32Value) returns (StaffData);
-  rpc GetByManager(google.protobuf.Int32Value) returns (StaffData);
-  rpc GetAll(google.protobuf.Empty) returns (StaffData);
+  rpc GetByPerson(google.protobuf.Int32Value) returns (stream Staff);
+  rpc GetByManager(google.protobuf.Int32Value) returns (stream Staff);
+  rpc GetAll(google.protobuf.Empty) returns (stream Staff);
   rpc Create(NewStaff) returns (google.protobuf.Int32Value);
   rpc CreateHistory(NewHistory) returns (google.protobuf.Empty);
   rpc SetDate(NewDate) returns (google.protobuf.Empty);
@@ -19,10 +19,6 @@ service StaffService {
   rpc SetEmployment(NewEmployment) returns (google.protobuf.Empty);
   rpc SetManager(NewManager) returns (google.protobuf.Empty);
   rpc SetPosition(NewPosition) returns (google.protobuf.Empty);
-}
-
-message StaffData {
-  repeated Staff data = 1;
 }
 
 message Staff {

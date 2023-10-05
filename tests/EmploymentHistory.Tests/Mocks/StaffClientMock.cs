@@ -12,7 +12,7 @@ namespace EMS.EmploymentHistory.Tests.Mocks;
 internal sealed class StaffClientMock
 {
     public StaffService.StaffServiceClient StaffClient { get; init; }
-    public StaffData PersonStaffHistoryResponse { get; init; }
+    public List<Staff> PersonStaffHistoryResponse { get; init; }
     public Int32Value PersonStaffFoundRequest { get; init; }
     public Int32Value PersonStaffNotFoundRequest { get; init; }
 
@@ -47,9 +47,9 @@ internal sealed class StaffClientMock
             }
         };
 
-        PersonStaffHistoryResponse = new StaffData
+        PersonStaffHistoryResponse = new List<Staff>
         {
-            Data = { staffOne, staffTwo }
+            staffOne, staffTwo
         };
 
         PersonStaffFoundRequest = new Int32Value
@@ -61,9 +61,9 @@ internal sealed class StaffClientMock
             Value = 999
         };
 
-        StaffClient.GetByPersonAsync(PersonStaffFoundRequest, Arg.Any<Metadata>(), Arg.Any<DateTime?>(), Arg.Any<CancellationToken>())
-            .Returns(GrpcCoreMock.GetAsyncUnaryCallResponse(PersonStaffHistoryResponse));
-        StaffClient.GetByPersonAsync(PersonStaffNotFoundRequest, Arg.Any<Metadata>(), Arg.Any<DateTime?>(), Arg.Any<CancellationToken>())
+        StaffClient.GetByPerson(PersonStaffFoundRequest, Arg.Any<Metadata>(), Arg.Any<DateTime?>(), Arg.Any<CancellationToken>())
+            .Returns(GrpcCoreMock.GetStreamResponse(PersonStaffHistoryResponse));
+        StaffClient.GetByPerson(PersonStaffNotFoundRequest, Arg.Any<Metadata>(), Arg.Any<DateTime?>(), Arg.Any<CancellationToken>())
             .Throws(new NotFoundException($"Staff for person with id {PersonStaffNotFoundRequest.Value} not found").ToRpcException());
     }
 }

@@ -10,7 +10,7 @@ package person;
 
 service PersonService {
   rpc Get(google.protobuf.Int32Value) returns (PersonData);
-  rpc GetAll(google.protobuf.Empty) returns (People);
+  rpc GetAll(google.protobuf.Empty) returns (stream PersonData);
   rpc Create(PersonData) returns (google.protobuf.Int32Value);
   rpc UpdateNames(NamesRequest) returns (google.protobuf.Empty);
   rpc UpdateGender(GenderRequest) returns (google.protobuf.Empty);
@@ -20,10 +20,6 @@ service PersonService {
   rpc UpdateAboutYourself(AboutRequest) returns (google.protobuf.Empty);
   rpc AddAddress(AddressRequest) returns (google.protobuf.Empty);
   rpc UpdateAddress(AddressRequest) returns (google.protobuf.Empty);
-}
-
-message People {
-  repeated  PersonData data = 1;
 }
 
 message PersonData {

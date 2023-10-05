@@ -33,17 +33,17 @@ public sealed partial class PersonService : Protos.PersonService.PersonServiceBa
         return data.MapToProto();
     }
 
-    public override async Task<People> GetAll(Empty request, ServerCallContext context)
+    public override async Task GetAll(Empty request, IServerStreamWriter<PersonData> responseStream, ServerCallContext context)
     {
-        People people = new();
-
         IQueryable<PersonInfo> filtered = _dbContext.People.AsQueryable();
         IEnumerable<PersonData> data = (await GetPeopleData(filtered)
                 .ToListAsync(context.CancellationToken))
             .Select(e => e.MapToProto());
-        people.Data.AddRange(data);
-
-        return people;
+        
+        foreach (PersonData item in data)
+        {
+            await responseStream.WriteAsync(item);
+        }
     }
 
     private async Task<PersonInfo> GetPersonAsync(int id, CancellationToken cancellationToken)

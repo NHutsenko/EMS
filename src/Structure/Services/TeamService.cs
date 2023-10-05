@@ -1,4 +1,5 @@
 using EMS.Exceptions;
+using EMS.Extensions;
 using EMS.Protos;
 using EMS.Structure.Context;
 using Exceptions;
@@ -17,7 +18,7 @@ public sealed class TeamService : Protos.TeamService.TeamServiceBase
         _dbContext = dbContext;
     }
 
-    public override async Task<TeamsReply> GetAll(Empty request, ServerCallContext context)
+    public override async Task GetAll(Empty request, IServerStreamWriter<Team> responseStream, ServerCallContext context)
     {
         IEnumerable<Team> data = (await _dbContext.Teams
                 .Include(e => e.Members)
@@ -39,10 +40,7 @@ public sealed class TeamService : Protos.TeamService.TeamServiceBase
                 }
             });
 
-        return new TeamsReply
-        {
-            Data = { data }
-        };
+        await responseStream.WriteResponseAsync(data, context.CancellationToken);
     }
 
     public override async Task<Int32Value> Create(StringValue request, ServerCallContext context)

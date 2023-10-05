@@ -1,3 +1,4 @@
+using EMS.Extensions;
 using EMS.Protos;
 using EMS.Staff.Context;
 using EMS.Staff.Models;
@@ -8,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EMS.Staff.Services;
 
-public sealed class StaffService: Protos.StaffService.StaffServiceBase
+public sealed class StaffService : Protos.StaffService.StaffServiceBase
 {
     private readonly StaffContext _dbContext;
 
@@ -17,7 +18,7 @@ public sealed class StaffService: Protos.StaffService.StaffServiceBase
         _dbContext = dbContext;
     }
 
-    public override async Task<StaffData> GetByPerson(Int32Value request, ServerCallContext context)
+    public override async Task GetByPerson(Int32Value request, IServerStreamWriter<Protos.Staff> responseStream, ServerCallContext context)
     {
         if (await _dbContext.History.AnyAsync(e => e.PersonId == request.Value, context.CancellationToken) is false)
         {
@@ -44,15 +45,10 @@ public sealed class StaffService: Protos.StaffService.StaffServiceBase
                         CreatedOn = DateTime.SpecifyKind(e.History.CreatedOn, DateTimeKind.Utc).ToTimestamp()
                     }
             });
-
-        StaffData reply = new()
-        {
-            Data = { data }
-        };
-        return reply;
+        await responseStream.WriteResponseAsync(data, context.CancellationToken);
     }
 
-    public override async Task<StaffData> GetByManager(Int32Value request, ServerCallContext context)
+    public override async Task GetByManager(Int32Value request, IServerStreamWriter<Protos.Staff> responseStream, ServerCallContext context)
     {
         if (await _dbContext.Staff.AnyAsync(e => e.ManagerId == request.Value, context.CancellationToken) is false)
         {
@@ -79,15 +75,10 @@ public sealed class StaffService: Protos.StaffService.StaffServiceBase
                         CreatedOn = DateTime.SpecifyKind(e.History.CreatedOn, DateTimeKind.Utc).ToTimestamp()
                     }
             });
-
-        StaffData reply = new()
-        {
-            Data = { data }
-        };
-        return reply;
+        await responseStream.WriteResponseAsync(data, context.CancellationToken);
     }
 
-    public override async Task<StaffData> GetAll(Empty request, ServerCallContext context)
+    public override async Task GetAll(Empty request, IServerStreamWriter<Protos.Staff> responseStream, ServerCallContext context)
     {
         IEnumerable<Protos.Staff> data = (await _dbContext.Staff
                 .Include(e => e.History)
@@ -109,11 +100,7 @@ public sealed class StaffService: Protos.StaffService.StaffServiceBase
                     }
             });
 
-        StaffData reply = new()
-        {
-            Data = { data }
-        };
-        return reply;
+        await responseStream.WriteResponseAsync(data, context.CancellationToken);
     }
 
     public override async Task<Int32Value> Create(NewStaff request, ServerCallContext context)
@@ -126,7 +113,7 @@ public sealed class StaffService: Protos.StaffService.StaffServiceBase
 
         await _dbContext.Staff.AddAsync(staff, context.CancellationToken);
         await _dbContext.SaveChangesAsync(context.CancellationToken);
-        
+
         return new Int32Value
         {
             Value = staff.Id
@@ -178,30 +165,30 @@ public sealed class StaffService: Protos.StaffService.StaffServiceBase
     public override async Task<Empty> SetDate(NewDate request, ServerCallContext context)
     {
         History history = await GetStaffHistoryAsync(request.StaffId, context.CancellationToken);
-        
+
         _dbContext.Entry(history).Property(e => e.CreatedOn).CurrentValue = request.Date.ToDateTime();
         await _dbContext.SaveChangesAsync(context.CancellationToken);
-        
+
         return new Empty();
     }
 
     public override async Task<Empty> SetEmployment(NewEmployment request, ServerCallContext context)
     {
         History history = await GetStaffHistoryAsync(request.StaffId, context.CancellationToken);
-        
+
         _dbContext.Entry(history).Property(e => e.Employment).CurrentValue = request.Employment;
         await _dbContext.SaveChangesAsync(context.CancellationToken);
-        
+
         return new Empty();
     }
 
     public override async Task<Empty> SetMentor(NewMentor request, ServerCallContext context)
     {
         History history = await GetStaffHistoryAsync(request.StaffId, context.CancellationToken);
-        
+
         _dbContext.Entry(history).Property(e => e.MentorId).CurrentValue = request.Mentor;
         await _dbContext.SaveChangesAsync(context.CancellationToken);
-        
+
         return new Empty();
     }
 
@@ -215,7 +202,7 @@ public sealed class StaffService: Protos.StaffService.StaffServiceBase
 
         return staff;
     }
-    
+
     private async Task<History> GetStaffHistoryAsync(int staffId, CancellationToken cancellationToken)
     {
         History? history = await _dbContext.History.FirstOrDefaultAsync(e => e.StaffId == staffId, cancellationToken);

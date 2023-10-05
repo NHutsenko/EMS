@@ -9,16 +9,12 @@ option csharp_namespace = "EMS.Protos";
 package team;
 
 service TeamService {
-  rpc GetAll(google.protobuf.Empty) returns (TeamsReply);
+  rpc GetAll(google.protobuf.Empty) returns (stream Team);
   rpc Create(google.protobuf.StringValue) returns (google.protobuf.Int32Value);
   rpc UpdateName(NewNameRequest) returns (google.protobuf.Empty);
   rpc AddMember(NewMemberRequest) returns (google.protobuf.Empty);
   rpc SetEndWork(EndWorkRequest) returns (google.protobuf.Empty);
   rpc UpdateEmployment(EmploymentRequest) returns (google.protobuf.Empty);
-}
-
-message TeamsReply {
-  repeated Team data = 1;
 }
 
 message Team {
