@@ -15,6 +15,8 @@ internal sealed class StaffClientMock
     public List<Staff> PersonStaffHistoryResponse { get; init; }
     public Int32Value PersonStaffFoundRequest { get; init; }
     public Int32Value PersonStaffNotFoundRequest { get; init; }
+    
+    public Int32Value StaffCreateResponse { get; init; }
 
     public StaffClientMock()
     {
@@ -56,14 +58,23 @@ internal sealed class StaffClientMock
         {
             Value = 1
         };
+        StaffClient.GetByPerson(PersonStaffFoundRequest, Arg.Any<Metadata>(), Arg.Any<DateTime?>(), Arg.Any<CancellationToken>())
+            .Returns(GrpcCoreMock.GetStreamResponse(PersonStaffHistoryResponse));
+        
         PersonStaffNotFoundRequest = new Int32Value
         {
             Value = 999
         };
-
-        StaffClient.GetByPerson(PersonStaffFoundRequest, Arg.Any<Metadata>(), Arg.Any<DateTime?>(), Arg.Any<CancellationToken>())
-            .Returns(GrpcCoreMock.GetStreamResponse(PersonStaffHistoryResponse));
         StaffClient.GetByPerson(PersonStaffNotFoundRequest, Arg.Any<Metadata>(), Arg.Any<DateTime?>(), Arg.Any<CancellationToken>())
             .Throws(new NotFoundException($"Staff for person with id {PersonStaffNotFoundRequest.Value} not found").ToRpcException());
+
+        StaffCreateResponse = new Int32Value
+        {
+            Value = PersonStaffHistoryResponse.Count + 1
+        };
+        StaffClient.CreateAsync(Arg.Any<NewStaff>(), Arg.Any<Metadata>(), Arg.Any<DateTime?>(), Arg.Any<CancellationToken>())
+            .Returns(GrpcCoreMock.GetAsyncUnaryCallResponse(StaffCreateResponse));
+        StaffClient.CreateHistoryAsync(Arg.Any<NewHistory>(), Arg.Any<Metadata>(), Arg.Any<DateTime?>(), Arg.Any<CancellationToken>())
+            .Returns(GrpcCoreMock.GetAsyncUnaryCallResponse(new Empty()));
     }
 }

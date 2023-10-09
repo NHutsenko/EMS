@@ -30,9 +30,20 @@ public sealed class EmploymentHistoryService: Protos.EmploymentHistoryService.Em
                 PositionId = e.Position,
                 EmploymentId = e.Id,
                 StartWork = e.History.CreatedOn,
-                Employment = e.History.Employment
+                Employment = e.History.Employment,
+                MentorId = e.History.Mentor
             });
 
         await responseStream.WriteAllAsync(reply);
+    }
+
+    public override Task<Int32Value> CreateEmployment(NewEmploymentHistory request, ServerCallContext context)
+    {
+        return base.CreateEmployment(request, context);
+    }
+
+    public override Task<Empty> UpdateEmployment(EmploymentHistoryData request, ServerCallContext context)
+    {
+        return base.UpdateEmployment(request, context);
     }
 }
