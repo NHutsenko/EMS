@@ -57,14 +57,20 @@ public partial class EmploymentHistoryServiceTests
         
         // Assert
         response.Value.Should().Be(_staffClientMock.StaffCreateResponse.Value);
-        await _personClientMock.PersonClient.Received(Quantity.Exactly(1)).GetAsync(personRequest);
-        await _personClientMock.PersonClient.Received(Quantity.Exactly(1)).GetAsync(managerRequest);
+        var personClientCalls = _personClientMock.PersonClient.ReceivedCalls();
+        personClientCalls.ToArray()[0].GetMethodInfo().Name.Should().Be(nameof(_personClientMock.PersonClient.GetAsync));
+        personClientCalls.ToArray()[0].GetArguments()[0].Should().Be(personRequest);
+        personClientCalls.ToArray()[1].GetMethodInfo().Name.Should().Be(nameof(_personClientMock.PersonClient.GetAsync));
+        personClientCalls.ToArray()[1].GetArguments()[0].Should().Be(managerRequest);
 
         _positionClientMock.PositionClient.Received(Quantity.Exactly(1)).GetAll(new Empty());
         
         _staffClientMock.StaffClient.Received(Quantity.Exactly(1)).GetByPerson(_staffClientMock.PersonStaffFoundRequest);
-        await _staffClientMock.StaffClient.Received(Quantity.Exactly(1)).CreateAsync(newStaffRequest);
-        await _staffClientMock.StaffClient.Received(Quantity.Exactly(1)).CreateHistoryAsync(newHistoryRequest);
+        var staffClientCalls = _staffClientMock.StaffClient.ReceivedCalls();
+        staffClientCalls.ToArray()[0].GetMethodInfo().Name.Should().Be(nameof(_staffClientMock.StaffClient.CreateAsync));
+        staffClientCalls.ToArray()[0].GetArguments()[0].Should().Be(newStaffRequest);
+        staffClientCalls.ToArray()[1].GetMethodInfo().Name.Should().Be(nameof(_staffClientMock.StaffClient.CreateHistoryAsync));
+        staffClientCalls.ToArray()[1].GetArguments()[0].Should().Be(newHistoryRequest);
     }
     
     [Fact(DisplayName = "CreateEmployment should throw exception that person not found")]
@@ -84,10 +90,6 @@ public partial class EmploymentHistoryServiceTests
         Int32Value personRequest = new()
         {
             Value = request.PersonId
-        };
-        Int32Value managerRequest = new()
-        {
-            Value = request.ManagerId
         };
 
         // Act
@@ -183,14 +185,16 @@ public partial class EmploymentHistoryServiceTests
         exception.Status.StatusCode.Should().Be(StatusCode.NotFound);
         exception.Status.Detail.Should().Be($"Position with id {request.PositionId} does not exists");
         
-        await _personClientMock.PersonClient.Received(Quantity.Exactly(1)).GetAsync(personRequest);
-        await _personClientMock.PersonClient.Received(Quantity.Exactly(1)).GetAsync(managerRequest);
+        var personClientCalls = _personClientMock.PersonClient.ReceivedCalls();
+        personClientCalls.ToArray()[0].GetMethodInfo().Name.Should().Be(nameof(_personClientMock.PersonClient.GetAsync));
+        personClientCalls.ToArray()[0].GetArguments()[0].Should().Be(personRequest);
+        personClientCalls.ToArray()[1].GetMethodInfo().Name.Should().Be(nameof(_personClientMock.PersonClient.GetAsync));
+        personClientCalls.ToArray()[1].GetArguments()[0].Should().Be(managerRequest);
 
         _positionClientMock.PositionClient.Received(Quantity.Exactly(1)).GetAll(new Empty());
         
         _staffClientMock.StaffClient.Received(Quantity.None()).GetByPerson(Arg.Any<Int32Value>());
-        await _staffClientMock.StaffClient.Received(Quantity.None()).CreateAsync(Arg.Any<NewStaff>());
-        await _staffClientMock.StaffClient.Received(Quantity.None()).CreateHistoryAsync(Arg.Any<NewHistory>());
+        _staffClientMock.StaffClient.ReceivedCalls().Count().Should().Be(0);
     }
     
     [Fact(DisplayName = "CreateEmployment should throw exception that record for date already exists")]
@@ -229,14 +233,16 @@ public partial class EmploymentHistoryServiceTests
         exception.Status.StatusCode.Should().Be(StatusCode.AlreadyExists);
         exception.Status.Detail.Should().Be($"Employment period for date {wrongDate.ToDateTime().Date} already exists");
         
-        await _personClientMock.PersonClient.Received(Quantity.Exactly(1)).GetAsync(personRequest);
-        await _personClientMock.PersonClient.Received(Quantity.Exactly(1)).GetAsync(managerRequest);
+        var personClientCalls = _personClientMock.PersonClient.ReceivedCalls();
+        personClientCalls.ToArray()[0].GetMethodInfo().Name.Should().Be(nameof(_personClientMock.PersonClient.GetAsync));
+        personClientCalls.ToArray()[0].GetArguments()[0].Should().Be(personRequest);
+        personClientCalls.ToArray()[1].GetMethodInfo().Name.Should().Be(nameof(_personClientMock.PersonClient.GetAsync));
+        personClientCalls.ToArray()[1].GetArguments()[0].Should().Be(managerRequest);
 
         _positionClientMock.PositionClient.Received(Quantity.Exactly(1)).GetAll(new Empty());
         
         _staffClientMock.StaffClient.Received(Quantity.Exactly(1)).GetByPerson(_staffClientMock.PersonStaffFoundRequest);
-        await _staffClientMock.StaffClient.Received(Quantity.None()).CreateAsync(Arg.Any<NewStaff>());
-        await _staffClientMock.StaffClient.Received(Quantity.None()).CreateHistoryAsync(Arg.Any<NewHistory>());
+        _staffClientMock.StaffClient.ReceivedCalls().Count().Should().Be(0);
     }
     
      [Fact(DisplayName = "CreateEmployment should throw exception that mentor not found")]
@@ -280,14 +286,17 @@ public partial class EmploymentHistoryServiceTests
         exception.Status.StatusCode.Should().Be(StatusCode.NotFound);
         exception.Status.Detail.Should().Be($"Person with id {mentorRequest.Value} not found");
         
-        await _personClientMock.PersonClient.Received(Quantity.Exactly(1)).GetAsync(personRequest);
-        await _personClientMock.PersonClient.Received(Quantity.Exactly(1)).GetAsync(managerRequest);
-        await _personClientMock.PersonClient.Received(Quantity.Exactly(1)).GetAsync(mentorRequest);
+        var personClientCalls = _personClientMock.PersonClient.ReceivedCalls();
+        personClientCalls.ToArray()[0].GetMethodInfo().Name.Should().Be(nameof(_personClientMock.PersonClient.GetAsync));
+        personClientCalls.ToArray()[0].GetArguments()[0].Should().Be(personRequest);
+        personClientCalls.ToArray()[1].GetMethodInfo().Name.Should().Be(nameof(_personClientMock.PersonClient.GetAsync));
+        personClientCalls.ToArray()[1].GetArguments()[0].Should().Be(managerRequest);
+        personClientCalls.ToArray()[2].GetMethodInfo().Name.Should().Be(nameof(_personClientMock.PersonClient.GetAsync));
+        personClientCalls.ToArray()[2].GetArguments()[0].Should().Be(mentorRequest);
 
         _positionClientMock.PositionClient.Received(Quantity.None()).GetAll(new Empty());
         
         _staffClientMock.StaffClient.Received(Quantity.None()).GetByPerson(_staffClientMock.PersonStaffFoundRequest);
-        await _staffClientMock.StaffClient.Received(Quantity.None()).CreateAsync(Arg.Any<NewStaff>());
-        await _staffClientMock.StaffClient.Received(Quantity.None()).CreateHistoryAsync(Arg.Any<NewHistory>());
+        _staffClientMock.StaffClient.ReceivedCalls().Count().Should().Be(0);
     }
 }
