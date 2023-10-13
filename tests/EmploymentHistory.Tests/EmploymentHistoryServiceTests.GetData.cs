@@ -26,7 +26,7 @@ public partial class EmploymentHistoryServiceTests
             {
                 ManagerId = e.Manager,
                 PositionId = e.Position,
-                EmploymentId = e.Id,
+                EmploymentHistoryId = e.Id,
                 StartWork = e.History.CreatedOn,
                 Employment = e.History.Employment,
                 MentorId = e.History.Mentor

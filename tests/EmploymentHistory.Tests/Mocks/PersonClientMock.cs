@@ -116,6 +116,9 @@ internal sealed class PersonClientMock
         };
         PersonClient.GetAsync(PersonNotFoundRequest, Arg.Any<Metadata>(), Arg.Any<DateTime?>(), Arg.Any<CancellationToken>())
             .Throws(new NotFoundException($"Person with id {PersonNotFoundRequest.Value} not found").ToRpcException());
+        
+        PersonClient.GetAsync(PersonNotFoundRequest, Arg.Any<Metadata>(), Arg.Any<DateTime?>(), Arg.Any<CancellationToken>())
+            .Returns(x => throw new NotFoundException($"Person with id {PersonNotFoundRequest.Value} not found").ToRpcException());
 
         PersonClient.GetAll(Arg.Any<Empty>(), Arg.Any<Metadata>(), Arg.Any<DateTime?>(), Arg.Any<CancellationToken>())
             .Returns(GrpcCoreMock.GetStreamResponse(new List<PersonData>()

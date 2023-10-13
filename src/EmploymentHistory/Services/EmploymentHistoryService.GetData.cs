@@ -1,11 +1,12 @@
 using EMS.Protos;
+using Exceptions;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Grpc.Core.Utils;
 
 namespace EMS.EmploymentHistory.Services;
 
-public sealed class EmploymentHistoryService: Protos.EmploymentHistoryService.EmploymentHistoryServiceBase
+public sealed partial class EmploymentHistoryService: Protos.EmploymentHistoryService.EmploymentHistoryServiceBase
 {
     private readonly PersonService.PersonServiceClient _personServiceClient;
     private readonly PositionService.PositionServiceClient _positionServiceClient;
@@ -28,7 +29,7 @@ public sealed class EmploymentHistoryService: Protos.EmploymentHistoryService.Em
             {
                 ManagerId = e.Manager,
                 PositionId = e.Position,
-                EmploymentId = e.Id,
+                EmploymentHistoryId = e.Id,
                 StartWork = e.History.CreatedOn,
                 Employment = e.History.Employment,
                 MentorId = e.History.Mentor
@@ -37,13 +38,14 @@ public sealed class EmploymentHistoryService: Protos.EmploymentHistoryService.Em
         await responseStream.WriteAllAsync(reply);
     }
 
-    public override Task<Int32Value> CreateEmployment(NewEmploymentHistory request, ServerCallContext context)
+    private async Task IsPositionExistsAsync(int positionId, CancellationToken cancellationToken)
     {
-        return base.CreateEmployment(request, context);
-    }
+        AsyncServerStreamingCall<Position>? positionsCall = _positionServiceClient.GetAll(new Empty(), cancellationToken: cancellationToken);
+        List<Position> positions = await positionsCall.ResponseStream.ToListAsync();
 
-    public override Task<Empty> UpdateEmployment(EmploymentHistoryData request, ServerCallContext context)
-    {
-        return base.UpdateEmployment(request, context);
+        if (positions.Any(e => e.Grades.Any(e => e.ActualHistoryId == positionId)) is false)
+        {
+            throw new NotFoundException($"Position with id {positionId} does not exists");
+        }
     }
 }

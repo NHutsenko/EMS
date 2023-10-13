@@ -16,7 +16,7 @@ public partial class EmploymentHistoryServiceTests
         // Arrange
         EmploymentHistoryData request = new()
         {
-            EmploymentId = _staffClientMock.StaffNotFoundRequest.Value
+            EmploymentHistoryId = _staffClientMock.StaffNotFoundRequest.Value
         };
         ServerCallContext context = GrpcCoreMock.GetCallContext(nameof(_service.UpdateEmployment));
         // Act
@@ -24,7 +24,7 @@ public partial class EmploymentHistoryServiceTests
 
         // Assert
         exception.Status.StatusCode.Should().Be(StatusCode.NotFound);
-        exception.Status.Detail.Should().Be($"Staff with id {request.EmploymentId} not found");
+        exception.Status.Detail.Should().Be($"Staff with id {request.EmploymentHistoryId} not found");
 
         _staffClientMock.StaffClient.Received(Quantity.Exactly(1)).GetById(_staffClientMock.StaffNotFoundRequest);
 
@@ -45,7 +45,7 @@ public partial class EmploymentHistoryServiceTests
         // Arrange
         EmploymentHistoryData request = new()
         {
-            EmploymentId = _staffClientMock.StaffFoundRequest.Value,
+            EmploymentHistoryId = _staffClientMock.StaffFoundRequest.Value,
             PositionId = 999
         };
         ServerCallContext context = GrpcCoreMock.GetCallContext(nameof(_service.UpdateEmployment));
@@ -75,7 +75,7 @@ public partial class EmploymentHistoryServiceTests
         // Arrange
         EmploymentHistoryData request = new()
         {
-            EmploymentId = _staffClientMock.StaffFoundRequest.Value,
+            EmploymentHistoryId = _staffClientMock.StaffFoundRequest.Value,
             PositionId = _positionClientMock.PositionResponse.Id,
             ManagerId = _personClientMock.PersonNotFoundRequest.Value,
             MentorId = _personClientMock.MentorFoundRequest.Value
@@ -106,7 +106,7 @@ public partial class EmploymentHistoryServiceTests
         // Arrange
         EmploymentHistoryData request = new()
         {
-            EmploymentId = _staffClientMock.StaffFoundRequest.Value,
+            EmploymentHistoryId = _staffClientMock.StaffFoundRequest.Value,
             PositionId = _positionClientMock.PositionResponse.Id,
             ManagerId = _personClientMock.ManagerFoundRequest.Value,
             MentorId = _personClientMock.PersonNotFoundRequest.Value
@@ -144,7 +144,7 @@ public partial class EmploymentHistoryServiceTests
             .ToTimestamp();
         EmploymentHistoryData request = new()
         {
-            EmploymentId = _staffClientMock.StaffFoundRequest.Value,
+            EmploymentHistoryId = _staffClientMock.StaffFoundRequest.Value,
             PositionId = _positionClientMock.PositionResponse.Id,
             ManagerId = _personClientMock.ManagerFoundRequest.Value,
             MentorId = _personClientMock.MentorFoundRequest.Value,
@@ -182,7 +182,7 @@ public partial class EmploymentHistoryServiceTests
             .ToTimestamp();
         EmploymentHistoryData request = new()
         {
-            EmploymentId = _staffClientMock.StaffFoundRequest.Value,
+            EmploymentHistoryId = _staffClientMock.StaffFoundRequest.Value,
             PositionId = _staffClientMock.StaffSecond.Position,
             ManagerId = _personClientMock.ManagerFoundRequest.Value,
             MentorId = _personClientMock.MentorFoundRequest.Value,
@@ -192,7 +192,7 @@ public partial class EmploymentHistoryServiceTests
         ServerCallContext context = GrpcCoreMock.GetCallContext(nameof(_service.UpdateEmployment));
         NewDate expectedSetDateRequest = new()
         {
-            StaffId = request.EmploymentId,
+            StaffId = request.EmploymentHistoryId,
             Date = dateToSet
         };
 
@@ -219,7 +219,7 @@ public partial class EmploymentHistoryServiceTests
         // Arrange
         EmploymentHistoryData request = new()
         {
-            EmploymentId = _staffClientMock.StaffFoundRequest.Value,
+            EmploymentHistoryId = _staffClientMock.StaffFoundRequest.Value,
             PositionId = _positionClientMock.PositionResponse.Id,
             ManagerId = _personClientMock.ManagerFoundRequest.Value,
             MentorId = _personClientMock.MentorFoundRequest.Value,
@@ -229,7 +229,7 @@ public partial class EmploymentHistoryServiceTests
         ServerCallContext context = GrpcCoreMock.GetCallContext(nameof(_service.UpdateEmployment));
         NewPosition expectedPositionRequest = new()
         {
-            StaffId = request.EmploymentId,
+            StaffId = request.EmploymentHistoryId,
             Position = request.PositionId
         };
 
@@ -256,7 +256,7 @@ public partial class EmploymentHistoryServiceTests
         // Arrange
         EmploymentHistoryData request = new()
         {
-            EmploymentId = _staffClientMock.StaffFoundRequest.Value,
+            EmploymentHistoryId = _staffClientMock.StaffFoundRequest.Value,
             PositionId = _staffClientMock.StaffSecond.Position,
             ManagerId = _personClientMock.ManagerFoundRequest.Value,
             MentorId = _personClientMock.MentorFoundRequest.Value,
@@ -266,7 +266,7 @@ public partial class EmploymentHistoryServiceTests
         ServerCallContext context = GrpcCoreMock.GetCallContext(nameof(_service.UpdateEmployment));
         NewEmployment expectedEmploymentRequest = new()
         {
-            StaffId = request.EmploymentId,
+            StaffId = request.EmploymentHistoryId,
             Employment = request.Employment
         };
 
@@ -293,7 +293,7 @@ public partial class EmploymentHistoryServiceTests
         // Arrange
         EmploymentHistoryData request = new()
         {
-            EmploymentId = _staffClientMock.StaffFoundRequest.Value,
+            EmploymentHistoryId = _staffClientMock.StaffFoundRequest.Value,
             PositionId = _staffClientMock.StaffSecond.Position,
             ManagerId = _personClientMock.MentorFoundRequest.Value,
             MentorId = _personClientMock.MentorFoundRequest.Value,
@@ -303,7 +303,7 @@ public partial class EmploymentHistoryServiceTests
         ServerCallContext context = GrpcCoreMock.GetCallContext(nameof(_service.UpdateEmployment));
         NewManager expectedManagerRequest = new()
         {
-            StaffId = request.EmploymentId,
+            StaffId = request.EmploymentHistoryId,
             Manager = _personClientMock.MentorFoundRequest.Value,
         };
 
@@ -330,7 +330,7 @@ public partial class EmploymentHistoryServiceTests
         // Arrange
         EmploymentHistoryData request = new()
         {
-            EmploymentId = _staffClientMock.StaffFoundRequest.Value,
+            EmploymentHistoryId = _staffClientMock.StaffFoundRequest.Value,
             PositionId = _staffClientMock.StaffSecond.Position,
             ManagerId = _personClientMock.ManagerFoundRequest.Value,
             MentorId = _personClientMock.ManagerFoundRequest.Value,
@@ -340,7 +340,7 @@ public partial class EmploymentHistoryServiceTests
         ServerCallContext context = GrpcCoreMock.GetCallContext(nameof(_service.UpdateEmployment));
         NewMentor expectedMentorRequest = new()
         {
-            StaffId = request.EmploymentId,
+            StaffId = request.EmploymentHistoryId,
             Mentor = _personClientMock.ManagerFoundRequest.Value,
         };
 
@@ -371,7 +371,7 @@ public partial class EmploymentHistoryServiceTests
             .ToTimestamp();
         EmploymentHistoryData request = new()
         {
-            EmploymentId = _staffClientMock.StaffFoundRequest.Value,
+            EmploymentHistoryId = _staffClientMock.StaffFoundRequest.Value,
             PositionId = _positionClientMock.PositionTwo.Id,
             ManagerId = _personClientMock.MentorFoundRequest.Value,
             MentorId = _personClientMock.ManagerFoundRequest.Value,
@@ -381,27 +381,27 @@ public partial class EmploymentHistoryServiceTests
         ServerCallContext context = GrpcCoreMock.GetCallContext(nameof(_service.UpdateEmployment));
         NewMentor expectedMentorRequest = new()
         {
-            StaffId = request.EmploymentId,
+            StaffId = request.EmploymentHistoryId,
             Mentor = _personClientMock.ManagerFoundRequest.Value,
         };
         NewManager expectedManagerRequest = new()
         {
-            StaffId = request.EmploymentId,
+            StaffId = request.EmploymentHistoryId,
             Manager = _personClientMock.ManagerFoundRequest.Value,
         };
         NewEmployment expectedEmploymentRequest = new()
         {
-            StaffId = request.EmploymentId,
+            StaffId = request.EmploymentHistoryId,
             Employment = request.Employment
         };
         NewDate expectedDateRequest = new()
         {
-            StaffId = request.EmploymentId,
+            StaffId = request.EmploymentHistoryId,
             Date = dateToSet
         };
         NewPosition expectedPositionRequest = new()
         {
-            StaffId = request.EmploymentId,
+            StaffId = request.EmploymentHistoryId,
             Position = request.PositionId
         };
 

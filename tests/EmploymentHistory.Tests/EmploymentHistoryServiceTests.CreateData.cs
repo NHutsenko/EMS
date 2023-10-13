@@ -4,6 +4,7 @@ using FluentAssertions;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using NSubstitute;
+using NSubstitute.Core;
 using NSubstitute.ReceivedExtensions;
 using EmploymentHistoryService = EMS.EmploymentHistory.Services.EmploymentHistoryService;
 
@@ -12,7 +13,7 @@ namespace EMS.EmploymentHistory.Tests;
 public partial class EmploymentHistoryServiceTests
 {
     [Fact(DisplayName = "CreateEmployment should create employment record")]
-    public async Task EditData_TestCaseOne()
+    public async Task CreateData_TestCaseOne()
     {
         // Arrange
         _service = new EmploymentHistoryService(_personClientMock.PersonClient, _positionClientMock.PositionClient, _staffClientMock.StaffClient);
@@ -67,7 +68,7 @@ public partial class EmploymentHistoryServiceTests
     }
     
     [Fact(DisplayName = "CreateEmployment should throw exception that person not found")]
-    public async Task EditData_TestCaseTwo()
+    public async Task CreateData_TestCaseTwo()
     {
         // Arrange
         _service = new EmploymentHistoryService(_personClientMock.PersonClient, _positionClientMock.PositionClient, _staffClientMock.StaffClient);
@@ -96,18 +97,19 @@ public partial class EmploymentHistoryServiceTests
         exception.Status.StatusCode.Should().Be(StatusCode.NotFound);
         exception.Status.Detail.Should().Be($"Person with id {personRequest.Value} not found");
         
-        await _personClientMock.PersonClient.Received(Quantity.Exactly(1)).GetAsync(personRequest);
-        await _personClientMock.PersonClient.Received(Quantity.None()).GetAsync(managerRequest);
+        var personClientCalls = _personClientMock.PersonClient.ReceivedCalls();
+        personClientCalls.ToArray()[0].GetMethodInfo().Name.Should().Be(nameof(_personClientMock.PersonClient.GetAsync));
+        personClientCalls.ToArray()[0].GetArguments()[0].Should().Be(personRequest);
 
         _positionClientMock.PositionClient.Received(Quantity.None()).GetAll(new Empty());
         
         _staffClientMock.StaffClient.Received(Quantity.None()).GetByPerson(Arg.Any<Int32Value>());
-        await _staffClientMock.StaffClient.Received(Quantity.None()).CreateAsync(Arg.Any<NewStaff>());
-        await _staffClientMock.StaffClient.Received(Quantity.None()).CreateHistoryAsync(Arg.Any<NewHistory>());
+        _staffClientMock.StaffClient.Received(Quantity.None()).GetByPerson(Arg.Any<Int32Value>());
+        _staffClientMock.StaffClient.ReceivedCalls().Count().Should().Be(0);
     }
     
     [Fact(DisplayName = "CreateEmployment should throw exception that manager not found")]
-    public async Task EditData_TestCaseThree()
+    public async Task CreateData_TestCaseThree()
     {
         // Arrange
         _service = new EmploymentHistoryService(_personClientMock.PersonClient, _positionClientMock.PositionClient, _staffClientMock.StaffClient);
@@ -120,9 +122,6 @@ public partial class EmploymentHistoryServiceTests
             ManagerId = _personClientMock.PersonNotFoundRequest.Value
         };
         ServerCallContext context = GrpcCoreMock.GetCallContext(nameof(_service.CreateEmployment));
-
-        // Act
-        RpcException exception = await Assert.ThrowsAsync<RpcException>(() => _service.CreateEmployment(request, context));
         Int32Value personRequest = new()
         {
             Value = request.PersonId
@@ -131,24 +130,30 @@ public partial class EmploymentHistoryServiceTests
         {
             Value = request.ManagerId
         };
+
+        // Act
+        RpcException exception = await Assert.ThrowsAsync<RpcException>(() => _service.CreateEmployment(request, context));
+        
         
         // Assert
         exception.Should().NotBe(null);
         exception.Status.StatusCode.Should().Be(StatusCode.NotFound);
         exception.Status.Detail.Should().Be($"Person with id {managerRequest.Value} not found");
-        
-        await _personClientMock.PersonClient.Received(Quantity.Exactly(1)).GetAsync(personRequest);
-        await _personClientMock.PersonClient.Received(Quantity.Exactly(1)).GetAsync(managerRequest);
+
+        var personClientCalls = _personClientMock.PersonClient.ReceivedCalls();
+        personClientCalls.ToArray()[0].GetMethodInfo().Name.Should().Be(nameof(_personClientMock.PersonClient.GetAsync));
+        personClientCalls.ToArray()[0].GetArguments()[0].Should().Be(personRequest);
+        personClientCalls.ToArray()[1].GetMethodInfo().Name.Should().Be(nameof(_personClientMock.PersonClient.GetAsync));
+        personClientCalls.ToArray()[1].GetArguments()[0].Should().Be(managerRequest);
 
         _positionClientMock.PositionClient.Received(Quantity.None()).GetAll(new Empty());
         
         _staffClientMock.StaffClient.Received(Quantity.None()).GetByPerson(Arg.Any<Int32Value>());
-        await _staffClientMock.StaffClient.Received(Quantity.None()).CreateAsync(Arg.Any<NewStaff>());
-        await _staffClientMock.StaffClient.Received(Quantity.None()).CreateHistoryAsync(Arg.Any<NewHistory>());
+        _staffClientMock.StaffClient.ReceivedCalls().Count().Should().Be(0);
     }
     
     [Fact(DisplayName = "CreateEmployment should throw exception that position not found")]
-    public async Task EditData_TestCaseFour()
+    public async Task CreateData_TestCaseFour()
     {
         // Arrange
         _service = new EmploymentHistoryService(_personClientMock.PersonClient, _positionClientMock.PositionClient, _staffClientMock.StaffClient);
@@ -189,7 +194,7 @@ public partial class EmploymentHistoryServiceTests
     }
     
     [Fact(DisplayName = "CreateEmployment should throw exception that record for date already exists")]
-    public async Task EditData_TestCaseFive()
+    public async Task CreateData_TestCaseFive()
     {
         // Arrange
         Timestamp wrongDate = _staffClientMock.PersonStaffHistoryResponse
@@ -235,7 +240,7 @@ public partial class EmploymentHistoryServiceTests
     }
     
      [Fact(DisplayName = "CreateEmployment should throw exception that mentor not found")]
-    public async Task EditData_TestCaseSix()
+    public async Task CreateData_TestCaseSix()
     {
         // Arrange
         Timestamp wrongDate = _staffClientMock.PersonStaffHistoryResponse

@@ -31,6 +31,11 @@ internal static class GrpcCoreMock
     {
         return new AsyncUnaryCall<T>(Task.FromResult(responseData), null, null, null, null);
     }
+    
+    public static AsyncUnaryCall<T> GetAsyncUnaryCallException<T>(Exception responseData) where T : class
+    {
+        return new AsyncUnaryCall<T>(Task.FromException<T>(responseData), null, null, null, null);
+    }
 
     public static AsyncServerStreamingCall<T> GetStreamResponse<T>(IEnumerable<T> response) where T : class
     {

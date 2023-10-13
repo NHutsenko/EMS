@@ -24,7 +24,7 @@ message Position {
 message Grade {
   int32 value = 1;
   decimal.DecimalValue salary = 2;
-  float actual_history_id = 3;
+  int32 actual_history_id = 3;
 }
 
 message PositionRequest {
