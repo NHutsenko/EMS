@@ -1,4 +1,3 @@
-using EMS.EmploymentHistory.Services;
 using EMS.EmploymentHistory.Tests.Mocks;
 using EMS.Protos;
 using FluentAssertions;
@@ -94,7 +93,6 @@ public partial class EmploymentHistoryServiceTests
         RpcException exception = await Assert.ThrowsAsync<RpcException>(() => _service.CreateEmployment(request, context));
         
         // Assert
-        exception.Should().NotBe(null);
         exception.Status.StatusCode.Should().Be(StatusCode.NotFound);
         exception.Status.Detail.Should().Be($"Person with id {personRequest.Value} not found");
         

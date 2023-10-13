@@ -12,6 +12,7 @@ service StaffService {
   rpc GetByPerson(google.protobuf.Int32Value) returns (stream Staff);
   rpc GetByManager(google.protobuf.Int32Value) returns (stream Staff);
   rpc GetAll(google.protobuf.Empty) returns (stream Staff);
+  rpc GetById(google.protobuf.Int32Value) returns (Staff);
   rpc Create(NewStaff) returns (google.protobuf.Int32Value);
   rpc CreateHistory(NewHistory) returns (google.protobuf.Empty);
   rpc SetDate(NewDate) returns (google.protobuf.Empty);

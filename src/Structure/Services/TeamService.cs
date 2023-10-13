@@ -1,5 +1,4 @@
 using EMS.Exceptions;
-using EMS.Extensions;
 using EMS.Protos;
 using EMS.Structure.Context;
 using Exceptions;

@@ -13,8 +13,13 @@ internal sealed class StaffClientMock
 {
     public StaffService.StaffServiceClient StaffClient { get; init; }
     public List<Staff> PersonStaffHistoryResponse { get; init; }
+    public Staff StaffFirst { get; init; }
+    public Staff StaffSecond { get; init; }
     public Int32Value PersonStaffFoundRequest { get; init; }
     public Int32Value PersonStaffNotFoundRequest { get; init; }
+    
+    public Int32Value StaffFoundRequest { get; init; }
+    public Int32Value StaffNotFoundRequest { get; init; }
     
     public Int32Value StaffCreateResponse { get; init; }
 
@@ -22,7 +27,7 @@ internal sealed class StaffClientMock
     {
         StaffClient = Substitute.For<StaffService.StaffServiceClient>(GrpcCoreMock.Channel);
 
-        Staff staffOne = new()
+        StaffFirst = new()
         {
             Id = 1,
             Manager = 2,
@@ -35,7 +40,7 @@ internal sealed class StaffClientMock
                 Employment = 100
             }
         };
-        Staff staffTwo = new()
+        StaffSecond = new()
         {
             Id = 2,
             Manager = 2,
@@ -51,7 +56,7 @@ internal sealed class StaffClientMock
 
         PersonStaffHistoryResponse = new List<Staff>
         {
-            staffOne, staffTwo
+            StaffFirst, StaffSecond
         };
 
         PersonStaffFoundRequest = new Int32Value
@@ -76,5 +81,19 @@ internal sealed class StaffClientMock
             .Returns(GrpcCoreMock.GetAsyncUnaryCallResponse(StaffCreateResponse));
         StaffClient.CreateHistoryAsync(Arg.Any<NewHistory>(), Arg.Any<Metadata>(), Arg.Any<DateTime?>(), Arg.Any<CancellationToken>())
             .Returns(GrpcCoreMock.GetAsyncUnaryCallResponse(new Empty()));
+
+        StaffFoundRequest = new Int32Value
+        {
+            Value = StaffSecond.Id
+        };
+        StaffClient.GetByIdAsync(StaffFoundRequest, Arg.Any<Metadata>(), Arg.Any<DateTime?>(), Arg.Any<CancellationToken>())
+            .Returns(GrpcCoreMock.GetAsyncUnaryCallResponse(StaffSecond));
+        
+        StaffNotFoundRequest = new Int32Value
+        {
+            Value = 999
+        };
+        StaffClient.GetByIdAsync(StaffNotFoundRequest, Arg.Any<Metadata>(), Arg.Any<DateTime?>(), Arg.Any<CancellationToken>())
+            .Throws(new NotFoundException($"Staff with id {StaffNotFoundRequest.Value} not found").ToRpcException());
     }
 }

@@ -1,6 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
 using EMS.Logging.Extensions;
-using Grpc.Core;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace EMS.Extensions;

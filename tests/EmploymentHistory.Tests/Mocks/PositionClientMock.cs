@@ -1,10 +1,9 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Security.Cryptography.X509Certificates;
 using EMS.Protos;
-using Exceptions;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using NSubstitute;
-using NSubstitute.ExceptionExtensions;
 
 namespace EMS.EmploymentHistory.Tests.Mocks;
 
@@ -13,6 +12,7 @@ internal sealed class PositionClientMock
 {
     public PositionService.PositionServiceClient PositionClient { get; init; }
     public Position PositionResponse { get; init; }
+    public Position PositionTwo { get; init; }
 
     public PositionClientMock()
     {
@@ -38,10 +38,31 @@ internal sealed class PositionClientMock
                 }
             }
         };
+        
+        PositionTwo = new Position
+        {
+            Id = 2,
+            Name = "Test2",
+            Grades =
+            {
+                new List<Grade>
+                {
+                    new()
+                    {
+                        Value = 2,
+                        ActualHistoryId = 2,
+                        Salary = new DecimalValue
+                        {
+                            Units = 2000
+                        }
+                    }
+                }
+            }
+        };
 
         List<Position> positionsResponse = new()
         {
-            PositionResponse
+            PositionResponse, PositionTwo
         };
         
         PositionClient.GetAll(Arg.Any<Empty>(), Arg.Any<Metadata>(), Arg.Any<DateTime?>(), Arg.Any<CancellationToken>())
