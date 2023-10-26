@@ -1,3 +1,4 @@
+using EMS.Exceptions;
 using EMS.Person.Models;
 using EMS.Protos;
 using Exceptions;

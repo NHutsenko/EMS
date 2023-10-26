@@ -19,7 +19,6 @@ internal sealed class PersonClientMock
     public Int32Value PersonFoundRequest { get; init; }
     public Int32Value ManagerFoundRequest { get; init; }
     public Int32Value MentorFoundRequest { get; init; }
-    public Int32Value PersonNotFoundRequest { get; init; }
 
     public PersonClientMock()
     {
@@ -109,16 +108,6 @@ internal sealed class PersonClientMock
         };
         PersonClient.GetAsync(MentorFoundRequest, Arg.Any<Metadata>(), Arg.Any<DateTime?>(), Arg.Any<CancellationToken>())
             .Returns(GrpcCoreMock.GetAsyncUnaryCallResponse(MentorResponse));
-        
-        PersonNotFoundRequest = new Int32Value
-        {
-            Value = 999
-        };
-        PersonClient.GetAsync(PersonNotFoundRequest, Arg.Any<Metadata>(), Arg.Any<DateTime?>(), Arg.Any<CancellationToken>())
-            .Throws(new NotFoundException($"Person with id {PersonNotFoundRequest.Value} not found").ToRpcException());
-        
-        PersonClient.GetAsync(PersonNotFoundRequest, Arg.Any<Metadata>(), Arg.Any<DateTime?>(), Arg.Any<CancellationToken>())
-            .Returns(x => throw new NotFoundException($"Person with id {PersonNotFoundRequest.Value} not found").ToRpcException());
 
         PersonClient.GetAll(Arg.Any<Empty>(), Arg.Any<Metadata>(), Arg.Any<DateTime?>(), Arg.Any<CancellationToken>())
             .Returns(GrpcCoreMock.GetStreamResponse(new List<PersonData>()

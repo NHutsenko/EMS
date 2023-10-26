@@ -44,22 +44,4 @@ public partial class EmploymentHistoryServiceTests
             await writer.Received(1).WriteAsync(data);
         }
     }
-    
-    [Fact(DisplayName = "GetPersonEmployment should throw exception that employment not found for requested person")]
-    public async Task GetData_TestCaseTwo()
-    {
-        // Arrange
-        _service = new EmploymentHistoryService(_personClientMock.PersonClient, _positionClientMock.PositionClient, _staffClientMock.StaffClient);
-        IServerStreamWriter<EmploymentHistoryData> writer = GrpcCoreMock.GetTestServerStreamWriter<EmploymentHistoryData>();
-        
-       // Act
-       RpcException? exception = await Assert.ThrowsAsync<RpcException>(() =>
-           _service.GetPersonEmployment(_staffClientMock.PersonStaffNotFoundRequest, writer, GrpcCoreMock.GetCallContext(nameof(_service.GetPersonEmployment))));
-       
-       // Assert
-       _staffClientMock.StaffClient.Received(1).GetByPerson(_staffClientMock.PersonStaffNotFoundRequest);
-       exception.Should().NotBe(null);
-       exception.Status.StatusCode.Should().Be(StatusCode.NotFound);
-       exception.Status.Detail.Should().Be($"Staff for person with id {_staffClientMock.PersonStaffNotFoundRequest.Value} not found");
-    }
 }

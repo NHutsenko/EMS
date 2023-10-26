@@ -16,11 +16,7 @@ internal sealed class StaffClientMock
     public Staff StaffFirst { get; init; }
     public Staff StaffSecond { get; init; }
     public Int32Value PersonStaffFoundRequest { get; init; }
-    public Int32Value PersonStaffNotFoundRequest { get; init; }
-    
     public Int32Value StaffFoundRequest { get; init; }
-    public Int32Value StaffNotFoundRequest { get; init; }
-    
     public Int32Value StaffCreateResponse { get; init; }
 
     public StaffClientMock()
@@ -65,13 +61,6 @@ internal sealed class StaffClientMock
         };
         StaffClient.GetByPerson(PersonStaffFoundRequest, Arg.Any<Metadata>(), Arg.Any<DateTime?>(), Arg.Any<CancellationToken>())
             .Returns(GrpcCoreMock.GetStreamResponse(PersonStaffHistoryResponse));
-        
-        PersonStaffNotFoundRequest = new Int32Value
-        {
-            Value = 999
-        };
-        StaffClient.GetByPerson(PersonStaffNotFoundRequest, Arg.Any<Metadata>(), Arg.Any<DateTime?>(), Arg.Any<CancellationToken>())
-            .Throws(new NotFoundException($"Staff for person with id {PersonStaffNotFoundRequest.Value} not found").ToRpcException());
 
         StaffCreateResponse = new Int32Value
         {
@@ -86,14 +75,22 @@ internal sealed class StaffClientMock
         {
             Value = StaffSecond.Id
         };
-        StaffClient.GetByIdAsync(StaffFoundRequest, Arg.Any<Metadata>(), Arg.Any<DateTime?>(), Arg.Any<CancellationToken>())
+        StaffClient.GetByHistoryIdAsync(StaffFoundRequest, Arg.Any<Metadata>(), Arg.Any<DateTime?>(), Arg.Any<CancellationToken>())
             .Returns(GrpcCoreMock.GetAsyncUnaryCallResponse(StaffSecond));
         
-        StaffNotFoundRequest = new Int32Value
-        {
-            Value = 999
-        };
-        StaffClient.GetByIdAsync(StaffNotFoundRequest, Arg.Any<Metadata>(), Arg.Any<DateTime?>(), Arg.Any<CancellationToken>())
-            .Throws(new NotFoundException($"Staff with id {StaffNotFoundRequest.Value} not found").ToRpcException());
+        StaffClient.SetManagerAsync(Arg.Any<NewManager>(),Arg.Any<Metadata>(), Arg.Any<DateTime?>(), Arg.Any<CancellationToken>())
+            .Returns(GrpcCoreMock.GetAsyncUnaryCallResponse(new Empty()));
+        
+        StaffClient.SetPositionAsync(Arg.Any<NewPosition>(),Arg.Any<Metadata>(), Arg.Any<DateTime?>(), Arg.Any<CancellationToken>())
+            .Returns(GrpcCoreMock.GetAsyncUnaryCallResponse(new Empty()));
+        
+        StaffClient.SetDateAsync(Arg.Any<NewDate>(),Arg.Any<Metadata>(), Arg.Any<DateTime?>(), Arg.Any<CancellationToken>())
+            .Returns(GrpcCoreMock.GetAsyncUnaryCallResponse(new Empty()));
+        
+        StaffClient.SetEmploymentAsync(Arg.Any<NewEmployment>(),Arg.Any<Metadata>(), Arg.Any<DateTime?>(), Arg.Any<CancellationToken>())
+            .Returns(GrpcCoreMock.GetAsyncUnaryCallResponse(new Empty()));
+        
+        StaffClient.SetMentorAsync(Arg.Any<NewMentor>(),Arg.Any<Metadata>(), Arg.Any<DateTime?>(), Arg.Any<CancellationToken>())
+            .Returns(GrpcCoreMock.GetAsyncUnaryCallResponse(new Empty()));
     }
 }

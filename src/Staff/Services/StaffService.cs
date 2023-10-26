@@ -1,3 +1,4 @@
+using EMS.Exceptions;
 using EMS.Protos;
 using EMS.Staff.Context;
 using EMS.Staff.Models;
@@ -18,12 +19,12 @@ public sealed class StaffService : Protos.StaffService.StaffServiceBase
         _dbContext = dbContext;
     }
 
-    public override async Task<Protos.Staff> GetById(Int32Value request, ServerCallContext context)
+    public override async Task<Protos.Staff> GetByHistoryId(Int32Value request, ServerCallContext context)
     {
         Models.Staff? data = await _dbContext.Staff
             .Include(e => e.History)
             .AsNoTracking()
-            .FirstOrDefaultAsync(e => e.History.PersonId == request.Value, context.CancellationToken);
+            .FirstOrDefaultAsync(e => e.History.Id == request.Value, context.CancellationToken);
         if (data is null)
         {
             throw new NotFoundException($"Staff with id {request.Value} not found");

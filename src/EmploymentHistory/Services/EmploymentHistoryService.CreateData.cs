@@ -1,6 +1,9 @@
+using EMS.Exceptions;
 using EMS.Protos;
+using Exceptions;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
+using Grpc.Core.Utils;
 
 namespace EMS.EmploymentHistory.Services;
 
@@ -8,18 +11,30 @@ public sealed partial class EmploymentHistoryService
 {
     public override async Task<Int32Value> CreateEmployment(NewEmploymentHistory request, ServerCallContext context)
     {
-        Int32Value personRequest = new()
-        {
-            Value = request.PersonId
-        };
-        await _personServiceClient.GetAsync(personRequest);
-        
-        Int32Value managerRequest = new()
-        {
-            Value = request.ManagerId
-        };
-        await _personServiceClient.GetAsync(managerRequest);
+        await CheckPeopleAsync(request.PersonId, request.ManagerId, request.MentorId);
+        await ThrowExceptionIfPositionNotFoundAsync(request.PositionId);
+        await ThrowExceptionIfDateIsWrongAsync(request.PersonId, request.StartWork);
 
-        return new Int32Value();
+        NewStaff staff = new()
+        {
+            Position = request.PositionId,
+            Manager = request.ManagerId
+        };
+        Int32Value staffId = await _staffServiceClient.CreateAsync(staff);
+
+        NewHistory history = new()
+        {
+            StaffId = staffId.Value,
+            Data = new StaffHistory
+            {
+                Person = request.PersonId,
+                Mentor = request.MentorId,
+                CreatedOn = request.StartWork,
+                Employment = request.Employment
+            }
+        };
+        await _staffServiceClient.CreateHistoryAsync(history);
+        
+        return staffId;
     }
 }
