@@ -15,6 +15,7 @@ builder.Services.AddGrpcServer();
 builder.Services.AddDbContext(builder.Configuration);
 
 builder.Services.AddScoped<IPositionRepository, PositionRepository>();
+builder.Services.AddScoped<ITeamRepository, TeamRepository>();
 
 WebApplication app = builder.Build();
 

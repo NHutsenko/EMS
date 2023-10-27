@@ -75,6 +75,6 @@ public sealed class PositionRepository: IPositionRepository
                     Value = e.Value
                 }
             }
-        });
+        }).ToList();
     }
 }
