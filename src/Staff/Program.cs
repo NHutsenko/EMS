@@ -1,6 +1,8 @@
 using EMS.Extensions;
 using EMS.Logging.Extensions;
 using EMS.Staff.Extensions;
+using EMS.Staff.Interfaces;
+using EMS.Staff.Repositories;
 using EMS.Staff.Services;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -11,6 +13,8 @@ builder.Services.AddLogger();
 builder.Services.AddGrpcServer();
 
 builder.Services.AddDbContext(builder.Configuration);
+
+builder.Services.AddScoped<IStaffRepository, StaffRepository>();
 
 WebApplication app = builder.Build();
 

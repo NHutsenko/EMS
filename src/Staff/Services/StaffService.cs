@@ -1,6 +1,7 @@
 using EMS.Exceptions;
 using EMS.Protos;
 using EMS.Staff.Context;
+using EMS.Staff.Interfaces;
 using EMS.Staff.Models;
 using Exceptions;
 using Google.Protobuf.WellKnownTypes;
@@ -12,23 +13,16 @@ namespace EMS.Staff.Services;
 
 public sealed class StaffService : Protos.StaffService.StaffServiceBase
 {
-    private readonly StaffContext _dbContext;
+    private readonly IStaffRepository _staffRepository;
 
-    public StaffService(StaffContext dbContext)
+    public StaffService(IStaffRepository staffRepository)
     {
-        _dbContext = dbContext;
+        _staffRepository = staffRepository;
     }
 
     public override async Task<Protos.Staff> GetByHistoryId(Int32Value request, ServerCallContext context)
     {
-        Models.Staff? data = await _dbContext.Staff
-            .Include(e => e.History)
-            .AsNoTracking()
-            .FirstOrDefaultAsync(e => e.History.Id == request.Value, context.CancellationToken);
-        if (data is null)
-        {
-            throw new NotFoundException($"Staff with id {request.Value} not found");
-        }
+        Models.Staff data = await _staffRepository.GetByHistoryIdAsync(request.Value, context.CancellationToken);
 
         return new Protos.Staff
         {
@@ -49,16 +43,7 @@ public sealed class StaffService : Protos.StaffService.StaffServiceBase
 
     public override async Task GetByPerson(Int32Value request, IServerStreamWriter<Protos.Staff> responseStream, ServerCallContext context)
     {
-        if (await _dbContext.History.AnyAsync(e => e.PersonId == request.Value, context.CancellationToken) is false)
-        {
-            throw new NotFoundException($"Staff for person with id {request.Value} not found");
-        }
-
-        IEnumerable<Protos.Staff> data = (await _dbContext.Staff
-                .Include(e => e.History)
-                .AsNoTracking()
-                .Where(e => e.History.PersonId == request.Value)
-                .ToListAsync(context.CancellationToken))
+        IEnumerable<Protos.Staff> data = (await _staffRepository.GetByPersonAsync(request.Value, context.CancellationToken))
             .Select(e => new Protos.Staff
             {
                 Id = e.Id,
@@ -79,16 +64,7 @@ public sealed class StaffService : Protos.StaffService.StaffServiceBase
 
     public override async Task GetByManager(Int32Value request, IServerStreamWriter<Protos.Staff> responseStream, ServerCallContext context)
     {
-        if (await _dbContext.Staff.AnyAsync(e => e.ManagerId == request.Value, context.CancellationToken) is false)
-        {
-            throw new NotFoundException($"Staff for manager with id {request.Value} not found");
-        }
-
-        IEnumerable<Protos.Staff> data = (await _dbContext.Staff
-                .Include(e => e.History)
-                .AsNoTracking()
-                .Where(e => e.ManagerId == request.Value)
-                .ToListAsync(context.CancellationToken))
+        IEnumerable<Protos.Staff> data = (await _staffRepository.GetByManagerAsync(request.Value, context.CancellationToken))
             .Select(e => new Protos.Staff
             {
                 Id = e.Id,
@@ -109,10 +85,7 @@ public sealed class StaffService : Protos.StaffService.StaffServiceBase
 
     public override async Task GetAll(Empty request, IServerStreamWriter<Protos.Staff> responseStream, ServerCallContext context)
     {
-        IEnumerable<Protos.Staff> data = (await _dbContext.Staff
-                .Include(e => e.History)
-                .AsNoTracking()
-                .ToListAsync(context.CancellationToken))
+        IEnumerable<Protos.Staff> data = (await _staffRepository.GetAllAsync(context.CancellationToken))
             .Select(e => new Protos.Staff
             {
                 Id = e.Id,
@@ -134,112 +107,58 @@ public sealed class StaffService : Protos.StaffService.StaffServiceBase
 
     public override async Task<Int32Value> Create(NewStaff request, ServerCallContext context)
     {
-        Models.Staff staff = new()
-        {
-            ManagerId = request.Manager,
-            PositionId = request.Position
-        };
-
-        await _dbContext.Staff.AddAsync(staff, context.CancellationToken);
-        await _dbContext.SaveChangesAsync(context.CancellationToken);
+        int id = await _staffRepository.CreateAsync(request.Position, request.Manager, context.CancellationToken);
 
         return new Int32Value
         {
-            Value = staff.Id
+            Value = id
         };
     }
 
     public override async Task<Empty> CreateHistory(NewHistory request, ServerCallContext context)
     {
-        if (await _dbContext.Staff.AnyAsync(e => e.Id == request.StaffId) is false)
-        {
-            throw new NotFoundException($"Staff with id {request.StaffId} not found");
-        }
-
-        History history = new()
-        {
-            StaffId = request.StaffId,
-            PersonId = request.Data.Person,
-            MentorId = request.Data.Mentor,
-            Employment = request.Data.Employment,
-            CreatedOn = request.Data.CreatedOn.ToDateTime()
-        };
-
-        await _dbContext.History.AddAsync(history, context.CancellationToken);
-        await _dbContext.SaveChangesAsync(context.CancellationToken);
+        await _staffRepository.CreateHistoryAsync(request.StaffId, 
+            request.Data.Person,
+            request.Data.Mentor,
+            request.Data.Employment,
+            request.Data.CreatedOn.ToDateTime(),
+            context.CancellationToken);
 
         return new Empty();
     }
 
     public override async Task<Empty> SetManager(NewManager request, ServerCallContext context)
     {
-        Models.Staff staff = await GetStaffAsync(request.StaffId, context.CancellationToken);
-
-        _dbContext.Entry(staff).Property(e => e.ManagerId).CurrentValue = request.Manager;
-        await _dbContext.SaveChangesAsync(context.CancellationToken);
+        await _staffRepository.SetManagerAsync(request.StaffId, request.Manager, context.CancellationToken);
 
         return new Empty();
     }
 
     public override async Task<Empty> SetPosition(NewPosition request, ServerCallContext context)
     {
-        Models.Staff staff = await GetStaffAsync(request.StaffId, context.CancellationToken);
-
-        _dbContext.Entry(staff).Property(e => e.PositionId).CurrentValue = request.Position;
-        await _dbContext.SaveChangesAsync(context.CancellationToken);
+        await _staffRepository.SetPositionAsync(request.StaffId, request.Position, context.CancellationToken);
 
         return new Empty();
     }
 
     public override async Task<Empty> SetDate(NewDate request, ServerCallContext context)
     {
-        History history = await GetStaffHistoryAsync(request.StaffId, context.CancellationToken);
-
-        _dbContext.Entry(history).Property(e => e.CreatedOn).CurrentValue = request.Date.ToDateTime();
-        await _dbContext.SaveChangesAsync(context.CancellationToken);
+        await _staffRepository.SetDateAsync(request.StaffId, request.Date.ToDateTime(), context.CancellationToken);
 
         return new Empty();
     }
 
     public override async Task<Empty> SetEmployment(NewEmployment request, ServerCallContext context)
     {
-        History history = await GetStaffHistoryAsync(request.StaffId, context.CancellationToken);
-
-        _dbContext.Entry(history).Property(e => e.Employment).CurrentValue = request.Employment;
-        await _dbContext.SaveChangesAsync(context.CancellationToken);
+        await _staffRepository.SetEmploymentAsync(request.StaffId, request.Employment, context.CancellationToken);
 
         return new Empty();
     }
 
     public override async Task<Empty> SetMentor(NewMentor request, ServerCallContext context)
     {
-        History history = await GetStaffHistoryAsync(request.StaffId, context.CancellationToken);
-
-        _dbContext.Entry(history).Property(e => e.MentorId).CurrentValue = request.Mentor;
-        await _dbContext.SaveChangesAsync(context.CancellationToken);
+        await _staffRepository.SetMentorAsync(request.StaffId, request.Mentor, context.CancellationToken);
 
         return new Empty();
-    }
-
-    private async Task<Models.Staff> GetStaffAsync(int staffId, CancellationToken cancellationToken)
-    {
-        Models.Staff? staff = await _dbContext.Staff.FirstOrDefaultAsync(e => e.Id == staffId, cancellationToken);
-        if (staff is null)
-        {
-            throw new NotFoundException($"Staff with id {staffId} not found");
-        }
-
-        return staff;
-    }
-
-    private async Task<History> GetStaffHistoryAsync(int staffId, CancellationToken cancellationToken)
-    {
-        History? history = await _dbContext.History.FirstOrDefaultAsync(e => e.StaffId == staffId, cancellationToken);
-        if (history is null)
-        {
-            throw new NotFoundException($"Staff history with id {staffId} not found");
-        }
-
-        return history;
     }
 }

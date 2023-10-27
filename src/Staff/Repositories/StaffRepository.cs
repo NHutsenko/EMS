@@ -1,0 +1,166 @@
+using EMS.Exceptions;
+using EMS.Staff.Context;
+using EMS.Staff.Interfaces;
+using EMS.Staff.Models;
+using Microsoft.EntityFrameworkCore;
+
+namespace EMS.Staff.Repositories;
+
+public sealed class StaffRepository: IStaffRepository
+{
+    private readonly StaffContext _context;
+
+    public StaffRepository(StaffContext context)
+    {
+        _context = context;
+    }
+
+    public async Task<Models.Staff> GetByHistoryIdAsync(int historyId, CancellationToken cancellationToken)
+    {
+        Models.Staff staff = await _context.Staff
+            .Include(e => e.History)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(e => e.History.Id == historyId, cancellationToken);
+        if (staff is null)
+        {
+            throw new NotFoundException($"Staff with history id {historyId} not found");
+        }
+
+        return staff;
+    }
+
+    public async Task<IEnumerable<Models.Staff>> GetByPersonAsync(int personId, CancellationToken cancellationToken)
+    {
+        if (await _context.History.AnyAsync(e => e.PersonId == personId, cancellationToken) is false)
+        {
+            throw new NotFoundException($"Staff for person with id {personId} not found");
+        }
+
+        IEnumerable<Models.Staff> data = await _context.Staff
+            .Include(e => e.History)
+            .AsNoTracking()
+            .Where(e => e.History.PersonId == personId)
+            .ToListAsync(cancellationToken);
+        
+        return data;
+    }
+
+    public async Task<IEnumerable<Models.Staff>> GetByManagerAsync(int managerId, CancellationToken cancellationToken)
+    {
+        if (await _context.Staff.AnyAsync(e => e.ManagerId == managerId, cancellationToken) is false)
+        {
+            throw new NotFoundException($"Staff for manager with id {managerId} not found");
+        }
+
+        IEnumerable<Models.Staff> data = await _context.Staff
+            .Include(e => e.History)
+            .AsNoTracking()
+            .Where(e => e.ManagerId == managerId)
+            .ToListAsync(cancellationToken);
+        return data;
+    }
+
+    public async Task<IEnumerable<Models.Staff>> GetAllAsync(CancellationToken cancellationToken)
+    {
+        return await _context.Staff
+            .Include(e => e.History)
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task<int> CreateAsync(int position, int manager, CancellationToken cancellationToken)
+    {
+        Models.Staff staff = new()
+        {
+            ManagerId = manager,
+            PositionId = position
+        };
+
+        await _context.Staff.AddAsync(staff, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
+        
+        return staff.Id;
+    }
+
+    public async Task CreateHistoryAsync(int staffId, int person, int? mentor, int employment, DateTime createdOn, CancellationToken cancellationToken)
+    {
+        if (await _context.Staff.AnyAsync(e => e.Id == staffId, cancellationToken: cancellationToken) is false)
+        {
+            throw new NotFoundException($"Staff with id {staffId} not found");
+        }
+
+        History history = new()
+        {
+            StaffId = staffId,
+            PersonId = person,
+            MentorId = mentor,
+            Employment = employment,
+            CreatedOn = createdOn
+        };
+
+        await _context.History.AddAsync(history, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task SetManagerAsync(int staffId, int manager, CancellationToken cancellationToken)
+    {
+        Models.Staff staff = await GetStaffAsync(staffId, cancellationToken);
+
+        _context.Entry(staff).Property(e => e.ManagerId).CurrentValue = manager;
+        await _context.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task SetPositionAsync(int staffId, int position, CancellationToken cancellationToken)
+    {
+        Models.Staff staff = await GetStaffAsync(staffId, cancellationToken);
+
+        _context.Entry(staff).Property(e => e.PositionId).CurrentValue = position;
+        await _context.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task SetDateAsync(int staffId, DateTime createdOn, CancellationToken cancellationToken)
+    {
+        History history = await GetStaffHistoryAsync(staffId, cancellationToken);
+
+        _context.Entry(history).Property(e => e.CreatedOn).CurrentValue = createdOn;
+        await _context.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task SetEmploymentAsync(int staffId, int employment, CancellationToken cancellationToken)
+    {
+        History history = await GetStaffHistoryAsync(staffId, cancellationToken);
+
+        _context.Entry(history).Property(e => e.Employment).CurrentValue = employment;
+        await _context.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task SetMentorAsync(int staffId, int? mentor, CancellationToken cancellationToken)
+    {
+        History history = await GetStaffHistoryAsync(staffId, cancellationToken);
+
+        _context.Entry(history).Property(e => e.MentorId).CurrentValue = mentor;
+        await _context.SaveChangesAsync(cancellationToken);
+    }
+    
+    private async Task<Models.Staff> GetStaffAsync(int staffId, CancellationToken cancellationToken)
+    {
+        Models.Staff? staff = await _context.Staff.FirstOrDefaultAsync(e => e.Id == staffId, cancellationToken);
+        if (staff is null)
+        {
+            throw new NotFoundException($"Staff with id {staffId} not found");
+        }
+
+        return staff;
+    }
+
+    private async Task<History> GetStaffHistoryAsync(int staffId, CancellationToken cancellationToken)
+    {
+        History? history = await _context.History.FirstOrDefaultAsync(e => e.StaffId == staffId, cancellationToken);
+        if (history is null)
+        {
+            throw new NotFoundException($"Staff history with id {staffId} not found");
+        }
+
+        return history;
+    }
+}
