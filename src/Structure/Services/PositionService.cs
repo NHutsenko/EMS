@@ -1,8 +1,6 @@
-using EMS.Exceptions;
 using EMS.Protos;
 using EMS.Structure.Context;
 using EMS.Structure.Interfaces;
-using Google.Protobuf.Collections;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Grpc.Core.Utils;

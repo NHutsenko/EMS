@@ -1,11 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
-using System.Security.Cryptography.X509Certificates;
 using EMS.Protos;
-using Exceptions;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using NSubstitute;
-using NSubstitute.ExceptionExtensions;
 
 namespace EMS.EmploymentHistory.Tests.Mocks;
 

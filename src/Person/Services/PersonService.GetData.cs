@@ -1,66 +1,36 @@
-using EMS.Exceptions;
-using EMS.Person.Context;
+using EMS.Person.Interfaces;
 using EMS.Person.Mappers;
 using EMS.Person.Models;
 using EMS.Protos;
-using Exceptions;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Grpc.Core.Utils;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 
 namespace EMS.Person.Services;
 
 public sealed partial class PersonService : Protos.PersonService.PersonServiceBase
 {
-    private readonly PersonContext _dbContext;
+    private readonly IGetPersonDataRepository _getPersonDataRepository;
 
-    public PersonService(PersonContext dbContext)
+    public PersonService(IGetPersonDataRepository getPersonDataRepository, IAddPersonDataRepository addPersonDataRepository, IUpdatePersonDataRepository updatePersonDataRepository)
     {
-        _dbContext = dbContext;
+        _getPersonDataRepository = getPersonDataRepository;
+        _updatePersonDataRepository = updatePersonDataRepository;
+        _addPersonDataRepository = addPersonDataRepository;
     }
 
     public override async Task<PersonData?> Get(Int32Value request, ServerCallContext context)
     {
-        IQueryable<PersonInfo> filtered = _dbContext.People.Where(e => e.Id == request.Value);
-        PersonInfo? data = await GetPeopleData(filtered)
-            .FirstOrDefaultAsync(context.CancellationToken);
-
-        if (data is null)
-        {
-            throw new NotFoundException($"Person with id {request.Value} not found");
-        }
+        PersonInfo data = await _getPersonDataRepository.GetPersonAsync(request.Value, context.CancellationToken);
         
         return data.MapToProto();
     }
 
     public override async Task GetAll(Empty request, IServerStreamWriter<PersonData> responseStream, ServerCallContext context)
     {
-        IQueryable<PersonInfo> filtered = _dbContext.People.AsQueryable();
-        IEnumerable<PersonData> data = (await GetPeopleData(filtered)
-                .ToListAsync(context.CancellationToken))
+        IEnumerable<PersonData> data = (await _getPersonDataRepository.GetPeopleAsync(context.CancellationToken))
             .Select(e => e.MapToProto());
 
         await responseStream.WriteAllAsync(data);
-    }
-
-    private async Task<PersonInfo> GetPersonAsync(int id, CancellationToken cancellationToken)
-    {
-        PersonInfo? info = await _dbContext.People.FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
-
-        if (info is null)
-        {
-            throw new NotFoundException($"Person with id: {id} not found");
-        }
-
-        return info;
-    }
-
-    private IIncludableQueryable<PersonInfo, IEnumerable<Contact>?> GetPeopleData(IQueryable<PersonInfo> request)
-    {
-        return request
-            .Include(e => e.Address)
-            .Include(e => e.Contacts);
     }
 }

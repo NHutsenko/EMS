@@ -1,9 +1,6 @@
-using EMS.Exceptions;
 using EMS.Protos;
-using Exceptions;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
-using Grpc.Core.Utils;
 
 namespace EMS.EmploymentHistory.Services;
 

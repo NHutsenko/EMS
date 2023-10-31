@@ -29,12 +29,11 @@ internal static class GrpcCoreMock
 
     public static AsyncUnaryCall<T> GetAsyncUnaryCallResponse<T>(T responseData) where T : class
     {
-        return new AsyncUnaryCall<T>(Task.FromResult(responseData), null, null, null, null);
-    }
-    
-    public static AsyncUnaryCall<T> GetAsyncUnaryCallException<T>(Exception responseData) where T : class
-    {
-        return new AsyncUnaryCall<T>(Task.FromException<T>(responseData), null, null, null, null);
+        return new AsyncUnaryCall<T>(Task.FromResult(responseData),
+            Task.FromResult(new Metadata()),
+            () => new Status(StatusCode.OK, string.Empty),
+            () => new Metadata(),
+            () => { });
     }
 
     public static AsyncServerStreamingCall<T> GetStreamResponse<T>(IEnumerable<T> response) where T : class
@@ -43,7 +42,7 @@ internal static class GrpcCoreMock
         AsyncServerStreamingCall<T>? mock = new AsyncServerStreamingCall<T>(streamReader,
             Task.FromResult(new Metadata()),
             () => new Status(StatusCode.OK, string.Empty),
-            () => null,
+            () => new Metadata(),
             () => { });
         return mock;
     }

@@ -2,7 +2,6 @@ using System.Diagnostics.CodeAnalysis;
 using EMS.EmploymentHistory.Tests.Mocks;
 using EMS.Exceptions;
 using EMS.Protos;
-using Exceptions;
 using FluentAssertions;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;

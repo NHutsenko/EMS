@@ -27,9 +27,7 @@ public sealed class PositionRepository: IPositionRepository
     public async Task<int> CreateAsync(string name, IDictionary<int, decimal> grades, CancellationToken cancellationToken)
     {
         if (await _context.Positions.AnyAsync(e => e.Name == name, cancellationToken))
-        {
             throw new AlreadyExistsException($"Position with name {name} already exists");
-        }
 
         Position position = new()
         {
@@ -47,9 +45,7 @@ public sealed class PositionRepository: IPositionRepository
     {
         Grade? grade = await _context.Grades.FirstOrDefaultAsync(e => e.PositionId ==positionId && e.Value == gradeData.Key, cancellationToken);
         if (grade is null)
-        {
             throw new NotFoundException($"Grade {gradeData.Key} for position with id {positionId} not found");
-        }
 
         GradeHistory history = new()
         {

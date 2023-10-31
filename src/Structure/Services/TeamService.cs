@@ -1,4 +1,3 @@
-using EMS.Exceptions;
 using EMS.Protos;
 using EMS.Structure.Interfaces;
 using Google.Protobuf.WellKnownTypes;

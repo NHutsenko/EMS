@@ -1,5 +1,4 @@
 using System.Diagnostics.CodeAnalysis;
-using System.Security.Cryptography.X509Certificates;
 using EMS.Protos;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;

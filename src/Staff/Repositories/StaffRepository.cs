@@ -17,14 +17,12 @@ public sealed class StaffRepository: IStaffRepository
 
     public async Task<Models.Staff> GetByHistoryIdAsync(int historyId, CancellationToken cancellationToken)
     {
-        Models.Staff staff = await _context.Staff
+        Models.Staff? staff = await _context.Staff
             .Include(e => e.History)
             .AsNoTracking()
-            .FirstOrDefaultAsync(e => e.History.Id == historyId, cancellationToken);
+            .FirstOrDefaultAsync(e => e.History!.Id == historyId, cancellationToken);
         if (staff is null)
-        {
             throw new NotFoundException($"Staff with history id {historyId} not found");
-        }
 
         return staff;
     }
@@ -32,14 +30,12 @@ public sealed class StaffRepository: IStaffRepository
     public async Task<IEnumerable<Models.Staff>> GetByPersonAsync(int personId, CancellationToken cancellationToken)
     {
         if (await _context.History.AnyAsync(e => e.PersonId == personId, cancellationToken) is false)
-        {
             throw new NotFoundException($"Staff for person with id {personId} not found");
-        }
 
         IEnumerable<Models.Staff> data = await _context.Staff
             .Include(e => e.History)
             .AsNoTracking()
-            .Where(e => e.History.PersonId == personId)
+            .Where(e => e.History!.PersonId == personId)
             .ToListAsync(cancellationToken);
         
         return data;
@@ -48,9 +44,7 @@ public sealed class StaffRepository: IStaffRepository
     public async Task<IEnumerable<Models.Staff>> GetByManagerAsync(int managerId, CancellationToken cancellationToken)
     {
         if (await _context.Staff.AnyAsync(e => e.ManagerId == managerId, cancellationToken) is false)
-        {
             throw new NotFoundException($"Staff for manager with id {managerId} not found");
-        }
 
         IEnumerable<Models.Staff> data = await _context.Staff
             .Include(e => e.History)
@@ -85,9 +79,7 @@ public sealed class StaffRepository: IStaffRepository
     public async Task CreateHistoryAsync(int staffId, int person, int? mentor, int employment, DateTime createdOn, CancellationToken cancellationToken)
     {
         if (await _context.Staff.AnyAsync(e => e.Id == staffId, cancellationToken: cancellationToken) is false)
-        {
             throw new NotFoundException($"Staff with id {staffId} not found");
-        }
 
         History history = new()
         {
@@ -146,9 +138,7 @@ public sealed class StaffRepository: IStaffRepository
     {
         Models.Staff? staff = await _context.Staff.FirstOrDefaultAsync(e => e.Id == staffId, cancellationToken);
         if (staff is null)
-        {
             throw new NotFoundException($"Staff with id {staffId} not found");
-        }
 
         return staff;
     }
@@ -157,9 +147,7 @@ public sealed class StaffRepository: IStaffRepository
     {
         History? history = await _context.History.FirstOrDefaultAsync(e => e.StaffId == staffId, cancellationToken);
         if (history is null)
-        {
             throw new NotFoundException($"Staff history with id {staffId} not found");
-        }
 
         return history;
     }

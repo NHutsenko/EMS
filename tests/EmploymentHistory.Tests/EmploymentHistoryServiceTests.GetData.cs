@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using EMS.EmploymentHistory.Tests.Mocks;
 using EMS.Protos;
-using FluentAssertions;
 using Grpc.Core;
 using NSubstitute;
 using EmploymentHistoryService = EMS.EmploymentHistory.Services.EmploymentHistoryService;

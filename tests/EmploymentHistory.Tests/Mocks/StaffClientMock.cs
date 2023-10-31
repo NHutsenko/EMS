@@ -1,10 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
 using EMS.Protos;
-using Exceptions;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using NSubstitute;
-using NSubstitute.ExceptionExtensions;
 
 namespace EMS.EmploymentHistory.Tests.Mocks;
 
