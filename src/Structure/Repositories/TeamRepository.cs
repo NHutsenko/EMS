@@ -2,7 +2,6 @@ using EMS.Exceptions;
 using EMS.Structure.Context;
 using EMS.Structure.Interfaces;
 using EMS.Structure.Models;
-using Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace EMS.Structure.Repositories;

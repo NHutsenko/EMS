@@ -1,10 +1,10 @@
 using EMS.Exceptions;
-using EMS.Staff.Context;
-using EMS.Staff.Interfaces;
-using EMS.Staff.Models;
+using EMS.Staff.Application.Interfaces;
+using EMS.Staff.Domain;
+using EMS.Staff.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 
-namespace EMS.Staff.Repositories;
+namespace EMS.Staff.Infrastructure;
 
 public sealed class StaffRepository: IStaffRepository
 {
@@ -15,9 +15,9 @@ public sealed class StaffRepository: IStaffRepository
         _context = context;
     }
 
-    public async Task<Models.Staff> GetByHistoryIdAsync(int historyId, CancellationToken cancellationToken)
+    public async Task<Domain.Staff> GetByHistoryIdAsync(int historyId, CancellationToken cancellationToken)
     {
-        Models.Staff? staff = await _context.Staff
+        Domain.Staff? staff = await _context.Staff
             .Include(e => e.History)
             .AsNoTracking()
             .FirstOrDefaultAsync(e => e.History!.Id == historyId, cancellationToken);
@@ -27,12 +27,12 @@ public sealed class StaffRepository: IStaffRepository
         return staff;
     }
 
-    public async Task<IEnumerable<Models.Staff>> GetByPersonAsync(int personId, CancellationToken cancellationToken)
+    public async Task<IEnumerable<Domain.Staff>> GetByPersonAsync(int personId, CancellationToken cancellationToken)
     {
         if (await _context.History.AnyAsync(e => e.PersonId == personId, cancellationToken) is false)
             throw new NotFoundException($"Staff for person with id {personId} not found");
 
-        IEnumerable<Models.Staff> data = await _context.Staff
+        IEnumerable<Domain.Staff> data = await _context.Staff
             .Include(e => e.History)
             .AsNoTracking()
             .Where(e => e.History!.PersonId == personId)
@@ -41,12 +41,12 @@ public sealed class StaffRepository: IStaffRepository
         return data;
     }
 
-    public async Task<IEnumerable<Models.Staff>> GetByManagerAsync(int managerId, CancellationToken cancellationToken)
+    public async Task<IEnumerable<Domain.Staff>> GetByManagerAsync(int managerId, CancellationToken cancellationToken)
     {
         if (await _context.Staff.AnyAsync(e => e.ManagerId == managerId, cancellationToken) is false)
             throw new NotFoundException($"Staff for manager with id {managerId} not found");
 
-        IEnumerable<Models.Staff> data = await _context.Staff
+        IEnumerable<Domain.Staff> data = await _context.Staff
             .Include(e => e.History)
             .AsNoTracking()
             .Where(e => e.ManagerId == managerId)
@@ -54,7 +54,7 @@ public sealed class StaffRepository: IStaffRepository
         return data;
     }
 
-    public async Task<IEnumerable<Models.Staff>> GetAllAsync(CancellationToken cancellationToken)
+    public async Task<IEnumerable<Domain.Staff>> GetAllAsync(CancellationToken cancellationToken)
     {
         return await _context.Staff
             .Include(e => e.History)
@@ -64,7 +64,7 @@ public sealed class StaffRepository: IStaffRepository
 
     public async Task<int> CreateAsync(int position, int manager, CancellationToken cancellationToken)
     {
-        Models.Staff staff = new()
+        Domain.Staff staff = new()
         {
             ManagerId = manager,
             PositionId = position
@@ -96,7 +96,7 @@ public sealed class StaffRepository: IStaffRepository
 
     public async Task SetManagerAsync(int staffId, int manager, CancellationToken cancellationToken)
     {
-        Models.Staff staff = await GetStaffAsync(staffId, cancellationToken);
+        Domain.Staff staff = await GetStaffAsync(staffId, cancellationToken);
 
         _context.Entry(staff).Property(e => e.ManagerId).CurrentValue = manager;
         await _context.SaveChangesAsync(cancellationToken);
@@ -104,7 +104,7 @@ public sealed class StaffRepository: IStaffRepository
 
     public async Task SetPositionAsync(int staffId, int position, CancellationToken cancellationToken)
     {
-        Models.Staff staff = await GetStaffAsync(staffId, cancellationToken);
+        Domain.Staff staff = await GetStaffAsync(staffId, cancellationToken);
 
         _context.Entry(staff).Property(e => e.PositionId).CurrentValue = position;
         await _context.SaveChangesAsync(cancellationToken);
@@ -134,9 +134,9 @@ public sealed class StaffRepository: IStaffRepository
         await _context.SaveChangesAsync(cancellationToken);
     }
     
-    private async Task<Models.Staff> GetStaffAsync(int staffId, CancellationToken cancellationToken)
+    private async Task<Domain.Staff> GetStaffAsync(int staffId, CancellationToken cancellationToken)
     {
-        Models.Staff? staff = await _context.Staff.FirstOrDefaultAsync(e => e.Id == staffId, cancellationToken);
+        Domain.Staff? staff = await _context.Staff.FirstOrDefaultAsync(e => e.Id == staffId, cancellationToken);
         if (staff is null)
             throw new NotFoundException($"Staff with id {staffId} not found");
 

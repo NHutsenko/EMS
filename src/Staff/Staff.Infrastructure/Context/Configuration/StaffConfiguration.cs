@@ -1,12 +1,12 @@
-using EMS.Staff.Models;
+using EMS.Staff.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace EMS.Staff.Context.Configuration;
+namespace EMS.Staff.Infrastructure.Context.Configuration;
 
-public sealed class StaffConfiguration: IEntityTypeConfiguration<Models.Staff>
+internal sealed class StaffConfiguration: IEntityTypeConfiguration<Domain.Staff>
 {
-    public void Configure(EntityTypeBuilder<Models.Staff> builder)
+    public void Configure(EntityTypeBuilder<Domain.Staff> builder)
     {
         builder.ToTable("Staff", "dbo")
             .HasKey(e => e.Id);

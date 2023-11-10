@@ -1,8 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
-using EMS.Exceptions;
 using Grpc.Core;
 
-namespace Exceptions;
+namespace EMS.Exceptions;
 
 [ExcludeFromCodeCoverage]
 public static class RpcExceptionMapper

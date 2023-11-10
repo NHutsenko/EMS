@@ -1,6 +1,6 @@
 using System.Runtime.Serialization;
 
-namespace Exceptions;
+namespace EMS.Exceptions;
 
 [Serializable]
 public sealed class BadRequestException: Exception

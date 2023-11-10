@@ -1,10 +1,10 @@
 using EMS.Protos;
-using EMS.Staff.Interfaces;
+using EMS.Staff.Application.Interfaces;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Grpc.Core.Utils;
 
-namespace EMS.Staff.Services;
+namespace EMS.Staff.Application.Services;
 
 public sealed class StaffService : Protos.StaffService.StaffServiceBase
 {
@@ -17,7 +17,7 @@ public sealed class StaffService : Protos.StaffService.StaffServiceBase
 
     public override async Task<Protos.Staff> GetByHistoryId(Int32Value request, ServerCallContext context)
     {
-        Models.Staff data = await _staffRepository.GetByHistoryIdAsync(request.Value, context.CancellationToken);
+        Domain.Staff data = await _staffRepository.GetByHistoryIdAsync(request.Value, context.CancellationToken);
 
         return new Protos.Staff
         {

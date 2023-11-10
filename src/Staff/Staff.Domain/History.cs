@@ -1,4 +1,4 @@
-namespace EMS.Staff.Models;
+namespace EMS.Staff.Domain;
 
 public sealed class History
 {

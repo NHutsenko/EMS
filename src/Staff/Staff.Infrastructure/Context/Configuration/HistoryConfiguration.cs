@@ -1,13 +1,14 @@
-using EMS.Staff.Models;
+using EMS.Staff.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace EMS.Staff.Context.Configuration;
+namespace EMS.Staff.Infrastructure.Context.Configuration;
 
-public sealed class HistoryConfiguration: IEntityTypeConfiguration<History>
+internal sealed class HistoryConfiguration: IEntityTypeConfiguration<History>
 {
     public void Configure(EntityTypeBuilder<History> builder)
     {
+        
         builder.ToTable("StaffHistory", "dbo")
             .HasKey(e => e.Id);
 
