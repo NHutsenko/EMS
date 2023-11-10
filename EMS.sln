@@ -66,11 +66,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Person.Infrastructure", "sr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Structure", "Structure", "{03B77DBA-CB6F-45D3-80DB-123C02E110FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Structure.Domain", "src\Structure\Structure.Domain\Structure.Domain.csproj", "{F9DE886D-CEDD-4007-819F-615C1B6A1C64}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Structure.Position.Domain", "src\Structure\Structure.Position.Domain\Structure.Position.Domain.csproj", "{F9DE886D-CEDD-4007-819F-615C1B6A1C64}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Structure.Infrastructure", "src\Structure\Structure.Infrastructure\Structure.Infrastructure.csproj", "{A3C1A55B-BF90-49A0-A2B1-D22FC698FC3E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Structure.Position.Infrastructure", "src\Structure\Structure.Position.Infrastructure\Structure.Position.Infrastructure.csproj", "{A3C1A55B-BF90-49A0-A2B1-D22FC698FC3E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Structure.Application", "src\Structure\Structure.Application\Structure.Application.csproj", "{15D41DB1-C29D-452B-8993-7CC061A698CC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Structure.Position.Application", "src\Structure\Structure.Position.Application\Structure.Position.Application.csproj", "{15D41DB1-C29D-452B-8993-7CC061A698CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Structure.Team.Domain", "src\Structure\Structure.Team.Domain\Structure.Team.Domain.csproj", "{6D8F68E7-2989-483A-B795-F55494721451}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Structure.Team.Infrastructure", "src\Structure\Structure.Team.Infrastructure\Structure.Team.Infrastructure.csproj", "{DE0D70D9-3387-4FF2-B5C3-1DA520E83AEE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Structure.Team.Application", "src\Structure\Structure.Team.Application\Structure.Team.Application.csproj", "{DDCD7DCE-1352-4F61-BA80-4EE3804287A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -106,6 +112,9 @@ Global
 		{A3C1A55B-BF90-49A0-A2B1-D22FC698FC3E} = {03B77DBA-CB6F-45D3-80DB-123C02E110FF}
 		{15D41DB1-C29D-452B-8993-7CC061A698CC} = {03B77DBA-CB6F-45D3-80DB-123C02E110FF}
 		{685631A8-1176-4DC9-97FD-95C43A7A3F40} = {B3FB7E78-E1C0-4D32-AD98-D9E12416E383}
+		{6D8F68E7-2989-483A-B795-F55494721451} = {03B77DBA-CB6F-45D3-80DB-123C02E110FF}
+		{DE0D70D9-3387-4FF2-B5C3-1DA520E83AEE} = {03B77DBA-CB6F-45D3-80DB-123C02E110FF}
+		{DDCD7DCE-1352-4F61-BA80-4EE3804287A1} = {03B77DBA-CB6F-45D3-80DB-123C02E110FF}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{47C86975-A3DB-4802-9F07-C812584B8159}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -192,5 +201,17 @@ Global
 		{15D41DB1-C29D-452B-8993-7CC061A698CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15D41DB1-C29D-452B-8993-7CC061A698CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{15D41DB1-C29D-452B-8993-7CC061A698CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D8F68E7-2989-483A-B795-F55494721451}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D8F68E7-2989-483A-B795-F55494721451}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D8F68E7-2989-483A-B795-F55494721451}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D8F68E7-2989-483A-B795-F55494721451}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE0D70D9-3387-4FF2-B5C3-1DA520E83AEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE0D70D9-3387-4FF2-B5C3-1DA520E83AEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE0D70D9-3387-4FF2-B5C3-1DA520E83AEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE0D70D9-3387-4FF2-B5C3-1DA520E83AEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDCD7DCE-1352-4F61-BA80-4EE3804287A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDCD7DCE-1352-4F61-BA80-4EE3804287A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDCD7DCE-1352-4F61-BA80-4EE3804287A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDCD7DCE-1352-4F61-BA80-4EE3804287A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

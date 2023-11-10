@@ -9,6 +9,8 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\Common\Extensions\Extensions.csproj" />
-      <ProjectReference Include="..\Structure.Infrastructure\Structure.Infrastructure.csproj" />
+      <ProjectReference Include="..\Structure.Position.Infrastructure\Structure.Position.Infrastructure.csproj" />
+      <ProjectReference Include="..\Structure.Team.Application\Structure.Team.Application.csproj" />
+      <ProjectReference Include="..\Structure.Team.Infrastructure\Structure.Team.Infrastructure.csproj" />
     </ItemGroup>
 </Project>
