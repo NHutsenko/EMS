@@ -28,7 +28,7 @@
 
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\EmploymentHistory\EmploymentHistory.csproj" />
+      <ProjectReference Include="..\..\src\EmploymentHistory.API\EmploymentHistory.API.csproj" />
     </ItemGroup>
 
 </Project>
