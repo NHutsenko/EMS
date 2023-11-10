@@ -1,18 +1,17 @@
 using EMS.Protos;
-using EMS.Structure.Context;
-using EMS.Structure.Interfaces;
+using EMS.Structure.Application.Interfaces;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Grpc.Core.Utils;
 using GradeHistory = EMS.Structure.Models.GradeHistory;
 
-namespace EMS.Structure.Services;
+namespace EMS.Structure.Application.Services;
 
 public sealed class PositionService : Protos.PositionService.PositionServiceBase
 {
     private readonly IPositionRepository _positionRepository;
 
-    public PositionService(StructureContext dbContext, IPositionRepository positionRepository)
+    public PositionService(IPositionRepository positionRepository)
     {
         _positionRepository = positionRepository;
     }

@@ -1,8 +1,8 @@
-using EMS.Structure.Context.Configuration;
+using EMS.Structure.Infrastructure.Context.Configuration;
 using EMS.Structure.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace EMS.Structure.Context;
+namespace EMS.Structure.Infrastructure.Context;
 
 public sealed class StructureContext: DbContext
 {

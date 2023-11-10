@@ -2,9 +2,9 @@ using EMS.Structure.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace EMS.Structure.Context.Configuration;
+namespace EMS.Structure.Infrastructure.Context.Configuration;
 
-public sealed class TeamConfiguration: IEntityTypeConfiguration<Team>
+internal sealed class TeamConfiguration: IEntityTypeConfiguration<Team>
 {
     public void Configure(EntityTypeBuilder<Team> builder)
     {

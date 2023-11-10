@@ -1,10 +1,10 @@
 using EMS.Protos;
-using EMS.Structure.Interfaces;
+using EMS.Structure.Application.Interfaces;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Grpc.Core.Utils;
 
-namespace EMS.Structure.Services;
+namespace EMS.Structure.Application.Services;
 
 public sealed class TeamService : Protos.TeamService.TeamServiceBase
 {
@@ -81,6 +81,4 @@ public sealed class TeamService : Protos.TeamService.TeamServiceBase
 
         return new Empty();
     }
-
-    
 }

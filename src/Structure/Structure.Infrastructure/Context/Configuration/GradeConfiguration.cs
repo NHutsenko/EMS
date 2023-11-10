@@ -2,9 +2,9 @@ using EMS.Structure.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace EMS.Structure.Context.Configuration;
+namespace EMS.Structure.Infrastructure.Context.Configuration;
 
-public class GradeConfiguration: IEntityTypeConfiguration<Grade>
+internal sealed class GradeConfiguration: IEntityTypeConfiguration<Grade>
 {
     public void Configure(EntityTypeBuilder<Grade> builder)
     {

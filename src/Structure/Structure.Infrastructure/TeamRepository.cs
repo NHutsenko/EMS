@@ -1,10 +1,10 @@
 using EMS.Exceptions;
-using EMS.Structure.Context;
-using EMS.Structure.Interfaces;
+using EMS.Structure.Application.Interfaces;
+using EMS.Structure.Infrastructure.Context;
 using EMS.Structure.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace EMS.Structure.Repositories;
+namespace EMS.Structure.Infrastructure;
 
 public sealed class TeamRepository: ITeamRepository
 {

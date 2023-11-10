@@ -1,6 +1,6 @@
 using EMS.Structure.Models;
 
-namespace EMS.Structure.Interfaces;
+namespace EMS.Structure.Application.Interfaces;
 
 public interface ITeamRepository
 {

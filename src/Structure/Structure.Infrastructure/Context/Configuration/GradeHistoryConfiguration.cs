@@ -2,9 +2,9 @@ using EMS.Structure.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace EMS.Structure.Context.Configuration;
+namespace EMS.Structure.Infrastructure.Context.Configuration;
 
-public class GradeHistoryConfiguration: IEntityTypeConfiguration<GradeHistory>
+internal sealed class GradeHistoryConfiguration: IEntityTypeConfiguration<GradeHistory>
 {
     public void Configure(EntityTypeBuilder<GradeHistory> builder)
     {

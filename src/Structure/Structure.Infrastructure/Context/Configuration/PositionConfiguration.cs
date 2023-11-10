@@ -2,9 +2,9 @@ using EMS.Structure.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace EMS.Structure.Context.Configuration;
+namespace EMS.Structure.Infrastructure.Context.Configuration;
 
-public class PositionConfiguration: IEntityTypeConfiguration<Position>
+internal sealed class PositionConfiguration: IEntityTypeConfiguration<Position>
 {
     public void Configure(EntityTypeBuilder<Position> builder)
     {

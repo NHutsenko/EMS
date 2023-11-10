@@ -1,9 +1,9 @@
 using EMS.Extensions;
 using EMS.Logging.Extensions;
-using EMS.Structure.Extensions;
-using EMS.Structure.Interfaces;
-using EMS.Structure.Repositories;
-using EMS.Structure.Services;
+using EMS.Structure.Application.Interfaces;
+using EMS.Structure.Application.Services;
+using EMS.Structure.Infrastructure;
+using EMS.Structure.Infrastructure.Extensions;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 

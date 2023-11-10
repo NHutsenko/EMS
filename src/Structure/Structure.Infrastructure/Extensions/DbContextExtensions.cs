@@ -1,8 +1,10 @@
 using System.Diagnostics.CodeAnalysis;
-using EMS.Structure.Context;
+using EMS.Structure.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace EMS.Structure.Extensions;
+namespace EMS.Structure.Infrastructure.Extensions;
 
 [ExcludeFromCodeCoverage]
 public static class DbContextExtensions
