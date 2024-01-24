@@ -24,7 +24,7 @@ message NewEmploymentHistory {
 }
 
 message EmploymentHistoryData {
-  int32 employment_history_id = 1;
+  int32 id = 1;
   int32 position_id = 2;
   int32 manager_id = 3;
   google.protobuf.Int32Value mentor_id = 4;

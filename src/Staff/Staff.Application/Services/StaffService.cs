@@ -1,5 +1,5 @@
-using EMS.Protos;
 using EMS.Staff.Application.Interfaces;
+using EMS.Protos;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Grpc.Core.Utils;
@@ -9,30 +9,29 @@ namespace EMS.Staff.Application.Services;
 public sealed class StaffService : Protos.StaffService.StaffServiceBase
 {
     private readonly IStaffRepository _staffRepository;
+    private readonly IPeopleRepository _peopleRepository;
+    private readonly IPositionRepository _positionRepository;
 
-    public StaffService(IStaffRepository staffRepository)
+    public StaffService(IStaffRepository staffRepository, IPeopleRepository peopleRepository, IPositionRepository positionRepository)
     {
         _staffRepository = staffRepository;
+        _peopleRepository = peopleRepository;
+        _positionRepository = positionRepository;
     }
 
-    public override async Task<Protos.Staff> GetByHistoryId(Int32Value request, ServerCallContext context)
+    public override async Task<Protos.Staff> GetById(Int32Value request, ServerCallContext context)
     {
-        Domain.Staff data = await _staffRepository.GetByHistoryIdAsync(request.Value, context.CancellationToken);
+        Domain.Staff data = await _staffRepository.GetByIdAsync(request.Value, context.CancellationToken);
 
         return new Protos.Staff
         {
             Id = data.Id,
             Position = data.PositionId,
             Manager = data.ManagerId,
-            History = data.History == null
-                ? null
-                : new StaffHistory
-                {
-                    Person = data.History.PersonId,
-                    Mentor = data.History.MentorId,
-                    Employment = data.History.Employment,
-                    CreatedOn = DateTime.SpecifyKind(data.History.CreatedOn, DateTimeKind.Utc).ToTimestamp()
-                }
+            Person = data.History?.PersonId,
+            Mentor = data.History?.MentorId,
+            Employment = data.History?.Employment,
+            StartWork = DateTime.SpecifyKind(data.History.CreatedOn, DateTimeKind.Utc).ToTimestamp()
         };
     }
 
@@ -44,15 +43,10 @@ public sealed class StaffService : Protos.StaffService.StaffServiceBase
                 Id = e.Id,
                 Position = e.PositionId,
                 Manager = e.ManagerId,
-                History = e.History == null
-                    ? null
-                    : new StaffHistory
-                    {
-                        Person = e.History.PersonId,
-                        Mentor = e.History.MentorId,
-                        Employment = e.History.Employment,
-                        CreatedOn = DateTime.SpecifyKind(e.History.CreatedOn, DateTimeKind.Utc).ToTimestamp()
-                    }
+                Person = e.History.PersonId,
+                Mentor = e.History.MentorId,
+                Employment = e.History.Employment,
+                StartWork = DateTime.SpecifyKind(e.History.CreatedOn, DateTimeKind.Utc).ToTimestamp()
             });
         await responseStream.WriteAllAsync(data);
     }
@@ -65,15 +59,10 @@ public sealed class StaffService : Protos.StaffService.StaffServiceBase
                 Id = e.Id,
                 Position = e.PositionId,
                 Manager = e.ManagerId,
-                History = e.History == null
-                    ? null
-                    : new StaffHistory
-                    {
-                        Person = e.History.PersonId,
-                        Mentor = e.History.MentorId,
-                        Employment = e.History.Employment,
-                        CreatedOn = DateTime.SpecifyKind(e.History.CreatedOn, DateTimeKind.Utc).ToTimestamp()
-                    }
+                Person = e.History.PersonId,
+                Mentor = e.History.MentorId,
+                Employment = e.History.Employment,
+                StartWork = DateTime.SpecifyKind(e.History.CreatedOn, DateTimeKind.Utc).ToTimestamp()
             });
         await responseStream.WriteAllAsync(data);
     }
@@ -86,15 +75,10 @@ public sealed class StaffService : Protos.StaffService.StaffServiceBase
                 Id = e.Id,
                 Position = e.PositionId,
                 Manager = e.ManagerId,
-                History = e.History == null
-                    ? null
-                    : new StaffHistory
-                    {
-                        Person = e.History.PersonId,
-                        Mentor = e.History.MentorId,
-                        Employment = e.History.Employment,
-                        CreatedOn = DateTime.SpecifyKind(e.History.CreatedOn, DateTimeKind.Utc).ToTimestamp()
-                    }
+                Person = e.History.PersonId,
+                Mentor = e.History.MentorId,
+                Employment = e.History.Employment,
+                StartWork = DateTime.SpecifyKind(e.History.CreatedOn, DateTimeKind.Utc).ToTimestamp()
             });
 
         await responseStream.WriteAllAsync(data);
@@ -102,58 +86,72 @@ public sealed class StaffService : Protos.StaffService.StaffServiceBase
 
     public override async Task<Int32Value> Create(NewStaff request, ServerCallContext context)
     {
-        int id = await _staffRepository.CreateAsync(request.Position, request.Manager, context.CancellationToken);
-
+        await _peopleRepository.CheckPeopleAsync(request.Person, request.Manager, request.Mentor, context.CancellationToken);
+        await _positionRepository.ThrowExceptionIfPositionNotFoundAsync(request.Position, context.CancellationToken);
+        await _staffRepository.ThrowExceptionIfDateIsWrongAsync(request.Person, request.StartWork.ToDateTime(), context.CancellationToken);
+        
+        int id = await _staffRepository.CreateAsync(request.Position, request.Manager, request.Person, request.Employment, request.StartWork.ToDateTime(), request.Mentor, context.CancellationToken);
+        
         return new Int32Value
         {
             Value = id
         };
     }
 
-    public override async Task<Empty> CreateHistory(NewHistory request, ServerCallContext context)
+    public override async Task<Empty> Edit(Protos.Staff request, ServerCallContext context)
     {
-        await _staffRepository.CreateHistoryAsync(request.StaffId, 
-            request.Data.Person,
-            request.Data.Mentor,
-            request.Data.Employment,
-            request.Data.CreatedOn.ToDateTime(),
-            context.CancellationToken);
+        Domain.Staff history = await _staffRepository.GetByIdAsync(request.Id, context.CancellationToken);
+            
+        await _peopleRepository.CheckPeopleAsync(null, request.Manager, request.Mentor, context.CancellationToken);
+        await _positionRepository.ThrowExceptionIfPositionNotFoundAsync(request.Position, context.CancellationToken);
+        await _staffRepository.ThrowExceptionIfDateIsWrongAsync(history.History.PersonId, request.StartWork.ToDateTime(), context.CancellationToken);
+
+        await SetManagerAsync(history, request.Manager, context.CancellationToken);
+        await SetPositionAsync(history, request.Position, context.CancellationToken);
+        await SetStartWorkAsync(history, request.StartWork.ToDateTime(), context.CancellationToken);
+        await SetEmploymentAsync(history, request.Employment.Value, context.CancellationToken);
+        await SetMentorAsync(history, request.Mentor, context.CancellationToken);
 
         return new Empty();
     }
 
-    public override async Task<Empty> SetManager(NewManager request, ServerCallContext context)
+    private async Task SetMentorAsync(Domain.Staff staff, int? mentor, CancellationToken cancellationToken)
     {
-        await _staffRepository.SetManagerAsync(request.StaffId, request.Manager, context.CancellationToken);
-
-        return new Empty();
+        if (staff.History.MentorId != mentor)
+        {
+            await _staffRepository.SetMentorAsync(staff.Id, mentor, cancellationToken);
+        }
     }
 
-    public override async Task<Empty> SetPosition(NewPosition request, ServerCallContext context)
+    private async Task SetEmploymentAsync(Domain.Staff staff, int employment, CancellationToken cancellationToken)
     {
-        await _staffRepository.SetPositionAsync(request.StaffId, request.Position, context.CancellationToken);
-
-        return new Empty();
+        if (staff.History.Employment != employment)
+        {
+            await _staffRepository.SetEmploymentAsync(staff.Id, employment, cancellationToken);
+        }
     }
 
-    public override async Task<Empty> SetDate(NewDate request, ServerCallContext context)
+    private async Task SetStartWorkAsync(Domain.Staff staff, DateTime startWork, CancellationToken cancellationToken)
     {
-        await _staffRepository.SetDateAsync(request.StaffId, request.Date.ToDateTime(), context.CancellationToken);
-
-        return new Empty();
+        if (staff.History.CreatedOn != startWork)
+        {
+            await _staffRepository.SetDateAsync(staff.Id, startWork, cancellationToken);
+        }
     }
 
-    public override async Task<Empty> SetEmployment(NewEmployment request, ServerCallContext context)
+    private async Task SetPositionAsync(Domain.Staff staff, int positionId, CancellationToken cancellationToken)
     {
-        await _staffRepository.SetEmploymentAsync(request.StaffId, request.Employment, context.CancellationToken);
-
-        return new Empty();
+        if (staff.PositionId !=positionId)
+        {
+            await _staffRepository.SetPositionAsync(staff.Id, positionId, cancellationToken);
+        }
     }
 
-    public override async Task<Empty> SetMentor(NewMentor request, ServerCallContext context)
+    private async Task SetManagerAsync(Domain.Staff staff, int managerId, CancellationToken cancellationToken)
     {
-        await _staffRepository.SetMentorAsync(request.StaffId, request.Mentor, context.CancellationToken);
-
-        return new Empty();
+        if (staff.ManagerId != managerId)
+        {
+            await _staffRepository.SetManagerAsync(staff.Id, managerId, cancellationToken);
+        }
     }
 }

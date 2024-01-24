@@ -1,13 +1,10 @@
 using System.Diagnostics.CodeAnalysis;
 using EMS.EmploymentHistory.Tests.Mocks;
-using EMS.Exceptions;
-using EMS.Protos;
 using FluentAssertions;
-using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using NSubstitute;
 using NSubstitute.ReceivedExtensions;
-using EmploymentHistoryService = EMS.EmploymentHistory.Services.EmploymentHistoryService;
+using EmploymentHistoryService = EMS.EmploymentHistory.Application.Services.EmploymentHistoryService;
 
 namespace EMS.EmploymentHistory.Tests;
 

@@ -1,6 +1,4 @@
 using System.Diagnostics.CodeAnalysis;
-using EMS.Protos;
-using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using NSubstitute;
 

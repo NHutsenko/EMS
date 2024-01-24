@@ -2,9 +2,10 @@
 using Grpc.Core;
 using Grpc.Core.Testing;
 using Grpc.Core.Utils;
+using Grpc.Net.Client;
 using NSubstitute;
 
-namespace EMS.EmploymentHistory.Tests.Mocks;
+namespace EMS.Staff.Application.Tests.Mocks;
 
 [ExcludeFromCodeCoverage]
 internal static class GrpcCoreMock

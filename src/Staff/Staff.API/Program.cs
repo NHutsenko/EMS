@@ -15,6 +15,10 @@ builder.Services.AddGrpcServer();
 builder.Services.AddDbContext(builder.Configuration);
 
 builder.Services.AddScoped<IStaffRepository, StaffRepository>();
+builder.Services.AddScoped<IPositionRepository, PositionRepository>();
+builder.Services.AddScoped<IPeopleRepository, PeopleRepository>();
+
+builder.Services.AddGrpcClients(builder.Configuration);
 
 WebApplication app = builder.Build();
 

@@ -12,61 +12,26 @@ service StaffService {
   rpc GetByPerson(google.protobuf.Int32Value) returns (stream Staff);
   rpc GetByManager(google.protobuf.Int32Value) returns (stream Staff);
   rpc GetAll(google.protobuf.Empty) returns (stream Staff);
-  rpc GetByHistoryId(google.protobuf.Int32Value) returns (Staff);
+  rpc GetById(google.protobuf.Int32Value) returns (Staff);
   rpc Create(NewStaff) returns (google.protobuf.Int32Value);
-  rpc CreateHistory(NewHistory) returns (google.protobuf.Empty);
-  rpc SetDate(NewDate) returns (google.protobuf.Empty);
-  rpc SetMentor(NewMentor) returns (google.protobuf.Empty);
-  rpc SetEmployment(NewEmployment) returns (google.protobuf.Empty);
-  rpc SetManager(NewManager) returns (google.protobuf.Empty);
-  rpc SetPosition(NewPosition) returns (google.protobuf.Empty);
+  rpc Edit(Staff) returns (google.protobuf.Empty);
 }
 
 message Staff {
   int32 id = 1;
   int32 manager = 2;
   int32 position = 3;
-  StaffHistory history = 4;
-}
-
-message StaffHistory {
-  int32 person = 1;
-  google.protobuf.Int32Value mentor = 2;
-  google.protobuf.Timestamp created_on = 3;
-  int32 employment = 4;
+  google.protobuf.Int32Value person = 4;
+  google.protobuf.Int32Value mentor = 5;
+  google.protobuf.Timestamp start_work = 6;
+  google.protobuf.Int32Value employment = 7;
 }
 
 message NewStaff {
   int32 manager = 1;
   int32 position = 2;
-}
-
-message NewHistory {
-  int32 staff_id = 1;
-  StaffHistory data = 2;
-}
-
-message NewDate {
-  int32 staff_id = 1;
-  google.protobuf.Timestamp date = 2;
-}
-
-message NewMentor {
-  int32 staff_id = 1;
-  google.protobuf.Int32Value mentor = 2;
-}
-
-message NewEmployment {
-  int32 staffId = 1;
-  int32 employment = 2;
-}
-
-message NewManager {
-  int32 staff_id = 1;
-  int32 manager = 2;
-}
-
-message NewPosition {
-  int32 staff_id = 1;
-  int32 position = 2;
+  int32 person = 3;
+  google.protobuf.Int32Value mentor = 4;
+  google.protobuf.Timestamp start_work = 5;
+  int32 employment = 6;
 }

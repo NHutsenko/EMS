@@ -1,9 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using EMS.EmploymentHistory.Tests.Mocks;
-using EMS.Protos;
 using Grpc.Core;
 using NSubstitute;
-using EmploymentHistoryService = EMS.EmploymentHistory.Services.EmploymentHistoryService;
+using EmploymentHistoryService = EMS.EmploymentHistory.Application.Services.EmploymentHistoryService;
 
 namespace EMS.EmploymentHistory.Tests;
 

@@ -1,9 +1,11 @@
 using System.Diagnostics.CodeAnalysis;
 using EMS.Configurations;
 using EMS.Extensions;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using EMS.Protos;
 
-namespace EMS.EmploymentHistory.Extensions;
+namespace EMS.Staff.Infrastructure.Extensions;
 
 [ExcludeFromCodeCoverage]
 public static class GrpcServicesCollectionExtensions
@@ -13,12 +15,6 @@ public static class GrpcServicesCollectionExtensions
         UriConfig config = GetConfig(configuration);
 
         services.AddGrpcClient<PersonService.PersonServiceClient>(opt => opt.Address = new Uri(config.PersonService!))
-            .ConfigureClient();
-        
-        services.AddGrpcClient<StaffService.StaffServiceClient>(opt => opt.Address = new Uri(config.StaffService!))
-            .ConfigureClient();
-        
-        services.AddGrpcClient<TeamService.TeamServiceClient>(opt => opt.Address = new Uri(config.StructureService!))
             .ConfigureClient();
         
         services.AddGrpcClient<PositionService.PositionServiceClient>(opt => opt.Address = new Uri(config.StructureService!))
@@ -32,7 +28,6 @@ public static class GrpcServicesCollectionExtensions
         UriConfig? config = configuration.GetSection(UriConfig.SectionName).Get<UriConfig>();
         ArgumentNullException.ThrowIfNull(config);
         ArgumentException.ThrowIfNullOrEmpty(config.PersonService);
-        ArgumentException.ThrowIfNullOrEmpty(config.StaffService);
         ArgumentException.ThrowIfNullOrEmpty(config.StructureService);
         return config;
     }

@@ -5,6 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <RootNamespace>EMS.Staff.Infrastructure</RootNamespace>
+        <Protobuf_ProtoRoot>../../Protos</Protobuf_ProtoRoot>
     </PropertyGroup>
 
     <ItemGroup>
@@ -15,12 +16,26 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.11" />
+        <PackageReference Include="Grpc.AspNetCore" Version="2.57.0" />
+        <PackageReference Include="Grpc.Tools" Version="2.58.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\Common\Configurations\Configurations.csproj" />
         <ProjectReference Include="..\..\Common\Exceptions\Exceptions.csproj" />
+        <ProjectReference Include="..\..\Common\Extensions\Extensions.csproj" />
         <ProjectReference Include="..\Staff.Application\Staff.Application.csproj" />
         <ProjectReference Include="..\Staff.Domain\Staff.Domain.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Protobuf Include="../../Protos/CustomTypes/decimal.proto" />
+        <Protobuf Include="../../Protos/Services/position.proto" Link="Protos/position.proto" GrpcServices="Client" />
+        <Protobuf Include="../../Protos/Services/staff.proto" Link="Protos/staff.proto" GrpcServices="Client" />
+        <Protobuf Include="../../Protos/Services/person.proto" Link="Protos/person.proto" GrpcServices="Client" />
     </ItemGroup>
 
 </Project>

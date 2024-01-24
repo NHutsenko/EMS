@@ -1,113 +1,37 @@
-using System.Diagnostics.CodeAnalysis;
-using EMS.EmploymentHistory.Tests.Mocks;
-using FluentAssertions;
+﻿using EMS.Staff.Application.Tests.Mocks;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
-using NSubstitute;
 using NSubstitute.ReceivedExtensions;
-using EmploymentHistoryService = EMS.EmploymentHistory.Application.Services.EmploymentHistoryService;
+using NSubstitute;
+using StaffService = EMS.Staff.Application.Services.StaffService;
+using EMS.Protos;
 
-namespace EMS.EmploymentHistory.Tests;
+namespace EMS.Staff.Application.Tests;
 
-[SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
-public partial class EmploymentHistoryServiceTests
+public partial class StaffServiceTests
 {
-    [Fact(DisplayName = "UpdateEmployment should throws exception that position to set not found")]
+
+    [Fact(DisplayName = "UpdateEmployment should call set date")]
     public async Task EditData_CaseOne()
     {
         // Arrange
-        _service = new EmploymentHistoryService(_personClientMock.PersonClient, _positionClientMock.PositionClient, _staffClientMock.StaffClient);
-        EmploymentHistoryData request = new()
-        {
-            EmploymentHistoryId = _staffClientMock.StaffFoundRequest.Value,
-            PositionId = 999,
-            ManagerId = _personClientMock.ManagerFoundRequest.Value
-        };
-        ServerCallContext context = GrpcCoreMock.GetCallContext(nameof(_service.UpdateEmployment));
-        // Act
-        NotFoundException exception = await Assert.ThrowsAsync<NotFoundException>(() => _service.UpdateEmployment(request, context));
-
-        // Assert
-        exception.Message.Should().Be($"Position with history id {request.PositionId} does not exists");
-
-        var staffCall = _staffClientMock.StaffClient.ReceivedCalls();
-        var getByHistoryIdCall = staffCall.FirstOrDefault(e => e.GetMethodInfo().Name == nameof(_staffClientMock.StaffClient.GetByHistoryIdAsync));
-        getByHistoryIdCall.Should().NotBe(null);
-        getByHistoryIdCall!.GetArguments()[0].Should().Be(_staffClientMock.StaffFoundRequest);
-
-        _positionClientMock.PositionClient.Received(Quantity.Exactly(1)).GetAll(new Empty());
-
-        _personClientMock.PersonClient.Received(Quantity.None()).GetAll(Arg.Any<Empty>());
-    }
-
-    [Fact(DisplayName = "UpdateEmployment should throws exception that start work should be greater than last record plus one day")]
-    public async Task EditData_CaseTwo()
-    {
-        // Arrange
-        _service = new EmploymentHistoryService(_personClientMock.PersonClient, _positionClientMock.PositionClient, _staffClientMock.StaffClient);
-        Timestamp dateToSet = _staffClientMock.PersonStaffHistoryResponse
-            .OrderByDescending(e => e.History.CreatedOn)
-            .First()
-            .History.CreatedOn
-            .ToDateTime()
-            .AddDays(-5)
-            .ToTimestamp();
-        EmploymentHistoryData request = new()
-        {
-            EmploymentHistoryId = _staffClientMock.StaffFoundRequest.Value,
-            PositionId = _positionClientMock.PositionResponse.Id,
-            ManagerId = _personClientMock.ManagerFoundRequest.Value,
-            MentorId = _personClientMock.MentorFoundRequest.Value,
-            StartWork = dateToSet
-        };
-        ServerCallContext context = GrpcCoreMock.GetCallContext(nameof(_service.UpdateEmployment));
-        // Act
-        AlreadyExistsException exception = await Assert.ThrowsAsync<AlreadyExistsException>(() => _service.UpdateEmployment(request, context));
-
-        // Assert
-        DateTime minValid = _staffClientMock.PersonStaffHistoryResponse
-            .OrderByDescending(e => e.History.CreatedOn)
-            .First()
-            .History.CreatedOn
-            .ToDateTime()
-            .AddDays(1);
-        exception.Message.Should().Be($"Employment period for date {dateToSet.ToDateTime().Date} already exists." +
-                                      $"{Environment.NewLine}Minimum start work date is {minValid.Date}");
-
-        var staffCall = _staffClientMock.StaffClient.ReceivedCalls();
-        var getByHistoryIdCall = staffCall.FirstOrDefault(e => e.GetMethodInfo().Name == nameof(_staffClientMock.StaffClient.GetByHistoryIdAsync));
-        getByHistoryIdCall.Should().NotBe(null);
-        getByHistoryIdCall!.GetArguments()[0].Should().Be(_staffClientMock.StaffFoundRequest);
-
-        _positionClientMock.PositionClient.Received(Quantity.Exactly(1)).GetAll(new Empty());
-    }
-
-    [Fact(DisplayName = "UpdateEmployment should call set date")]
-    public async Task EditData_CaseThree()
-    {
-        // Arrange
-        _service = new EmploymentHistoryService(_personClientMock.PersonClient, _positionClientMock.PositionClient, _staffClientMock.StaffClient);
-        Timestamp dateToSet = _staffClientMock.StaffSecond.History.CreatedOn
-            .ToDateTime()
+        _service = new StaffService(_staffRepositoryMock.StaffRepository, _peopleRepositoryMock.PeopleRepository, _positionRepositoryMock.PositionRepository);
+        Timestamp dateToSet = _staffRepositoryMock.ActualStaff.History.CreatedOn
             .AddMonths(1)
             .ToTimestamp();
-        EmploymentHistoryData request = new()
+        Protos.Staff request = new()
         {
-            EmploymentHistoryId = _staffClientMock.StaffFoundRequest.Value,
-            PositionId = _staffClientMock.StaffSecond.Position,
-            ManagerId = _personClientMock.ManagerFoundRequest.Value,
-            MentorId = _personClientMock.MentorFoundRequest.Value,
-            StartWork = dateToSet,
-            Employment = _staffClientMock.StaffSecond.History.Employment
+            Id = 1,
+            Person = _staffRepositoryMock.ActualStaff.History.PersonId,
+            StartWork = _staffRepositoryMock.ActualStaff.History.CreatedOn.ToTimestamp(),
+            Position = _staffRepositoryMock.ActualStaff.PositionId,
+            Employment = _staffRepositoryMock.ActualStaff.History.Employment,
+            Manager = _staffRepositoryMock.ActualStaff.ManagerId
         };
-        ServerCallContext context = GrpcCoreMock.GetCallContext(nameof(_service.UpdateEmployment));
-        NewDate expectedSetDateRequest = new()
-        {
-            StaffId = request.EmploymentHistoryId,
-            Date = dateToSet
-        };
-
+        ServerCallContext context = GrpcCoreMock.GetCallContext(nameof(_service.Edit));
+        
         // Act
-        await _service.UpdateEmployment(request, context);
+        await _service.Edit(request, context);
 
         // Assert
         var staffCall = _staffClientMock.StaffClient.ReceivedCalls();
@@ -164,13 +88,13 @@ public partial class EmploymentHistoryServiceTests
         var setCall = calls.FirstOrDefault(e => e.GetMethodInfo().Name == nameof(_staffClientMock.StaffClient.SetPositionAsync));
         setCall.Should().NotBe(null);
         setCall!.GetArguments()[0].Should().Be(expectedPositionRequest);
-        
+
         calls.Any(e => e.GetMethodInfo().Name == nameof(_staffClientMock.StaffClient.SetEmploymentAsync)).Should().Be(false);
         calls.Any(e => e.GetMethodInfo().Name == nameof(_staffClientMock.StaffClient.SetManagerAsync)).Should().Be(false);
         calls.Any(e => e.GetMethodInfo().Name == nameof(_staffClientMock.StaffClient.SetDateAsync)).Should().Be(false);
         calls.Any(e => e.GetMethodInfo().Name == nameof(_staffClientMock.StaffClient.SetMentorAsync)).Should().Be(false);
     }
-    
+
     [Fact(DisplayName = "UpdateEmployment should call set employment")]
     public async Task EditData_CaseEight()
     {
@@ -207,13 +131,13 @@ public partial class EmploymentHistoryServiceTests
         var setCall = calls.FirstOrDefault(e => e.GetMethodInfo().Name == nameof(_staffClientMock.StaffClient.SetEmploymentAsync));
         setCall.Should().NotBe(null);
         setCall!.GetArguments()[0].Should().Be(expectedEmploymentRequest);
-        
+
         calls.Any(e => e.GetMethodInfo().Name == nameof(_staffClientMock.StaffClient.SetDateAsync)).Should().Be(false);
         calls.Any(e => e.GetMethodInfo().Name == nameof(_staffClientMock.StaffClient.SetManagerAsync)).Should().Be(false);
         calls.Any(e => e.GetMethodInfo().Name == nameof(_staffClientMock.StaffClient.SetPositionAsync)).Should().Be(false);
         calls.Any(e => e.GetMethodInfo().Name == nameof(_staffClientMock.StaffClient.SetMentorAsync)).Should().Be(false);
     }
-    
+
     [Fact(DisplayName = "UpdateEmployment should call set manager")]
     public async Task EditData_CaseNine()
     {
@@ -245,7 +169,7 @@ public partial class EmploymentHistoryServiceTests
         getByHistoryIdCall!.GetArguments()[0].Should().Be(_staffClientMock.StaffFoundRequest);
 
         _positionClientMock.PositionClient.Received(Quantity.Exactly(1)).GetAll(new Empty());
-        
+
         var calls = _staffClientMock.StaffClient.ReceivedCalls();
         var setCall = calls.FirstOrDefault(e => e.GetMethodInfo().Name == nameof(_staffClientMock.StaffClient.SetManagerAsync));
         setCall.Should().NotBe(null);
@@ -256,7 +180,7 @@ public partial class EmploymentHistoryServiceTests
         calls.Any(e => e.GetMethodInfo().Name == nameof(_staffClientMock.StaffClient.SetPositionAsync)).Should().Be(false);
         calls.Any(e => e.GetMethodInfo().Name == nameof(_staffClientMock.StaffClient.SetMentorAsync)).Should().Be(false);
     }
-    
+
     [Fact(DisplayName = "UpdateEmployment should call set mentor")]
     public async Task EditData_CaseTen()
     {
@@ -293,13 +217,13 @@ public partial class EmploymentHistoryServiceTests
         var setCall = calls.FirstOrDefault(e => e.GetMethodInfo().Name == nameof(_staffClientMock.StaffClient.SetMentorAsync));
         setCall.Should().NotBe(null);
         setCall!.GetArguments()[0].Should().Be(expectedMentorRequest);
-        
+
         calls.Any(e => e.GetMethodInfo().Name == nameof(_staffClientMock.StaffClient.SetDateAsync)).Should().Be(false);
         calls.Any(e => e.GetMethodInfo().Name == nameof(_staffClientMock.StaffClient.SetPositionAsync)).Should().Be(false);
         calls.Any(e => e.GetMethodInfo().Name == nameof(_staffClientMock.StaffClient.SetEmploymentAsync)).Should().Be(false);
         calls.Any(e => e.GetMethodInfo().Name == nameof(_staffClientMock.StaffClient.SetManagerAsync)).Should().Be(false);
     }
-    
+
     [Fact(DisplayName = "UpdateEmployment should update all fields")]
     public async Task EditData_CaseEleven()
     {
@@ -355,24 +279,24 @@ public partial class EmploymentHistoryServiceTests
         getByHistoryIdCall!.GetArguments()[0].Should().Be(_staffClientMock.StaffFoundRequest);
 
         _positionClientMock.PositionClient.Received(Quantity.Exactly(1)).GetAll(new Empty());
-        
+
         var calls = _staffClientMock.StaffClient.ReceivedCalls();
         var setDateCall = calls.FirstOrDefault(e => e.GetMethodInfo().Name == nameof(_staffClientMock.StaffClient.SetDateAsync));
         setDateCall.Should().NotBe(null);
         setDateCall!.GetArguments()[0].Should().Be(expectedDateRequest);
-        
+
         var setPositionCall = calls.FirstOrDefault(e => e.GetMethodInfo().Name == nameof(_staffClientMock.StaffClient.SetPositionAsync));
         setPositionCall.Should().NotBe(null);
         setPositionCall!.GetArguments()[0].Should().Be(expectedPositionRequest);
-        
+
         var setEmploymentlCall = calls.FirstOrDefault(e => e.GetMethodInfo().Name == nameof(_staffClientMock.StaffClient.SetEmploymentAsync));
         setEmploymentlCall.Should().NotBe(null);
         setEmploymentlCall!.GetArguments()[0].Should().Be(expectedEmploymentRequest);
-        
+
         var setManagerlCall = calls.FirstOrDefault(e => e.GetMethodInfo().Name == nameof(_staffClientMock.StaffClient.SetManagerAsync));
         setManagerlCall.Should().NotBe(null);
         setManagerlCall!.GetArguments()[0].Should().Be(expectedManagerRequest);
-        
+
         var setMentorlCall = calls.FirstOrDefault(e => e.GetMethodInfo().Name == nameof(_staffClientMock.StaffClient.SetMentorAsync));
         setMentorlCall.Should().NotBe(null);
         setMentorlCall!.GetArguments()[0].Should().Be(expectedMentorRequest);
